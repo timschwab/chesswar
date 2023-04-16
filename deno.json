@@ -1,0 +1,8 @@
+{
+	"imports": {
+	  "std/": "https://deno.land/std@0.183.0/"
+	},
+	"tasks": {
+	  "web": "deno run web/server.ts"
+	}
+}
