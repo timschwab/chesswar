@@ -5,7 +5,6 @@
 	},
 	"tasks": {
 		"web": "deno run --unstable --allow-net --allow-read web/serve.ts",
-		"build": "deno run --allow-all web/build.ts dev",
-		"build-prod": "deno run --allow-all web/build.ts prod"
+		"build": "deno run --allow-all web/build.ts"
 	}
 }
