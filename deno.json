@@ -1,8 +1,11 @@
 {
 	"imports": {
-	  "std/": "https://deno.land/std@0.183.0/"
+		"std/": "https://deno.land/std@0.183.0/",
+		"esbuild/": "https://deno.land/x/esbuild@v0.17.16/"
 	},
 	"tasks": {
-	  "web": "deno run web/server.ts"
+		"web": "deno run --unstable --allow-net --allow-read web/serve.ts",
+		"build": "deno run --allow-all web/build.ts dev",
+		"build-prod": "deno run --allow-all web/build.ts prod"
 	}
 }
