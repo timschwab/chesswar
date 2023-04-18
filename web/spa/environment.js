@@ -1,6 +1,6 @@
-let hostname = window.location.hostname;
+const hostname = window.location.hostname;
 
-let env = {
+const env = {
 	localhost: "local",
 	"chesswar.io": "remote"
 }[hostname];
