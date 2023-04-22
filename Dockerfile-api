@@ -1,0 +1,14 @@
+FROM denoland/deno
+WORKDIR /chesswar
+
+# Load dependencies
+COPY deps.ts deno.json deno.lock ./
+RUN deno cache deps.ts
+
+# Build
+COPY common common
+COPY api api
+
+# Run
+EXPOSE 18357
+CMD deno task api
