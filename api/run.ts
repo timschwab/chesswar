@@ -24,5 +24,6 @@ const handler = (req: Request): Response => {
 };
 
 Deno.serve(handler, {
-	port
+	port,
+	hostname: "0.0.0.0"
 });
