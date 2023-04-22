@@ -1,8 +1,4 @@
 {
-	"imports": {
-		"std/": "https://deno.land/std@0.183.0/",
-		"esbuild/": "https://deno.land/x/esbuild@v0.17.16/"
-	},
 	"tasks": {
 		"api": "deno run --unstable --allow-net api/run.ts",
 		"web": "deno run --unstable --allow-net --allow-read web/serve.ts",

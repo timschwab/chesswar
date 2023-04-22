@@ -1,7 +1,7 @@
-import { build, stop } from 'esbuild/mod.js'
+import { esbuild } from '../deps.ts'
 
 const options = {
-	entryPoints: ['web/spa/app.ts'],
+	entryPoints: ['web/js/app.ts'],
 	outdir: 'web/bundle',
 	target: 'esnext',
 	bundle: true,
@@ -9,5 +9,5 @@ const options = {
 	sourcemap: true
 };
 
-await build(options);
-stop()
+await esbuild.build(options);
+esbuild.stop()
