@@ -25,5 +25,6 @@ const handler = async (req: Request): Promise<Response> => {
 };
 
 Deno.serve(handler, {
-	port
+	port,
+	hostname: "0.0.0.0"
 });

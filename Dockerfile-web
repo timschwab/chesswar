@@ -6,8 +6,10 @@ COPY deps.ts deno.json deno.lock ./
 RUN deno cache deps.ts
 
 # Build
-COPY web/ common/ ./
+COPY common common
+COPY web web
 RUN deno task build
 
 # Run
+EXPOSE 8357
 CMD deno task web
