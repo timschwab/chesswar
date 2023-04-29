@@ -1,12 +1,12 @@
-let width = 5000;
-let height = 3000;
+const width = 5000;
+const height = 3000;
 
-let middle = {
+const middle = {
 	x: width / 2,
 	y: height / 2
 };
 
-let deathRects = [
+const deathRects = [
 	{
 		topLeft: {
 			x: middle.x - 100,
@@ -19,7 +19,7 @@ let deathRects = [
 	}
 ];
 
-let map = {
+const map = {
 	width,
 	height,
 	start: middle,

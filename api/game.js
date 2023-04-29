@@ -1,6 +1,6 @@
 import settings from "./settings.ts";
 import socket from "./socket.js";
-import map from "./map.js";
+import map from "./map.ts";
 
 let state = {
 	players: {}
