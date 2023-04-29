@@ -1,7 +1,8 @@
 import settings from "./settings.ts";
 import socket from "./socket.ts";
 import map from "../common/map.ts";
-import { ClientMessageWithId, KeysMessagePayload } from "../common/message-types.ts";
+import { ClientMessageTypes, ClientMessageWithId, KeysMessagePayload } from "../common/messages/types-client.ts";
+import { ServerMessageTypes } from "../common/messages/types-server.ts";
 
 interface Player {
 	id: string,
@@ -49,7 +50,7 @@ function addPlayer(id: string): void {
 	});
 
 	socket.send(id, {
-		type: "player-init",
+		type: ServerMessageTypes.PLAYER_INIT,
 		payload: {
 			id
 		}
@@ -70,7 +71,7 @@ function getPlayer(id: string): Player {
 }
 
 function receiveMessage(message: ClientMessageWithId): void {
-	if (message.type == "keys") {
+	if (message.type == ClientMessageTypes.KEYS) {
 		keysUpdate(message.id, message.payload);
 	}
 }
@@ -128,7 +129,7 @@ function tick(): void {
 	});
 
 	socket.broadcast({
-		type: "state",
+		type: ServerMessageTypes.STATE,
 		payload: payload
 	});
 }
