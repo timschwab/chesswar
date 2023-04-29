@@ -1,6 +1,6 @@
 import socket from "./socket.js";
 import screen from "./screen.js";
-import inputs from "./inputs.js";
+import inputs from "./inputs.ts";
 import game from "./game.js";
 
 main();

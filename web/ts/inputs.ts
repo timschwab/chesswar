@@ -1,13 +1,13 @@
 import socket from "./socket.js";
 
-let keys = {
+const keys = {
 	left: false,
 	right: false,
 	up: false,
 	down: false
 };
 
-let mapping = {
+const mapping = {
 	ArrowLeft: "left",
 	ArrowRight: "right",
 	ArrowUp: "up",
@@ -32,8 +32,8 @@ function handleKeyup(event) {
 	handleKey(event, false);
 }
 
-function handleKey(event, pressed) {
-	let mapped = mapping[event.code];
+function handleKey(event, pressed: boolean) {
+	const mapped = mapping[event.code];
 	if (mapped) {
 		keys[mapped] = pressed;
 	}
