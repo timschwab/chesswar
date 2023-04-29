@@ -1,5 +1,5 @@
 import slim from "../common/slim-id.ts";
-import hooks from "../common/hooks.js"
+import hooks from "../common/hooks.ts"
 
 let connections = {};
 let events = hooks.createGroup();

@@ -23,7 +23,7 @@ const handler = (req: Request): Response => {
 	return response;
 };
 
-Deno.serve(handler, {
+Deno.serve({
 	port,
 	hostname: "0.0.0.0"
-});
+}, handler);
