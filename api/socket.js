@@ -1,4 +1,4 @@
-import slim from "../common/slim-id.js";
+import slim from "../common/slim-id.ts";
 import hooks from "../common/hooks.js"
 
 let connections = {};

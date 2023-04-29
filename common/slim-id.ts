@@ -4,15 +4,15 @@ const mask = 0b11111000;
 const regex = new RegExp("[" + encodings + "]{16}");
 
 // Pre-allocated values
-let buffer = new Uint8Array(1000);
+const buffer = new Uint8Array(1000);
+const vals = new Array(16);
 let bufferPointer = 0;
-let vals = new Array(16);
 
 // The main function
-async function make() {
+function make(): string {
 	// Get the random bytes
 	if (bufferPointer == 0) {
-		await crypto.getRandomValues(buffer);
+		crypto.getRandomValues(buffer);
 	}
 
 	// Convert from 10 8-bit strings to 16 5-bit strings
@@ -30,23 +30,23 @@ async function make() {
 }
 
 // Get the ith 5-bit sequence from the buffer bytes
-function process(buf, bufferPointer, i) {
-	let pos = 5 * i;
-	let byte = 0 | (pos / 8);
-	let rel = pos % 8;
-	let off = rel - 3;
+function process(buf: Uint8Array, bufferPointer: number, i: number): number {
+	const pos = 5 * i;
+	const byte = 0 | (pos / 8);
+	const rel = pos % 8;
+	const off = rel - 3;
 
-	let val1 = shift(buf[byte + bufferPointer] & (mask >> rel), off);
+	const val1 = shift(buf[byte + bufferPointer] & (mask >> rel), off);
 
-	let byte2 = byte + 1;
-	let off2 = 8 - off;
-	let val2 = (buf[byte2 + bufferPointer] & mask) >> off2;
+	const byte2 = byte + 1;
+	const off2 = 8 - off;
+	const val2 = (buf[byte2 + bufferPointer] & mask) >> off2;
 
 	return val1 | val2;
 }
 
 // I wish this was doable in vanilla JS. Probably most CPUs don't support it though.
-function shift(num, bits) {
+function shift(num: number, bits: number): number {
 	if (bits > 0) {
 		return num << bits;
 	} else if (bits < 0) {
@@ -57,7 +57,7 @@ function shift(num, bits) {
 }
 
 // A nice function
-function validate(str) {
+function validate(str: string) {
 	return regex.test(str);
 }
 
