@@ -1,4 +1,4 @@
-import settings from "./settings.js";
+import settings from "./settings.ts";
 import socket from "./socket.js";
 import map from "./map.js";
 
