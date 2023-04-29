@@ -66,7 +66,7 @@ function getPlayer(id: string): Player {
 	if (player) {
 		return player;
 	} else {
-		throw "Could not find player: " + id;
+		throw new ReferenceError("Could not find player: " + id);
 	}
 }
 

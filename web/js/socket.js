@@ -22,7 +22,7 @@ function sockMessage(event) {
 	let str = data.toString();
 	let obj = JSON.parse(str);
 
-	listeners.run(obj.type, obj.value, () => {
+	listeners.run(obj.type, obj.payload, () => {
 		console.warn("No listener found for message type: " + obj.type);
 	});
 }

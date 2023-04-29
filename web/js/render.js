@@ -1,6 +1,7 @@
 import settings from "./settings.js";
 import structures from "./structures.js";
 import camera from "./camera.js";
+import map from "../../common/map.ts";
 
 let rensets = settings.rendering;
 
@@ -33,21 +34,21 @@ function renderBackground(state) {
 
 	// Fill in the map background color
 	let mapTopLeft = structures.point(0, 0);
-	let mapBottomRight = structures.point(state.map.width, state.map.height);
+	let mapBottomRight = structures.point(map.width, map.height);
 	let mapRect = structures.rect(mapTopLeft, mapBottomRight);
 	camera.fillRect(mapRect, rensets.grid.background);
 
 	// Draw the vertical grid
-	for (let x = 0; x <= state.map.width; x += rensets.grid.spacing) {
+	for (let x = 0; x <= map.width; x += rensets.grid.spacing) {
 		let start = structures.point(x, 0);
-		let finish = structures.point(x, state.map.height);
+		let finish = structures.point(x, map.height);
 		camera.line(start, finish, rensets.grid.color, rensets.grid.width);
 	}
 
 	// Draw the horizontal grid
-	for (let y = 0; y <= state.map.height; y += rensets.grid.spacing) {
+	for (let y = 0; y <= map.height; y += rensets.grid.spacing) {
 		let start = structures.point(0, y);
-		let finish = structures.point(state.map.width, y);
+		let finish = structures.point(map.width, y);
 		camera.line(start, finish, rensets.grid.color, rensets.grid.width);
 	}
 }
@@ -70,13 +71,13 @@ function renderPlayers(state) {
 
 function renderMap(state) {
 	// Draw death rects
-	for (let deathRect of state.map.deathRects) {
+	for (let deathRect of map.deathRects) {
 		camera.fillRect(deathRect, rensets.death.color);
 	}
 
 	// Draw map boundaries
 	let mapTopLeft = structures.point(0, 0);
-	let mapBottomRight = structures.point(state.map.width, state.map.height);
+	let mapBottomRight = structures.point(map.width, map.height);
 	let mapRect = structures.rect(mapTopLeft, mapBottomRight);
 	camera.outlineRect(mapRect, rensets.mapBorder.color, rensets.mapBorder.width);
 }

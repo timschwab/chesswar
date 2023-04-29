@@ -1,5 +1,5 @@
-import game from "./game.js";
-import socket from "./socket.js";
+import game from "./game.ts";
+import socket from "./socket.ts";
 
 const port = 18357;
 

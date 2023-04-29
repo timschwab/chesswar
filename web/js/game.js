@@ -4,8 +4,7 @@ import render from "./render.js";
 
 function init() {
 	socket.listen("player-init", handlePlayerInit);
-	socket.listen("map", handleMap);
-	socket.listen("players", handlePlayers);
+	socket.listen("state", handlePlayers);
 
 	gameLoop();
 }
@@ -14,12 +13,13 @@ function handlePlayerInit(value) {
 	state.data.self = value.id;
 }
 
-function handleMap(value) {
-	state.data.map = value;
-}
-
 function handlePlayers(value) {
-	state.data.players = value;
+	let indexed = value.reduce((acc, cur) => {
+		acc[cur.player] = cur;
+		return acc;
+	}, {});
+
+	state.data.players = indexed;
 }
 
 function gameLoop() {
@@ -32,10 +32,6 @@ function gameLoop() {
 
 function stateReady() {
 	if (!state.data.self) {
-		return false;
-	}
-
-	if (!state.data.map) {
 		return false;
 	}
 

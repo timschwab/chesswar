@@ -12,5 +12,5 @@ export type KeysMessagePayload = {
 }
 type KeysMessage = AbstractMessage<ClientMessageTypes.KEYS, KeysMessagePayload>;
 
-type ClientMessage = KeysMessage;
+export type ClientMessage = KeysMessage;
 export type ClientMessageWithId = ClientMessage & { id: string }

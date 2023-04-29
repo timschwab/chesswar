@@ -1,6 +1,6 @@
 import slim from "../common/slim-id.ts";
 import hooks from "../common/hooks.ts";
-import { ClientMessageWithId } from "../common/messages/types-client.ts";
+import { ClientMessage, ClientMessageWithId } from "../common/messages/types-client.ts";
 import { ServerMessage } from "../common/messages/types-server.ts";
 
 const connections = new Map<string, WebSocket>();
@@ -26,9 +26,10 @@ function newConnection(sock: WebSocket) {
 		console.log(str);
 		console.log();
 
-		const payload = JSON.parse(str) as ClientMessageWithId;
+		const message = JSON.parse(str) as ClientMessage;
+		const messageWithId = {...message, id};
 
-		messageHook.run(payload);
+		messageHook.run(messageWithId);
 	};
 
 	sock.onerror = function(error) {

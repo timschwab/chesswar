@@ -44,7 +44,7 @@ function handleKey(event, pressed) {
 function updateServer() {
 	socket.send({
 		type: "keys",
-		value: keys
+		payload: keys
 	});
 }
 
