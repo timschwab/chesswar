@@ -1,33 +1,15 @@
-type HookFunc<T> = (val: T) => void;
-interface HookGroup {
-	register: (name: string, func: HookFunc<unknown>) => void,
-	run: (name: string, val: unknown, otherwise: () => void) => void
-}
+function createHook<T>() {
+	type HookFunc = (value: T) => void;
 
-function createGroup(): HookGroup {
-	const hooks = new Map<string, HookFunc<unknown>[]>();
+	const hooks = new Array<HookFunc>();
 
-	function register(name: string, func: HookFunc<unknown>): void {
-		let funcArray = hooks.get(name);
-		if (funcArray == null) {
-			funcArray = [];
-			hooks.set(name, funcArray);
-		}
+	const register = function(callback: HookFunc): void {
+		hooks.push(callback);
+	};
 
-		funcArray.push(func);
-	}
-
-	function run(name: string, val: unknown, otherwise: () => void) {
-		const hookList = hooks.get(name);
-		if (hookList != null) {
-			for (const hook of hookList) {
-				hook(val);
-			}
-		} else if (otherwise) {
-			// If nothing has been registered to this hook
-			otherwise();
-		} else {
-			// Do nothing
+	const run = function(value: T) {
+		for (const hook of hooks) {
+			hook(value);
 		}
 	}
 
@@ -38,5 +20,5 @@ function createGroup(): HookGroup {
 }
 
 export default {
-	createGroup
+	create: createHook
 };
