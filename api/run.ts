@@ -15,7 +15,7 @@ const handler = (req: Request): Response => {
 	}
 
 	if (req.headers.get("upgrade") != "websocket") {
-		return new Response("This server only accepts websocket connections.", { status: 400 });
+		return new Response("Gimme a websocket bruv", { status: 400 });
 	}
 
 	const { socket: sock, response } = Deno.upgradeWebSocket(req);
