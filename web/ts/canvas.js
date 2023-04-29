@@ -1,4 +1,4 @@
-import dom from "./dom.js";
+import dom from "./dom.ts";
 let canvas = dom.canvas;
 let context = canvas.getContext("2d");
 

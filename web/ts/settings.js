@@ -1,4 +1,4 @@
-import colors from "./colors.js";
+import colors from "./colors.ts";
 import environment from "./environment.ts";
 
 // Global settings

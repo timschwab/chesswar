@@ -1,7 +1,7 @@
 // Get all the important dom elements
-let ids = ["canvas"];
+const ids = ["canvas"];
 
-let elements = Object.fromEntries(
+const elements = Object.fromEntries(
 	ids.map((id) => [id, document.getElementById(id)])
 );
 

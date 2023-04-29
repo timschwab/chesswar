@@ -1,4 +1,4 @@
-let colors = {
+const colors = {
 	red: {
 		standard: "#A00000"
 	},
