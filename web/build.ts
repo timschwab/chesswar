@@ -1,7 +1,7 @@
 import { esbuild } from '../deps.ts'
 
 const options = {
-	entryPoints: ['web/js/app.ts'],
+	entryPoints: ['web/ts/app.ts'],
 	outdir: 'web/bundle',
 	target: 'esnext',
 	bundle: true,
