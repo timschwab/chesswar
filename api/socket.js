@@ -14,9 +14,7 @@ async function newConnection(sock) {
 
 		connections[id] = sock;
 
-		console.log("here1");
 		events.run("add", id);
-		console.log("here2");
 	}
 
 	sock.onmessage = function(event) {
@@ -65,7 +63,6 @@ function listenMessage(type, callback) {
 }
 
 function send(id, type, value) {
-	console.log(id, type, value);
 	let str = JSON.stringify({
 		type,
 		value

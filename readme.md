@@ -2,7 +2,7 @@
 
 ## Prereqs
 
-Deno: https://deno.com/manual@v1.32.5/getting_started/installation
+Deno: https://deno.com/manual/getting_started/installation
 
 ## Install
 
