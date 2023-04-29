@@ -1,5 +1,5 @@
 import colors from "./colors.js";
-import environment from "./environment.js";
+import environment from "./environment.ts";
 
 // Global settings
 let rendering = {

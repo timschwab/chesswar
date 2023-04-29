@@ -5,4 +5,4 @@ const env = {
 	"chesswar.io": "remote"
 }[hostname];
 
-module.exports = env;
+export default env;

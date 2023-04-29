@@ -3,9 +3,9 @@ import screen from "./screen.js";
 import inputs from "./inputs.js";
 import game from "./game.js";
 
-init();
+main();
 
-function init() {
+function main() {
 	socket.init();
 	screen.init();
 	inputs.init();
