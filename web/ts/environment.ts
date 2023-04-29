@@ -1,8 +1,8 @@
 const hostname = window.location.hostname;
 
-const env = {
-	localhost: "local",
-	"chesswar.io": "remote"
-}[hostname];
+let env = "remote";
+if (hostname == "localhost") {
+	env = "local";
+}
 
 export default env;

@@ -2,7 +2,7 @@ import colors from "./colors.ts";
 import environment from "./environment.ts";
 
 // Global settings
-let rendering = {
+const rendering = {
 	background: colors.grey.dark,
 	grid: {
 		background: colors.grey.standard,
@@ -26,13 +26,13 @@ let rendering = {
 };
 
 // Settings determined by env
-let server = {
+const server = {
 	local: "ws://localhost:18357",
 	remote: "wss://api.chesswar.io"
 }[environment];
 
 // Construct settings export
-let settings = {
+const settings = {
 	server,
 	rendering
 };
