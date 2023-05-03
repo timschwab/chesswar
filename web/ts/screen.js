@@ -1,5 +1,5 @@
-import dom from "./dom.js";
-import state from "./state.js";
+import dom from "./dom.ts";
+import state from "./state.ts";
 
 function init() {
 	setScreen();

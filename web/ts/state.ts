@@ -1,4 +1,4 @@
-let data = {
+const data = {
 	screen: {
 		width: undefined,
 		height: undefined
@@ -7,8 +7,5 @@ let data = {
 	players: undefined,
 	map: undefined
 };
-
-// For debugging
-window.state = data;
 
 export default { data };

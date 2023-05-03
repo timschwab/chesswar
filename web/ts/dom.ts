@@ -2,7 +2,7 @@
 const ids = ["canvas"];
 
 const elements = Object.fromEntries(
-	ids.map((id) => [id, document.getElementById(id)])
+	ids.map((id) => [id, window.document.getElementById(id)])
 );
 
 export default elements;
