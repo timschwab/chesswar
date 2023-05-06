@@ -30,7 +30,7 @@ function addPlayer(id: string): void {
 		id,
 		acceleration: Vector(0, 0),
 		speed: Vector(0, 0),
-		position: map.start.copy()
+		position: Point(map.start.x, map.start.y)
 	});
 
 	socket.send(id, {
