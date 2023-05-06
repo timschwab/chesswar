@@ -31,13 +31,13 @@ function setCamera(state: SafeState, selfPlayer: ClientPlayer) {
 	const height = state.screen.height;
 	const center = selfPlayer.position;
 
-	const topLeft = new Point(center.x - width / 2, center.y - height / 2);
-	const bottomRight = new Point(
+	const topLeft = Point(center.x - width / 2, center.y - height / 2);
+	const bottomRight = Point(
 		center.x + width / 2,
 		center.y + height / 2
 	);
 
-	const cameraRect = new Rect(topLeft, bottomRight);
+	const cameraRect = Rect(topLeft, bottomRight);
 
 	camera.setCamera(cameraRect);
 }
@@ -47,29 +47,29 @@ function renderBackground() {
 	camera.fillScreen(rensets.background);
 
 	// Fill in the map background color
-	const mapTopLeft = new Point(0, 0);
-	const mapBottomRight = new Point(map.width, map.height);
-	const mapRect = new Rect(mapTopLeft, mapBottomRight);
+	const mapTopLeft = Point(0, 0);
+	const mapBottomRight = Point(map.width, map.height);
+	const mapRect = Rect(mapTopLeft, mapBottomRight);
 	camera.fillRect(mapRect, rensets.grid.background);
 
 	// Draw the vertical grid
 	for (let x = 0; x <= map.width; x += rensets.grid.spacing) {
-		const start = new Point(x, 0);
-		const finish = new Point(x, map.height);
+		const start = Point(x, 0);
+		const finish = Point(x, map.height);
 		camera.line(start, finish, rensets.grid.color, rensets.grid.width);
 	}
 
 	// Draw the horizontal grid
 	for (let y = 0; y <= map.height; y += rensets.grid.spacing) {
-		const start = new Point(0, y);
-		const finish = new Point(map.width, y);
+		const start = Point(0, y);
+		const finish = Point(map.width, y);
 		camera.line(start, finish, rensets.grid.color, rensets.grid.width);
 	}
 }
 
 function renderPlayers(state: SafeState) {
 	for (const player of state.playerMap.values()) {
-		const circle = new Circle(player.position, rensets.players.radius);
+		const circle = Circle(player.position, rensets.players.radius);
 		let color;
 
 		if (player.id == state.self) {
@@ -89,9 +89,9 @@ function renderMap() {
 	}
 
 	// Draw map boundaries
-	const mapTopLeft = new Point(0, 0);
-	const mapBottomRight = new Point(map.width, map.height);
-	const mapRect = new Rect(mapTopLeft, mapBottomRight);
+	const mapTopLeft = Point(0, 0);
+	const mapBottomRight = Point(map.width, map.height);
+	const mapRect = Rect(mapTopLeft, mapBottomRight);
 	camera.outlineRect(mapRect, rensets.mapBorder.color, rensets.mapBorder.width);
 }
 
