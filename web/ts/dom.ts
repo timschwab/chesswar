@@ -1,8 +1,9 @@
 // Get all the important dom elements
-const ids = ["canvas"];
+const canvas = window.document.getElementById("canvas");
+if (canvas == null) {
+	throw "Could not find canvas";
+}
 
-const elements = Object.fromEntries(
-	ids.map((id) => [id, window.document.getElementById(id)])
-);
-
-export default elements;
+export default {
+	canvas
+};
