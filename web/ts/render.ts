@@ -1,5 +1,5 @@
 import settings from "./settings.ts";
-import camera from "./camera.js";
+import camera from "./camera.ts";
 import map from "../../common/map.ts";
 import { SafeState } from "./state.ts";
 import { Circle, Point, Rect } from "../../common/data-types/structures.ts";

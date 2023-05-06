@@ -1,4 +1,4 @@
-import { Point } from "./data-types/structures.ts";
+import { Point, Rect } from "./data-types/structures.ts";
 
 const width = 5000;
 const height = 3000;
@@ -6,16 +6,7 @@ const height = 3000;
 const middle = new Point(width / 2, height / 2);
 
 const deathRects = [
-	{
-		topLeft: {
-			x: middle.x - 100,
-			y: 0
-		},
-		bottomRight: {
-			x: middle.x + 100,
-			y: 500
-		}
-	}
+	new Rect(new Point(middle.x - 100, 0), new Point(middle.x + 100, 500))
 ];
 
 const map = {
