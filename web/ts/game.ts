@@ -1,6 +1,6 @@
 import socket from "./socket.ts";
-import state, { PlayerMap } from "./state.ts";
-import render from "./render.js";
+import state, { PlayerMap, isSafeState } from "./state.ts";
+import render from "./render.ts";
 import { PlayerInitMessagePayload, ServerMessage, ServerMessageTypes, StateMessagePayload } from "../../common/message-types/types-server.ts";
 import { ChesswarId } from "../../common/data-types/types-base.ts";
 import { ClientPlayer } from "../../common/data-types/types-client.ts";
@@ -19,7 +19,7 @@ function receiveMessage(message: ServerMessage): void {
 }
 
 function handlePlayerInit(payload: PlayerInitMessagePayload) {
-	state.data.self = payload.id;
+	state.self = payload.id;
 }
 
 function handleState(payload: StateMessagePayload) {
@@ -28,31 +28,15 @@ function handleState(payload: StateMessagePayload) {
 		playerMap.set(player.id, player);
 	}
 
-	state.data.playerMap = playerMap;
+	state.playerMap = playerMap;
 }
 
 function gameLoop() {
-	if (stateReady()) {
-		render(state.data);
+	if (isSafeState(state)) {
+		render(state);
 	}
 
 	requestAnimationFrame(gameLoop);
-}
-
-function stateReady(): boolean {
-	if (!state.data.screen) {
-		return false;
-	}
-
-	if (!state.data.self) {
-		return false;
-	}
-
-	if (!state.data.playerMap) {
-		return false;
-	}
-
-	return true;
 }
 
 export default { init };
