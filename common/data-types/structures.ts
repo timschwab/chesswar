@@ -1,3 +1,14 @@
+// Basically same structure of Point but very different semantic meaning
+export class Vector {
+	readonly x: number;
+	readonly y: number;
+
+	constructor(x: number, y: number) {
+		this.x = x;
+		this.y = y;
+	}
+}
+
 export class Point {
 	readonly x: number;
 	readonly y: number;
@@ -7,8 +18,12 @@ export class Point {
 		this.y = y;
 	}
 
-	transpose(coords: Point) {
-		return new Point(this.x - coords.x, this.y - coords.y);
+	copy(): Point {
+		return new Point(this.x, this.y);
+	}
+
+	transpose(dir: Vector): Point {
+		return new Point(this.x - dir.x, this.y - dir.y);
 	}
 }
 
@@ -26,8 +41,8 @@ export class Rect {
 		this.height = bottomRight.y - topLeft.y;
 	}
 
-	transpose(coords: Point) {
-		return new Rect(this.topLeft.transpose(coords), this.bottomRight.transpose(coords));
+	transpose(dir: Vector) {
+		return new Rect(this.topLeft.transpose(dir), this.bottomRight.transpose(dir));
 	}
 }
 
@@ -40,7 +55,7 @@ export class Circle {
 		this.radius = radius;
 	}
 
-	transpose(coords: Point) {
-		return new Circle(this.center.transpose(coords), this.radius);
+	transpose(dir: Vector) {
+		return new Circle(this.center.transpose(dir), this.radius);
 	}
 }

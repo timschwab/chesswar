@@ -3,25 +3,18 @@ import socket from "./socket.ts";
 import map from "../common/map.ts";
 import { ClientMessageTypes, ClientMessageWithId, KeysMessagePayload } from "../common/message-types/types-client.ts";
 import { ServerMessageTypes } from "../common/message-types/types-server.ts";
+import { ClientPlayer } from "../common/data-types/types-client.ts";
+import { Point, Vector } from "../common/data-types/structures.ts";
 
-interface Player {
+interface ServerPlayer {
 	id: string,
-	acceleration: {
-		x: number,
-		y: number
-	},
-	speed: {
-		x: number,
-		y: number
-	},
-	position: {
-		x: number,
-		y: number
-	}
+	acceleration: Vector,
+	speed: Vector,
+	position: Point
 }
 
 const state = {
-	players: new Map<string, Player>()
+	players: new Map<string, ServerPlayer>()
 };
 
 function init() {
@@ -35,18 +28,9 @@ function init() {
 function addPlayer(id: string): void {
 	state.players.set(id, {
 		id,
-		acceleration: {
-			x: 0,
-			y: 0
-		},
-		speed: {
-			x: 0,
-			y: 0
-		},
-		position: {
-			x: map.start.x,
-			y: map.start.y
-		}
+		acceleration: new Vector(0, 0),
+		speed: new Vector(0, 0),
+		position: map.start.copy()
 	});
 
 	socket.send(id, {
@@ -61,7 +45,7 @@ function removePlayer(id: string): void {
 	state.players.delete(id);
 }
 
-function getPlayer(id: string): Player {
+function getPlayer(id: string): ServerPlayer {
 	const player = state.players.get(id);
 	if (player) {
 		return player;
@@ -95,43 +79,53 @@ function keysUpdate(id: string, keys: KeysMessagePayload): void {
 }
 
 function tick(): void {
+	// Tick everything
+	tickPlayers();
+	// Other stuff eventually
+
+	// Broadcast to everyone
+	const playerList = Array.from(state.players.values());
+	const payload = playerList.map(serverPlayerToClientPlayer);
+
+	socket.broadcast({
+		type: ServerMessageTypes.STATE,
+		payload: payload
+	});
+}
+
+function tickPlayers() {
 	const posSpeed = settings.maxSpeed;
 	const negSpeed = -1 * posSpeed;
 
 	for (const player of state.players.values()) {
 		// Update player positions
 
-		// Change speed based on acceleration
-		player.speed.x += player.acceleration.x;
-		player.speed.x = between(player.speed.x, negSpeed, posSpeed);
+		// Compute speed based on acceleration
+		let speedX = player.speed.x
+		speedX += player.acceleration.x;
+		speedX = between(player.speed.x, negSpeed, posSpeed);
 
-		player.speed.y += player.acceleration.y;
-		player.speed.y = between(player.speed.y, negSpeed, posSpeed);
+		let speedY = player.speed.y
+		speedY += player.acceleration.y;
+		speedY = between(player.speed.y, negSpeed, posSpeed);
 
-		// Change position based on speed, and bounce off the sides
-		player.position.x += player.speed.x;
-		player.position.x = between(player.position.x, 0, map.width, function () {
-			player.speed.x *= -1;
+		// Compute position based on speed, and bounce off the sides
+		let positionX = player.position.x;
+		positionX += player.speed.x;
+		positionX = between(player.position.x, 0, map.width, function () {
+			speedX *= -1;
 		});
 
-		player.position.y += player.speed.y;
-		player.position.y = between(player.position.y, 0, map.height, function () {
-			player.speed.y *= -1;
+		let positionY = player.position.y;
+		positionY += player.speed.y;
+		positionY = between(player.position.y, 0, map.height, function () {
+			speedY *= -1;
 		});
+
+		// Set new values
+		player.speed = new Vector(speedX, speedY);
+		player.position = new Point(positionX, positionY);
 	}
-
-	// Broadcast to everyone
-	const payload = Array.from(state.players.values()).map(player => {
-		return {
-			player: player.id,
-			position: player.position
-		};
-	});
-
-	socket.broadcast({
-		type: ServerMessageTypes.STATE,
-		payload: payload
-	});
 }
 
 // Lil helper function
@@ -149,6 +143,13 @@ function between(val: number, min: number, max: number, effect?: () => void) {
 	} else {
 		return val;
 	}
+}
+
+function serverPlayerToClientPlayer(player: ServerPlayer): ClientPlayer {
+	return {
+		id: player.id,
+		position: player.position
+	};
 }
 
 export default {
