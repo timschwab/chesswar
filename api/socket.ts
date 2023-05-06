@@ -1,12 +1,12 @@
 import slim from "../common/slim-id.ts";
-import hooks from "../common/hooks.ts";
+import { createHook } from "../common/hooks.ts";
 import { ClientMessage, ClientMessageWithId } from "../common/message-types/types-client.ts";
 import { ServerMessage } from "../common/message-types/types-server.ts";
 
 const connections = new Map<string, WebSocket>();
-const addHook = hooks.create<string>();
-const removeHook = hooks.create<string>();
-const messageHook = hooks.create<ClientMessageWithId>();
+const addHook = createHook<string>();
+const removeHook = createHook<string>();
+const messageHook = createHook<ClientMessageWithId>();
 
 function newConnection(sock: WebSocket) {
 	const id = slim.make();
