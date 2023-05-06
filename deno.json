@@ -2,7 +2,11 @@
 	"tasks": {
 		"api": "deno run --unstable --allow-net api/run.ts",
 		"web": "deno run --unstable --allow-net --allow-read web/serve.ts",
-		"build": "deno run --allow-all web/build.ts"
+		"build": "deno run --allow-all web/build.ts",
+
+		"check": "deno task check-api && deno task check-web",
+		"check-api": "deno check api/run.ts",
+		"check-web": "deno check web/ts/app.ts"
 	},
 	"compilerOptions": {
 		"lib": ["dom", "deno.ns", "deno.unstable"]
