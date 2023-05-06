@@ -19,6 +19,7 @@ function getSelf(state: SafeState): ClientPlayer {
 	const maybeSelf = state.playerMap.get(state.self);
 
 	if (!maybeSelf) {
+		console.error(state.playerMap, state.self);
 		throw "Could not find self";
 	}
 

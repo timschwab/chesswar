@@ -1,61 +1,41 @@
-// Basically same structure of Point but very different semantic meaning
-export class Vector {
+// Same structure of Point but very different semantic meaning
+export interface Vector {
 	readonly x: number;
 	readonly y: number;
-
-	constructor(x: number, y: number) {
-		this.x = x;
-		this.y = y;
-	}
+}
+export function Vector(x: number, y: number): Vector {
+	return {x, y};
 }
 
-export class Point {
+export interface Point {
 	readonly x: number;
 	readonly y: number;
-
-	constructor(x: number, y: number) {
-		this.x = x;
-		this.y = y;
-	}
-
-	copy(): Point {
-		return new Point(this.x, this.y);
-	}
-
-	transpose(dir: Vector): Point {
-		return new Point(this.x - dir.x, this.y - dir.y);
-	}
+}
+export function Point(x: number, y: number) {
+	return {x, y};
 }
 
-export class Rect {
+export interface Rect {
 	readonly topLeft: Point;
 	readonly bottomRight: Point;
 	readonly width: number;
 	readonly height: number;
-
-	constructor(topLeft: Point, bottomRight: Point) {
-		this.topLeft = topLeft;
-		this.bottomRight = bottomRight;
-
-		this.width = bottomRight.x - topLeft.x;
-		this.height = bottomRight.y - topLeft.y;
-	}
-
-	transpose(dir: Vector) {
-		return new Rect(this.topLeft.transpose(dir), this.bottomRight.transpose(dir));
-	}
+}
+export function Rect(topLeft: Point, bottomRight: Point) {
+	return {
+		topLeft,
+		bottomRight,
+		width: bottomRight.x - topLeft.x,
+		height: bottomRight.y - topLeft.y
+	};
 }
 
-export class Circle {
+export interface Circle {
 	readonly center: Point;
 	readonly radius: number;
-
-	constructor(center: Point, radius: number) {
-		this.center = center;
-		this.radius = radius;
-	}
-
-	transpose(dir: Vector) {
-		return new Circle(this.center.transpose(dir), this.radius);
-	}
 }
+export function Circle(center: Point, radius: number) {
+	return {center, radius};
+}
+
+export type Shape = Vector | Point | Rect | Circle;
