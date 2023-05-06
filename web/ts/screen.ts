@@ -10,7 +10,7 @@ function setScreen() {
 	const width = window.innerWidth;
 	const height = window.innerHeight;
 
-	state.data.screen = {
+	state.screen = {
 		width,
 		height
 	};
