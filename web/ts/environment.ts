@@ -1,8 +1,9 @@
-const hostname = window.location.hostname;
-
-let env = "remote";
-if (hostname == "localhost") {
-	env = "local";
+export enum Environment {
+	REMOTE,
+	LOCAL
 }
+
+const hostname = window.location.hostname;
+const env: Environment = hostname == "localhost" ? Environment.LOCAL : Environment.REMOTE;
 
 export default env;

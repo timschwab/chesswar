@@ -1,4 +1,4 @@
-function createHook<T>() {
+export function createHook<T>() {
 	type HookFunc = (value: T) => void;
 
 	const hooks = new Array<HookFunc>();
@@ -18,7 +18,3 @@ function createHook<T>() {
 		run
 	};
 }
-
-export default {
-	create: createHook
-};

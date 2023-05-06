@@ -1,5 +1,5 @@
 import {Color} from "./colors.ts";
-import environment from "./environment.ts";
+import environment, { Environment } from "./environment.ts";
 
 // Global settings
 const rendering = {
@@ -26,10 +26,9 @@ const rendering = {
 };
 
 // Settings determined by env
-const server = {
-	local: "ws://localhost:18357",
-	remote: "wss://api.chesswar.io"
-}[environment];
+const localServer = "ws://localhost:18357";
+const remoteServer = "wss://api.chesswar.io";
+const server = environment == Environment.LOCAL ? localServer : remoteServer;
 
 // Construct settings export
 const settings = {
