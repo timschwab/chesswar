@@ -28,8 +28,8 @@ function init() {
 function addPlayer(id: string): void {
 	state.players.set(id, {
 		id,
-		acceleration: new Vector(0, 0),
-		speed: new Vector(0, 0),
+		acceleration: Vector(0, 0),
+		speed: Vector(0, 0),
 		position: map.start.copy()
 	});
 
@@ -123,8 +123,8 @@ function tickPlayers() {
 		});
 
 		// Set new values
-		player.speed = new Vector(speedX, speedY);
-		player.position = new Point(positionX, positionY);
+		player.speed = Vector(speedX, speedY);
+		player.position = Point(positionX, positionY);
 	}
 }
 
