@@ -1,14 +1,14 @@
 import { createHook } from "../../common/hooks.ts";
 import { ClientMessage } from "../../common/message-types/types-client.ts";
 import { ServerMessage } from "../../common/message-types/types-server.ts";
-import { localServerOrigin, remoteServerOrigin } from "../../common/settings.ts";
+import { localApiServerOrigin, remoteApiServerOrigin } from "../../common/settings.ts";
 import env, { Environment } from "./environment.ts";
 
 let sock: WebSocket;
 const messageHook = createHook<ServerMessage>();
 
 function init() {
-	const origin = env == Environment.REMOTE ? remoteServerOrigin : localServerOrigin;
+	const origin = env == Environment.REMOTE ? remoteApiServerOrigin : localApiServerOrigin;
 	sock = new WebSocket(origin);
 
 	sock.onopen = sockOpen;

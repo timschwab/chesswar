@@ -1,21 +1,38 @@
 import { Color } from "./colors.ts";
 
-/* ----- start serverOrigin ----- */
-export const remoteServer = {
+/* ----- start server origins ----- */
+export const remoteApiServer = {
 	scheme: "wss://",
 	hostname: "api.chesswar.io",
-	port: ""
+	port: 443
 }
-export const remoteServerOrigin = remoteServer.scheme + remoteServer.hostname + remoteServer.port;
-
-export const localServer = {
+export const localApiServer = {
 	scheme: "ws://",
 	hostname: "localhost",
 	port: 18357
 }
-export const localServerOrigin = localServer.scheme + localServer.hostname + localServer.port;
+export const remoteWebServer = {
+	scheme: "https://",
+	hostname: "chesswar.io",
+	port: 443
+}
+export const localWebServer = {
+	scheme: "http://",
+	hostname: "localhost",
+	port: 8357
+}
 
-/* ----- start gameEngine ----- */
+export const remoteApiServerOrigin = remoteApiServer.scheme + remoteApiServer.hostname + ":" + remoteApiServer.port;
+export const localApiServerOrigin = localApiServer.scheme + localApiServer.hostname + ":" + localApiServer.port;
+export const remoteWebServerOrigin = remoteWebServer.scheme + remoteWebServer.hostname + ":" + remoteWebServer.port;
+export const localWebServerOrigin = localWebServer.scheme + localWebServer.hostname + ":" + localWebServer.port;
+
+/* ----- start build settings ----- */
+export const buildSettings = {
+	bundleDir: "web/bundle"
+}
+
+/* ----- start game engine ----- */
 export const gameEngine = {
 	acceleration: 0.5,
 	maxSpeed: 40

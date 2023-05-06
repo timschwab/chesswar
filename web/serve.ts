@@ -1,4 +1,4 @@
-const port = 8357;
+import { buildSettings, localWebServer } from "../common/settings.ts";
 
 const handler = async (req: Request): Promise<Response> => {
 	const {pathname} = new URL(req.url);
@@ -6,13 +6,13 @@ const handler = async (req: Request): Promise<Response> => {
 
 	let file;
 	if (req.method == "GET" && pathname == "/") {
-		file = await Deno.open("./web/static/index.html");
-	} else if (req.method == "GET" && pathname == "/app.js") {
-		file = await Deno.open("./web/bundle/app.js");
-	} else if (req.method == "GET" && pathname == "/app.js.map") {
-		file = await Deno.open("./web/bundle/app.js.map");
+		file = await Deno.open("web/static/index.html");
 	} else if (req.method == "GET" && pathname == "/main.css") {
-		file = await Deno.open("./web/static/main.css");
+		file = await Deno.open("web/static/main.css");
+	}else if (req.method == "GET" && pathname == "/app.js") {
+		file = await Deno.open(buildSettings.bundleDir + "/app.js");
+	} else if (req.method == "GET" && pathname == "/app.js.map") {
+		file = await Deno.open(buildSettings.bundleDir + "/app.js.map");
 	}
 
 	if (file) {
@@ -25,6 +25,6 @@ const handler = async (req: Request): Promise<Response> => {
 };
 
 Deno.serve({
-	port,
+	port: localWebServer.port,
 	hostname: "0.0.0.0"
 }, handler);

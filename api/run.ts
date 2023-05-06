@@ -1,10 +1,10 @@
-import { localServer } from "../common/settings.ts";
+import { localApiServer } from "../common/settings.ts";
 import game from "./game.ts";
 import socket from "./socket.ts";
 
 game.init();
 
-const handler = (req: Request): Response => {
+const handler = function(req: Request): Response {
 	const {pathname} = new URL(req.url);
 
 	if (pathname != "/") {
@@ -23,6 +23,6 @@ const handler = (req: Request): Response => {
 };
 
 Deno.serve({
-	port: localServer.port,
+	port: localApiServer.port,
 	hostname: "0.0.0.0"
 }, handler);

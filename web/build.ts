@@ -1,8 +1,9 @@
+import { buildSettings } from "../common/settings.ts";
 import { esbuild } from '../deps.ts'
 
 const options = {
 	entryPoints: ['web/ts/app.ts'],
-	outdir: 'web/bundle',
+	outdir: buildSettings.bundleDir,
 	target: 'esnext',
 	bundle: true,
 	minify: true,
