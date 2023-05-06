@@ -1,21 +1,12 @@
-const colors = {
-	red: {
-		standard: "#A00000"
-	},
-	green: {
-		bright: "#00C000",
-		standard: "#00A000",
-		dark: "#008000"
-	},
-	blue: {
-		standard: "#0000A0"
-	},
-	grey: {
-		standard: "#808080",
-		dark: "#404040",
-		extraDark: "#202020",
-		black: "#000000"
-	}
-};
+export enum Color {
+	RED_STANDARD = "#A00000",
+	GREEN_BRIGHT = "#00C000",
+	GREEN_STANDARD = "#00A000",
+	GREEN_DARK = "#008000",
+	BLUE_STANDARD = "#0000A0",
+	GREY_STANDARD = "#808080",
+	GREY_DARK = "#404040",
+	GREY_EXTRA_DARK = "#202020",
+	GREY_BLACK = "#000000"
+}
 
-export default colors;

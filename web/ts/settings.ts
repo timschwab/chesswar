@@ -1,27 +1,27 @@
-import colors from "./colors.ts";
+import {Color} from "./colors.ts";
 import environment from "./environment.ts";
 
 // Global settings
 const rendering = {
-	background: colors.grey.dark,
+	background: Color.GREY_DARK,
 	grid: {
-		background: colors.grey.standard,
-		color: colors.grey.extraDark,
+		background: Color.GREY_STANDARD,
+		color: Color.GREY_EXTRA_DARK,
 		width: 1,
 		spacing: 100
 	},
 	mapBorder: {
-		color: colors.green.bright,
+		color: Color.GREEN_BRIGHT,
 		width: 5
 	},
 	players: {
 		radius: 5,
-		self: colors.blue.standard,
-		allies: colors.green.standard,
-		enemies: colors.red.standard
+		self: Color.BLUE_STANDARD,
+		allies: Color.GREEN_STANDARD,
+		enemies: Color.RED_STANDARD
 	},
 	death: {
-		color: colors.grey.black
+		color: Color.GREY_BLACK
 	}
 };
 

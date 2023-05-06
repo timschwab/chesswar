@@ -19,7 +19,7 @@ function init() {
 	document.addEventListener("keyup", handleKeyup);
 }
 
-function handleKeydown(event) {
+function handleKeydown(event: KeyboardEvent) {
 	if (event.repeat) {
 		// Do nothing
 		return;
@@ -28,11 +28,11 @@ function handleKeydown(event) {
 	handleKey(event, true);
 }
 
-function handleKeyup(event) {
+function handleKeyup(event: KeyboardEvent) {
 	handleKey(event, false);
 }
 
-function handleKey(event, pressed: boolean) {
+function handleKey(event: KeyboardEvent, pressed: boolean) {
 	const mapped = mapping[event.code];
 	if (mapped) {
 		keys[mapped] = pressed;
