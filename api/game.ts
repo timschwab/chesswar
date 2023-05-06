@@ -1,4 +1,4 @@
-import settings from "./settings.ts";
+import settings from "../common/settings.ts";
 import socket from "./socket.ts";
 import map from "../common/map.ts";
 import { ClientMessageTypes, ClientMessageWithId, KeysMessagePayload } from "../common/message-types/types-client.ts";
