@@ -6,6 +6,10 @@ export class Point {
 		this.x = x;
 		this.y = y;
 	}
+
+	transpose(coords: Point) {
+		return new Point(this.x - coords.x, this.y - coords.y);
+	}
 }
 
 export class Rect {
@@ -21,6 +25,10 @@ export class Rect {
 		this.width = bottomRight.x - topLeft.x;
 		this.height = bottomRight.y - topLeft.y;
 	}
+
+	transpose(coords: Point) {
+		return new Rect(this.topLeft.transpose(coords), this.bottomRight.transpose(coords));
+	}
 }
 
 export class Circle {
@@ -30,5 +38,9 @@ export class Circle {
 	constructor(center: Point, radius: number) {
 		this.center = center;
 		this.radius = radius;
+	}
+
+	transpose(coords: Point) {
+		return new Circle(this.center.transpose(coords), this.radius);
 	}
 }
