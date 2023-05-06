@@ -3,12 +3,12 @@ import state from "./state.ts";
 
 function init() {
 	setScreen();
-	window.addEventListener("resize", setScreen);
+	globalThis.addEventListener("resize", setScreen);
 }
 
 function setScreen() {
-	let width = window.innerWidth;
-	let height = window.innerHeight;
+	const width = window.innerWidth;
+	const height = window.innerHeight;
 
 	state.data.screen = {
 		width,
