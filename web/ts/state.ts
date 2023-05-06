@@ -1,28 +1,23 @@
-import { Point } from "../../common/data-types/structures.ts";
 import { ChesswarId } from "../../common/data-types/types-base.ts";
+import { ClientPlayer } from "../../common/data-types/types-client.ts";
 
 interface Screen {
 	width: number,
 	height: number
 }
 
-interface Player {
-	id: ChesswarId,
-	position: Point
-}
+export type PlayerMap = Map<ChesswarId, ClientPlayer>;
 
-type PlayerMap = Map<ChesswarId, Player>;
-
-interface State {
+interface UnsafeState {
 	screen: Screen | undefined,
 	self: ChesswarId | undefined,
-	players: PlayerMap | undefined
+	playerMap: PlayerMap | undefined
 }
 
-const data: State = {
+const data: UnsafeState = {
 	screen: undefined,
 	self: undefined,
-	players: undefined
+	playerMap: undefined
 };
 
 export default { data };

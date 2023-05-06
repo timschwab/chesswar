@@ -1,3 +1,5 @@
+import { ChesswarId } from "../data-types/types-base.ts";
+import { ClientPlayer } from "../data-types/types-client.ts";
 import { AbstractMessage } from "./types-base.ts";
 
 export enum ServerMessageTypes {
@@ -6,18 +8,12 @@ export enum ServerMessageTypes {
 }
 
 export type PlayerInitMessagePayload = {
-	id: string
+	id: ChesswarId
 }
 type PlayerInitMessage = AbstractMessage<ServerMessageTypes.PLAYER_INIT, PlayerInitMessagePayload>;
 
 
-export type StateMessagePayload = {
-	player: string,
-	position: {
-		x: number,
-		y: number
-	}
-}[];
+export type StateMessagePayload = ClientPlayer[];
 type StateMessage = AbstractMessage<ServerMessageTypes.STATE, StateMessagePayload>;
 
 export type ServerMessage = PlayerInitMessage | StateMessage;
