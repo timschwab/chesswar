@@ -70,10 +70,7 @@ function keysUpdate(id: string, keys: KeysMessagePayload): void {
 	const up = keys.up ? neg : 0;
 	const down = keys.down ? pos : 0;
 
-	const acceleration = {
-		x: left + right,
-		y: up + down
-	};
+	const acceleration = Vector(left + right, up + down);
 
 	getPlayer(id).acceleration = acceleration;
 }
@@ -98,27 +95,25 @@ function tickPlayers() {
 	const negSpeed = -1 * posSpeed;
 
 	for (const player of state.players.values()) {
-		// Update player positions
-
 		// Compute speed based on acceleration
 		let speedX = player.speed.x
 		speedX += player.acceleration.x;
-		speedX = between(player.speed.x, negSpeed, posSpeed);
+		speedX = between(speedX, negSpeed, posSpeed);
 
 		let speedY = player.speed.y
 		speedY += player.acceleration.y;
-		speedY = between(player.speed.y, negSpeed, posSpeed);
+		speedY = between(speedY, negSpeed, posSpeed);
 
 		// Compute position based on speed, and bounce off the sides
 		let positionX = player.position.x;
 		positionX += player.speed.x;
-		positionX = between(player.position.x, 0, map.width, function () {
+		positionX = between(positionX, 0, map.width, function () {
 			speedX *= -1;
 		});
 
 		let positionY = player.position.y;
 		positionY += player.speed.y;
-		positionY = between(player.position.y, 0, map.height, function () {
+		positionY = between(positionY, 0, map.height, function () {
 			speedY *= -1;
 		});
 
