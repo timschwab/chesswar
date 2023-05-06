@@ -1,7 +1,7 @@
-import socket from "./socket.js";
-import screen from "./screen.js";
+import socket from "./socket.ts";
+import screen from "./screen.ts";
 import inputs from "./inputs.ts";
-import game from "./game.js";
+import game from "./game.ts";
 
 main();
 
