@@ -1,7 +1,7 @@
 import slim from "../common/slim-id.ts";
 import hooks from "../common/hooks.ts";
-import { ClientMessage, ClientMessageWithId } from "../common/messages/types-client.ts";
-import { ServerMessage } from "../common/messages/types-server.ts";
+import { ClientMessage, ClientMessageWithId } from "../common/message-types/types-client.ts";
+import { ServerMessage } from "../common/message-types/types-server.ts";
 
 const connections = new Map<string, WebSocket>();
 const addHook = hooks.create<string>();

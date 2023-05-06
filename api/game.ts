@@ -1,8 +1,8 @@
 import settings from "./settings.ts";
 import socket from "./socket.ts";
 import map from "../common/map.ts";
-import { ClientMessageTypes, ClientMessageWithId, KeysMessagePayload } from "../common/messages/types-client.ts";
-import { ServerMessageTypes } from "../common/messages/types-server.ts";
+import { ClientMessageTypes, ClientMessageWithId, KeysMessagePayload } from "../common/message-types/types-client.ts";
+import { ServerMessageTypes } from "../common/message-types/types-server.ts";
 
 interface Player {
 	id: string,

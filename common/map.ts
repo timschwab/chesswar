@@ -26,4 +26,6 @@ const map = {
 	deathRects
 };
 
+export type ChesswarMap = typeof map;
+
 export default map;
