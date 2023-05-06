@@ -1,5 +1,5 @@
-import { KeysMessagePayload } from "../../common/messages/types-client.ts";
-import socket from "./socket.js";
+import { ClientMessageTypes, KeysMessagePayload } from "../../common/message-types/types-client.ts";
+import socket from "./socket.ts";
 
 enum ArrowEvent {
 	ArrowLeft = "left",
@@ -51,7 +51,7 @@ function handleKey(event: KeyboardEvent, pressed: boolean) {
 
 		// Update server
 		socket.send({
-			type: "keys",
+			type: ClientMessageTypes.KEYS,
 			payload: keys
 		});
 	}
