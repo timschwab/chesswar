@@ -1,5 +1,5 @@
+import { Color } from "../../common/colors.ts";
 import { Circle, Point, Rect } from "../../common/data-types/structures.ts";
-import { Color } from "./colors.ts";
 import dom from "./dom.ts";
 
 const context = getContext();

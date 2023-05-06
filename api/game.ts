@@ -1,10 +1,10 @@
-import settings from "../common/settings.ts";
 import socket from "./socket.ts";
 import map from "../common/map.ts";
 import { ClientMessageTypes, ClientMessageWithId, KeysMessagePayload } from "../common/message-types/types-client.ts";
 import { ServerMessageTypes } from "../common/message-types/types-server.ts";
 import { ClientPlayer } from "../common/data-types/types-client.ts";
 import { Point, Vector } from "../common/data-types/structures.ts";
+import { gameEngine } from "../common/settings.ts";
 
 interface ServerPlayer {
 	id: string,
@@ -61,7 +61,7 @@ function receiveMessage(message: ClientMessageWithId): void {
 }
 
 function keysUpdate(id: string, keys: KeysMessagePayload): void {
-	const pos = settings.acceleration;
+	const pos = gameEngine.acceleration;
 	const neg = -1 * pos;
 
 	// Compute acceleration
@@ -91,7 +91,7 @@ function tick(): void {
 }
 
 function tickPlayers() {
-	const posSpeed = settings.maxSpeed;
+	const posSpeed = gameEngine.maxSpeed;
 	const negSpeed = -1 * posSpeed;
 
 	for (const player of state.players.values()) {

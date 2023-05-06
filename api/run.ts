@@ -1,4 +1,4 @@
-import settings from "../common/settings.ts";
+import { localServer } from "../common/settings.ts";
 import game from "./game.ts";
 import socket from "./socket.ts";
 
@@ -23,6 +23,6 @@ const handler = (req: Request): Response => {
 };
 
 Deno.serve({
-	port: settings.serverPort,
-	hostname: settings.serverHostname
+	port: localServer.port,
+	hostname: "0.0.0.0"
 }, handler);

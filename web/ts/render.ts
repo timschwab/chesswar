@@ -1,11 +1,9 @@
-import settings from "./settings.ts";
 import camera from "./camera.ts";
 import map from "../../common/map.ts";
 import { SafeState } from "./state.ts";
 import { Circle, Point, Rect } from "../../common/data-types/structures.ts";
 import { ClientPlayer } from "../../common/data-types/types-client.ts";
-
-const rensets = settings.rendering;
+import { rensets } from "../../common/settings.ts";
 
 function render(state: SafeState) {
 	const selfPlayer = getSelf(state);
