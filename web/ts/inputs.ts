@@ -1,17 +1,26 @@
+import { KeysMessagePayload } from "../../common/messages/types-client.ts";
 import socket from "./socket.js";
 
-const keys = {
+enum ArrowEvent {
+	ArrowLeft = "left",
+	ArrowRight = "right",
+	ArrowUp = "up",
+	ArrowDown = "down"
+}
+
+function isArrowEvent(code: string): code is keyof typeof ArrowEvent {
+	if (code in ArrowEvent) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+const keys: KeysMessagePayload = {
 	left: false,
 	right: false,
 	up: false,
 	down: false
-};
-
-const mapping = {
-	ArrowLeft: "left",
-	ArrowRight: "right",
-	ArrowUp: "up",
-	ArrowDown: "down"
 };
 
 function init() {
@@ -33,19 +42,19 @@ function handleKeyup(event: KeyboardEvent) {
 }
 
 function handleKey(event: KeyboardEvent, pressed: boolean) {
-	const mapped = mapping[event.code];
-	if (mapped) {
-		keys[mapped] = pressed;
+	const code = event.code;
+
+	if (isArrowEvent(code)) {
+		// Record state
+		const key = ArrowEvent[code];
+		keys[key] = pressed;
+
+		// Update server
+		socket.send({
+			type: "keys",
+			payload: keys
+		});
 	}
-
-	updateServer();
-}
-
-function updateServer() {
-	socket.send({
-		type: "keys",
-		payload: keys
-	});
 }
 
 export default { init };
