@@ -11,10 +11,15 @@ export class Point {
 export class Rect {
 	readonly topLeft: Point;
 	readonly bottomRight: Point;
+	readonly width: number;
+	readonly height: number;
 
 	constructor(topLeft: Point, bottomRight: Point) {
 		this.topLeft = topLeft;
 		this.bottomRight = bottomRight;
+
+		this.width = bottomRight.x - topLeft.x;
+		this.height = bottomRight.y - topLeft.y;
 	}
 }
 
