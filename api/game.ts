@@ -5,17 +5,7 @@ import { ServerMessageTypes } from "../common/message-types/types-server.ts";
 import { ClientPlayer } from "../common/data-types/types-client.ts";
 import { Point, Vector } from "../common/data-types/structures.ts";
 import { gameEngine } from "../common/settings.ts";
-
-interface ServerPlayer {
-	id: string,
-	acceleration: Vector,
-	speed: Vector,
-	position: Point
-}
-
-const state = {
-	players: new Map<string, ServerPlayer>()
-};
+import state, { ServerPlayer } from "./state.ts";
 
 function init() {
 	socket.listen.add(addPlayer);
@@ -26,7 +16,7 @@ function init() {
 }
 
 function addPlayer(id: string): void {
-	state.players.set(id, {
+	state.playerMap.set(id, {
 		id,
 		acceleration: Vector(0, 0),
 		speed: Vector(0, 0),
@@ -42,11 +32,11 @@ function addPlayer(id: string): void {
 }
 
 function removePlayer(id: string): void {
-	state.players.delete(id);
+	state.playerMap.delete(id);
 }
 
 function getPlayer(id: string): ServerPlayer {
-	const player = state.players.get(id);
+	const player = state.playerMap.get(id);
 	if (player) {
 		return player;
 	} else {
@@ -81,7 +71,7 @@ function tick(): void {
 	// Other stuff eventually
 
 	// Broadcast to everyone
-	const playerList = Array.from(state.players.values());
+	const playerList = Array.from(state.playerMap.values());
 	const payload = playerList.map(serverPlayerToClientPlayer);
 
 	socket.broadcast({
@@ -94,7 +84,7 @@ function tickPlayers() {
 	const posSpeed = gameEngine.maxSpeed;
 	const negSpeed = -1 * posSpeed;
 
-	for (const player of state.players.values()) {
+	for (const player of state.playerMap.values()) {
 		// Compute speed based on acceleration
 		let speedX = player.speed.x
 		speedX += player.acceleration.x;
