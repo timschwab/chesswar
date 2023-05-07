@@ -15,6 +15,7 @@ export function Point(x: number, y: number) {
 	return {x, y};
 }
 
+// Note that topLeft and bottomRight are named correctly by convention, and this is not enforced
 export interface Rect {
 	readonly topLeft: Point;
 	readonly bottomRight: Point;
@@ -38,4 +39,4 @@ export function Circle(center: Point, radius: number) {
 	return {center, radius};
 }
 
-export type Shape = Vector | Point | Rect | Circle;
+export type Shape = Point | Rect | Circle;
