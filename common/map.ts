@@ -1,4 +1,4 @@
-import { Point, Rect } from "./data-types/structures.ts";
+import { Circle, Point, Rect } from "./data-types/structures.ts";
 import { TeamName } from "./data-types/types-base.ts";
 
 const width = 5000;
@@ -18,8 +18,11 @@ const bravoStart2 = Point(width-200, height-200);
 const bravoStart3 = Point(width-400, middleY);
 
 const deathRects = [
-	Rect(Point(middle.x - 100, 0), Point(middle.x + 100, 500))
+	Rect(Point(middle.x - 100, 0), Point(middle.x + 100, 500)),
+	Rect(Point(middle.x - 100, height-500), Point(middle.x + 100, height))
 ];
+
+const safeZone = Circle(middle, 500);
 
 const map = {
 	width,
@@ -28,7 +31,8 @@ const map = {
 		[TeamName.ALPHA]: [alphaStart1, alphaStart2, alphaStart3],
 		[TeamName.BRAVO]: [bravoStart1, bravoStart2, bravoStart3]
 	},
-	deathRects
+	deathRects,
+	safeZone
 };
 
 export type ChesswarMap = typeof map;

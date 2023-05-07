@@ -10,8 +10,8 @@ function render(state: SafeState) {
 	const selfPlayer = getSelf(state);
 	setCamera(state, selfPlayer);
 	renderBackground();
-	renderPlayers(state, selfPlayer);
 	renderMap();
+	renderPlayers(state, selfPlayer);
 }
 
 function getSelf(state: SafeState): ClientPlayer {
@@ -66,6 +66,22 @@ function renderBackground() {
 	}
 }
 
+function renderMap() {
+	// Draw death rects
+	for (const deathRect of map.deathRects) {
+		camera.fillRect(deathRect, rensets.death.color);
+	}
+
+	// Draw safe zone
+	camera.fillCircle(map.safeZone, rensets.safe.color);
+
+	// Draw map boundaries
+	const mapTopLeft = Point(0, 0);
+	const mapBottomRight = Point(map.width, map.height);
+	const mapRect = Rect(mapTopLeft, mapBottomRight);
+	camera.outlineRect(mapRect, rensets.mapBorder.color, rensets.mapBorder.width);
+}
+
 function renderPlayers(state: SafeState, selfPlayer: ClientPlayer) {
 	for (const player of state.playerMap.values()) {
 		const circle = Circle(player.position, gameEngine.playerRadius);
@@ -81,19 +97,6 @@ function renderPlayers(state: SafeState, selfPlayer: ClientPlayer) {
 
 		camera.fillCircle(circle, color);
 	}
-}
-
-function renderMap() {
-	// Draw death rects
-	for (const deathRect of map.deathRects) {
-		camera.fillRect(deathRect, rensets.death.color);
-	}
-
-	// Draw map boundaries
-	const mapTopLeft = Point(0, 0);
-	const mapBottomRight = Point(map.width, map.height);
-	const mapRect = Rect(mapTopLeft, mapBottomRight);
-	camera.outlineRect(mapRect, rensets.mapBorder.color, rensets.mapBorder.width);
 }
 
 export default render;

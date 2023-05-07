@@ -59,5 +59,8 @@ export const rensets = {
 	},
 	death: {
 		color: Color.GREY_BLACK
+	},
+	safe: {
+		color: Color.GREEN_DARK
 	}
 };

@@ -63,8 +63,8 @@ function between(val: number, min: number, max: number, effect?: () => void) {
 function checkDeathRects(player: ServerPlayer): void {
 	const playerCircle = Circle(player.physics.position, gameEngine.playerRadius);
 
-	for (const death of map.deathRects) {
-		if (touches(playerCircle, death)) {
+	for (const deathRect of map.deathRects) {
+		if (touches(playerCircle, deathRect)) {
 			player.physics = spawnPlayer(player.team);
 		}
 	}

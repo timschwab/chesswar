@@ -28,10 +28,10 @@ export function addPlayer(id: string): void {
 
 // Add them to the team with fewer players
 function newPlayerTeam(): TeamName {
-	if (state[TeamName.ALPHA].playerMap.size < state[TeamName.BRAVO].playerMap.size) {
-		return TeamName.ALPHA;
-	} else {
+	if (state[TeamName.ALPHA].playerMap.size > state[TeamName.BRAVO].playerMap.size) {
 		return TeamName.BRAVO;
+	} else {
+		return TeamName.ALPHA;
 	}
 }
 
