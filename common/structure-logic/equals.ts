@@ -31,9 +31,6 @@ function circleEqualsCircle(main: Circle, other: Circle): boolean {
 	return true;
 }
 
-function equals(main: Point, other: Point): boolean;
-function equals(main: Rect, other: Rect): boolean;
-function equals(main: Circle, other: Circle): boolean;
 function equals<T extends Shape>(main: T, other: T): boolean {
 	if (isPoint(main) && isPoint(other)) {
 		return pointEqualsPoint(main, other);
