@@ -35,7 +35,8 @@ export const buildSettings = {
 /* ----- start game engine ----- */
 export const gameEngine = {
 	acceleration: 0.5,
-	maxSpeed: 40
+	maxSpeed: 40,
+	playerRadius: 5
 };
 
 /* ----- start rensets ----- */
@@ -52,7 +53,6 @@ export const rensets = {
 		width: 5
 	},
 	players: {
-		radius: 5,
 		self: Color.BLUE_STANDARD,
 		allies: Color.GREEN_STANDARD,
 		enemies: Color.RED_STANDARD

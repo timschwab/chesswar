@@ -1,12 +1,16 @@
 import { Point, Vector } from "../common/data-types/structures.ts";
 import { ChesswarId, TeamName } from "../common/data-types/types-base.ts";
 
-export interface ServerPlayer {
-	id: ChesswarId,
-	team: TeamName,
+export interface ServerPlayerPhysics {
 	acceleration: Vector,
 	speed: Vector,
 	position: Point
+}
+
+export interface ServerPlayer {
+	id: ChesswarId,
+	team: TeamName,
+	physics: ServerPlayerPhysics
 }
 
 type PlayerMap = Map<ChesswarId, ServerPlayer>;

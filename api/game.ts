@@ -34,7 +34,7 @@ function serverPlayerToClientPlayer(player: ServerPlayer): ClientPlayer {
 	return {
 		id: player.id,
 		team: player.team,
-		position: player.position
+		position: player.physics.position
 	};
 }
 

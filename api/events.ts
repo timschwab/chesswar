@@ -1,23 +1,18 @@
 import { Vector } from "../common/data-types/structures.ts";
 import { TeamName } from "../common/data-types/types-base.ts";
-import map from "../common/map.ts";
 import { ClientMessageTypes, ClientMessageWithId, KeysMessagePayload } from "../common/message-types/types-client.ts";
 import { ServerMessageTypes } from "../common/message-types/types-server.ts";
 import { gameEngine } from "../common/settings.ts";
 import socket from "./socket.ts";
+import { spawnPlayer } from "./spawn.ts";
 import state, { ServerPlayer } from "./state.ts";
 
 export function addPlayer(id: string): void {
 	const team = newPlayerTeam();
-	const startChoice = map.starts[team];
-	const start = startChoice[Math.floor(Math.random()*startChoice.length)];
-
 	const newPlayer: ServerPlayer = {
 		id,
 		team,
-		acceleration: Vector(0, 0),
-		speed: Vector(0, 0),
-		position: start
+		physics: spawnPlayer(team)
 	}
 
 	state.allPlayers.set(id, newPlayer);
@@ -65,7 +60,7 @@ function keysUpdate(id: string, keys: KeysMessagePayload): void {
 
 	const acceleration = Vector(left + right, up + down);
 
-	getPlayer(id).acceleration = acceleration;
+	getPlayer(id).physics.acceleration = acceleration;
 }
 
 function getPlayer(id: string): ServerPlayer {

@@ -3,7 +3,7 @@ import map from "../../common/map.ts";
 import { SafeState } from "./state.ts";
 import { Circle, Point, Rect } from "../../common/data-types/structures.ts";
 import { ClientPlayer } from "../../common/data-types/types-client.ts";
-import { rensets } from "../../common/settings.ts";
+import { gameEngine, rensets } from "../../common/settings.ts";
 import { Color } from "../../common/colors.ts";
 
 function render(state: SafeState) {
@@ -68,7 +68,7 @@ function renderBackground() {
 
 function renderPlayers(state: SafeState, selfPlayer: ClientPlayer) {
 	for (const player of state.playerMap.values()) {
-		const circle = Circle(player.position, rensets.players.radius);
+		const circle = Circle(player.position, gameEngine.playerRadius);
 		let color: Color;
 
 		if (player.id == state.self) {
