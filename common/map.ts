@@ -19,7 +19,9 @@ const bravoStart3 = Point(width-400, middleY);
 
 const deathRects = [
 	Rect(Point(middle.x - 100, 0), Point(middle.x + 100, 500)),
-	Rect(Point(middle.x - 100, height-500), Point(middle.x + 100, height))
+	Rect(Point(middle.x - 100, height-500), Point(middle.x + 100, height)),
+	Rect(Point(1200, 1000), Point(1400, height-1000)),
+	Rect(Point(width-1400, 1000), Point(width-1200, height-1000))
 ];
 
 const safeZone = Circle(middle, 500);
