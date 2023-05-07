@@ -1,19 +1,34 @@
 import { Point, Vector } from "../common/data-types/structures.ts";
-import { ChesswarId } from "../common/data-types/types-base.ts";
+import { ChesswarId, TeamName } from "../common/data-types/types-base.ts";
 
 export interface ServerPlayer {
 	id: ChesswarId,
+	team: TeamName,
 	acceleration: Vector,
 	speed: Vector,
 	position: Point
 }
 
+type PlayerMap = Map<ChesswarId, ServerPlayer>;
+
+interface Team {
+	playerMap: PlayerMap
+}
+
 interface ServerState {
-	playerMap: Map<ChesswarId, ServerPlayer>
+	allPlayers: PlayerMap,
+	[TeamName.ALPHA]: Team,
+	[TeamName.BRAVO]: Team
 }
 
 const state: ServerState = {
-	playerMap: new Map<ChesswarId, ServerPlayer>()
+	allPlayers: new Map<ChesswarId, ServerPlayer>(),
+	[TeamName.ALPHA]: {
+		playerMap: new Map<ChesswarId, ServerPlayer>()
+	},
+	[TeamName.BRAVO]: {
+		playerMap: new Map<ChesswarId, ServerPlayer>()
+	}
 };
 
 export default state;

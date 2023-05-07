@@ -4,12 +4,13 @@ import { SafeState } from "./state.ts";
 import { Circle, Point, Rect } from "../../common/data-types/structures.ts";
 import { ClientPlayer } from "../../common/data-types/types-client.ts";
 import { rensets } from "../../common/settings.ts";
+import { Color } from "../../common/colors.ts";
 
 function render(state: SafeState) {
 	const selfPlayer = getSelf(state);
 	setCamera(state, selfPlayer);
 	renderBackground();
-	renderPlayers(state);
+	renderPlayers(state, selfPlayer);
 	renderMap();
 }
 
@@ -65,13 +66,15 @@ function renderBackground() {
 	}
 }
 
-function renderPlayers(state: SafeState) {
+function renderPlayers(state: SafeState, selfPlayer: ClientPlayer) {
 	for (const player of state.playerMap.values()) {
 		const circle = Circle(player.position, rensets.players.radius);
-		let color;
+		let color: Color;
 
 		if (player.id == state.self) {
 			color = rensets.players.self;
+		} else if (player.team == selfPlayer.team) {
+			color = rensets.players.allies;
 		} else {
 			color = rensets.players.enemies;
 		}

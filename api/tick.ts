@@ -7,7 +7,7 @@ export function tickPlayers() {
 	const posSpeed = gameEngine.maxSpeed;
 	const negSpeed = -1 * posSpeed;
 
-	for (const player of state.playerMap.values()) {
+	for (const player of state.allPlayers.values()) {
 		// Compute speed based on acceleration
 		let speedX = player.speed.x
 		speedX += player.acceleration.x;

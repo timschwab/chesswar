@@ -21,7 +21,7 @@ function tick(): void {
 	// Other stuff eventually
 
 	// Broadcast state to everyone
-	const playerList = Array.from(state.playerMap.values());
+	const playerList = Array.from(state.allPlayers.values());
 	const payload = playerList.map(serverPlayerToClientPlayer);
 
 	socket.broadcast({
@@ -33,6 +33,7 @@ function tick(): void {
 function serverPlayerToClientPlayer(player: ServerPlayer): ClientPlayer {
 	return {
 		id: player.id,
+		team: player.team,
 		position: player.position
 	};
 }
