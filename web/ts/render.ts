@@ -10,7 +10,7 @@ function render(state: SafeState) {
 	const selfPlayer = getSelf(state);
 	setCamera(state, selfPlayer);
 	renderBackground();
-	renderMap();
+	renderMap(selfPlayer);
 	renderPlayers(state, selfPlayer);
 }
 
@@ -66,7 +66,29 @@ function renderBackground() {
 	}
 }
 
-function renderMap() {
+function renderMap(selfPlayer: ClientPlayer) {
+	// Draw facilities
+	const allyFacilityBundles = map.facilities.filter(fac => fac.team == selfPlayer.team);
+	const enemyFacilityBundles = map.facilities.filter(fac => fac.team != selfPlayer.team);
+
+	for (const bundle of allyFacilityBundles) {
+		for (const outpost of bundle.outposts) {
+			camera.fillRect(outpost, rensets.facilities.ally.outpost);
+		}
+
+		camera.fillRect(bundle.base, rensets.facilities.ally.base);
+		camera.fillRect(bundle.command, rensets.facilities.ally.command);
+	}
+
+	for (const bundle of enemyFacilityBundles) {
+		for (const outpost of bundle.outposts) {
+			camera.fillRect(outpost, rensets.facilities.enemy.outpost);
+		}
+
+		camera.fillRect(bundle.base, rensets.facilities.enemy.base);
+		camera.fillRect(bundle.command, rensets.facilities.enemy.command);
+	}
+
 	// Draw death rects
 	for (const deathRect of map.deathRects) {
 		camera.fillRect(deathRect, rensets.death.color);

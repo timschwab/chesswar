@@ -57,6 +57,18 @@ export const rensets = {
 		allies: Color.GREEN_STANDARD,
 		enemies: Color.RED_STANDARD
 	},
+	facilities: {
+		ally: {
+			outpost: Color.GREY_WHITE,
+			base: Color.GREY_WHITE,
+			command: Color.GREY_LIGHT
+		},
+		enemy: {
+			outpost: Color.GREY_EXTRA_DARK,
+			base: Color.GREY_EXTRA_DARK,
+			command: Color.GREY_BLACK
+		}
+	},
 	death: {
 		color: Color.GREY_BLACK
 	},

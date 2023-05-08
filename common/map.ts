@@ -6,16 +6,25 @@ const height = 3000;
 
 const middleX = width/2;
 const middleY = height/2;
-
 const middle = Point(middleX, middleY);
 
 const alphaStart1 = Point(200, 200);
 const alphaStart2 = Point(200, height-200);
-const alphaStart3 = Point(400, middleY);
+const alphaStart3 = Point(300, middleY);
+
+const alphaBase = Rect(Point(0, middleY-300), Point(400, middleY+300));
+const alphaCommand = Rect(Point(0, middleY-100), Point(100, middleY+100));
+const alphaOutpost1 = Rect(Point(0, 0), Point(300, 300));
+const alphaOutpost2 = Rect(Point(0, height-300), Point(300, height));
 
 const bravoStart1 = Point(width-200, 200);
 const bravoStart2 = Point(width-200, height-200);
-const bravoStart3 = Point(width-400, middleY);
+const bravoStart3 = Point(width-300, middleY);
+
+const bravoBase = Rect(Point(width-400, middleY-300), Point(width, middleY+300));
+const bravoCommand = Rect(Point(width-100, middleY-100), Point(width, middleY+100));
+const bravoOutpost1 = Rect(Point(width-300, 0), Point(width, 300));
+const bravoOutpost2 = Rect(Point(width-300, height-300), Point(width, height));
 
 const deathRects = [
 	Rect(Point(middle.x - 100, 0), Point(middle.x + 100, 500)),
@@ -40,6 +49,20 @@ const map = {
 		[TeamName.ALPHA]: [alphaStart1, alphaStart2, alphaStart3],
 		[TeamName.BRAVO]: [bravoStart1, bravoStart2, bravoStart3]
 	},
+	facilities: [
+		{
+			team: TeamName.ALPHA,
+			command: alphaCommand,
+			base: alphaBase,
+			outposts: [alphaOutpost1, alphaOutpost2]
+		},
+		{
+			team: TeamName.BRAVO,
+			command: bravoCommand,
+			base: bravoBase,
+			outposts: [bravoOutpost1, bravoOutpost2]
+		}
+	],
 	deathRects,
 	deathCircles,
 	safeZone
