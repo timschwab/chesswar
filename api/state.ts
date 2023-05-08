@@ -1,10 +1,10 @@
-import { Point, Vector } from "../common/data-types/shapes.ts";
+import { Circle, Vector } from "../common/data-types/shapes.ts";
 import { ChesswarId, TeamName } from "../common/data-types/types-base.ts";
 
 export interface ServerPlayerPhysics {
 	acceleration: Vector,
 	speed: Vector,
-	position: Point
+	position: Circle
 }
 
 export interface ServerPlayer {

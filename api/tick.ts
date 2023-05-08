@@ -27,13 +27,13 @@ function movePlayer(physics: ServerPlayerPhysics): void {
 	speedY = between(speedY, negSpeed, posSpeed);
 
 	// Compute position based on speed, and bounce off the sides
-	let positionX = physics.position.x;
+	let positionX = physics.position.center.x;
 	positionX += physics.speed.x;
 	positionX = between(positionX, 0, map.width, function () {
 		speedX *= -1;
 	});
 
-	let positionY = physics.position.y;
+	let positionY = physics.position.center.y;
 	positionY += physics.speed.y;
 	positionY = between(positionY, 0, map.height, function () {
 		speedY *= -1;
@@ -41,7 +41,7 @@ function movePlayer(physics: ServerPlayerPhysics): void {
 
 	// Set new values
 	physics.speed = Vector(speedX, speedY);
-	physics.position = Point(positionX, positionY);
+	physics.position = Circle(Point(positionX, positionY), gameEngine.playerRadius);
 }
 
 // Lil helper function
@@ -62,20 +62,16 @@ function between(val: number, min: number, max: number, effect?: () => void) {
 }
 
 function checkDeathRects(player: ServerPlayer): void {
-	const playerCircle = Circle(player.physics.position, gameEngine.playerRadius);
-
 	for (const deathRect of map.deathRects) {
-		if (touches(playerCircle, deathRect)) {
+		if (touches(player.physics.position, deathRect)) {
 			player.physics = spawnPlayer(player.team);
 		}
 	}
 }
 
 function checkDeathCircles(player: ServerPlayer): void {
-	const playerCircle = Circle(player.physics.position, gameEngine.playerRadius);
-
 	for (const deathCircle of map.deathCircles) {
-		if (touches(playerCircle, deathCircle)) {
+		if (touches(player.physics.position, deathCircle)) {
 			player.physics = spawnPlayer(player.team);
 		}
 	}
