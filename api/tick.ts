@@ -9,6 +9,7 @@ export function tickPlayers() {
 	for (const player of state.allPlayers.values()) {
 		movePlayer(player.physics);
 		checkDeathRects(player);
+		checkDeathCircles(player);
 	}
 }
 
@@ -65,6 +66,16 @@ function checkDeathRects(player: ServerPlayer): void {
 
 	for (const deathRect of map.deathRects) {
 		if (touches(playerCircle, deathRect)) {
+			player.physics = spawnPlayer(player.team);
+		}
+	}
+}
+
+function checkDeathCircles(player: ServerPlayer): void {
+	const playerCircle = Circle(player.physics.position, gameEngine.playerRadius);
+
+	for (const deathCircle of map.deathCircles) {
+		if (touches(playerCircle, deathCircle)) {
 			player.physics = spawnPlayer(player.team);
 		}
 	}

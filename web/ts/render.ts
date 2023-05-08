@@ -72,6 +72,11 @@ function renderMap() {
 		camera.fillRect(deathRect, rensets.death.color);
 	}
 
+	// Draw death circles
+	for (const deathCircle of map.deathCircles) {
+		camera.fillCircle(deathCircle, rensets.death.color);
+	}
+
 	// Draw safe zone
 	camera.fillCircle(map.safeZone, rensets.safe.color);
 

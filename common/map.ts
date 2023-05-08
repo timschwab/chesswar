@@ -24,6 +24,13 @@ const deathRects = [
 	Rect(Point(width-1400, 1000), Point(width-1200, height-1000))
 ];
 
+const deathCircles = [
+	Circle(Point(1800, 700), 100),
+	Circle(Point(width-1800, 700), 100),
+	Circle(Point(1800, height-700), 100),
+	Circle(Point(width-1800, height-700), 100)
+];
+
 const safeZone = Circle(middle, 500);
 
 const map = {
@@ -34,6 +41,7 @@ const map = {
 		[TeamName.BRAVO]: [bravoStart1, bravoStart2, bravoStart3]
 	},
 	deathRects,
+	deathCircles,
 	safeZone
 };
 
