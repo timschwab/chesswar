@@ -15,9 +15,9 @@ const alphaStart3 = Point(200, middleY);
 const alphaBase = Rect(Point(0, middleY-300), Point(400, middleY+300));
 const alphaCommand = Rect(Point(0, middleY-100), Point(100, middleY+100));
 
-const alphaPickup1 = Rect(Point(150, middleY-250), Point(250, middleY-150));
-const alphaPickup2 = Rect(Point(250, middleY-50), Point(350, middleY+50));
-const alphaPickup3 = Rect(Point(150, middleY+150), Point(250, middleY+250));
+const alphaBriefing1 = Rect(Point(150, middleY-250), Point(250, middleY-150));
+const alphaBriefing2 = Rect(Point(250, middleY-50), Point(350, middleY+50));
+const alphaBriefing3 = Rect(Point(150, middleY+150), Point(250, middleY+250));
 
 const alphaOutpost1 = Rect(Point(0, 0), Point(300, 300));
 const alphaOutpost2 = Rect(Point(0, height-300), Point(300, height));
@@ -29,9 +29,9 @@ const bravoStart3 = Point(width-200, middleY);
 const bravoBase = Rect(Point(width-400, middleY-300), Point(width, middleY+300));
 const bravoCommand = Rect(Point(width-100, middleY-100), Point(width, middleY+100));
 
-const bravoPickup1 = Rect(Point(width-250, middleY-250), Point(width-150, middleY-150));
-const bravoPickup2 = Rect(Point(width-350, middleY-50), Point(width-250, middleY+50));
-const bravoPickup3 = Rect(Point(width-250, middleY+150), Point(width-150, middleY+250));
+const bravoBriefing1 = Rect(Point(width-250, middleY-250), Point(width-150, middleY-150));
+const bravoBriefing2 = Rect(Point(width-350, middleY-50), Point(width-250, middleY+50));
+const bravoBriefing3 = Rect(Point(width-250, middleY+150), Point(width-150, middleY+250));
 
 const bravoOutpost1 = Rect(Point(width-300, 0), Point(width, 300));
 const bravoOutpost2 = Rect(Point(width-300, height-300), Point(width, height));
@@ -65,14 +65,14 @@ const map = {
 			command: alphaCommand,
 			base: alphaBase,
 			outposts: [alphaOutpost1, alphaOutpost2],
-			pickups: [alphaPickup1, alphaPickup2, alphaPickup3]
+			briefings: [alphaBriefing1, alphaBriefing2, alphaBriefing3]
 		},
 		{
 			team: TeamName.BRAVO,
 			command: bravoCommand,
 			base: bravoBase,
 			outposts: [bravoOutpost1, bravoOutpost2],
-			pickups: [bravoPickup1, bravoPickup2, bravoPickup3]
+			briefings: [bravoBriefing1, bravoBriefing2, bravoBriefing3]
 		}
 	],
 	deathRects,
