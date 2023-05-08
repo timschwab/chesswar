@@ -1,4 +1,4 @@
-import { Circle, Point, Rect } from "./data-types/structures.ts";
+import { Circle, Point, Rect } from "./data-types/shapes.ts";
 import { TeamName } from "./data-types/types-base.ts";
 
 const width = 5000;

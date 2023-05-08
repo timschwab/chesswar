@@ -1,4 +1,4 @@
-import { Circle, Point, Rect, Shape } from "../data-types/structures.ts";
+import { Circle, Point, Rect, Shape } from "../data-types/shapes.ts";
 
 export function isPoint(shape: Shape): shape is Point {
 	if ("x" in shape && "y" in shape) {

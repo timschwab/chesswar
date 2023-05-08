@@ -1,7 +1,7 @@
-import { Circle, Point, Vector } from "../common/data-types/structures.ts";
+import { Circle, Point, Vector } from "../common/data-types/shapes.ts";
 import map from "../common/map.ts";
 import { gameEngine } from "../common/settings.ts";
-import { touches } from "../common/structure-logic/touches.ts";
+import { touches } from "../common/shape-logic/touches.ts";
 import { spawnPlayer } from "./spawn.ts";
 import state, { ServerPlayer, ServerPlayerPhysics } from "./state.ts";
 

@@ -1,5 +1,5 @@
 import { Color } from "../../common/colors.ts";
-import { Circle, Point, Rect, Vector } from "../../common/data-types/structures.ts";
+import { Circle, Point, Rect, Vector } from "../../common/data-types/shapes.ts";
 import canvas from "./canvas.ts";
 
 let camera: Rect;

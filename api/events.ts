@@ -1,4 +1,4 @@
-import { Vector } from "../common/data-types/structures.ts";
+import { Vector } from "../common/data-types/shapes.ts";
 import { TeamName } from "../common/data-types/types-base.ts";
 import { ClientMessageTypes, ClientMessageWithId, KeysMessagePayload } from "../common/message-types/types-client.ts";
 import { ServerMessageTypes } from "../common/message-types/types-server.ts";

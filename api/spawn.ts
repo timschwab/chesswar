@@ -1,4 +1,4 @@
-import { Vector } from "../common/data-types/structures.ts";
+import { Vector } from "../common/data-types/shapes.ts";
 import { TeamName } from "../common/data-types/types-base.ts";
 import map from "../common/map.ts";
 import { ServerPlayerPhysics } from "./state.ts";

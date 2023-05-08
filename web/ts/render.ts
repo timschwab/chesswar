@@ -1,7 +1,7 @@
 import camera from "./camera.ts";
 import map from "../../common/map.ts";
 import { SafeState } from "./state.ts";
-import { Circle, Point, Rect } from "../../common/data-types/structures.ts";
+import { Circle, Point, Rect } from "../../common/data-types/shapes.ts";
 import { ClientPlayer } from "../../common/data-types/types-client.ts";
 import { gameEngine, rensets } from "../../common/settings.ts";
 import { Color } from "../../common/colors.ts";

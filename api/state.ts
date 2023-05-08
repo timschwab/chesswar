@@ -1,4 +1,4 @@
-import { Point, Vector } from "../common/data-types/structures.ts";
+import { Point, Vector } from "../common/data-types/shapes.ts";
 import { ChesswarId, TeamName } from "../common/data-types/types-base.ts";
 
 export interface ServerPlayerPhysics {

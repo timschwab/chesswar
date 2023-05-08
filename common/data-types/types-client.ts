@@ -1,4 +1,4 @@
-import { Point } from "./structures.ts";
+import { Point } from "./shapes.ts";
 import { ChesswarId, TeamName } from "./types-base.ts";
 
 export interface ClientPlayer {
