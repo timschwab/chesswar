@@ -1,9 +1,9 @@
 import camera from "./camera.ts";
 import map from "../../common/map.ts";
 import { SafeState } from "./state.ts";
-import { Circle, Point, Rect } from "../../common/data-types/shapes.ts";
+import { Point, Rect } from "../../common/data-types/shapes.ts";
 import { ClientPlayer } from "../../common/data-types/types-client.ts";
-import { gameEngine, rensets } from "../../common/settings.ts";
+import { rensets } from "../../common/settings.ts";
 import { Color } from "../../common/colors.ts";
 
 function render(state: SafeState) {
@@ -28,7 +28,7 @@ function getSelf(state: SafeState): ClientPlayer {
 function setCamera(state: SafeState, selfPlayer: ClientPlayer) {
 	const width = state.screen.width;
 	const height = state.screen.height;
-	const center = selfPlayer.position;
+	const center = selfPlayer.position.center;
 
 	const topLeft = Point(center.x - width / 2, center.y - height / 2);
 	const bottomRight = Point(
@@ -89,7 +89,6 @@ function renderMap() {
 
 function renderPlayers(state: SafeState, selfPlayer: ClientPlayer) {
 	for (const player of state.playerMap.values()) {
-		const circle = Circle(player.position, gameEngine.playerRadius);
 		let color: Color;
 
 		if (player.id == state.self) {
@@ -100,7 +99,7 @@ function renderPlayers(state: SafeState, selfPlayer: ClientPlayer) {
 			color = rensets.players.enemies;
 		}
 
-		camera.fillCircle(circle, color);
+		camera.fillCircle(player.position, color);
 	}
 }
 
