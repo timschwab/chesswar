@@ -72,21 +72,29 @@ function renderMap(selfPlayer: ClientPlayer) {
 	const enemyFacilityBundles = map.facilities.filter(fac => fac.team != selfPlayer.team);
 
 	for (const bundle of allyFacilityBundles) {
+		camera.fillRect(bundle.base, rensets.facilities.ally.base);
+		camera.fillRect(bundle.command, rensets.facilities.ally.command);
+
+		for (const pickup of bundle.pickups) {
+			camera.fillRect(pickup, rensets.facilities.ally.pickup);
+		}
+
 		for (const outpost of bundle.outposts) {
 			camera.fillRect(outpost, rensets.facilities.ally.outpost);
 		}
-
-		camera.fillRect(bundle.base, rensets.facilities.ally.base);
-		camera.fillRect(bundle.command, rensets.facilities.ally.command);
 	}
 
 	for (const bundle of enemyFacilityBundles) {
+		camera.fillRect(bundle.base, rensets.facilities.enemy.base);
+		camera.fillRect(bundle.command, rensets.facilities.enemy.command);
+
+		for (const pickup of bundle.pickups) {
+			camera.fillRect(pickup, rensets.facilities.enemy.pickup);
+		}
+
 		for (const outpost of bundle.outposts) {
 			camera.fillRect(outpost, rensets.facilities.enemy.outpost);
 		}
-
-		camera.fillRect(bundle.base, rensets.facilities.enemy.base);
-		camera.fillRect(bundle.command, rensets.facilities.enemy.command);
 	}
 
 	// Draw death rects
