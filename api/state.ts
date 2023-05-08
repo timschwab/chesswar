@@ -10,7 +10,8 @@ export interface ServerPlayerPhysics {
 export interface ServerPlayer {
 	id: ChesswarId,
 	team: TeamName,
-	type: PlayerType,
+	role: PlayerType,
+	canSwitchTo: PlayerType | null,
 	physics: ServerPlayerPhysics
 }
 

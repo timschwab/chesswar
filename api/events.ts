@@ -12,7 +12,8 @@ export function addPlayer(id: string): void {
 	const newPlayer: ServerPlayer = {
 		id,
 		team,
-		type: PlayerType.SOLDIER,
+		role: PlayerType.SOLDIER,
+		canSwitchTo: null,
 		physics: spawnPlayer(team)
 	}
 
