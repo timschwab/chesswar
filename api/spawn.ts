@@ -5,13 +5,16 @@ import { ServerPlayer } from "./state.ts";
 
 export function spawnPlayer(player: ServerPlayer): void {
 	const role = gameEngine.startingRole;
-	const radius = gameEngine.physics[role].playerRadius;
+	const radius = gameEngine.physics[role].radius;
+	const mass = gameEngine.physics[role].mass;
+
 	const startChoices = map.starts[player.team];
 	const start = startChoices[Math.floor(Math.random()*startChoices.length)];
 	
 	player.role = role;
 	player.physics = {
-		acceleration: Vector(0, 0),
+		mass: mass,
+		inputForce: player.physics.inputForce, // Keep the state of the input force
 		speed: Vector(0, 0),
 		position: Circle(start, radius)
 	};

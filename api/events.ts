@@ -3,6 +3,7 @@ import { PlayerType, TeamName } from "../common/data-types/types-base.ts";
 import { ClientMessageTypes, ClientMessageWithId, MoveMessagePayload } from "../common/message-types/types-client.ts";
 import { ServerMessageTypes } from "../common/message-types/types-server.ts";
 import { gameEngine } from "../common/settings.ts";
+import { pointToVector } from "../common/shape-logic/vector.ts";
 import socket from "./socket.ts";
 import { spawnPlayer } from "./spawn.ts";
 import state, { ServerPlayer } from "./state.ts";
@@ -15,8 +16,9 @@ export function addPlayer(id: string): void {
 		role: PlayerType.SOLDIER,
 		canSwitchTo: null,
 		physics: {
-			acceleration: Vector(0, 0),
+			inputForce: Vector(0, 0),
 			speed: Vector(0, 0),
+			mass: 0,
 			position: Circle(Point(0, 0), 0)
 		}
 	}
@@ -70,18 +72,21 @@ function getPlayer(id: string): ServerPlayer {
 }
 
 function playerMove(player: ServerPlayer, keys: MoveMessagePayload): void {
-	const pos = gameEngine.physics[player.role].acceleration;
-	const neg = -1 * pos;
+	// Compute force
+	const pos = gameEngine.inputForceMag;
+	const neg = -1*pos;
 
-	// Compute acceleration
 	const left = keys.left ? neg : 0;
 	const right = keys.right ? pos : 0;
 	const up = keys.up ? neg : 0;
 	const down = keys.down ? pos : 0;
 
-	const acceleration = Vector(left + right, up + down);
+	const xDir = left + right;
+	const yDir = up + down;
 
-	player.physics.acceleration = acceleration;
+	const force = pointToVector(Point(xDir, yDir));
+
+	player.physics.inputForce = force;
 }
 
 function playerSwitch(player: ServerPlayer) {
@@ -91,7 +96,7 @@ function playerSwitch(player: ServerPlayer) {
 		// Do nothing
 	} else {
 		player.role = player.canSwitchTo;
-		const radius = gameEngine.physics[player.role].playerRadius;
+		const radius = gameEngine.physics[player.role].radius;
 		player.physics.position = Circle(player.physics.position.center, radius);
 	}
 }

@@ -1,10 +1,9 @@
-// Same structure of Point but very different semantic meaning
 export interface Vector {
-	readonly x: number;
-	readonly y: number;
+	readonly mag: number;
+	readonly dir: number;
 }
-export function Vector(x: number, y: number): Vector {
-	return {x, y};
+export function Vector(mag: number, dir: number): Vector {
+	return {mag, dir};
 }
 
 export interface Point {

@@ -2,7 +2,8 @@ import { Circle, Vector } from "../common/data-types/shapes.ts";
 import { ChesswarId, PlayerType, TeamName } from "../common/data-types/types-base.ts";
 
 export interface ServerPlayerPhysics {
-	acceleration: Vector,
+	inputForce: Vector,
+	mass: number,
 	speed: Vector,
 	position: Circle
 }

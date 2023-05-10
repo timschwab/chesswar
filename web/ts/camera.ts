@@ -1,5 +1,6 @@
 import { Color } from "../../common/colors.ts";
-import { Circle, Point, Rect, Vector } from "../../common/data-types/shapes.ts";
+import { Circle, Point, Rect } from "../../common/data-types/shapes.ts";
+import { transposeCircle, transposePoint, transposeRect } from "../../common/shape-logic/transpose.ts";
 import canvas from "./canvas.ts";
 
 let camera: Rect;
@@ -34,17 +35,6 @@ function line(start: Point, finish: Point, color: Color, lineWidth: number) {
 function fillCircle(circle: Circle, color: Color) {
 	const adjustedCircle = transposeCircle(circle, camera.topLeft);
 	canvas.fillCircle(adjustedCircle, color);
-}
-
-// Tranpose functions
-function transposePoint(original: Point, move: Vector): Point {
-	return Point(original.x-move.x, original.y-move.y);
-}
-function transposeRect(original: Rect, move: Vector) {
-	return Rect(transposePoint(original.topLeft, move), transposePoint(original.bottomRight, move));
-}
-function transposeCircle(original: Circle, move: Vector) {
-	return Circle(transposePoint(original.center, move), original.radius);
 }
 
 export default {

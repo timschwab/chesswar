@@ -1,4 +1,3 @@
-import { addPlayer } from "../api/events.ts";
 import { Color } from "./colors.ts";
 import { PlayerType } from "./data-types/types-base.ts";
 
@@ -37,26 +36,25 @@ export const buildSettings = {
 /* ----- start game engine ----- */
 export const gameEngine = {
 	startingRole: PlayerType.SOLDIER,
+	inputForceMag: 10,
+	frictionCoef: 1,
+	airResistanceCoef: 1,
 	physics: {
 		[PlayerType.SOLDIER]: {
-			acceleration: 1,
-			maxSpeed: 10,
-			playerRadius: 5
+			mass: 1,
+			radius: 5
 		},
 		[PlayerType.GENERAL]: {
-			acceleration: 0,
-			maxSpeed: 0,
-			playerRadius: 5
+			mass: 0,
+			radius: 5
 		},
 		[PlayerType.TANK]: {
-			acceleration: 0.5,
-			maxSpeed: 20,
-			playerRadius: 20
+			mass: 5,
+			radius: 20
 		},
 		[PlayerType.SPY]: {
-			acceleration: 0.5,
-			maxSpeed: 5,
-			playerRadius: 3
+			mass: 0.5,
+			radius: 3
 		}
 	}
 };
