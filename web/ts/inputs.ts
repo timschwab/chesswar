@@ -55,13 +55,14 @@ function handleKey(event: KeyboardEvent, pressed: boolean): void {
 			payload: movement
 		});
 	} else if (code == "Space") {
-		// Send Switch command
-		socket.send({
-			type: ClientMessageTypes.SWITCH,
-			payload: null
-		});
-	}
-	else {
+		// Send Switch command on keydown but not keyup
+		if (pressed) {
+			socket.send({
+				type: ClientMessageTypes.SWITCH,
+				payload: null
+			});
+		}
+	} else {
 		console.log("Unused key code", code);
 	}
 }

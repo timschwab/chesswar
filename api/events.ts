@@ -45,12 +45,16 @@ export function removePlayer(id: string): void {
 }
 
 export function receiveMessage(message: ClientMessageWithId): void {
+	const player = getPlayer(message.id);
+
 	if (message.type == ClientMessageTypes.MOVE) {
-		keysUpdate(message.id, message.payload);
+		playerMove(player, message.payload);
+	} else if (message.type == ClientMessageTypes.SWITCH) {
+		playerSwitch(player);
 	}
 }
 
-function keysUpdate(id: string, keys: MoveMessagePayload): void {
+function playerMove(player: ServerPlayer, keys: MoveMessagePayload): void {
 	const pos = gameEngine.acceleration;
 	const neg = -1 * pos;
 
@@ -62,7 +66,17 @@ function keysUpdate(id: string, keys: MoveMessagePayload): void {
 
 	const acceleration = Vector(left + right, up + down);
 
-	getPlayer(id).physics.acceleration = acceleration;
+	player.physics.acceleration = acceleration;
+}
+
+function playerSwitch(player: ServerPlayer) {
+	if (player.canSwitchTo == null) {
+		// Do nothing
+	} else if (player.canSwitchTo == player.role) {
+		// Do nothing
+	} else {
+		player.role = player.canSwitchTo;
+	}
 }
 
 function getPlayer(id: string): ServerPlayer {
