@@ -1,4 +1,4 @@
-import { ClientMessageTypes, KeysMessagePayload } from "../../common/message-types/types-client.ts";
+import { ClientMessageTypes, MoveMessagePayload } from "../../common/message-types/types-client.ts";
 import socket from "./socket.ts";
 
 enum ArrowEvent {
@@ -16,7 +16,7 @@ function isArrowEvent(code: string): code is keyof typeof ArrowEvent {
 	}
 }
 
-const keys: KeysMessagePayload = {
+const movement: MoveMessagePayload = {
 	left: false,
 	right: false,
 	up: false,
@@ -41,18 +41,18 @@ function handleKeyup(event: KeyboardEvent) {
 	handleKey(event, false);
 }
 
-function handleKey(event: KeyboardEvent, pressed: boolean) {
+function handleKey(event: KeyboardEvent, pressed: boolean): void {
 	const code = event.code;
 
 	if (isArrowEvent(code)) {
 		// Record state
 		const key = ArrowEvent[code];
-		keys[key] = pressed;
+		movement[key] = pressed;
 
 		// Update server
 		socket.send({
-			type: ClientMessageTypes.KEYS,
-			payload: keys
+			type: ClientMessageTypes.MOVE,
+			payload: movement
 		});
 	}
 }
