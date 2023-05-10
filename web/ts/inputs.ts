@@ -1,15 +1,15 @@
 import { ClientMessageTypes, MoveMessagePayload } from "../../common/message-types/types-client.ts";
 import socket from "./socket.ts";
 
-enum ArrowEvent {
+enum ArrowCode {
 	ArrowLeft = "left",
 	ArrowRight = "right",
 	ArrowUp = "up",
 	ArrowDown = "down"
 }
 
-function isArrowEvent(code: string): code is keyof typeof ArrowEvent {
-	if (code in ArrowEvent) {
+function isArrowCode(code: string): code is keyof typeof ArrowCode {
+	if (code in ArrowCode) {
 		return true;
 	} else {
 		return false;
@@ -44,9 +44,9 @@ function handleKeyup(event: KeyboardEvent) {
 function handleKey(event: KeyboardEvent, pressed: boolean): void {
 	const code = event.code;
 
-	if (isArrowEvent(code)) {
+	if (isArrowCode(code)) {
 		// Record state
-		const key = ArrowEvent[code];
+		const key = ArrowCode[code];
 		movement[key] = pressed;
 
 		// Update server
@@ -54,6 +54,15 @@ function handleKey(event: KeyboardEvent, pressed: boolean): void {
 			type: ClientMessageTypes.MOVE,
 			payload: movement
 		});
+	} else if (code == "Space") {
+		// Send Switch command
+		socket.send({
+			type: ClientMessageTypes.SWITCH,
+			payload: null
+		});
+	}
+	else {
+		console.log("Unused key code", code);
 	}
 }
 

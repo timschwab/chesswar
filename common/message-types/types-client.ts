@@ -2,7 +2,8 @@ import { ChesswarId } from "../data-types/types-base.ts";
 import { AbstractMessage } from "./types-base.ts";
 
 export enum ClientMessageTypes {
-	MOVE = "move"
+	MOVE = "move",
+	SWITCH = "switch"
 }
 
 export type MoveMessagePayload = {
@@ -13,5 +14,8 @@ export type MoveMessagePayload = {
 }
 type MoveMessage = AbstractMessage<ClientMessageTypes.MOVE, MoveMessagePayload>;
 
-export type ClientMessage = MoveMessage;
+export type SwitchMessagePayload = null;
+type SwitchMessage = AbstractMessage<ClientMessageTypes.SWITCH, SwitchMessagePayload>
+
+export type ClientMessage = MoveMessage | SwitchMessage;
 export type ClientMessageWithId = ClientMessage & { id: ChesswarId }
