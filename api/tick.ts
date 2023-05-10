@@ -27,7 +27,7 @@ function movePlayer(player: ServerPlayer): void {
 	const oppositeDir = physics.speed.dir + TAU_HALF;
 	const playerSpeed = physics.speed.mag;
 	const frictionMag = Math.min(gameEngine.frictionCoef * physics.mass, playerSpeed);
-	const airResistanceMag = gameEngine.airResistanceCoef*playerSpeed;
+	const airResistanceMag = gameEngine.airResistanceCoef*(playerSpeed*playerSpeed);
 
 	const inputForce = physics.inputForce;
 	const frictionForce = Vector(frictionMag, oppositeDir);

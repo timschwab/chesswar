@@ -36,9 +36,9 @@ export const buildSettings = {
 /* ----- start game engine ----- */
 export const gameEngine = {
 	startingRole: PlayerType.SOLDIER,
-	inputForceMag: 10,
-	frictionCoef: 1,
-	airResistanceCoef: 1,
+	inputForceMag: 2,
+	frictionCoef: 0.5,
+	airResistanceCoef: 0.002,
 	physics: {
 		[PlayerType.SOLDIER]: {
 			mass: 1,
