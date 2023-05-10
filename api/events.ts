@@ -1,4 +1,4 @@
-import { Vector } from "../common/data-types/shapes.ts";
+import { Circle, Point, Vector } from "../common/data-types/shapes.ts";
 import { PlayerType, TeamName } from "../common/data-types/types-base.ts";
 import { ClientMessageTypes, ClientMessageWithId, MoveMessagePayload } from "../common/message-types/types-client.ts";
 import { ServerMessageTypes } from "../common/message-types/types-server.ts";
@@ -14,8 +14,14 @@ export function addPlayer(id: string): void {
 		team,
 		role: PlayerType.SOLDIER,
 		canSwitchTo: null,
-		physics: spawnPlayer(team)
+		physics: {
+			acceleration: Vector(0, 0),
+			speed: Vector(0, 0),
+			position: Circle(Point(0, 0), 0)
+		}
 	}
+
+	spawnPlayer(newPlayer);
 
 	state.allPlayers.set(id, newPlayer);
 	state[team].playerMap.set(id, newPlayer);
@@ -54,8 +60,17 @@ export function receiveMessage(message: ClientMessageWithId): void {
 	}
 }
 
+function getPlayer(id: string): ServerPlayer {
+	const player = state.allPlayers.get(id);
+	if (player) {
+		return player;
+	} else {
+		throw new ReferenceError("Could not find player: " + id);
+	}
+}
+
 function playerMove(player: ServerPlayer, keys: MoveMessagePayload): void {
-	const pos = gameEngine.acceleration;
+	const pos = gameEngine.physics[player.role].acceleration;
 	const neg = -1 * pos;
 
 	// Compute acceleration
@@ -76,14 +91,7 @@ function playerSwitch(player: ServerPlayer) {
 		// Do nothing
 	} else {
 		player.role = player.canSwitchTo;
-	}
-}
-
-function getPlayer(id: string): ServerPlayer {
-	const player = state.allPlayers.get(id);
-	if (player) {
-		return player;
-	} else {
-		throw new ReferenceError("Could not find player: " + id);
+		const radius = gameEngine.physics[player.role].playerRadius;
+		player.physics.position = Circle(player.physics.position.center, radius);
 	}
 }

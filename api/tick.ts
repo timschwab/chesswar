@@ -5,11 +5,11 @@ import { gameEngine } from "../common/settings.ts";
 import { inside } from "../common/shape-logic/inside.ts";
 import { touches } from "../common/shape-logic/touches.ts";
 import { spawnPlayer } from "./spawn.ts";
-import state, { ServerPlayer, ServerPlayerPhysics } from "./state.ts";
+import state, { ServerPlayer } from "./state.ts";
 
 export function tickPlayers() {
 	for (const player of state.allPlayers.values()) {
-		movePlayer(player.physics);
+		movePlayer(player);
 		checkDeathRects(player);
 		checkDeathCircles(player);
 
@@ -17,9 +17,13 @@ export function tickPlayers() {
 	}
 }
 
-function movePlayer(physics: ServerPlayerPhysics): void {
-	const posSpeed = gameEngine.maxSpeed;
+function movePlayer(player: ServerPlayer): void {
+	const physics = player.physics;
+	const radius = gameEngine.physics[player.role].playerRadius;
+	const posSpeed = gameEngine.physics[player.role].maxSpeed;
 	const negSpeed = -1 * posSpeed;
+
+	// Compute acceleration based on input, friction, and air resistance
 
 	// Compute speed based on acceleration
 	let speedX = physics.speed.x
@@ -45,7 +49,7 @@ function movePlayer(physics: ServerPlayerPhysics): void {
 
 	// Set new values
 	physics.speed = Vector(speedX, speedY);
-	physics.position = Circle(Point(positionX, positionY), gameEngine.playerRadius);
+	physics.position = Circle(Point(positionX, positionY), radius);
 }
 
 // Lil helper function
@@ -68,7 +72,7 @@ function between(val: number, min: number, max: number, effect?: () => void) {
 function checkDeathRects(player: ServerPlayer): void {
 	for (const deathRect of map.deathRects) {
 		if (touches(player.physics.position, deathRect)) {
-			player.physics = spawnPlayer(player.team);
+			spawnPlayer(player);
 		}
 	}
 }
@@ -76,7 +80,7 @@ function checkDeathRects(player: ServerPlayer): void {
 function checkDeathCircles(player: ServerPlayer): void {
 	for (const deathCircle of map.deathCircles) {
 		if (touches(player.physics.position, deathCircle)) {
-			player.physics = spawnPlayer(player.team);
+			spawnPlayer(player);
 		}
 	}
 }

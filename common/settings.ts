@@ -1,4 +1,6 @@
+import { addPlayer } from "../api/events.ts";
 import { Color } from "./colors.ts";
+import { PlayerType } from "./data-types/types-base.ts";
 
 /* ----- start server origins ----- */
 export const remoteApiServer = {
@@ -34,9 +36,29 @@ export const buildSettings = {
 
 /* ----- start game engine ----- */
 export const gameEngine = {
-	acceleration: 0.5,
-	maxSpeed: 40,
-	playerRadius: 5
+	startingRole: PlayerType.SOLDIER,
+	physics: {
+		[PlayerType.SOLDIER]: {
+			acceleration: 1,
+			maxSpeed: 10,
+			playerRadius: 5
+		},
+		[PlayerType.GENERAL]: {
+			acceleration: 0,
+			maxSpeed: 0,
+			playerRadius: 5
+		},
+		[PlayerType.TANK]: {
+			acceleration: 0.5,
+			maxSpeed: 20,
+			playerRadius: 20
+		},
+		[PlayerType.SPY]: {
+			acceleration: 0.5,
+			maxSpeed: 5,
+			playerRadius: 3
+		}
+	}
 };
 
 /* ----- start rensets ----- */
