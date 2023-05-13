@@ -14,7 +14,6 @@ export function spawnPlayer(player: ServerPlayer): void {
 	player.role = role;
 	player.physics = {
 		mass: mass,
-		inputForce: player.physics.inputForce, // Keep the state of the input force
 		speed: Vector(0, 0),
 		position: Circle(start, radius)
 	};

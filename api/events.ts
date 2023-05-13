@@ -3,7 +3,6 @@ import { PlayerType, TeamName } from "../common/data-types/types-base.ts";
 import { ClientMessageTypes, ClientMessageWithId, MoveMessagePayload } from "../common/message-types/types-client.ts";
 import { ServerMessageTypes } from "../common/message-types/types-server.ts";
 import { gameEngine } from "../common/settings.ts";
-import { pointToVector } from "../common/shape-logic/vector.ts";
 import socket from "./socket.ts";
 import { spawnPlayer } from "./spawn.ts";
 import state, { ServerPlayer } from "./state.ts";
@@ -15,8 +14,13 @@ export function addPlayer(id: string): void {
 		team,
 		role: PlayerType.SOLDIER,
 		canSwitchTo: null,
+		movement: {
+			left: false,
+			right: false,
+			up: false,
+			down: false
+		},
 		physics: {
-			inputForce: Vector(0, 0),
 			speed: Vector(0, 0),
 			mass: 0,
 			position: Circle(Point(0, 0), 0)
@@ -72,21 +76,7 @@ function getPlayer(id: string): ServerPlayer {
 }
 
 function playerMove(player: ServerPlayer, keys: MoveMessagePayload): void {
-	// Compute force
-	const pos = gameEngine.inputForceMag;
-	const neg = -1*pos;
-
-	const left = keys.left ? neg : 0;
-	const right = keys.right ? pos : 0;
-	const up = keys.up ? neg : 0;
-	const down = keys.down ? pos : 0;
-
-	const xDir = left + right;
-	const yDir = up + down;
-
-	const force = pointToVector(Point(xDir, yDir));
-
-	player.physics.inputForce = force;
+	player.movement = keys;
 }
 
 function playerSwitch(player: ServerPlayer) {

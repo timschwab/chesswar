@@ -1,4 +1,5 @@
 import { ChesswarId } from "../data-types/types-base.ts";
+import { MovementState } from "../data-types/types-server.ts";
 import { AbstractMessage } from "./types-base.ts";
 
 export enum ClientMessageTypes {
@@ -6,12 +7,7 @@ export enum ClientMessageTypes {
 	SWITCH = "switch"
 }
 
-export type MoveMessagePayload = {
-	left: boolean,
-	right: boolean,
-	up: boolean,
-	down: boolean
-}
+export type MoveMessagePayload = MovementState;
 type MoveMessage = AbstractMessage<ClientMessageTypes.MOVE, MoveMessagePayload>;
 
 export type SwitchMessagePayload = null;
