@@ -22,9 +22,10 @@ export function tickPlayers() {
 function movePlayer(player: ServerPlayer): void {
 	const physics = player.physics;
 	const radius = gameEngine.physics[player.role].radius;
+	
 
 	// Compute input force
-	const pos = gameEngine.inputForceMag;
+	const pos = gameEngine.physics[player.role].inputForceMag;
 	const neg = -1*pos;
 
 	const left = player.movement.left ? neg : 0;
