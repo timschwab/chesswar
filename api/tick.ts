@@ -27,13 +27,13 @@ function movePlayer(player: ServerPlayer): void {
 	const oppositeDir = physics.speed.dir + TAU_HALF;
 	const playerSpeed = physics.speed.mag;
 	const frictionMag = Math.min(gameEngine.frictionCoef * physics.mass, playerSpeed);
-	const airResistanceMag = gameEngine.airResistanceCoef*(playerSpeed*playerSpeed);
+	const dragMag = gameEngine.dragCoef*(playerSpeed*playerSpeed);
 
 	const inputForce = physics.inputForce;
 	const frictionForce = Vector(frictionMag, oppositeDir);
-	const airResistanceForce = Vector(airResistanceMag, oppositeDir);
+	const dragForce = Vector(dragMag, oppositeDir);
 
-	const netForce = add(add(inputForce, frictionForce), airResistanceForce);
+	const netForce = add(add(inputForce, frictionForce), dragForce);
 	
 	// Compute speed based on force and mass
 	const netAcceleration = multiply(netForce, 1/physics.mass);
