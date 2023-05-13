@@ -27,19 +27,19 @@ function movePlayer(player: ServerPlayer): void {
 	const oppositeDir = physics.speed.dir + TAU_HALF;
 	const playerSpeed = physics.speed.mag;
 	const frictionMag = Math.min(gameEngine.frictionCoef * physics.mass, playerSpeed);
-	const dragMag = gameEngine.dragCoef*(playerSpeed*playerSpeed);
+	const dragMag = gameEngine.dragCoef*(playerSpeed);
 
 	const inputForce = physics.inputForce;
 	const frictionForce = Vector(frictionMag, oppositeDir);
 	const dragForce = Vector(dragMag, oppositeDir);
 
 	const netForce = add(add(inputForce, frictionForce), dragForce);
-	
+
 	// Compute speed based on force and mass
 	const netAcceleration = multiply(netForce, 1/physics.mass);
 	const newSpeed = add(physics.speed, netAcceleration);
 
-	// Compute position based on speed, and bounce off the sides
+	// Compute position based on speed, TODO: and bounce off the sides
 	const xyVector = vectorToPoint(newSpeed);
 	const newPosition = transposePoint(physics.position.center, xyVector);
 

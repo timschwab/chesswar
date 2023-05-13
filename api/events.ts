@@ -97,6 +97,9 @@ function playerSwitch(player: ServerPlayer) {
 	} else {
 		player.role = player.canSwitchTo;
 		const radius = gameEngine.physics[player.role].radius;
+		const mass = gameEngine.physics[player.role].mass;
+
+		player.physics.mass = mass;
 		player.physics.position = Circle(player.physics.position.center, radius);
 	}
 }
