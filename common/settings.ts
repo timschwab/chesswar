@@ -1,5 +1,5 @@
 import { Color } from "./colors.ts";
-import { PlayerType } from "./data-types/types-base.ts";
+import { PlayerRole } from "./data-types/types-base.ts";
 
 /* ----- start server origins ----- */
 export const remoteApiServer = {
@@ -35,26 +35,26 @@ export const buildSettings = {
 
 /* ----- start game engine ----- */
 export const gameEngine = {
-	startingRole: PlayerType.SOLDIER,
+	startingRole: PlayerRole.SOLDIER,
 	frictionCoef: 0.5,
 	dragCoef: 0.1,
 	physics: {
-		[PlayerType.SOLDIER]: {
+		[PlayerRole.SOLDIER]: {
 			radius: 5,
 			mass: 1,
 			inputForceMag: 3
 		},
-		[PlayerType.GENERAL]: {
+		[PlayerRole.GENERAL]: {
 			radius: 5,
 			mass: 0,
 			inputForceMag: 0
 		},
-		[PlayerType.TANK]: {
+		[PlayerRole.TANK]: {
 			radius: 20,
 			mass: 5,
 			inputForceMag: 15
 		},
-		[PlayerType.SPY]: {
+		[PlayerRole.SPY]: {
 			radius: 3,
 			mass: 0.2,
 			inputForceMag: 0.9

@@ -1,5 +1,5 @@
 import { Circle, Vector } from "../common/data-types/shapes.ts";
-import { ChesswarId, PlayerType, TeamName } from "../common/data-types/types-base.ts";
+import { ChesswarId, PlayerRole, TeamName } from "../common/data-types/types-base.ts";
 import { MovementState } from "../common/data-types/types-server.ts";
 
 export interface ServerPlayerPhysics {
@@ -11,8 +11,8 @@ export interface ServerPlayerPhysics {
 export interface ServerPlayer {
 	id: ChesswarId,
 	team: TeamName,
-	role: PlayerType,
-	canSwitchTo: PlayerType | null,
+	role: PlayerRole,
+	canSwitchTo: PlayerRole | null,
 	movement: MovementState,
 	physics: ServerPlayerPhysics
 }

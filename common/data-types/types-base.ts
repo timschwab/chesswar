@@ -5,7 +5,7 @@ export enum TeamName {
 	BRAVO = "bravo"
 }
 
-export enum PlayerType {
+export enum PlayerRole {
 	SOLDIER = "soldier",
 	GENERAL = "general",
 	SPY = "spy",

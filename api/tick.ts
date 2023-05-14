@@ -1,5 +1,5 @@
 import { Circle, Point, Vector } from "../common/data-types/shapes.ts";
-import { PlayerType } from "../common/data-types/types-base.ts";
+import { PlayerRole } from "../common/data-types/types-base.ts";
 import map from "../common/map.ts";
 import { gameEngine } from "../common/settings.ts";
 import { inside } from "../common/shape-logic/inside.ts";
@@ -78,22 +78,22 @@ function checkDeathCircles(player: ServerPlayer): void {
 	}
 }
 
-function canSwitchTo(player: ServerPlayer): PlayerType | null {
+function canSwitchTo(player: ServerPlayer): PlayerRole | null {
 	const pos = player.physics.position;
 	const facilityBundles = map.facilities.filter(fac => fac.team == player.team);
 
 	for (const bundle of facilityBundles) {
 		if (inside(pos, bundle.command)) {
-			return PlayerType.GENERAL;
+			return PlayerRole.GENERAL;
 		} else if (inside(pos, bundle.armory)) {
-			return PlayerType.TANK;
+			return PlayerRole.TANK;
 		} else if (inside(pos, bundle.intel)) {
-			return PlayerType.SPY;
+			return PlayerRole.SPY;
 		}
 
 		for (const briefing of bundle.briefings) {
 			if (inside(pos, briefing)) {
-				return PlayerType.SOLDIER;
+				return PlayerRole.SOLDIER;
 			}
 		}
 	}
