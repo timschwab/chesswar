@@ -5,6 +5,8 @@ import { Point, Rect } from "../../common/data-types/shapes.ts";
 import { ClientPlayer } from "../../common/data-types/types-client.ts";
 import { rensets } from "../../common/settings.ts";
 import { Color } from "../../common/colors.ts";
+import { PlayerRole } from "../../common/data-types/types-base.ts";
+import canvas from "./canvas.ts";
 
 function render(state: SafeState) {
 	const selfPlayer = getSelf(state);
@@ -12,6 +14,10 @@ function render(state: SafeState) {
 	renderBackground();
 	renderMap(selfPlayer);
 	renderPlayers(state, selfPlayer);
+
+	if (selfPlayer.role == PlayerRole.GENERAL) {
+		renderChessboard(state);
+	}
 }
 
 function getSelf(state: SafeState): ClientPlayer {
@@ -133,6 +139,24 @@ function renderPlayers(state: SafeState, selfPlayer: ClientPlayer) {
 
 		camera.fillCircle(player.position, color);
 	}
+}
+
+function renderChessboard(state: SafeState) {
+	const windowWidth = 600;
+	const windowHeight = 400;
+
+	const middleX = state.screen.width/2;
+	const middleY = state.screen.height/2;
+
+	const topLeftX = middleX - windowWidth/2;
+	const topLeftY = middleY - windowHeight/2;
+	const bottomRightX = middleX + windowWidth/2;
+	const bottomRightY = middleY + windowHeight/2;
+
+	const windowRect = Rect(Point(topLeftX, topLeftY), Point(bottomRightX, bottomRightY));
+
+	canvas.fillRect(windowRect, rensets.chessboard.windowInside);
+	canvas.outlineRect(windowRect, rensets.chessboard.windowOutline, 5);
 }
 
 export default render;
