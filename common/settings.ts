@@ -37,7 +37,7 @@ export const buildSettings = {
 export const gameEngine = {
 	startingRole: PlayerType.SOLDIER,
 	frictionCoef: 0.5,
-	dragCoef: 0.05,
+	dragCoef: 0.1,
 	physics: {
 		[PlayerType.SOLDIER]: {
 			radius: 5,
@@ -57,7 +57,7 @@ export const gameEngine = {
 		[PlayerType.SPY]: {
 			radius: 3,
 			mass: 0.2,
-			inputForceMag: 0.8
+			inputForceMag: 0.9
 		}
 	}
 };
