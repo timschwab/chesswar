@@ -61,8 +61,8 @@ export function receiveMessage(message: ClientMessageWithId): void {
 
 	if (message.type == ClientMessageTypes.MOVE) {
 		playerMove(player, message.payload);
-	} else if (message.type == ClientMessageTypes.SWITCH) {
-		playerSwitch(player);
+	} else if (message.type == ClientMessageTypes.COMMAND) {
+		playerCommand(player);
 	}
 }
 
@@ -79,7 +79,7 @@ function playerMove(player: ServerPlayer, keys: MoveMessagePayload): void {
 	player.movement = keys;
 }
 
-function playerSwitch(player: ServerPlayer) {
+function playerCommand(player: ServerPlayer) {
 	if (player.canSwitchTo == null) {
 		// Do nothing
 	} else if (player.canSwitchTo == player.role) {

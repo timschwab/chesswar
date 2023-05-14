@@ -58,7 +58,7 @@ function handleKey(event: KeyboardEvent, pressed: boolean): void {
 		// Send Switch command on keydown but not keyup
 		if (pressed) {
 			socket.send({
-				type: ClientMessageTypes.SWITCH,
+				type: ClientMessageTypes.COMMAND,
 				payload: null
 			});
 		}

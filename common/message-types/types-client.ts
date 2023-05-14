@@ -4,14 +4,14 @@ import { AbstractMessage } from "./types-base.ts";
 
 export enum ClientMessageTypes {
 	MOVE = "move",
-	SWITCH = "switch"
+	COMMAND = "command"
 }
 
 export type MoveMessagePayload = MovementState;
 type MoveMessage = AbstractMessage<ClientMessageTypes.MOVE, MoveMessagePayload>;
 
-export type SwitchMessagePayload = null;
-type SwitchMessage = AbstractMessage<ClientMessageTypes.SWITCH, SwitchMessagePayload>
+export type CommandMessagePayload = null;
+type CommandMessage = AbstractMessage<ClientMessageTypes.COMMAND, CommandMessagePayload>;
 
-export type ClientMessage = MoveMessage | SwitchMessage;
+export type ClientMessage = MoveMessage | CommandMessage;
 export type ClientMessageWithId = ClientMessage & { id: ChesswarId }
