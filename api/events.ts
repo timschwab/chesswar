@@ -1,5 +1,5 @@
 import { Circle, Point, Vector } from "../common/data-types/shapes.ts";
-import { PlayerRole, TeamName } from "../common/data-types/types-base.ts";
+import { CommandAction, PlayerRole, TeamName } from "../common/data-types/types-base.ts";
 import { ClientMessageTypes, ClientMessageWithId, MoveMessagePayload } from "../common/message-types/types-client.ts";
 import { ServerMessageTypes } from "../common/message-types/types-server.ts";
 import { gameEngine } from "../common/settings.ts";
@@ -13,7 +13,7 @@ export function addPlayer(id: string): void {
 		id,
 		team,
 		role: PlayerRole.SOLDIER,
-		canSwitchTo: null,
+		commandOption: null,
 		movement: {
 			left: false,
 			right: false,
@@ -79,17 +79,33 @@ function playerMove(player: ServerPlayer, keys: MoveMessagePayload): void {
 	player.movement = keys;
 }
 
-function playerCommand(player: ServerPlayer) {
-	if (player.canSwitchTo == null) {
+function playerCommand(player: ServerPlayer): void {
+	if (player.commandOption == null) {
 		// Do nothing
-	} else if (player.canSwitchTo == player.role) {
-		// Do nothing
-	} else {
-		player.role = player.canSwitchTo;
-		const radius = gameEngine.physics[player.role].radius;
-		const mass = gameEngine.physics[player.role].mass;
-
-		player.physics.mass = mass;
-		player.physics.position = Circle(player.physics.position.center, radius);
+	} else if (player.commandOption == CommandAction.BECOME_GENERAL) {
+		becomeRole(player, PlayerRole.GENERAL);
+	} else if (player.commandOption == CommandAction.BECOME_SOLDIER) {
+		becomeRole(player, PlayerRole.SOLDIER);
+	} else if (player.commandOption == CommandAction.BECOME_TANK) {
+		becomeRole(player, PlayerRole.TANK);
+	} else if (player.commandOption == CommandAction.BECOME_SPY) {
+		becomeRole(player, PlayerRole.SPY);
+	} else if (player.commandOption == CommandAction.GRAB_ORDERS) {
+		// Nothing yet
+	} else if (player.commandOption == CommandAction.COMPLETE_ORDERS) {
+		// Nothing yet
+	} else if (player.commandOption == CommandAction.GATHER_INTEL) {
+		// Nothing yet
+	} else if (player.commandOption == CommandAction.REPORT_INTEL) {
+		// Nothing yet
 	}
+}
+
+function becomeRole(player: ServerPlayer, role: PlayerRole): void {
+	player.role = role;
+	const radius = gameEngine.physics[player.role].radius;
+	const mass = gameEngine.physics[player.role].mass;
+
+	player.physics.mass = mass;
+	player.physics.position = Circle(player.physics.position.center, radius);
 }

@@ -35,7 +35,7 @@ function serverPlayerToClientPlayer(player: ServerPlayer): ClientPlayer {
 		id: player.id,
 		team: player.team,
 		role: player.role,
-		canSwitchTo: player.canSwitchTo,
+		commandOption: player.commandOption,
 		position: player.physics.position
 	};
 }

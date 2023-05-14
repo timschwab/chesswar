@@ -1,10 +1,10 @@
 import { Circle } from "./shapes.ts";
-import { ChesswarId, PlayerRole, TeamName } from "./types-base.ts";
+import { ChesswarId, CommandAction, PlayerRole, TeamName } from "./types-base.ts";
 
 export interface ClientPlayer {
 	id: ChesswarId,
 	team: TeamName,
 	role: PlayerRole,
-	canSwitchTo: PlayerRole | null,
+	commandOption: CommandAction | null,
 	position: Circle
 }

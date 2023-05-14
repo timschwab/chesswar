@@ -6,8 +6,21 @@ export enum TeamName {
 }
 
 export enum PlayerRole {
-	SOLDIER = "soldier",
 	GENERAL = "general",
-	SPY = "spy",
+	SOLDIER = "soldier",
 	TANK = "tank",
+	SPY = "spy"
+}
+
+export enum CommandAction {
+	BECOME_GENERAL = "become-general",
+	BECOME_SOLDIER = "become-soldier",
+	BECOME_TANK = "become-tank",
+	BECOME_SPY = "become-spy",
+
+	GRAB_ORDERS = "grab-orders",
+	COMPLETE_ORDERS = "complete-orders",
+
+	GATHER_INTEL = "record-intel",
+	REPORT_INTEL = "report-intel"
 }
