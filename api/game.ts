@@ -18,7 +18,7 @@ function init() {
 function tick(): void {
 	// Tick everything
 	tickPlayers();
-	// Other stuff eventually
+	// Other stuff eventually (maybe)
 
 	// Broadcast state to everyone
 	const playerList = Array.from(state.allPlayers.values());

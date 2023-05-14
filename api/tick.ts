@@ -1,5 +1,5 @@
 import { Circle, Point, Vector } from "../common/data-types/shapes.ts";
-import { CommandAction, PlayerRole } from "../common/data-types/types-base.ts";
+import { CommandAction } from "../common/data-types/types-base.ts";
 import map from "../common/map.ts";
 import { gameEngine } from "../common/settings.ts";
 import { inside } from "../common/shape-logic/inside.ts";

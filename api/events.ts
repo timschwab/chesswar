@@ -103,9 +103,13 @@ function playerCommand(player: ServerPlayer): void {
 
 function becomeRole(player: ServerPlayer, role: PlayerRole): void {
 	player.role = role;
-	const radius = gameEngine.physics[player.role].radius;
-	const mass = gameEngine.physics[player.role].mass;
+	const radius = gameEngine.physics[role].radius;
+	const mass = gameEngine.physics[role].mass;
 
 	player.physics.mass = mass;
 	player.physics.position = Circle(player.physics.position.center, radius);
+
+	if (role == PlayerRole.GENERAL) {
+		player.physics.speed = Vector(0, 0);
+	}
 }

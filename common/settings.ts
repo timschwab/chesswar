@@ -39,18 +39,18 @@ export const gameEngine = {
 	frictionCoef: 0.5,
 	dragCoef: 0.1,
 	physics: {
+		[PlayerRole.GENERAL]: {
+			radius: 15,
+			mass: Infinity,
+			inputForceMag: 0
+		},
 		[PlayerRole.SOLDIER]: {
 			radius: 5,
 			mass: 1,
 			inputForceMag: 3
 		},
-		[PlayerRole.GENERAL]: {
-			radius: 5,
-			mass: 0,
-			inputForceMag: 0
-		},
 		[PlayerRole.TANK]: {
-			radius: 20,
+			radius: 25,
 			mass: 5,
 			inputForceMag: 15
 		},
