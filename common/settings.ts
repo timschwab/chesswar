@@ -106,6 +106,9 @@ export const rensets = {
 	},
 	chessboard: {
 		windowOutline: Color.GREEN_BRIGHT,
-		windowInside: Color.GREY_WHITE
+		windowInside: Color.GREY_WHITE,
+		boardOutline: Color.GREY_DARK,
+		boardLight: Color.YELLOW_STANDARD,
+		boardDark: Color.CYAN_DARK
 	}
 };

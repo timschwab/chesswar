@@ -142,9 +142,13 @@ function renderPlayers(state: SafeState, selfPlayer: ClientPlayer) {
 }
 
 function renderChessboard(state: SafeState) {
+	const padding = 20;
+	const squareSize = 50;
+	const boardSize = squareSize*8;
 	const windowWidth = 600;
-	const windowHeight = 400;
-
+	const windowHeight = boardSize + (padding*2);
+	
+	const cb = rensets.chessboard;
 	const middleX = state.screen.width/2;
 	const middleY = state.screen.height/2;
 
@@ -153,10 +157,27 @@ function renderChessboard(state: SafeState) {
 	const bottomRightX = middleX + windowWidth/2;
 	const bottomRightY = middleY + windowHeight/2;
 
+	// Draw window
 	const windowRect = Rect(Point(topLeftX, topLeftY), Point(bottomRightX, bottomRightY));
+	canvas.fillRect(windowRect, cb.windowInside);
+	canvas.outlineRect(windowRect, cb.windowOutline, 5);
 
-	canvas.fillRect(windowRect, rensets.chessboard.windowInside);
-	canvas.outlineRect(windowRect, rensets.chessboard.windowOutline, 5);
+	// Draw board squares
+	const boardTopLeftX = topLeftX + padding;
+	const boardTopLeftY = topLeftY + padding;
+	for (let x = 0 ; x < 8 ; x++) {
+		for (let y = 0 ; y < 8 ; y++) {
+			const color = (x+y) % 2 == 0 ? cb.boardLight : cb.boardDark;
+			const squareTLX = boardTopLeftX + (x*squareSize);
+			const squareTLY = boardTopLeftY + (y*squareSize);
+			const squareRect = Rect(Point(squareTLX, squareTLY), Point(squareTLX+squareSize, squareTLY+squareSize));
+			canvas.fillRect(squareRect, color);
+		}
+	}
+
+	// Draw board outline
+	const boardRect = Rect(Point(boardTopLeftX, boardTopLeftY), Point(topLeftX+boardSize+padding, topLeftY+boardSize+padding));
+	canvas.outlineRect(boardRect, cb.boardOutline, 2);
 }
 
 export default render;
