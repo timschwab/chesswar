@@ -107,8 +107,8 @@ export const rensets = {
 	chessboard: {
 		windowOutline: Color.GREEN_BRIGHT,
 		windowInside: Color.GREY_WHITE,
-		boardOutline: Color.GREY_DARK,
-		boardLight: Color.YELLOW_STANDARD,
-		boardDark: Color.CYAN_DARK
+		boardOutline: Color.GREY_BLACK,
+		boardLight: Color.GREY_LIGHT,
+		boardDark: Color.GREY_DARK
 	}
 };
