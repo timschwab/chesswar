@@ -176,7 +176,9 @@ function renderChessboard(state: SafeState) {
 
 			const cell = state.teamBoard[row][col];
 			if (cell) {
-				if (cell.piece == ChessPiece.PAWN) {
+				if (cell.piece == ChessPiece.KING) {
+					renderKing(squareTL, squareSize, cell.team);
+				} else if (cell.piece == ChessPiece.PAWN) {
 					renderPawn(squareTL, squareSize, cell.team);
 				}
 			}
@@ -186,6 +188,27 @@ function renderChessboard(state: SafeState) {
 	// Draw board outline
 	const boardRect = Rect(Point(boardTopLeftX, boardTopLeftY), Point(topLeftX+boardSize+padding, topLeftY+boardSize+padding));
 	canvas.outlineRect(boardRect, cb.boardOutline, 2);
+}
+
+function renderKing(topLeft: Point, width: number, team: TeamName) {
+	const color = rensets.chessboard.pieceColor[team];
+	const topLeftX = topLeft.x;
+	const topLeftY = topLeft.y;
+
+	const middleX = topLeftX+(width/2);
+	const middleY = topLeftY+(width/2);
+
+	const bottomTopLeft = Point(middleX-(width*3/8), middleY);
+	const bottomBottomRight = Point(middleX+(width*3/8), middleY+(width*3/8));
+	canvas.fillRect(Rect(bottomTopLeft, bottomBottomRight), color);
+
+	const crossVerticalTopLeft = Point(middleX-(width/16), middleY-(width*3/8));
+	const crossVerticalBottomRight = Point(middleX+(width/16), middleY+(width/8));
+	canvas.fillRect(Rect(crossVerticalTopLeft, crossVerticalBottomRight), color);
+
+	const crossHorizontalTopLeft = Point(middleX-(width*3/16), middleY-(width*2/8));
+	const crossHorizontalBottomRight = Point(middleX+(width*3/16), middleY-(width*1/8));
+	canvas.fillRect(Rect(crossHorizontalTopLeft, crossHorizontalBottomRight), color);
 }
 
 function renderPawn(topLeft: Point, width: number, team: TeamName) {
