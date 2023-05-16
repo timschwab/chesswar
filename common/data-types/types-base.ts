@@ -1,14 +1,5 @@
 export type ChesswarId = string;
 
-export enum ChessPiece {
-	KING = "king",
-	QUEEN = "queen",
-	ROOK = "rook",
-	BISHOP = "bishop",
-	KNIGHT = "knight",
-	PAWN = "pawn"
-}
-
 export enum TeamName {
 	ALPHA = "alpha",
 	BRAVO = "bravo"
@@ -33,3 +24,21 @@ export enum CommandAction {
 	GATHER_INTEL = "record-intel",
 	REPORT_INTEL = "report-intel"
 }
+
+export enum ChessPiece {
+	KING = "king",
+	QUEEN = "queen",
+	ROOK = "rook",
+	BISHOP = "bishop",
+	KNIGHT = "knight",
+	PAWN = "pawn"
+}
+
+export interface ChessSquareState {
+	piece: ChessPiece,
+	team: TeamName
+}
+
+export type ChessCell = ChessSquareState | null;
+export type ChessRow = [ChessCell, ChessCell, ChessCell, ChessCell, ChessCell, ChessCell, ChessCell, ChessCell]; // tuple of 8
+export type ChessBoard = [ChessRow, ChessRow, ChessRow, ChessRow, ChessRow, ChessRow, ChessRow, ChessRow]; // tuple of 8

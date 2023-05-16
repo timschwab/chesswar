@@ -1,15 +1,6 @@
 import { Circle, Vector } from "../common/data-types/shapes.ts";
-import { ChessPiece, ChesswarId, CommandAction, PlayerRole, TeamName } from "../common/data-types/types-base.ts";
+import { ChessBoard, ChessPiece, ChessRow, ChesswarId, CommandAction, PlayerRole, TeamName } from "../common/data-types/types-base.ts";
 import { MovementState } from "../common/data-types/types-server.ts";
-
-export interface SquareState {
-	piece: ChessPiece,
-	team: TeamName
-}
-
-type Cell = SquareState | null;
-type Row = [Cell, Cell, Cell, Cell, Cell, Cell, Cell, Cell]; // tuple of 8
-type Board = [Row, Row, Row, Row, Row, Row, Row, Row]; // tuple of 8
 
 export interface ServerPlayerPhysics {
 	mass: number,
@@ -29,12 +20,12 @@ export interface ServerPlayer {
 type PlayerMap = Map<ChesswarId, ServerPlayer>;
 
 interface Team {
-	teamBoard: Board
+	teamBoard: ChessBoard
 	playerMap: PlayerMap
 }
 
 interface ServerState {
-	realBoard: Board,
+	realBoard: ChessBoard,
 	allPlayers: PlayerMap,
 	[TeamName.ALPHA]: Team,
 	[TeamName.BRAVO]: Team
@@ -53,8 +44,8 @@ const state: ServerState = {
 	}
 };
 
-function newBoard(): Board {
-	const row1: Row = [
+function newBoard(): ChessBoard {
+	const row1: ChessRow = [
 		{team: TeamName.ALPHA, piece: ChessPiece.ROOK},
 		{team: TeamName.ALPHA, piece: ChessPiece.KNIGHT},
 		{team: TeamName.ALPHA, piece: ChessPiece.BISHOP},
@@ -65,7 +56,7 @@ function newBoard(): Board {
 		{team: TeamName.ALPHA, piece: ChessPiece.ROOK}
 	];
 
-	const row2: Row = [
+	const row2: ChessRow = [
 		{team: TeamName.ALPHA, piece: ChessPiece.PAWN},
 		{team: TeamName.ALPHA, piece: ChessPiece.PAWN},
 		{team: TeamName.ALPHA, piece: ChessPiece.PAWN},
@@ -76,12 +67,12 @@ function newBoard(): Board {
 		{team: TeamName.ALPHA, piece: ChessPiece.PAWN}
 	];
 
-	const row3: Row = [null, null, null, null, null, null, null, null];
-	const row4: Row = [null, null, null, null, null, null, null, null];
-	const row5: Row = [null, null, null, null, null, null, null, null];
-	const row6: Row = [null, null, null, null, null, null, null, null];
+	const row3: ChessRow = [null, null, null, null, null, null, null, null];
+	const row4: ChessRow = [null, null, null, null, null, null, null, null];
+	const row5: ChessRow = [null, null, null, null, null, null, null, null];
+	const row6: ChessRow = [null, null, null, null, null, null, null, null];
 
-	const row7: Row = [
+	const row7: ChessRow = [
 		{team: TeamName.BRAVO, piece: ChessPiece.PAWN},
 		{team: TeamName.BRAVO, piece: ChessPiece.PAWN},
 		{team: TeamName.BRAVO, piece: ChessPiece.PAWN},
@@ -92,7 +83,7 @@ function newBoard(): Board {
 		{team: TeamName.BRAVO, piece: ChessPiece.PAWN}
 	];
 
-	const row8: Row = [
+	const row8: ChessRow = [
 		{team: TeamName.BRAVO, piece: ChessPiece.ROOK},
 		{team: TeamName.BRAVO, piece: ChessPiece.KNIGHT},
 		{team: TeamName.BRAVO, piece: ChessPiece.BISHOP},
