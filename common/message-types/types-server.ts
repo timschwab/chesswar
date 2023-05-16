@@ -9,7 +9,7 @@ export enum ServerMessageTypes {
 
 export type PlayerInitMessagePayload = {
 	id: ChesswarId,
-	board: ChessBoard
+	teamBoard: ChessBoard
 }
 type PlayerInitMessage = AbstractMessage<ServerMessageTypes.PLAYER_INIT, PlayerInitMessagePayload>;
 

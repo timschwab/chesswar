@@ -5,7 +5,7 @@ import { Circle, Point, Rect } from "../../common/data-types/shapes.ts";
 import { ClientPlayer } from "../../common/data-types/types-client.ts";
 import { rensets } from "../../common/settings.ts";
 import { Color } from "../../common/colors.ts";
-import { PlayerRole, TeamName } from "../../common/data-types/types-base.ts";
+import { ChessPiece, PlayerRole, TeamName } from "../../common/data-types/types-base.ts";
 import canvas from "./canvas.ts";
 
 function render(state: SafeState) {
@@ -165,15 +165,21 @@ function renderChessboard(state: SafeState) {
 	// Draw board squares
 	const boardTopLeftX = topLeftX + padding;
 	const boardTopLeftY = topLeftY + padding;
-	for (let x = 0 ; x < 8 ; x++) {
-		for (let y = 0 ; y < 8 ; y++) {
-			const color = (x+y) % 2 == 0 ? cb.boardLight : cb.boardDark;
-			const squareTLX = boardTopLeftX + (x*squareSize);
-			const squareTLY = boardTopLeftY + (y*squareSize);
+	for (let row = 0 ; row < 8 ; row++) {
+		for (let col = 0 ; col < 8 ; col++) {
+			const color = (row+col) % 2 == 0 ? cb.boardLight : cb.boardDark;
+			const squareTLX = boardTopLeftX + (col*squareSize);
+			const squareTLY = boardTopLeftY + (row*squareSize);
 			const squareTL = Point(squareTLX, squareTLY);
 			const squareRect = Rect(squareTL, Point(squareTLX+squareSize, squareTLY+squareSize));
 			canvas.fillRect(squareRect, color);
-			renderPawn(squareTL, squareSize, TeamName.ALPHA);
+
+			const cell = state.teamBoard[row][col];
+			if (cell) {
+				if (cell.piece == ChessPiece.PAWN) {
+					renderPawn(squareTL, squareSize, cell.team);
+				}
+			}
 		}
 	}
 
