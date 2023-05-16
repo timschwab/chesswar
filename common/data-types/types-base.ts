@@ -1,5 +1,14 @@
 export type ChesswarId = string;
 
+export enum ChessPiece {
+	KING = "king",
+	QUEEN = "queen",
+	ROOK = "rook",
+	BISHOP = "bishop",
+	KNIGHT = "knight",
+	PAWN = "pawn"
+}
+
 export enum TeamName {
 	ALPHA = "alpha",
 	BRAVO = "bravo"
