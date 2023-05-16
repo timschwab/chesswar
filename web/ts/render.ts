@@ -178,6 +178,14 @@ function renderChessboard(state: SafeState) {
 			if (cell) {
 				if (cell.piece == ChessPiece.KING) {
 					renderKing(squareTL, squareSize, cell.team);
+				} else if (cell.piece == ChessPiece.QUEEN) {
+					renderQueen(squareTL, squareSize, cell.team);
+				} else if (cell.piece == ChessPiece.ROOK) {
+					renderRook(squareTL, squareSize, cell.team);
+				} else if (cell.piece == ChessPiece.BISHOP) {
+					renderBishop(squareTL, squareSize, cell.team);
+				} else if (cell.piece == ChessPiece.KNIGHT) {
+					renderKnight(squareTL, squareSize, cell.team);
 				} else if (cell.piece == ChessPiece.PAWN) {
 					renderPawn(squareTL, squareSize, cell.team);
 				}
@@ -209,6 +217,22 @@ function renderKing(topLeft: Point, width: number, team: TeamName) {
 	const crossHorizontalTopLeft = Point(middleX-(width*3/16), middleY-(width*2/8));
 	const crossHorizontalBottomRight = Point(middleX+(width*3/16), middleY-(width*1/8));
 	canvas.fillRect(Rect(crossHorizontalTopLeft, crossHorizontalBottomRight), color);
+}
+
+function renderQueen(topLeft: Point, width: number, team: TeamName) {
+	// TODO
+}
+
+function renderRook(topLeft: Point, width: number, team: TeamName) {
+	// TODO
+}
+
+function renderBishop(topLeft: Point, width: number, team: TeamName) {
+	// TODO
+}
+
+function renderKnight(topLeft: Point, width: number, team: TeamName) {
+	// TODO
 }
 
 function renderPawn(topLeft: Point, width: number, team: TeamName) {
