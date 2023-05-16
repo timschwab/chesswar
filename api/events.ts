@@ -32,7 +32,7 @@ export function addPlayer(id: string): void {
 	state.allPlayers.set(id, newPlayer);
 	state[team].playerMap.set(id, newPlayer);
 
-	socket.send(id, {
+	socket.sendOne(id, {
 		type: ServerMessageTypes.PLAYER_INIT,
 		payload: {
 			id

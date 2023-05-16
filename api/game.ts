@@ -24,7 +24,7 @@ function tick(): void {
 	const playerList = Array.from(state.allPlayers.values());
 	const payload = playerList.map(serverPlayerToClientPlayer);
 
-	socket.broadcast({
+	socket.sendAll({
 		type: ServerMessageTypes.STATE,
 		payload: payload
 	});

@@ -50,7 +50,7 @@ function newConnection(sock: WebSocket) {
 	};
 }
 
-function send(id: string, message: ServerMessage) {
+function sendOne(id: string, message: ServerMessage) {
 	const conn = connections.get(id);
 	if (conn) {
 		conn.send(JSON.stringify(message));
@@ -59,7 +59,7 @@ function send(id: string, message: ServerMessage) {
 	}
 }
 
-function broadcast(message: ServerMessage) {
+function sendAll(message: ServerMessage) {
 	const str = JSON.stringify(message);
 	for (const conn of connections.values()) {
 		conn.send(str);
@@ -73,6 +73,6 @@ export default {
 		remove: removeHook.register,
 		message: messageHook.register
 	},
-	send,
-	broadcast
+	sendOne,
+	sendAll
 };
