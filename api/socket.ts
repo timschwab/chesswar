@@ -2,14 +2,15 @@ import slim from "../common/slim-id.ts";
 import { createHook } from "../common/hooks.ts";
 import { ClientMessage, ClientMessageWithId } from "../common/message-types/types-client.ts";
 import { ServerMessage } from "../common/message-types/types-server.ts";
+import { ChesswarId } from "../common/data-types/types-base.ts";
 
-const connections = new Map<string, WebSocket>();
+const connections = new Map<ChesswarId, WebSocket>();
 const addHook = createHook<string>();
 const removeHook = createHook<string>();
 const messageHook = createHook<ClientMessageWithId>();
 
 function newConnection(sock: WebSocket) {
-	const id = slim.make();
+	const id: ChesswarId = slim.make();
 
 	sock.onopen = function() {
 		console.log("--- connection ---");
@@ -50,12 +51,24 @@ function newConnection(sock: WebSocket) {
 	};
 }
 
-function sendOne(id: string, message: ServerMessage) {
+function sendOne(id: ChesswarId, message: ServerMessage) {
 	const conn = connections.get(id);
 	if (conn) {
 		conn.send(JSON.stringify(message));
 	} else {
 		throw "Could not find connection with id " + id;
+	}
+}
+
+function sendBulk(ids: ChesswarId[], message: ServerMessage) {
+	const str = JSON.stringify(message);
+	for (const id of ids) {
+		const conn = connections.get(id);
+		if (conn) {
+			conn.send(str);
+		} else {
+			throw "Could not find connection with id " + id;
+		}
 	}
 }
 
@@ -74,5 +87,6 @@ export default {
 		message: messageHook.register
 	},
 	sendOne,
+	sendBulk,
 	sendAll
 };
