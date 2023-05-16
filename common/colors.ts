@@ -11,6 +11,7 @@ export enum Color {
 	CYAN_STANDARD = "#00A0A0",
 	CYAN_DARK = "#004040",
 
+	BLUE_LIGHT = "#4040F0",
 	BLUE_STANDARD = "#0000A0",
 
 	PINK_STANDARD = "#A000A0",

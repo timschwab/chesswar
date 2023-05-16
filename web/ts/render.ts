@@ -1,11 +1,11 @@
 import camera from "./camera.ts";
 import map from "../../common/map.ts";
 import { SafeState } from "./state.ts";
-import { Point, Rect } from "../../common/data-types/shapes.ts";
+import { Circle, Point, Rect } from "../../common/data-types/shapes.ts";
 import { ClientPlayer } from "../../common/data-types/types-client.ts";
 import { rensets } from "../../common/settings.ts";
 import { Color } from "../../common/colors.ts";
-import { PlayerRole } from "../../common/data-types/types-base.ts";
+import { PlayerRole, TeamName } from "../../common/data-types/types-base.ts";
 import canvas from "./canvas.ts";
 
 function render(state: SafeState) {
@@ -170,14 +170,36 @@ function renderChessboard(state: SafeState) {
 			const color = (x+y) % 2 == 0 ? cb.boardLight : cb.boardDark;
 			const squareTLX = boardTopLeftX + (x*squareSize);
 			const squareTLY = boardTopLeftY + (y*squareSize);
-			const squareRect = Rect(Point(squareTLX, squareTLY), Point(squareTLX+squareSize, squareTLY+squareSize));
+			const squareTL = Point(squareTLX, squareTLY);
+			const squareRect = Rect(squareTL, Point(squareTLX+squareSize, squareTLY+squareSize));
 			canvas.fillRect(squareRect, color);
+			renderPawn(squareTL, squareSize, TeamName.ALPHA);
 		}
 	}
 
 	// Draw board outline
 	const boardRect = Rect(Point(boardTopLeftX, boardTopLeftY), Point(topLeftX+boardSize+padding, topLeftY+boardSize+padding));
 	canvas.outlineRect(boardRect, cb.boardOutline, 2);
+}
+
+function renderPawn(topLeft: Point, width: number, team: TeamName) {
+	const color = rensets.chessboard.pieceColor[team];
+	const topLeftX = topLeft.x;
+	const topLeftY = topLeft.y;
+
+	const middleX = topLeftX+(width/2);
+	const middleY = topLeftY+(width/2);
+
+	const topCircle = Circle(Point(middleX, middleY - (width/6)), width/8);
+	canvas.fillCircle(topCircle, color);
+
+	const middleTopLeft = Point(middleX-(width/16), middleY - (width/6));
+	const middleBottomRight = Point(middleX+(width/16), middleY + (width/4));
+	canvas.fillRect(Rect(middleTopLeft, middleBottomRight), color);
+
+	const bottomTopLeft = Point(middleX-(width/3), middleY+(width/8));
+	const bottomBottomRight = Point(middleX+(width/3), middleY+(width/3));
+	canvas.fillRect(Rect(bottomTopLeft, bottomBottomRight), color);
 }
 
 export default render;

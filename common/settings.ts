@@ -1,5 +1,5 @@
 import { Color } from "./colors.ts";
-import { PlayerRole } from "./data-types/types-base.ts";
+import { PlayerRole, TeamName } from "./data-types/types-base.ts";
 
 /* ----- start server origins ----- */
 export const remoteApiServer = {
@@ -109,6 +109,10 @@ export const rensets = {
 		windowInside: Color.GREY_WHITE,
 		boardOutline: Color.GREY_BLACK,
 		boardLight: Color.GREY_LIGHT,
-		boardDark: Color.GREY_DARK
+		boardDark: Color.GREY_DARK,
+		pieceColor: {
+			[TeamName.ALPHA]: Color.BLUE_LIGHT,
+			[TeamName.BRAVO]: Color.RED_STANDARD
+		}
 	}
 };
