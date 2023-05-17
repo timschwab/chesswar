@@ -1,7 +1,7 @@
 import { Circle, Point, Rect } from "./data-types/shapes.ts";
 import { TeamName } from "./data-types/types-base.ts";
 
-const width = 5000;
+const width = 6000;
 const height = 3000;
 
 const middleX = width/2;
@@ -43,17 +43,17 @@ const bravoOutpost2 = Rect(Point(width-300, height-300), Point(width, height));
 const bravoIntel = Rect(Point(width-150, height-150), Point(width-50, height-50));
 
 const deathRects = [
-	Rect(Point(middle.x - 100, 0), Point(middle.x + 100, 500)),
-	Rect(Point(middle.x - 100, height-500), Point(middle.x + 100, height)),
-	Rect(Point(1200, 1000), Point(1400, height-1000)),
-	Rect(Point(width-1400, 1000), Point(width-1200, height-1000))
+	Rect(Point(middleX - 100, 0), Point(middleX + 100, 500)),
+	Rect(Point(middleX - 100, height-500), Point(middleX + 100, height)),
+	Rect(Point(middleX - 1300, 1000), Point(middleX - 1100, height-1000)),
+	Rect(Point(middleX + 1100, 1000), Point(middleX + 1300, height-1000))
 ];
 
 const deathCircles = [
-	Circle(Point(1800, 700), 100),
-	Circle(Point(width-1800, 700), 100),
-	Circle(Point(1800, height-700), 100),
-	Circle(Point(width-1800, height-700), 100)
+	Circle(Point(middleX-700, 700), 100),
+	Circle(Point(middleX+700, 700), 100),
+	Circle(Point(middleX-700, height-700), 100),
+	Circle(Point(middleX+700, height-700), 100)
 ];
 
 const safeZone = Circle(middle, 500);
