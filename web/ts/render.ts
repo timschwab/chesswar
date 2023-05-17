@@ -145,8 +145,9 @@ function renderChessboard(state: SafeState, selfPlayer: ClientPlayer) {
 	const padding = 20;
 	const squareSize = 50;
 	const boardSize = squareSize*8;
-	const windowWidth = 600;
-	const windowHeight = boardSize + (padding*2);
+	const buttonSize = 100;
+	const windowWidth = padding + boardSize + padding + buttonSize + padding;
+	const windowHeight = padding + boardSize + padding;
 	
 	const cb = rensets.chessboard;
 	const middleX = state.screen.width/2;
@@ -196,6 +197,20 @@ function renderChessboard(state: SafeState, selfPlayer: ClientPlayer) {
 	// Draw board outline
 	const boardRect = Rect(Point(boardTopLeftX, boardTopLeftY), Point(topLeftX+boardSize+padding, topLeftY+boardSize+padding));
 	canvas.outlineRect(boardRect, cb.boardOutline, 2);
+
+	// Draw buttons
+	const buttonX = topLeftX + padding + boardSize + padding;
+	const button1Y = topLeftY + padding;
+	const button2Y = middleY - buttonSize/2;
+	const button3Y = bottomRightY - padding - buttonSize;
+
+	const button1Rect = Rect(Point(buttonX, button1Y), Point(buttonX+buttonSize, button1Y+buttonSize));
+	const button2Rect = Rect(Point(buttonX, button2Y), Point(buttonX+buttonSize, button2Y+buttonSize));
+	const button3Rect = Rect(Point(buttonX, button3Y), Point(buttonX+buttonSize, button3Y+buttonSize));
+
+	canvas.fillRect(button1Rect, cb.button);
+	canvas.fillRect(button2Rect, cb.button);
+	canvas.fillRect(button3Rect, cb.button);
 }
 
 function renderKing(topLeft: Point, width: number, team: TeamName) {

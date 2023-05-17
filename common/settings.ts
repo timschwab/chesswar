@@ -113,6 +113,7 @@ export const rensets = {
 		pieceColor: {
 			[TeamName.ALPHA]: Color.BLUE_LIGHT,
 			[TeamName.BRAVO]: Color.RED_STANDARD
-		}
+		},
+		button: Color.YELLOW_STANDARD
 	}
 };
