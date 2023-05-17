@@ -268,7 +268,31 @@ function renderBishop(topLeft: Point, width: number, team: TeamName) {
 }
 
 function renderKnight(topLeft: Point, width: number, team: TeamName) {
-	// TODO
+	const color = rensets.chessboard.pieceColor[team];
+	const topLeftX = topLeft.x;
+	const topLeftY = topLeft.y;
+
+	const middleX = topLeftX+(width/2);
+	const middleY = topLeftY+(width/2);
+	
+	const baseTopLeft = Point(middleX-(width/3), middleY+(width/8));
+	const baseBottomRight = Point(middleX+(width/3), middleY+(width/3));
+	canvas.fillRect(Rect(baseTopLeft, baseBottomRight), color);
+
+	const bodyTopLeft = Point(middleX-(width/3), middleY-(width/3));
+	const bodyBottomRight = Point(middleX-(width/8), middleY+(width/3));
+	canvas.fillRect(Rect(bodyTopLeft, bodyBottomRight), color);
+
+	const neckTopLeft = Point(middleX-(width/3), middleY-(width/3));
+	const neckBottomRight = Point(middleX+(width/3), middleY-(width/8));
+	canvas.fillRect(Rect(neckTopLeft, neckBottomRight), color);
+
+	const noseTopLeft = Point(middleX+(width/8), middleY-(width/3));
+	const noseBottomRight = Point(middleX+(width/3), middleY);
+	canvas.fillRect(Rect(noseTopLeft, noseBottomRight), color);
+
+	const ear = Circle(Point(middleX-(width/12), middleY-(width/3)), width/12);
+	canvas.fillCircle(ear, color);
 }
 
 function renderPawn(topLeft: Point, width: number, team: TeamName) {
