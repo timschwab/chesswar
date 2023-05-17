@@ -220,7 +220,37 @@ function renderKing(topLeft: Point, width: number, team: TeamName) {
 }
 
 function renderQueen(topLeft: Point, width: number, team: TeamName) {
-	// TODO
+	const color = rensets.chessboard.pieceColor[team];
+	const topLeftX = topLeft.x;
+	const topLeftY = topLeft.y;
+
+	const middleX = topLeftX+(width/2);
+	const middleY = topLeftY+(width/2);
+
+	const baseTopLeft = Point(middleX-(width*3/8), middleY+(width/12));
+	const baseBottomRight = Point(middleX+(width*3/8), middleY+(width*3/8));
+	canvas.fillRect(Rect(baseTopLeft, baseBottomRight), color);
+
+	const leftTopLeft = Point(middleX-(width*3/8), middleY-(width*3/16));
+	const leftBottomRight = Point(middleX-(width/4), middleY+(width*3/8));
+	canvas.fillRect(Rect(leftTopLeft, leftBottomRight), color);
+	
+	const centerTopLeft = Point(middleX-(width/16), middleY-(width*3/16));
+	const centerBottomRight = Point(middleX+(width/16), middleY+(width*3/8));
+	canvas.fillRect(Rect(centerTopLeft, centerBottomRight), color);
+
+	const rightTopLeft = Point(middleX+(width/4), middleY-(width*3/16));
+	const rightBottomRight = Point(middleX+(width*3/8), middleY+(width*3/8));
+	canvas.fillRect(Rect(rightTopLeft, rightBottomRight), color);
+
+	const jewelLeft = Circle(Point(middleX-(width*5/16), middleY-(width/3)), width/16);
+	canvas.fillCircle(jewelLeft, color);
+
+	const jewelCenter = Circle(Point(middleX, middleY-(width/3)), width/16);
+	canvas.fillCircle(jewelCenter, color);
+
+	const jewelRight = Circle(Point(middleX+(width*5/16), middleY-(width/3)), width/16);
+	canvas.fillCircle(jewelRight, color);
 }
 
 function renderRook(topLeft: Point, width: number, team: TeamName) {
