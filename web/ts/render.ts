@@ -206,9 +206,9 @@ function renderKing(topLeft: Point, width: number, team: TeamName) {
 	const middleX = topLeftX+(width/2);
 	const middleY = topLeftY+(width/2);
 
-	const bottomTopLeft = Point(middleX-(width*3/8), middleY);
-	const bottomBottomRight = Point(middleX+(width*3/8), middleY+(width*3/8));
-	canvas.fillRect(Rect(bottomTopLeft, bottomBottomRight), color);
+	const baseTopLeft = Point(middleX-(width*3/8), middleY);
+	const baseBottomRight = Point(middleX+(width*3/8), middleY+(width*3/8));
+	canvas.fillRect(Rect(baseTopLeft, baseBottomRight), color);
 
 	const crossVerticalTopLeft = Point(middleX-(width/16), middleY-(width*3/8));
 	const crossVerticalBottomRight = Point(middleX+(width/16), middleY+(width/8));
@@ -253,7 +253,22 @@ function renderRook(topLeft: Point, width: number, team: TeamName) {
 }
 
 function renderBishop(topLeft: Point, width: number, team: TeamName) {
-	// TODO
+	const color = rensets.chessboard.pieceColor[team];
+	const topLeftX = topLeft.x;
+	const topLeftY = topLeft.y;
+
+	const middleX = topLeftX+(width/2);
+	const middleY = topLeftY+(width/2);
+
+	const body = Circle(Point(middleX, middleY), width*(3/16));
+	canvas.fillCircle(body, color);
+
+	const hat = Circle(Point(middleX, middleY - (width/4)), width/16);
+	canvas.fillCircle(hat, color);
+
+	const baseTopLeft = Point(middleX-(width/3), middleY+(width/8));
+	const baseBottomRight = Point(middleX+(width/3), middleY+(width/3));
+	canvas.fillRect(Rect(baseTopLeft, baseBottomRight), color);
 }
 
 function renderKnight(topLeft: Point, width: number, team: TeamName) {
