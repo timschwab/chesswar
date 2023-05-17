@@ -16,7 +16,7 @@ function render(state: SafeState) {
 	renderPlayers(state, selfPlayer);
 
 	if (selfPlayer.role == PlayerRole.GENERAL) {
-		renderChessboard(state);
+		renderChessboard(state, selfPlayer);
 	}
 }
 
@@ -141,7 +141,7 @@ function renderPlayers(state: SafeState, selfPlayer: ClientPlayer) {
 	}
 }
 
-function renderChessboard(state: SafeState) {
+function renderChessboard(state: SafeState, selfPlayer: ClientPlayer) {
 	const padding = 20;
 	const squareSize = 50;
 	const boardSize = squareSize*8;
@@ -174,7 +174,7 @@ function renderChessboard(state: SafeState) {
 			const squareRect = Rect(squareTL, Point(squareTLX+squareSize, squareTLY+squareSize));
 			canvas.fillRect(squareRect, color);
 
-			const cell = state.teamBoard[row][col];
+			const cell = selfPlayer.team == TeamName.ALPHA ? state.teamBoard[7-row][col] : state.teamBoard[row][col];
 			if (cell) {
 				if (cell.piece == ChessPiece.KING) {
 					renderKing(squareTL, squareSize, cell.team);
