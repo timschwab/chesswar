@@ -224,7 +224,32 @@ function renderQueen(topLeft: Point, width: number, team: TeamName) {
 }
 
 function renderRook(topLeft: Point, width: number, team: TeamName) {
-	// TODO
+	const color = rensets.chessboard.pieceColor[team];
+	const topLeftX = topLeft.x;
+	const topLeftY = topLeft.y;
+
+	const middleX = topLeftX+(width/2);
+	const middleY = topLeftY+(width/2);
+
+	const baseTopLeft = Point(middleX-(width/3), middleY+(width/8));
+	const baseBottomRight = Point(middleX+(width/3), middleY+(width/3));
+	canvas.fillRect(Rect(baseTopLeft, baseBottomRight), color);
+
+	const stemTopLeft = Point(middleX-(width/12), middleY - (width*3/8));
+	const stemBottomRight = Point(middleX+(width/12), middleY + (width/4));
+	canvas.fillRect(Rect(stemTopLeft, stemBottomRight), color);
+
+	const barTopLeft = Point(middleX-(width/3), middleY-(width/4));
+	const barBottomRight = Point(middleX+(width/3), middleY-(width/12));
+	canvas.fillRect(Rect(barTopLeft, barBottomRight), color);
+
+	const leftTopLeft = Point(middleX-(width/3), middleY-(width*3/8));
+	const leftBottomRight = Point(middleX-(width/6), middleY-(width/12));
+	canvas.fillRect(Rect(leftTopLeft, leftBottomRight), color);
+
+	const rightTopLeft = Point(middleX+(width/6), middleY-(width*3/8));
+	const rightBottomRight = Point(middleX+(width/3), middleY-(width/12));
+	canvas.fillRect(Rect(rightTopLeft, rightBottomRight), color);
 }
 
 function renderBishop(topLeft: Point, width: number, team: TeamName) {
@@ -246,13 +271,13 @@ function renderPawn(topLeft: Point, width: number, team: TeamName) {
 	const topCircle = Circle(Point(middleX, middleY - (width/6)), width/8);
 	canvas.fillCircle(topCircle, color);
 
-	const middleTopLeft = Point(middleX-(width/16), middleY - (width/6));
-	const middleBottomRight = Point(middleX+(width/16), middleY + (width/4));
-	canvas.fillRect(Rect(middleTopLeft, middleBottomRight), color);
+	const stemTopLeft = Point(middleX-(width/16), middleY - (width/6));
+	const stemBottomRight = Point(middleX+(width/16), middleY + (width/4));
+	canvas.fillRect(Rect(stemTopLeft, stemBottomRight), color);
 
-	const bottomTopLeft = Point(middleX-(width/3), middleY+(width/8));
-	const bottomBottomRight = Point(middleX+(width/3), middleY+(width/3));
-	canvas.fillRect(Rect(bottomTopLeft, bottomBottomRight), color);
+	const baseTopLeft = Point(middleX-(width/3), middleY+(width/8));
+	const baseBottomRight = Point(middleX+(width/3), middleY+(width/3));
+	canvas.fillRect(Rect(baseTopLeft, baseBottomRight), color);
 }
 
 export default render;
