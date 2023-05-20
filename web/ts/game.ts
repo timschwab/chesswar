@@ -1,7 +1,7 @@
 import socket from "./socket.ts";
 import state, { PlayerMap, isSafeState } from "./state.ts";
 import render from "./render.ts";
-import { PlayerInitMessagePayload, ServerMessage, ServerMessageTypes, StateMessagePayload } from "../../common/message-types/types-server.ts";
+import { PlayerInitMessagePayload, ServerMessage, ServerMessageTypes, StateMessagePayload, TeamMessagePayload } from "../../common/message-types/types-server.ts";
 import { ChesswarId, PlayerRole } from "../../common/data-types/types-base.ts";
 import { ClientPlayer } from "../../common/data-types/types-client.ts";
 import { Point } from "../../common/data-types/shapes.ts";
@@ -20,12 +20,13 @@ function receiveMessage(message: ServerMessage): void {
 		handlePlayerInit(message.payload);
 	} else if (message.type == ServerMessageTypes.STATE) {
 		handleState(message.payload);
+	} else if (message.type == ServerMessageTypes.TEAM) {
+		handleTeam(message.payload);
 	}
 }
 
 function handlePlayerInit(payload: PlayerInitMessagePayload) {
 	state.selfId = payload.id;
-	state.teamBoard = payload.teamBoard
 }
 
 function handleState(payload: StateMessagePayload) {
@@ -46,6 +47,11 @@ function handleState(payload: StateMessagePayload) {
 
 		state.self = maybeSelf;
 	}
+}
+
+function handleTeam(payload: TeamMessagePayload) {
+	state.teamBoard = payload.board;
+	state.briefings = payload.briefings;
 }
 
 function receiveClick(location: Point): void {

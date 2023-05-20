@@ -1,4 +1,4 @@
-import { BriefingName, ChessBoard, ChessSquare, ChesswarId } from "../../common/data-types/types-base.ts";
+import { BriefingBundle, BriefingName, ChessBoard, ChessSquare, ChesswarId } from "../../common/data-types/types-base.ts";
 import { ClientPlayer } from "../../common/data-types/types-client.ts";
 
 export interface Screen {
@@ -19,6 +19,7 @@ export interface UnsafeState {
 	self: ClientPlayer | undefined,
 	teamBoard: ChessBoard | undefined,
 	playerMap: PlayerMap | undefined,
+	briefings: BriefingBundle | undefined,
 	general: GeneralState
 }
 
@@ -28,6 +29,7 @@ export interface SafeState {
 	self: ClientPlayer,
 	teamBoard: ChessBoard,
 	playerMap: PlayerMap,
+	briefings: BriefingBundle
 	general: GeneralState
 }
 
@@ -37,6 +39,7 @@ const state: UnsafeState = {
 	self: undefined,
 	teamBoard: undefined,
 	playerMap: undefined,
+	briefings: undefined,
 	general: {
 		selectedButton: null,
 		selectedFrom: null
@@ -61,6 +64,10 @@ export function isSafeState(maybeSafeState: UnsafeState): maybeSafeState is Safe
 	}
 
 	if (!maybeSafeState.playerMap) {
+		return false;
+	}
+
+	if (!maybeSafeState.briefings) {
 		return false;
 	}
 

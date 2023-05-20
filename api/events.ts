@@ -35,8 +35,7 @@ export function addPlayer(id: string): void {
 	socket.sendOne(id, {
 		type: ServerMessageTypes.PLAYER_INIT,
 		payload: {
-			id: id,
-			teamBoard: state[team].teamBoard
+			id: id
 		}
 	});
 }
