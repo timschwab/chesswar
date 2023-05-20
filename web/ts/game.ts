@@ -33,6 +33,17 @@ function handleState(payload: StateMessagePayload) {
 	}
 
 	state.playerMap = playerMap;
+
+	if (state.selfId) {
+		const maybeSelf = state.playerMap.get(state.selfId);
+
+		if (!maybeSelf) {
+			console.error(state.playerMap, state.selfId);
+			throw "Could not find self";
+		}
+
+		state.self = maybeSelf;
+	}
 }
 
 function receiveClick(location: Point) {

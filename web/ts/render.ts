@@ -2,39 +2,26 @@ import camera from "./camera.ts";
 import map from "../../common/map.ts";
 import { SafeState } from "./state.ts";
 import { Circle, Point, Rect } from "../../common/data-types/shapes.ts";
-import { ClientPlayer } from "../../common/data-types/types-client.ts";
 import { rensets } from "../../common/settings.ts";
 import { Color } from "../../common/colors.ts";
 import { ChessPiece, PlayerRole, TeamName } from "../../common/data-types/types-base.ts";
 import canvas from "./canvas.ts";
 
 function render(state: SafeState) {
-	const selfPlayer = getSelf(state);
-	setCamera(state, selfPlayer);
+	setCamera(state);
 	renderBackground();
-	renderMap(selfPlayer);
-	renderPlayers(state, selfPlayer);
+	renderMap(state);
+	renderPlayers(state);
 
-	if (selfPlayer.role == PlayerRole.GENERAL) {
-		renderChessboard(state, selfPlayer);
+	if (state.self.role == PlayerRole.GENERAL) {
+		renderChessboard(state);
 	}
 }
 
-function getSelf(state: SafeState): ClientPlayer {
-	const maybeSelf = state.playerMap.get(state.selfId);
-
-	if (!maybeSelf) {
-		console.error(state.playerMap, state.selfId);
-		throw "Could not find self";
-	}
-
-	return maybeSelf;
-}
-
-function setCamera(state: SafeState, selfPlayer: ClientPlayer) {
+function setCamera(state: SafeState) {
 	const width = state.screen.width;
 	const height = state.screen.height;
-	const center = selfPlayer.position.center;
+	const center = state.self.position.center;
 
 	const topLeft = Point(center.x - width / 2, center.y - height / 2);
 	const bottomRight = Point(
@@ -72,10 +59,10 @@ function renderBackground() {
 	}
 }
 
-function renderMap(selfPlayer: ClientPlayer) {
+function renderMap(state: SafeState) {
 	// Draw facilities
-	const allyFacilityBundles = map.facilities.filter(fac => fac.team == selfPlayer.team);
-	const enemyFacilityBundles = map.facilities.filter(fac => fac.team != selfPlayer.team);
+	const allyFacilityBundles = map.facilities.filter(fac => fac.team == state.self.team);
+	const enemyFacilityBundles = map.facilities.filter(fac => fac.team != state.self.team);
 
 	for (const bundle of allyFacilityBundles) {
 		camera.fillRect(bundle.base, rensets.facilities.ally.base);
@@ -125,13 +112,13 @@ function renderMap(selfPlayer: ClientPlayer) {
 	camera.outlineRect(mapRect, rensets.mapBorder.color, rensets.mapBorder.width);
 }
 
-function renderPlayers(state: SafeState, selfPlayer: ClientPlayer) {
+function renderPlayers(state: SafeState) {
 	for (const player of state.playerMap.values()) {
 		let color: Color;
 
 		if (player.id == state.selfId) {
 			color = rensets.players.self;
-		} else if (player.team == selfPlayer.team) {
+		} else if (player.team == state.self.team) {
 			color = rensets.players.allies;
 		} else {
 			color = rensets.players.enemies;
@@ -141,7 +128,7 @@ function renderPlayers(state: SafeState, selfPlayer: ClientPlayer) {
 	}
 }
 
-function renderChessboard(state: SafeState, selfPlayer: ClientPlayer) {
+function renderChessboard(state: SafeState) {
 	const padding = 20;
 	const squareSize = 50;
 	const boardSize = squareSize*8;
@@ -175,7 +162,7 @@ function renderChessboard(state: SafeState, selfPlayer: ClientPlayer) {
 			const squareRect = Rect(squareTL, Point(squareTLX+squareSize, squareTLY+squareSize));
 			canvas.fillRect(squareRect, color);
 
-			const cell = selfPlayer.team == TeamName.ALPHA ? state.teamBoard[7-row][col] : state.teamBoard[row][col];
+			const cell = state.self.team == TeamName.ALPHA ? state.teamBoard[7-row][col] : state.teamBoard[row][col];
 			if (cell) {
 				if (cell.piece == ChessPiece.KING) {
 					renderKing(squareTL, squareSize, cell.team);
