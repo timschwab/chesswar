@@ -7,6 +7,7 @@ import { ClientPlayer } from "../../common/data-types/types-client.ts";
 import { Point } from "../../common/data-types/shapes.ts";
 import { listenClick } from "./inputs.ts";
 import { clickedButton, clickedSquare } from "./generalWindow.ts";
+import { ClientMessageTypes } from "../../common/message-types/types-client.ts";
 
 export function initGame() {
 	socket.listen(receiveMessage);
@@ -69,7 +70,10 @@ function receiveClick(location: Point): void {
 				from: state.general.selectedFrom,
 				to: square
 			};
-			console.log(payload);
+			socket.send({
+				type: ClientMessageTypes.GENERAL_ORDERS,
+				payload
+			});
 
 			// Clear state
 			state.general.selectedButton = null;

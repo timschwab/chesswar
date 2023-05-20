@@ -1,5 +1,5 @@
 import { Point, Rect } from "../../common/data-types/shapes.ts";
-import { ChessSquare } from "../../common/data-types/types-base.ts";
+import { BriefingName, ChessSquare } from "../../common/data-types/types-base.ts";
 import { rensets } from "../../common/settings.ts";
 import { inside } from "../../common/shape-logic/inside.ts";
 import { transposePoint } from "../../common/shape-logic/transpose.ts";
@@ -24,11 +24,11 @@ export function renderGeneralWindow(state: SafeState): void {
 	canvas.fillRect(values.button3Rect, genwin.button);
 
 	// Draw selected button
-	if (state.general.selectedButton == "one") {
+	if (state.general.selectedButton == BriefingName.ONE) {
 		canvas.outlineRect(values.button1Rect, genwin.selection, 3);
-	} else if (state.general.selectedButton == "two") {
+	} else if (state.general.selectedButton == BriefingName.TWO) {
 		canvas.outlineRect(values.button2Rect, genwin.selection, 3);
-	} else if (state.general.selectedButton == "three") {
+	} else if (state.general.selectedButton == BriefingName.THREE) {
 		canvas.outlineRect(values.button3Rect, genwin.selection, 3);
 	}
 }
@@ -93,15 +93,15 @@ export function clickedSquare(state: SafeState, location: Point): ChessSquare | 
 	};
 }
 
-export function clickedButton(state: SafeState, location: Point): "one" | "two" | "three" | null {
+export function clickedButton(state: SafeState, location: Point): BriefingName | null {
 	const values = getKeyValues(state);
 
 	if (inside(location, values.button1Rect)) {
-		return "one";
+		return BriefingName.ONE;
 	} else if (inside(location, values.button2Rect)) {
-		return "two";
+		return BriefingName.TWO;
 	} else if (inside(location, values.button3Rect)) {
-		return "three";
+		return BriefingName.THREE;
 	}
 
 	return null;

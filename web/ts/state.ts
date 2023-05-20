@@ -1,4 +1,4 @@
-import { ChessBoard, ChessSquare, ChesswarId } from "../../common/data-types/types-base.ts";
+import { BriefingName, ChessBoard, ChessSquare, ChesswarId } from "../../common/data-types/types-base.ts";
 import { ClientPlayer } from "../../common/data-types/types-client.ts";
 
 export interface Screen {
@@ -9,7 +9,7 @@ export interface Screen {
 export type PlayerMap = Map<ChesswarId, ClientPlayer>;
 
 export interface GeneralState {
-	selectedButton: "one" | "two" | "three" | null,
+	selectedButton: BriefingName | null,
 	selectedFrom: ChessSquare | null
 }
 

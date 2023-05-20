@@ -1,5 +1,11 @@
 export type ChesswarId = string;
 
+export enum BriefingName {
+	ONE,
+	TWO,
+	THREE
+}
+
 export enum TeamName {
 	ALPHA = "alpha",
 	BRAVO = "bravo"
@@ -21,7 +27,7 @@ export enum CommandAction {
 	GRAB_ORDERS = "grab-orders",
 	COMPLETE_ORDERS = "complete-orders",
 
-	GATHER_INTEL = "record-intel",
+	GATHER_INTEL = "gather-intel",
 	REPORT_INTEL = "report-intel"
 }
 
