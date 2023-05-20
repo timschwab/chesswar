@@ -56,9 +56,28 @@ function receiveClick(location: Point): void {
 		return;
 	}
 
-	const square = clickedSquare(state, location);
 	const button = clickedButton(state, location);
-	console.log(location, square, button);
+	const square = clickedSquare(state, location);
+	if (button) {
+		state.general.selectedButton = button;
+		state.general.selectedFrom = null;
+	} else if (state.general.selectedButton && square) {
+		if (state.general.selectedFrom) {
+			// Send command
+			const payload = {
+				briefing: state.general.selectedButton,
+				from: state.general.selectedFrom,
+				to: square
+			};
+			console.log(payload);
+
+			// Clear state
+			state.general.selectedButton = null;
+			state.general.selectedFrom = null;
+		} else {
+			state.general.selectedFrom = square;
+		}
+	}
 }
 
 function gameLoop() {

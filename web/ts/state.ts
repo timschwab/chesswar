@@ -1,4 +1,4 @@
-import { ChessBoard, ChesswarId } from "../../common/data-types/types-base.ts";
+import { ChessBoard, ChessSquare, ChesswarId } from "../../common/data-types/types-base.ts";
 import { ClientPlayer } from "../../common/data-types/types-client.ts";
 
 export interface Screen {
@@ -8,12 +8,18 @@ export interface Screen {
 
 export type PlayerMap = Map<ChesswarId, ClientPlayer>;
 
+export interface GeneralState {
+	selectedButton: "one" | "two" | "three" | null,
+	selectedFrom: ChessSquare | null
+}
+
 export interface UnsafeState {
 	screen: Screen | undefined,
 	selfId: ChesswarId | undefined,
 	self: ClientPlayer | undefined,
 	teamBoard: ChessBoard | undefined,
-	playerMap: PlayerMap | undefined
+	playerMap: PlayerMap | undefined,
+	general: GeneralState
 }
 
 export interface SafeState {
@@ -21,7 +27,8 @@ export interface SafeState {
 	selfId: ChesswarId,
 	self: ClientPlayer,
 	teamBoard: ChessBoard,
-	playerMap: PlayerMap
+	playerMap: PlayerMap,
+	general: GeneralState
 }
 
 const state: UnsafeState = {
@@ -29,7 +36,11 @@ const state: UnsafeState = {
 	selfId: undefined,
 	self: undefined,
 	teamBoard: undefined,
-	playerMap: undefined
+	playerMap: undefined,
+	general: {
+		selectedButton: null,
+		selectedFrom: null
+	}
 };
 
 export function isSafeState(maybeSafeState: UnsafeState): maybeSafeState is SafeState {
