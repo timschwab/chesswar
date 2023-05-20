@@ -2,7 +2,7 @@ import socket from "./socket.ts";
 import state, { PlayerMap, isSafeState } from "./state.ts";
 import render from "./render.ts";
 import { PlayerInitMessagePayload, ServerMessage, ServerMessageTypes, StateMessagePayload } from "../../common/message-types/types-server.ts";
-import { ChesswarId } from "../../common/data-types/types-base.ts";
+import { ChesswarId, PlayerRole } from "../../common/data-types/types-base.ts";
 import { ClientPlayer } from "../../common/data-types/types-client.ts";
 import { Point } from "../../common/data-types/shapes.ts";
 import { listenClick } from "./inputs.ts";
@@ -46,8 +46,16 @@ function handleState(payload: StateMessagePayload) {
 	}
 }
 
-function receiveClick(_location: Point) {
-	// What to do here
+function receiveClick(_location: Point): void {
+	if (!isSafeState(state)) {
+		return;
+	}
+
+	if (state.self.role != PlayerRole.GENERAL) {
+		return;
+	}
+
+	// 
 }
 
 function gameLoop() {

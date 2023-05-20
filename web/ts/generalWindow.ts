@@ -5,38 +5,22 @@ import canvas from "./canvas.ts";
 import { renderBishop, renderKing, renderPawn, renderQueen, renderRook } from "./chessboard.ts";
 import { SafeState } from "./state.ts";
 
-export function renderGeneralWindow(state: SafeState) {
+export function renderGeneralWindow(state: SafeState): void {
+	const values = getKeyValues(state);
 	const genwin = rensets.generalWindow;
 
-	const padding = genwin.padding;
 	const squareSize = genwin.squareSize;
-	const buttonSize = genwin.buttonSize;
-
-	const boardSize = squareSize*8;
-	const windowWidth = padding + boardSize + padding + buttonSize + padding;
-	const windowHeight = padding + boardSize + padding;
-
-	const middleX = state.screen.width/2;
-	const middleY = state.screen.height/2;
-
-	const topLeftX = middleX - windowWidth/2;
-	const topLeftY = middleY - windowHeight/2;
-	const bottomRightX = middleX + windowWidth/2;
-	const bottomRightY = middleY + windowHeight/2;
 
 	// Draw window
-	const windowRect = Rect(Point(topLeftX, topLeftY), Point(bottomRightX, bottomRightY));
-	canvas.fillRect(windowRect, genwin.windowInside);
-	canvas.outlineRect(windowRect, genwin.windowOutline, 5);
+	canvas.fillRect(values.windowRect, genwin.windowInside);
+	canvas.outlineRect(values.windowRect, genwin.windowOutline, 5);
 
 	// Draw board squares
-	const boardTopLeftX = topLeftX + padding;
-	const boardTopLeftY = topLeftY + padding;
 	for (let row = 0 ; row < 8 ; row++) {
 		for (let col = 0 ; col < 8 ; col++) {
 			const color = (row+col) % 2 == 0 ? genwin.boardLight : genwin.boardDark;
-			const squareTLX = boardTopLeftX + (col*squareSize);
-			const squareTLY = boardTopLeftY + (row*squareSize);
+			const squareTLX = values.boardRect.topLeft.x + (col*squareSize);
+			const squareTLY = values.boardRect.topLeft.y + (row*squareSize);
 			const squareTL = Point(squareTLX, squareTLY);
 			const squareRect = Rect(squareTL, Point(squareTLX+squareSize, squareTLY+squareSize));
 			canvas.fillRect(squareRect, color);
@@ -61,10 +45,39 @@ export function renderGeneralWindow(state: SafeState) {
 	}
 
 	// Draw board outline
-	const boardRect = Rect(Point(boardTopLeftX, boardTopLeftY), Point(topLeftX+boardSize+padding, topLeftY+boardSize+padding));
-	canvas.outlineRect(boardRect, genwin.boardOutline, 2);
+	canvas.outlineRect(values.boardRect, genwin.boardOutline, 2);
 
 	// Draw buttons
+	canvas.fillRect(values.button1Rect, genwin.button);
+	canvas.fillRect(values.button2Rect, genwin.button);
+	canvas.fillRect(values.button3Rect, genwin.button);
+}
+
+function getKeyValues(state: SafeState) {
+	const genwin = rensets.generalWindow;
+
+	const padding = genwin.padding;
+	const squareSize = genwin.squareSize;
+	const buttonSize = genwin.buttonSize;
+
+	const boardSize = squareSize*8;
+	const windowWidth = padding + boardSize + padding + buttonSize + padding;
+	const windowHeight = padding + boardSize + padding;
+
+	const middleX = state.screen.width/2;
+	const middleY = state.screen.height/2;
+
+	const topLeftX = middleX - windowWidth/2;
+	const topLeftY = middleY - windowHeight/2;
+	const bottomRightX = middleX + windowWidth/2;
+	const bottomRightY = middleY + windowHeight/2;
+
+	const windowRect = Rect(Point(topLeftX, topLeftY), Point(bottomRightX, bottomRightY));
+
+	const boardTopLeftX = topLeftX + padding;
+	const boardTopLeftY = topLeftY + padding;
+	const boardRect = Rect(Point(boardTopLeftX, boardTopLeftY), Point(topLeftX+boardSize+padding, topLeftY+boardSize+padding));
+
 	const buttonX = topLeftX + padding + boardSize + padding;
 	const button1Y = topLeftY + padding;
 	const button2Y = middleY - buttonSize/2;
@@ -74,7 +87,11 @@ export function renderGeneralWindow(state: SafeState) {
 	const button2Rect = Rect(Point(buttonX, button2Y), Point(buttonX+buttonSize, button2Y+buttonSize));
 	const button3Rect = Rect(Point(buttonX, button3Y), Point(buttonX+buttonSize, button3Y+buttonSize));
 
-	canvas.fillRect(button1Rect, genwin.button);
-	canvas.fillRect(button2Rect, genwin.button);
-	canvas.fillRect(button3Rect, genwin.button);
+	return {
+		windowRect,
+		boardRect,
+		button1Rect,
+		button2Rect,
+		button3Rect
+	}
 }
