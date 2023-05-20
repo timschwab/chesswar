@@ -14,7 +14,9 @@ export type PlayerInitMessagePayload = {
 type PlayerInitMessage = AbstractMessage<ServerMessageTypes.PLAYER_INIT, PlayerInitMessagePayload>;
 
 
-export type StateMessagePayload = ClientPlayer[];
+export interface StateMessagePayload {
+	players: ClientPlayer[]
+}
 type StateMessage = AbstractMessage<ServerMessageTypes.STATE, StateMessagePayload>;
 
 export type ServerMessage = PlayerInitMessage | StateMessage;

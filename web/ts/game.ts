@@ -30,7 +30,7 @@ function handlePlayerInit(payload: PlayerInitMessagePayload) {
 
 function handleState(payload: StateMessagePayload) {
 	const playerMap: PlayerMap = new Map<ChesswarId, ClientPlayer>();
-	for (const player of payload) {
+	for (const player of payload.players) {
 		playerMap.set(player.id, player);
 	}
 

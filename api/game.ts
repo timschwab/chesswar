@@ -22,7 +22,9 @@ function tick(): void {
 
 	// Broadcast state to everyone
 	const playerList = Array.from(state.allPlayers.values());
-	const payload = playerList.map(serverPlayerToClientPlayer);
+	const payload = {
+		players: playerList.map(serverPlayerToClientPlayer)
+	};
 
 	socket.sendAll({
 		type: ServerMessageTypes.STATE,
