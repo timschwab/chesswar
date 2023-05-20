@@ -1,7 +1,7 @@
 import dom from "./dom.ts";
 import state from "./state.ts";
 
-function init() {
+export function initScreen() {
 	setScreen();
 	globalThis.addEventListener("resize", setScreen);
 }
@@ -21,5 +21,3 @@ function setScreen() {
 	dom.canvas.width = width;
 	dom.canvas.height = height;
 }
-
-export default { init };

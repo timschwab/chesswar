@@ -4,9 +4,12 @@ import render from "./render.ts";
 import { PlayerInitMessagePayload, ServerMessage, ServerMessageTypes, StateMessagePayload } from "../../common/message-types/types-server.ts";
 import { ChesswarId } from "../../common/data-types/types-base.ts";
 import { ClientPlayer } from "../../common/data-types/types-client.ts";
+import { Point } from "../../common/data-types/shapes.ts";
+import { listenClick } from "./inputs.ts";
 
-function init() {
+export function initGame() {
 	socket.listen(receiveMessage);
+	listenClick(receiveClick);
 	gameLoop();
 }
 
@@ -32,6 +35,10 @@ function handleState(payload: StateMessagePayload) {
 	state.playerMap = playerMap;
 }
 
+function receiveClick(location: Point) {
+	// What to do here
+}
+
 function gameLoop() {
 	if (isSafeState(state)) {
 		render(state);
@@ -39,5 +46,3 @@ function gameLoop() {
 
 	requestAnimationFrame(gameLoop);
 }
-
-export default { init };

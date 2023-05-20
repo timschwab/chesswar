@@ -1,9 +1,7 @@
 export function createHook<T>() {
-	type HookFunc = (value: T) => void;
+	const hooks = new Array<(value: T) => void>();
 
-	const hooks = new Array<HookFunc>();
-
-	const register = function(callback: HookFunc): void {
+	const register = function(callback: (value: T) => void): void {
 		hooks.push(callback);
 	};
 

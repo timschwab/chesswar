@@ -7,7 +7,7 @@ import env, { Environment } from "./environment.ts";
 let sock: WebSocket;
 const messageHook = createHook<ServerMessage>();
 
-function init() {
+export function initSocket() {
 	const origin = env == Environment.REMOTE ? remoteApiServerOrigin : localApiServerOrigin;
 	sock = new WebSocket(origin);
 
@@ -41,4 +41,4 @@ function send(message: ClientMessage) {
 	sock.send(JSON.stringify(message));
 }
 
-export default { init, send, listen: messageHook.register };
+export default { send, listen: messageHook.register };

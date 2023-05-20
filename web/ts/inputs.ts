@@ -1,3 +1,5 @@
+import { Point } from "../../common/data-types/shapes.ts";
+import { createHook } from "../../common/hooks.ts";
 import { ClientMessageTypes, MoveMessagePayload } from "../../common/message-types/types-client.ts";
 import socket from "./socket.ts";
 
@@ -23,9 +25,12 @@ const movement: MoveMessagePayload = {
 	down: false
 };
 
-function init() {
+const clickHook = createHook<Point>();
+
+export function initInputs() {
 	document.addEventListener("keydown", handleKeydown);
 	document.addEventListener("keyup", handleKeyup);
+	document.addEventListener("click", handleClick);
 }
 
 function handleKeydown(event: KeyboardEvent) {
@@ -67,4 +72,9 @@ function handleKey(event: KeyboardEvent, pressed: boolean): void {
 	}
 }
 
-export default { init };
+function handleClick(event: MouseEvent) {
+	const location = Point(event.screenX, event.screenY);
+	clickHook.run(location);
+}
+
+export const listenClick = clickHook.register;

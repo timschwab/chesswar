@@ -1,5 +1,5 @@
 import { Circle, Vector } from "../common/data-types/shapes.ts";
-import { ChessBoard, ChessPiece, ChessRow, ChesswarId, CommandAction, PlayerRole, TeamName } from "../common/data-types/types-base.ts";
+import { ChessBoard, ChessMove, ChessPiece, ChessRow, ChesswarId, CommandAction, PlayerRole, TeamName } from "../common/data-types/types-base.ts";
 import { MovementState } from "../common/data-types/types-server.ts";
 
 export interface ServerPlayerPhysics {
@@ -20,8 +20,9 @@ export interface ServerPlayer {
 type PlayerMap = Map<ChesswarId, ServerPlayer>;
 
 interface Team {
-	teamBoard: ChessBoard
 	playerMap: PlayerMap
+	teamBoard: ChessBoard
+	pendingMoves: [ChessMove | null, ChessMove | null, ChessMove | null]
 }
 
 interface ServerState {
@@ -35,12 +36,14 @@ const state: ServerState = {
 	realBoard: newBoard(),
 	allPlayers: new Map<ChesswarId, ServerPlayer>(),
 	[TeamName.ALPHA]: {
+		playerMap: new Map<ChesswarId, ServerPlayer>(),
 		teamBoard: newBoard(),
-		playerMap: new Map<ChesswarId, ServerPlayer>()
+		pendingMoves: [null, null, null]
 	},
 	[TeamName.BRAVO]: {
+		playerMap: new Map<ChesswarId, ServerPlayer>(),
 		teamBoard: newBoard(),
-		playerMap: new Map<ChesswarId, ServerPlayer>()
+		pendingMoves: [null, null, null]
 	}
 };
 

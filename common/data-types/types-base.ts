@@ -42,3 +42,12 @@ export interface ChessSquareState {
 export type ChessCell = ChessSquareState | null;
 export type ChessRow = [ChessCell, ChessCell, ChessCell, ChessCell, ChessCell, ChessCell, ChessCell, ChessCell]; // tuple of 8
 export type ChessBoard = [ChessRow, ChessRow, ChessRow, ChessRow, ChessRow, ChessRow, ChessRow, ChessRow]; // tuple of 8
+
+export interface ChessSquare {
+	row: number,
+	col: number
+}
+export interface ChessMove {
+	from: ChessSquare,
+	to: ChessSquare
+}
