@@ -1,50 +1,22 @@
 import { Point, Rect } from "../../common/data-types/shapes.ts";
-import { ChessPiece, ChessSquare, TeamName } from "../../common/data-types/types-base.ts";
+import { ChessSquare } from "../../common/data-types/types-base.ts";
 import { rensets } from "../../common/settings.ts";
 import { inside } from "../../common/shape-logic/inside.ts";
 import { transposePoint } from "../../common/shape-logic/transpose.ts";
 import canvas from "./canvas.ts";
-import { renderBishop, renderKing, renderPawn, renderQueen, renderRook } from "./chessboard.ts";
+import { renderBoard } from "./chessboard.ts";
 import { SafeState } from "./state.ts";
 
 export function renderGeneralWindow(state: SafeState): void {
 	const values = getKeyValues(state);
 	const genwin = rensets.generalWindow;
 
-	const squareSize = genwin.squareSize;
-
 	// Draw window
 	canvas.fillRect(values.windowRect, genwin.windowInside);
 	canvas.outlineRect(values.windowRect, genwin.windowOutline, 5);
 
 	// Draw board squares
-	for (let row = 0 ; row < 8 ; row++) {
-		for (let col = 0 ; col < 8 ; col++) {
-			const color = (row+col) % 2 == 0 ? genwin.boardLight : genwin.boardDark;
-			const squareTLX = values.boardRect.topLeft.x + (col*squareSize);
-			const squareTLY = values.boardRect.topLeft.y + (row*squareSize);
-			const squareTL = Point(squareTLX, squareTLY);
-			const squareRect = Rect(squareTL, Point(squareTLX+squareSize, squareTLY+squareSize));
-			canvas.fillRect(squareRect, color);
-
-			const cell = state.self.team == TeamName.ALPHA ? state.teamBoard[7-row][col] : state.teamBoard[row][col];
-			if (cell) {
-				if (cell.piece == ChessPiece.KING) {
-					renderKing(squareTL, squareSize, cell.team);
-				} else if (cell.piece == ChessPiece.QUEEN) {
-					renderQueen(squareTL, squareSize, cell.team);
-				} else if (cell.piece == ChessPiece.ROOK) {
-					renderRook(squareTL, squareSize, cell.team);
-				} else if (cell.piece == ChessPiece.BISHOP) {
-					renderBishop(squareTL, squareSize, cell.team);
-				} else if (cell.piece == ChessPiece.KNIGHT) {
-					renderKing(squareTL, squareSize, cell.team);
-				} else if (cell.piece == ChessPiece.PAWN) {
-					renderPawn(squareTL, squareSize, cell.team);
-				}
-			}
-		}
-	}
+	renderBoard(state, values.boardRect.topLeft, genwin.squareSize);
 
 	// Draw board outline
 	canvas.outlineRect(values.boardRect, genwin.boardOutline, 2);
@@ -53,6 +25,15 @@ export function renderGeneralWindow(state: SafeState): void {
 	canvas.fillRect(values.button1Rect, genwin.button);
 	canvas.fillRect(values.button2Rect, genwin.button);
 	canvas.fillRect(values.button3Rect, genwin.button);
+
+	// Draw selected button
+	if (state.general.selectedButton == "one") {
+		canvas.outlineRect(values.button1Rect, genwin.selection, 3);
+	} else if (state.general.selectedButton == "two") {
+		canvas.outlineRect(values.button2Rect, genwin.selection, 3);
+	} else if (state.general.selectedButton == "three") {
+		canvas.outlineRect(values.button3Rect, genwin.selection, 3);
+	}
 }
 
 function getKeyValues(state: SafeState) {

@@ -117,6 +117,7 @@ export const rensets = {
 			[TeamName.ALPHA]: Color.BLUE_LIGHT,
 			[TeamName.BRAVO]: Color.RED_STANDARD
 		},
-		button: Color.YELLOW_STANDARD
+		button: Color.YELLOW_STANDARD,
+		selection: Color.GREEN_STANDARD
 	}
 };

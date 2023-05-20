@@ -1,7 +1,46 @@
 import { Circle, Point, Rect } from "../../common/data-types/shapes.ts";
-import { TeamName } from "../../common/data-types/types-base.ts";
+import { ChessPiece, ChessSquare, TeamName } from "../../common/data-types/types-base.ts";
 import { rensets } from "../../common/settings.ts";
 import canvas from "./canvas.ts";
+import { SafeState } from "./state.ts";
+
+export function renderBoard(state: SafeState, topLeft: Point, squareSize: number) {
+	for (let row = 0 ; row < 8 ; row++) {
+		for (let col = 0 ; col < 8 ; col++) {
+			const position = {row, col};
+			renderSquare(state, topLeft, squareSize, position);
+		}
+	}
+}
+
+export function renderSquare(state: SafeState, topLeft: Point, squareSize: number, position: ChessSquare) {
+	const genwin = rensets.generalWindow;
+	const {row, col} = position;
+
+	const color = (row+col) % 2 == 0 ? genwin.boardLight : genwin.boardDark;
+	const squareTLX = topLeft.x + (col*squareSize);
+	const squareTLY = topLeft.y + (row*squareSize);
+	const squareTL = Point(squareTLX, squareTLY);
+	const squareRect = Rect(squareTL, Point(squareTLX+squareSize, squareTLY+squareSize));
+	canvas.fillRect(squareRect, color);
+
+	const cell = state.self.team == TeamName.ALPHA ? state.teamBoard[7-row][col] : state.teamBoard[row][col];
+	if (cell) {
+		if (cell.piece == ChessPiece.KING) {
+			renderKing(squareTL, squareSize, cell.team);
+		} else if (cell.piece == ChessPiece.QUEEN) {
+			renderQueen(squareTL, squareSize, cell.team);
+		} else if (cell.piece == ChessPiece.ROOK) {
+			renderRook(squareTL, squareSize, cell.team);
+		} else if (cell.piece == ChessPiece.BISHOP) {
+			renderBishop(squareTL, squareSize, cell.team);
+		} else if (cell.piece == ChessPiece.KNIGHT) {
+			renderKing(squareTL, squareSize, cell.team);
+		} else if (cell.piece == ChessPiece.PAWN) {
+			renderPawn(squareTL, squareSize, cell.team);
+		}
+	}
+}
 
 export function renderKing(topLeft: Point, width: number, team: TeamName) {
 	const color = rensets.generalWindow.pieceColor[team];
