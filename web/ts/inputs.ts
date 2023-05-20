@@ -73,7 +73,7 @@ function handleKey(event: KeyboardEvent, pressed: boolean): void {
 }
 
 function handleClick(event: MouseEvent) {
-	const location = Point(event.screenX, event.screenY);
+	const location = Point(event.clientX, event.clientY);
 	clickHook.run(location);
 }
 

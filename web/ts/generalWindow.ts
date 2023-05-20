@@ -1,6 +1,8 @@
 import { Point, Rect } from "../../common/data-types/shapes.ts";
-import { ChessPiece, TeamName } from "../../common/data-types/types-base.ts";
+import { ChessPiece, ChessSquare, TeamName } from "../../common/data-types/types-base.ts";
 import { rensets } from "../../common/settings.ts";
+import { inside } from "../../common/shape-logic/inside.ts";
+import { transposePoint } from "../../common/shape-logic/transpose.ts";
 import canvas from "./canvas.ts";
 import { renderBishop, renderKing, renderPawn, renderQueen, renderRook } from "./chessboard.ts";
 import { SafeState } from "./state.ts";
@@ -94,4 +96,35 @@ function getKeyValues(state: SafeState) {
 		button2Rect,
 		button3Rect
 	}
+}
+
+export function clickedSquare(state: SafeState, location: Point): ChessSquare | null {
+	const values = getKeyValues(state);
+
+	if (!inside(location, values.boardRect)) {
+		return null;
+	}
+
+	const cornerPoint = transposePoint(location, values.boardRect.topLeft);
+	const row = Math.floor(cornerPoint.y / rensets.generalWindow.squareSize);
+	const col = Math.floor(cornerPoint.x / rensets.generalWindow.squareSize);
+
+	return {
+		row,
+		col
+	};
+}
+
+export function clickedButton(state: SafeState, location: Point): "one" | "two" | "three" | null {
+	const values = getKeyValues(state);
+
+	if (inside(location, values.button1Rect)) {
+		return "one";
+	} else if (inside(location, values.button2Rect)) {
+		return "two";
+	} else if (inside(location, values.button3Rect)) {
+		return "three";
+	}
+
+	return null;
 }

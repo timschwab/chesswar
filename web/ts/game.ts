@@ -6,6 +6,7 @@ import { ChesswarId, PlayerRole } from "../../common/data-types/types-base.ts";
 import { ClientPlayer } from "../../common/data-types/types-client.ts";
 import { Point } from "../../common/data-types/shapes.ts";
 import { listenClick } from "./inputs.ts";
+import { clickedButton, clickedSquare } from "./generalWindow.ts";
 
 export function initGame() {
 	socket.listen(receiveMessage);
@@ -46,7 +47,7 @@ function handleState(payload: StateMessagePayload) {
 	}
 }
 
-function receiveClick(_location: Point): void {
+function receiveClick(location: Point): void {
 	if (!isSafeState(state)) {
 		return;
 	}
@@ -55,7 +56,9 @@ function receiveClick(_location: Point): void {
 		return;
 	}
 
-	// 
+	const square = clickedSquare(state, location);
+	const button = clickedButton(state, location);
+	console.log(location, square, button);
 }
 
 function gameLoop() {
