@@ -1,11 +1,11 @@
 import camera from "./camera.ts";
 import map from "../../common/map.ts";
 import { SafeState } from "./state.ts";
-import { Circle, Point, Rect } from "../../common/data-types/shapes.ts";
+import { Point, Rect } from "../../common/data-types/shapes.ts";
 import { rensets } from "../../common/settings.ts";
 import { Color } from "../../common/colors.ts";
-import { ChessPiece, PlayerRole, TeamName } from "../../common/data-types/types-base.ts";
-import canvas from "./canvas.ts";
+import { PlayerRole } from "../../common/data-types/types-base.ts";
+import { renderGeneralWindow } from "./generalWindow.ts";
 
 function render(state: SafeState) {
 	setCamera(state);
@@ -14,7 +14,7 @@ function render(state: SafeState) {
 	renderPlayers(state);
 
 	if (state.self.role == PlayerRole.GENERAL) {
-		renderChessboard(state);
+		renderGeneralWindow(state);
 	}
 }
 
@@ -126,225 +126,6 @@ function renderPlayers(state: SafeState) {
 
 		camera.fillCircle(player.position, color);
 	}
-}
-
-function renderChessboard(state: SafeState) {
-	const padding = 20;
-	const squareSize = 50;
-	const boardSize = squareSize*8;
-	const buttonSize = 100;
-	const windowWidth = padding + boardSize + padding + buttonSize + padding;
-	const windowHeight = padding + boardSize + padding;
-	
-	const cb = rensets.chessboard;
-	const middleX = state.screen.width/2;
-	const middleY = state.screen.height/2;
-
-	const topLeftX = middleX - windowWidth/2;
-	const topLeftY = middleY - windowHeight/2;
-	const bottomRightX = middleX + windowWidth/2;
-	const bottomRightY = middleY + windowHeight/2;
-
-	// Draw window
-	const windowRect = Rect(Point(topLeftX, topLeftY), Point(bottomRightX, bottomRightY));
-	canvas.fillRect(windowRect, cb.windowInside);
-	canvas.outlineRect(windowRect, cb.windowOutline, 5);
-
-	// Draw board squares
-	const boardTopLeftX = topLeftX + padding;
-	const boardTopLeftY = topLeftY + padding;
-	for (let row = 0 ; row < 8 ; row++) {
-		for (let col = 0 ; col < 8 ; col++) {
-			const color = (row+col) % 2 == 0 ? cb.boardLight : cb.boardDark;
-			const squareTLX = boardTopLeftX + (col*squareSize);
-			const squareTLY = boardTopLeftY + (row*squareSize);
-			const squareTL = Point(squareTLX, squareTLY);
-			const squareRect = Rect(squareTL, Point(squareTLX+squareSize, squareTLY+squareSize));
-			canvas.fillRect(squareRect, color);
-
-			const cell = state.self.team == TeamName.ALPHA ? state.teamBoard[7-row][col] : state.teamBoard[row][col];
-			if (cell) {
-				if (cell.piece == ChessPiece.KING) {
-					renderKing(squareTL, squareSize, cell.team);
-				} else if (cell.piece == ChessPiece.QUEEN) {
-					renderQueen(squareTL, squareSize, cell.team);
-				} else if (cell.piece == ChessPiece.ROOK) {
-					renderRook(squareTL, squareSize, cell.team);
-				} else if (cell.piece == ChessPiece.BISHOP) {
-					renderBishop(squareTL, squareSize, cell.team);
-				} else if (cell.piece == ChessPiece.KNIGHT) {
-					renderKnight(squareTL, squareSize, cell.team);
-				} else if (cell.piece == ChessPiece.PAWN) {
-					renderPawn(squareTL, squareSize, cell.team);
-				}
-			}
-		}
-	}
-
-	// Draw board outline
-	const boardRect = Rect(Point(boardTopLeftX, boardTopLeftY), Point(topLeftX+boardSize+padding, topLeftY+boardSize+padding));
-	canvas.outlineRect(boardRect, cb.boardOutline, 2);
-
-	// Draw buttons
-	const buttonX = topLeftX + padding + boardSize + padding;
-	const button1Y = topLeftY + padding;
-	const button2Y = middleY - buttonSize/2;
-	const button3Y = bottomRightY - padding - buttonSize;
-
-	const button1Rect = Rect(Point(buttonX, button1Y), Point(buttonX+buttonSize, button1Y+buttonSize));
-	const button2Rect = Rect(Point(buttonX, button2Y), Point(buttonX+buttonSize, button2Y+buttonSize));
-	const button3Rect = Rect(Point(buttonX, button3Y), Point(buttonX+buttonSize, button3Y+buttonSize));
-
-	canvas.fillRect(button1Rect, cb.button);
-	canvas.fillRect(button2Rect, cb.button);
-	canvas.fillRect(button3Rect, cb.button);
-}
-
-function renderKing(topLeft: Point, width: number, team: TeamName) {
-	const color = rensets.chessboard.pieceColor[team];
-	const topLeftX = topLeft.x;
-	const topLeftY = topLeft.y;
-
-	const middleX = topLeftX+(width/2);
-	const middleY = topLeftY+(width/2);
-
-	const baseTopLeft = Point(middleX-(width*3/8), middleY);
-	const baseBottomRight = Point(middleX+(width*3/8), middleY+(width*3/8));
-	canvas.fillRect(Rect(baseTopLeft, baseBottomRight), color);
-
-	const crossVerticalTopLeft = Point(middleX-(width/16), middleY-(width*3/8));
-	const crossVerticalBottomRight = Point(middleX+(width/16), middleY+(width/8));
-	canvas.fillRect(Rect(crossVerticalTopLeft, crossVerticalBottomRight), color);
-
-	const crossHorizontalTopLeft = Point(middleX-(width*3/16), middleY-(width*2/8));
-	const crossHorizontalBottomRight = Point(middleX+(width*3/16), middleY-(width*1/8));
-	canvas.fillRect(Rect(crossHorizontalTopLeft, crossHorizontalBottomRight), color);
-}
-
-function renderQueen(topLeft: Point, width: number, team: TeamName) {
-	const color = rensets.chessboard.pieceColor[team];
-	const topLeftX = topLeft.x;
-	const topLeftY = topLeft.y;
-
-	const middleX = topLeftX+(width/2);
-	const middleY = topLeftY+(width/2);
-
-	const baseTopLeft = Point(middleX-(width*3/8), middleY+(width/12));
-	const baseBottomRight = Point(middleX+(width*3/8), middleY+(width*3/8));
-	canvas.fillRect(Rect(baseTopLeft, baseBottomRight), color);
-
-	const leftTopLeft = Point(middleX-(width*3/8), middleY-(width*3/16));
-	const leftBottomRight = Point(middleX-(width/4), middleY+(width*3/8));
-	canvas.fillRect(Rect(leftTopLeft, leftBottomRight), color);
-	
-	const centerTopLeft = Point(middleX-(width/16), middleY-(width*3/16));
-	const centerBottomRight = Point(middleX+(width/16), middleY+(width*3/8));
-	canvas.fillRect(Rect(centerTopLeft, centerBottomRight), color);
-
-	const rightTopLeft = Point(middleX+(width/4), middleY-(width*3/16));
-	const rightBottomRight = Point(middleX+(width*3/8), middleY+(width*3/8));
-	canvas.fillRect(Rect(rightTopLeft, rightBottomRight), color);
-
-	const jewelLeft = Circle(Point(middleX-(width*5/16), middleY-(width/3)), width/16);
-	canvas.fillCircle(jewelLeft, color);
-
-	const jewelCenter = Circle(Point(middleX, middleY-(width/3)), width/16);
-	canvas.fillCircle(jewelCenter, color);
-
-	const jewelRight = Circle(Point(middleX+(width*5/16), middleY-(width/3)), width/16);
-	canvas.fillCircle(jewelRight, color);
-}
-
-function renderRook(topLeft: Point, width: number, team: TeamName) {
-	const color = rensets.chessboard.pieceColor[team];
-	const topLeftX = topLeft.x;
-	const topLeftY = topLeft.y;
-
-	const middleX = topLeftX+(width/2);
-	const middleY = topLeftY+(width/2);
-
-	const baseTopLeft = Point(middleX-(width/3), middleY-(width/4));
-	const baseBottomRight = Point(middleX+(width/3), middleY+(width/3));
-	canvas.fillRect(Rect(baseTopLeft, baseBottomRight), color);
-	
-	const leftTopLeft = Point(middleX-(width/3), middleY-(width*3/8));
-	const leftBottomRight = Point(middleX-(width/6), middleY-(width/12));
-	canvas.fillRect(Rect(leftTopLeft, leftBottomRight), color);
-	
-	const centerTopLeft = Point(middleX-(width/12), middleY-(width*3/8));
-	const centerBottomRight = Point(middleX+(width/12), middleY-(width/12));
-	canvas.fillRect(Rect(centerTopLeft, centerBottomRight), color);
-
-	const rightTopLeft = Point(middleX+(width/6), middleY-(width*3/8));
-	const rightBottomRight = Point(middleX+(width/3), middleY-(width/12));
-	canvas.fillRect(Rect(rightTopLeft, rightBottomRight), color);
-}
-
-function renderBishop(topLeft: Point, width: number, team: TeamName) {
-	const color = rensets.chessboard.pieceColor[team];
-	const topLeftX = topLeft.x;
-	const topLeftY = topLeft.y;
-
-	const middleX = topLeftX+(width/2);
-	const middleY = topLeftY+(width/2);
-
-	const body = Circle(Point(middleX, middleY), width*(3/16));
-	canvas.fillCircle(body, color);
-
-	const hat = Circle(Point(middleX, middleY - (width/4)), width/16);
-	canvas.fillCircle(hat, color);
-
-	const baseTopLeft = Point(middleX-(width/3), middleY+(width/8));
-	const baseBottomRight = Point(middleX+(width/3), middleY+(width/3));
-	canvas.fillRect(Rect(baseTopLeft, baseBottomRight), color);
-}
-
-function renderKnight(topLeft: Point, width: number, team: TeamName) {
-	const color = rensets.chessboard.pieceColor[team];
-	const topLeftX = topLeft.x;
-	const topLeftY = topLeft.y;
-
-	const middleX = topLeftX+(width/2);
-	const middleY = topLeftY+(width/2);
-	
-	const baseTopLeft = Point(middleX-(width/3), middleY+(width/8));
-	const baseBottomRight = Point(middleX+(width/3), middleY+(width/3));
-	canvas.fillRect(Rect(baseTopLeft, baseBottomRight), color);
-
-	const bodyTopLeft = Point(middleX-(width/3), middleY-(width/3));
-	const bodyBottomRight = Point(middleX-(width/8), middleY+(width/3));
-	canvas.fillRect(Rect(bodyTopLeft, bodyBottomRight), color);
-
-	const neckTopLeft = Point(middleX-(width/3), middleY-(width/3));
-	const neckBottomRight = Point(middleX+(width/3), middleY-(width/8));
-	canvas.fillRect(Rect(neckTopLeft, neckBottomRight), color);
-
-	const noseTopLeft = Point(middleX+(width/8), middleY-(width/3));
-	const noseBottomRight = Point(middleX+(width/3), middleY);
-	canvas.fillRect(Rect(noseTopLeft, noseBottomRight), color);
-
-	const ear = Circle(Point(middleX-(width/12), middleY-(width/3)), width/12);
-	canvas.fillCircle(ear, color);
-}
-
-function renderPawn(topLeft: Point, width: number, team: TeamName) {
-	const color = rensets.chessboard.pieceColor[team];
-	const topLeftX = topLeft.x;
-	const topLeftY = topLeft.y;
-
-	const middleX = topLeftX+(width/2);
-	const middleY = topLeftY+(width/2);
-
-	const topCircle = Circle(Point(middleX, middleY - (width/6)), width/8);
-	canvas.fillCircle(topCircle, color);
-
-	const stemTopLeft = Point(middleX-(width/16), middleY - (width/6));
-	const stemBottomRight = Point(middleX+(width/16), middleY + (width/4));
-	canvas.fillRect(Rect(stemTopLeft, stemBottomRight), color);
-
-	const baseTopLeft = Point(middleX-(width/3), middleY+(width/8));
-	const baseBottomRight = Point(middleX+(width/3), middleY+(width/3));
-	canvas.fillRect(Rect(baseTopLeft, baseBottomRight), color);
 }
 
 export default render;

@@ -46,7 +46,7 @@ function handleState(payload: StateMessagePayload) {
 	}
 }
 
-function receiveClick(location: Point) {
+function receiveClick(_location: Point) {
 	// What to do here
 }
 

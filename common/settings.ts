@@ -104,7 +104,10 @@ export const rensets = {
 	safe: {
 		color: Color.GREEN_DARK
 	},
-	chessboard: {
+	generalWindow: {
+		padding: 20,
+		squareSize: 50,
+		buttonSize: 100,
 		windowOutline: Color.GREEN_BRIGHT,
 		windowInside: Color.GREY_WHITE,
 		boardOutline: Color.GREY_BLACK,
