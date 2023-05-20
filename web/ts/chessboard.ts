@@ -4,18 +4,22 @@ import { rensets } from "../../common/settings.ts";
 import canvas from "./canvas.ts";
 import { SafeState } from "./state.ts";
 
-export function renderBoard(state: SafeState, topLeft: Point, squareSize: number) {
+export function renderBoard(state: SafeState, board: Rect, squareSize: number) {
+	// Render all the squares
 	for (let row = 0 ; row < 8 ; row++) {
 		for (let col = 0 ; col < 8 ; col++) {
 			const position = {row, col};
-			renderSquare(state, topLeft, squareSize, position);
+			renderSquare(state, board.topLeft, squareSize, position);
 		}
 	}
+
+	// Outline them
+	canvas.outlineRect(board, rensets.generalWindow.boardOutline, 2);
 }
 
 export function renderSquare(state: SafeState, topLeft: Point, squareSize: number, position: ChessSquare) {
-	const genwin = rensets.generalWindow;
 	const {row, col} = position;
+	const genwin = rensets.generalWindow;
 
 	const color = (row+col) % 2 == 0 ? genwin.boardLight : genwin.boardDark;
 	const squareTLX = topLeft.x + (col*squareSize);
@@ -35,9 +39,16 @@ export function renderSquare(state: SafeState, topLeft: Point, squareSize: numbe
 		} else if (cell.piece == ChessPiece.BISHOP) {
 			renderBishop(squareTL, squareSize, cell.team);
 		} else if (cell.piece == ChessPiece.KNIGHT) {
-			renderKing(squareTL, squareSize, cell.team);
+			renderKnight(squareTL, squareSize, cell.team);
 		} else if (cell.piece == ChessPiece.PAWN) {
 			renderPawn(squareTL, squareSize, cell.team);
+		}
+	}
+
+	const from = state.general.selectedFrom;
+	if (from) {
+		if (from.row == position.row && from.col == position.col) {
+			canvas.outlineRect(squareRect, genwin.selection, 2);
 		}
 	}
 }
