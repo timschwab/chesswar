@@ -1,5 +1,5 @@
 import { Circle, Vector } from "../common/data-types/shapes.ts";
-import { ChessBoard, ChessMove, ChessPiece, ChessRow, ChesswarId, CommandAction, PlayerRole, TeamName } from "../common/data-types/types-base.ts";
+import { BriefingName, ChessBoard, ChessMove, ChessPiece, ChessRow, ChesswarId, CommandAction, PlayerRole, TeamName } from "../common/data-types/types-base.ts";
 import { MovementState } from "../common/data-types/types-server.ts";
 
 export interface ServerPlayerPhysics {
@@ -22,7 +22,11 @@ type PlayerMap = Map<ChesswarId, ServerPlayer>;
 interface Team {
 	playerMap: PlayerMap
 	teamBoard: ChessBoard
-	pendingMoves: [ChessMove | null, ChessMove | null, ChessMove | null]
+	briefings: {
+		[BriefingName.ONE]: ChessMove | null,
+		[BriefingName.TWO]: ChessMove | null,
+		[BriefingName.THREE]: ChessMove | null
+	}
 }
 
 interface ServerState {
@@ -38,12 +42,20 @@ const state: ServerState = {
 	[TeamName.ALPHA]: {
 		playerMap: new Map<ChesswarId, ServerPlayer>(),
 		teamBoard: newBoard(),
-		pendingMoves: [null, null, null]
+		briefings: {
+			[BriefingName.ONE]: null,
+			[BriefingName.TWO]: null,
+			[BriefingName.THREE]: null
+		}
 	},
 	[TeamName.BRAVO]: {
 		playerMap: new Map<ChesswarId, ServerPlayer>(),
 		teamBoard: newBoard(),
-		pendingMoves: [null, null, null]
+		briefings: {
+			[BriefingName.ONE]: null,
+			[BriefingName.TWO]: null,
+			[BriefingName.THREE]: null
+		}
 	}
 };
 

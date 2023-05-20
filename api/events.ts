@@ -1,6 +1,6 @@
 import { Circle, Point, Vector } from "../common/data-types/shapes.ts";
 import { CommandAction, PlayerRole, TeamName } from "../common/data-types/types-base.ts";
-import { ClientMessageTypes, ClientMessageWithId, MoveMessagePayload } from "../common/message-types/types-client.ts";
+import { ClientMessageTypes, ClientMessageWithId, GeneralOrdersMessagePayload, MoveMessagePayload } from "../common/message-types/types-client.ts";
 import { ServerMessageTypes } from "../common/message-types/types-server.ts";
 import { gameEngine } from "../common/settings.ts";
 import socket from "./socket.ts";
@@ -64,6 +64,8 @@ export function receiveMessage(message: ClientMessageWithId): void {
 		playerMove(player, message.payload);
 	} else if (message.type == ClientMessageTypes.COMMAND) {
 		playerCommand(player);
+	} else if (message.type == ClientMessageTypes.GENERAL_ORDERS) {
+		generalOrders(player, message.payload);
 	}
 }
 
@@ -113,4 +115,13 @@ function becomeRole(player: ServerPlayer, role: PlayerRole): void {
 	if (role == PlayerRole.GENERAL) {
 		player.physics.speed = Vector(0, 0);
 	}
+}
+
+function generalOrders(player: ServerPlayer, payload: GeneralOrdersMessagePayload) {
+	if (player.role != PlayerRole.GENERAL) {
+		return;
+	}
+
+	const {briefing, move} = payload;
+	state[player.team].briefings[briefing] = move;
 }

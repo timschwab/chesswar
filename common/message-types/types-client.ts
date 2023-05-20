@@ -1,4 +1,4 @@
-import { BriefingName, ChessSquare, ChesswarId } from "../data-types/types-base.ts";
+import { BriefingName, ChessMove, ChesswarId } from "../data-types/types-base.ts";
 import { MovementState } from "../data-types/types-server.ts";
 import { AbstractMessage } from "./types-base.ts";
 
@@ -16,8 +16,7 @@ type CommandMessage = AbstractMessage<ClientMessageTypes.COMMAND, CommandMessage
 
 export interface GeneralOrdersMessagePayload {
 	briefing: BriefingName
-	from: ChessSquare
-	to: ChessSquare
+	move: ChessMove
 }
 type GeneralOrdersMessage = AbstractMessage<ClientMessageTypes.GENERAL_ORDERS, GeneralOrdersMessagePayload>;
 

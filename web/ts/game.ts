@@ -67,8 +67,10 @@ function receiveClick(location: Point): void {
 			// Send command
 			const payload = {
 				briefing: state.general.selectedButton,
-				from: state.general.selectedFrom,
-				to: square
+				move: {
+					from: state.general.selectedFrom,
+					to: square
+				}
 			};
 			socket.send({
 				type: ClientMessageTypes.GENERAL_ORDERS,
