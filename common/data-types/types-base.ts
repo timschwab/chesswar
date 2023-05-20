@@ -6,6 +6,12 @@ export enum BriefingName {
 	THREE
 }
 
+export interface BriefingBundle {
+	[BriefingName.ONE]: ChessMove | null,
+	[BriefingName.TWO]: ChessMove | null,
+	[BriefingName.THREE]: ChessMove | null
+}
+
 export enum TeamName {
 	ALPHA = "alpha",
 	BRAVO = "bravo"

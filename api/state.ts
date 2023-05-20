@@ -1,5 +1,5 @@
 import { Circle, Vector } from "../common/data-types/shapes.ts";
-import { BriefingName, ChessBoard, ChessMove, ChessPiece, ChessRow, ChesswarId, CommandAction, PlayerRole, TeamName } from "../common/data-types/types-base.ts";
+import { BriefingBundle, BriefingName, ChessBoard, ChessPiece, ChessRow, ChesswarId, CommandAction, PlayerRole, TeamName } from "../common/data-types/types-base.ts";
 import { MovementState } from "../common/data-types/types-server.ts";
 
 export interface ServerPlayerPhysics {
@@ -22,11 +22,7 @@ type PlayerMap = Map<ChesswarId, ServerPlayer>;
 interface Team {
 	playerMap: PlayerMap
 	teamBoard: ChessBoard
-	briefings: {
-		[BriefingName.ONE]: ChessMove | null,
-		[BriefingName.TWO]: ChessMove | null,
-		[BriefingName.THREE]: ChessMove | null
-	}
+	briefings: BriefingBundle
 }
 
 interface ServerState {
