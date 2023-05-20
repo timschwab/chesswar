@@ -21,10 +21,10 @@ function render(state: SafeState) {
 }
 
 function getSelf(state: SafeState): ClientPlayer {
-	const maybeSelf = state.playerMap.get(state.self);
+	const maybeSelf = state.playerMap.get(state.selfId);
 
 	if (!maybeSelf) {
-		console.error(state.playerMap, state.self);
+		console.error(state.playerMap, state.selfId);
 		throw "Could not find self";
 	}
 
@@ -129,7 +129,7 @@ function renderPlayers(state: SafeState, selfPlayer: ClientPlayer) {
 	for (const player of state.playerMap.values()) {
 		let color: Color;
 
-		if (player.id == state.self) {
+		if (player.id == state.selfId) {
 			color = rensets.players.self;
 		} else if (player.team == selfPlayer.team) {
 			color = rensets.players.allies;

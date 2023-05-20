@@ -10,21 +10,21 @@ export type PlayerMap = Map<ChesswarId, ClientPlayer>;
 
 export interface UnsafeState {
 	screen: Screen | undefined,
-	self: ChesswarId | undefined,
+	selfId: ChesswarId | undefined,
 	teamBoard: ChessBoard | undefined,
 	playerMap: PlayerMap | undefined
 }
 
 export interface SafeState {
 	screen: Screen,
-	self: ChesswarId,
+	selfId: ChesswarId,
 	teamBoard: ChessBoard,
 	playerMap: PlayerMap
 }
 
 const state: UnsafeState = {
 	screen: undefined,
-	self: undefined,
+	selfId: undefined,
 	teamBoard: undefined,
 	playerMap: undefined
 };
@@ -34,7 +34,7 @@ export function isSafeState(maybeSafeState: UnsafeState): maybeSafeState is Safe
 		return false;
 	}
 
-	if (!maybeSafeState.self) {
+	if (!maybeSafeState.selfId) {
 		return false;
 	}
 

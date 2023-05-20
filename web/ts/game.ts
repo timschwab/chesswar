@@ -22,7 +22,7 @@ function receiveMessage(message: ServerMessage): void {
 }
 
 function handlePlayerInit(payload: PlayerInitMessagePayload) {
-	state.self = payload.id;
+	state.selfId = payload.id;
 	state.teamBoard = payload.teamBoard
 }
 
