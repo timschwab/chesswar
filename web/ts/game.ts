@@ -66,10 +66,9 @@ function receiveClick(location: Point): void {
 	const button = clickedButton(state, location);
 	const square = clickedSquare(state, location);
 	if (button != null) {
-		console.log(state);
 		state.general.selectedButton = button;
 		state.general.selectedFrom = null;
-	} else if (state.general.selectedButton && square != null) {
+	} else if (state.general.selectedButton != null && square != null) {
 		if (state.general.selectedFrom) {
 			// Send command
 			const payload = {

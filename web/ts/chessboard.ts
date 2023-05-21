@@ -26,21 +26,21 @@ export function renderBoard(state: SafeState, board: Rect, squareSize: number) {
 
 	if (b1) {
 		const fromRect = getSquareValues(board.topLeft, squareSize, b1.from).squareRect;
-		const toRect = getSquareValues(board.topLeft, squareSize, b1.from).squareRect;
+		const toRect = getSquareValues(board.topLeft, squareSize, b1.to).squareRect;
 		canvas.outlineRect(fromRect, rensets.generalWindow.selection, 2);
 		canvas.outlineRect(toRect, rensets.generalWindow.selection, 2);
 	}
 
 	if (b2) {
 		const fromRect = getSquareValues(board.topLeft, squareSize, b2.from).squareRect;
-		const toRect = getSquareValues(board.topLeft, squareSize, b2.from).squareRect;
+		const toRect = getSquareValues(board.topLeft, squareSize, b2.to).squareRect;
 		canvas.outlineRect(fromRect, rensets.generalWindow.selection, 2);
 		canvas.outlineRect(toRect, rensets.generalWindow.selection, 2);
 	}
 
 	if (b3) {
 		const fromRect = getSquareValues(board.topLeft, squareSize, b3.from).squareRect;
-		const toRect = getSquareValues(board.topLeft, squareSize, b3.from).squareRect;
+		const toRect = getSquareValues(board.topLeft, squareSize, b3.to).squareRect;
 		canvas.outlineRect(fromRect, rensets.generalWindow.selection, 2);
 		canvas.outlineRect(toRect, rensets.generalWindow.selection, 2);
 	}
