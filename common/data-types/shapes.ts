@@ -10,7 +10,7 @@ export interface Point {
 	readonly x: number;
 	readonly y: number;
 }
-export function Point(x: number, y: number) {
+export function Point(x: number, y: number): Point {
 	return {x, y};
 }
 
@@ -20,13 +20,15 @@ export interface Rect {
 	readonly bottomRight: Point;
 	readonly width: number;
 	readonly height: number;
+	readonly center: Point;
 }
-export function Rect(topLeft: Point, bottomRight: Point) {
+export function Rect(topLeft: Point, bottomRight: Point): Rect {
 	return {
 		topLeft,
 		bottomRight,
 		width: bottomRight.x - topLeft.x,
-		height: bottomRight.y - topLeft.y
+		height: bottomRight.y - topLeft.y,
+		center: Point((topLeft.x+bottomRight.x)/2, (topLeft.y+bottomRight.y)/2)
 	};
 }
 
@@ -34,7 +36,7 @@ export interface Circle {
 	readonly center: Point;
 	readonly radius: number;
 }
-export function Circle(center: Point, radius: number) {
+export function Circle(center: Point, radius: number): Circle {
 	return {center, radius};
 }
 
