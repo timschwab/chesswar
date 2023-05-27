@@ -1,8 +1,11 @@
+import { deepCopy } from "../common/copy.ts";
 import { Circle, Point, Vector } from "../common/data-types/shapes.ts";
-import { CommandAction, PlayerRole, TeamName } from "../common/data-types/types-base.ts";
+import { BriefingName, ChessBoard, ChessMove, CommandAction, PlayerRole, TeamName } from "../common/data-types/types-base.ts";
+import map from "../common/map.ts";
 import { ClientMessageTypes, ClientMessageWithId, GeneralOrdersMessagePayload, MoveMessagePayload } from "../common/message-types/types-client.ts";
 import { ServerMessageTypes } from "../common/message-types/types-server.ts";
 import { gameEngine } from "../common/settings.ts";
+import { inside } from "../common/shape-logic/inside.ts";
 import socket from "./socket.ts";
 import { spawnPlayer } from "./spawn.ts";
 import state, { ServerPlayer } from "./state.ts";
@@ -14,6 +17,7 @@ export function addPlayer(id: string): void {
 		team,
 		role: PlayerRole.SOLDIER,
 		commandOption: null,
+		carrying: null,
 		movement: {
 			left: false,
 			right: false,
@@ -93,14 +97,39 @@ function playerCommand(player: ServerPlayer): void {
 	} else if (player.commandOption == CommandAction.BECOME_SPY) {
 		becomeRole(player, PlayerRole.SPY);
 	} else if (player.commandOption == CommandAction.GRAB_ORDERS) {
-		// Nothing yet
+		const briefing = whichBriefing(player);
+		if (briefing == null) {
+			throw new Error("Couldn't find the briefing");
+		} else {
+			const move = state[player.team].briefings[briefing] as ChessMove;
+			player.carrying = deepCopy(move);
+		}
 	} else if (player.commandOption == CommandAction.COMPLETE_ORDERS) {
-		// Nothing yet
+		if (player.carrying != null) {
+			// do command
+		}
 	} else if (player.commandOption == CommandAction.GATHER_INTEL) {
-		// Nothing yet
+		player.carrying = deepCopy(state.realBoard);
 	} else if (player.commandOption == CommandAction.REPORT_INTEL) {
-		// Nothing yet
+		state[player.team].teamBoard = player.carrying as ChessBoard;
 	}
+}
+
+function whichBriefing(player: ServerPlayer): null | BriefingName {
+	const pos = player.physics.position;
+	const facilityBundles = map.facilities.filter(fac => fac.team == player.team);
+
+	for (const bundle of facilityBundles) {
+		if (inside(pos, bundle.briefings[0])) {
+			return BriefingName.ONE;
+		} else if (inside(pos, bundle.briefings[1])) {
+			return BriefingName.TWO;
+		} else if (inside(pos, bundle.briefings[2])) {
+			return BriefingName.THREE;
+		}
+	}
+
+	return null;
 }
 
 function becomeRole(player: ServerPlayer, role: PlayerRole): void {
@@ -114,6 +143,8 @@ function becomeRole(player: ServerPlayer, role: PlayerRole): void {
 	if (role == PlayerRole.GENERAL) {
 		player.physics.speed = Vector(0, 0);
 	}
+
+	player.carrying = null;
 }
 
 function generalOrders(player: ServerPlayer, payload: GeneralOrdersMessagePayload) {
