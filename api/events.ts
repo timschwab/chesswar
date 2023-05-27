@@ -6,6 +6,7 @@ import { ClientMessageTypes, ClientMessageWithId, GeneralOrdersMessagePayload, M
 import { ServerMessageTypes } from "../common/message-types/types-server.ts";
 import { gameEngine } from "../common/settings.ts";
 import { inside } from "../common/shape-logic/inside.ts";
+import { makeMove } from "./chess.ts";
 import socket from "./socket.ts";
 import { spawnPlayer } from "./spawn.ts";
 import state, { ServerPlayer } from "./state.ts";
@@ -106,12 +107,14 @@ function playerCommand(player: ServerPlayer): void {
 		}
 	} else if (player.commandOption == CommandAction.COMPLETE_ORDERS) {
 		if (player.carrying != null) {
-			// do command
+			makeMove(state.realBoard, player.team, player.carrying as ChessMove);
+			player.carrying == null;
 		}
 	} else if (player.commandOption == CommandAction.GATHER_INTEL) {
 		player.carrying = deepCopy(state.realBoard);
 	} else if (player.commandOption == CommandAction.REPORT_INTEL) {
 		state[player.team].teamBoard = player.carrying as ChessBoard;
+		player.carrying = null;
 	}
 }
 

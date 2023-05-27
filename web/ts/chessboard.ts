@@ -58,7 +58,7 @@ export function renderSquare(state: SafeState, topLeft: Point, squareSize: numbe
 
 	canvas.fillRect(squareRect, color);
 
-	const cell = state.self.team == TeamName.ALPHA ? state.teamBoard[7-row][col] : state.teamBoard[row][col];
+	const cell = state.teamBoard[row][col];
 	if (cell) {
 		if (cell.piece == ChessPiece.KING) {
 			renderKing(squareRect.topLeft, squareSize, cell.team);
