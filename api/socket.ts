@@ -38,8 +38,7 @@ function newConnection(sock: WebSocket) {
 		console.log(error);
 		console.log();
 
-		connections.delete(id);
-		removeHook.run(id);
+		// All errors will result in a close, so don't clean up the connection here
 	};
 
 	sock.onclose = function() {

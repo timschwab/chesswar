@@ -43,8 +43,8 @@ const bravoOutpost2 = Rect(Point(width-300, height-300), Point(width, height));
 const bravoIntel = Rect(Point(width-150, height-150), Point(width-50, height-50));
 
 const deathRects = [
-	Rect(Point(middleX - 100, 0), Point(middleX + 100, 500)),
-	Rect(Point(middleX - 100, height-500), Point(middleX + 100, height)),
+	Rect(Point(middleX - 100, 100), Point(middleX + 100, 500)),
+	Rect(Point(middleX - 100, height-500), Point(middleX + 100, height-100)),
 	Rect(Point(middleX - 1300, 1000), Point(middleX - 1100, height-1000)),
 	Rect(Point(middleX + 1100, 1000), Point(middleX + 1300, height-1000))
 ];
@@ -56,7 +56,8 @@ const deathCircles = [
 	Circle(Point(middleX+700, height-700), 100)
 ];
 
-const safeZone = Circle(middle, 500);
+const safeZone = Circle(middle, 300);
+const battlefield = Circle(middle, 50);
 
 const map = {
 	width,
@@ -87,7 +88,8 @@ const map = {
 	],
 	deathRects,
 	deathCircles,
-	safeZone
+	safeZone,
+	battlefield
 };
 
 export type ChesswarMap = typeof map;

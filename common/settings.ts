@@ -101,8 +101,9 @@ export const rensets = {
 	death: {
 		color: Color.GREY_BLACK
 	},
-	safe: {
-		color: Color.GREEN_DARK
+	center: {
+		safe: Color.GREEN_DARK,
+		battlefield: Color.GREY_WHITE
 	},
 	generalWindow: {
 		padding: 20,

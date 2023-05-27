@@ -102,8 +102,9 @@ function renderMap(state: SafeState) {
 		camera.fillCircle(deathCircle, rensets.death.color);
 	}
 
-	// Draw safe zone
-	camera.fillCircle(map.safeZone, rensets.safe.color);
+	// Draw safe zone and battlefield
+	camera.fillCircle(map.safeZone, rensets.center.safe);
+	camera.fillCircle(map.battlefield, rensets.center.battlefield);
 
 	// Draw map boundaries
 	const mapTopLeft = Point(0, 0);

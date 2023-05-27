@@ -90,12 +90,34 @@ function commandOption(player: ServerPlayer): CommandAction | null {
 		} else if (inside(pos, bundle.armory)) {
 			return CommandAction.BECOME_TANK;
 		} else if (inside(pos, bundle.intel)) {
-			return CommandAction.BECOME_SPY;
-		} else {
-			for (const briefing of bundle.briefings) {
-				if (inside(pos, briefing)) {
-					return CommandAction.BECOME_SOLDIER;
-				}
+			if (player.role == PlayerRole.SPY) {
+				return CommandAction.REPORT_INTEL;
+			} else {
+				return CommandAction.BECOME_SPY;
+			}
+		} else if (inside(pos, bundle.briefings[0])) {
+			if (player.role == PlayerRole.SOLDIER) {
+				return CommandAction.GRAB_ORDERS;
+			} else {
+				return CommandAction.BECOME_SOLDIER;
+			}
+		} else if (inside(pos, bundle.briefings[1])) {
+			if (player.role == PlayerRole.SOLDIER) {
+				return CommandAction.GRAB_ORDERS;
+			} else {
+				return CommandAction.BECOME_SOLDIER;
+			}
+		} else if (inside(pos, bundle.briefings[2])) {
+			if (player.role == PlayerRole.SOLDIER) {
+				return CommandAction.GRAB_ORDERS;
+			} else {
+				return CommandAction.BECOME_SOLDIER;
+			}
+		} else if (inside(pos, map.battlefield)) {
+			if (player.role == PlayerRole.SOLDIER) {
+				return CommandAction.COMPLETE_ORDERS;
+			} else if (player.role == PlayerRole.SPY) {
+				return CommandAction.GATHER_INTEL;
 			}
 		}
 
