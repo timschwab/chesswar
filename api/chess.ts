@@ -1,9 +1,13 @@
-import { ChessBoard, ChessMove, ChessPiece, TeamName } from "../common/data-types/types-base.ts";
+import { ChessBoard, ChessMove, ChessPiece, ChessSquare, ChessSquareState, TeamName } from "../common/data-types/types-base.ts";
 
 export function makeMove(board: ChessBoard, team: TeamName, move: ChessMove): void {
 	if (validMove(board, team, move)) {
+		// Move the piece
 		board[move.to.row][move.to.col] = board[move.from.row][move.from.col];
 		board[move.from.row][move.from.col] = null;
+
+		// Special case of turning a pawn into a queen
+		pawnToQueen(board, move.to);
 	}
 }
 
@@ -39,13 +43,66 @@ function validMove(board: ChessBoard, team: TeamName, move: ChessMove): boolean 
 		return validQueenMove(board, move);
 	} else if (piece == ChessPiece.KING) {
 		return validKingMove(move);
+	} else {
+		return false;
 	}
-
-	return true;
 }
 
 function validPawnMove(board: ChessBoard, team: TeamName, move: ChessMove): boolean {
-	return true;
+	const rowChange = move.from.row - move.to.row;
+	const colChange = move.from.col - move.to.col;
+
+	const teamValues = {
+		[TeamName.ALPHA]: {
+			startRow: 1,
+			direction: 1
+		},
+		[TeamName.BRAVO]: {
+			startRow: 6,
+			direction: -1
+		}
+	};
+	const teamValue = teamValues[team];
+
+	// Check that the direction is correct
+	if (Math.sign(rowChange) != teamValue.direction) {
+		return false;
+	}
+
+	// Check for normal moves
+	if (colChange == 0 && Math.abs(rowChange) == 1) {
+		if (board[move.to.row][move.to.col] == null) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	// Check for starting moves
+	if (move.from.row == teamValue.startRow && colChange == 0 && Math.abs(rowChange) == 2) {
+		if (board[move.from.row+teamValue.direction][move.from.col] != null) {
+			return false;
+		} else if (board[move.to.row][move.to.col] != null) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	// Check for attacking moves
+	if (Math.abs(colChange) == 1 && Math.abs(rowChange) == 1) {
+		if (board[move.to.row][move.to.col] == null) {
+			return false;
+		} else if (board[move.to.row][move.to.col]?.team == team) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	// For Chesswar, we don't check for en passant
+
+	return false;
 }
 
 function validKnightMove(move: ChessMove): boolean {
@@ -121,5 +178,12 @@ function validKingMove(move: ChessMove): boolean {
 		return true;
 	} else {
 		return false;
+	}
+}
+
+function pawnToQueen(board: ChessBoard, square: ChessSquare) {
+	const squareState = board[square.row][square.col] as ChessSquareState;
+	if (squareState.piece == ChessPiece.PAWN && (square.row == 0 || square.row == 7)) {
+		squareState.piece = ChessPiece.QUEEN;
 	}
 }
