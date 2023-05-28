@@ -32,11 +32,11 @@ function validMove(board: ChessBoard, team: TeamName, move: ChessMove): boolean 
 	} else if (piece == ChessPiece.KNIGHT) {
 		return validKnightMove(move);
 	} else if (piece == ChessPiece.BISHOP) {
-		return validBishopMove(board, team, move);
+		return validBishopMove(board, move);
 	} else if (piece == ChessPiece.ROOK) {
-		return validRookMove(board, team, move);
+		return validRookMove(board, move);
 	} else if (piece == ChessPiece.QUEEN) {
-		return validQueenMove(board, team, move);
+		return validQueenMove(board, move);
 	} else if (piece == ChessPiece.KING) {
 		return validKingMove(move);
 	}
@@ -61,16 +61,56 @@ function validKnightMove(move: ChessMove): boolean {
 	}
 }
 
-function validBishopMove(board: ChessBoard, team: TeamName, move: ChessMove): boolean {
-	return true;
+function validBishopMove(board: ChessBoard, move: ChessMove): boolean {
+	const rowChange = Math.abs(move.from.row - move.to.row);
+	const colChange = Math.abs(move.from.col - move.to.col);
+
+	// Make sure it is diagonal
+	if (rowChange != colChange) {
+		return false;
+	}
+
+	// Make sure there are no pieces in the way
+	return !middlePiecesExist(board, move);
 }
 
-function validRookMove(board: ChessBoard, team: TeamName, move: ChessMove): boolean {
-	return true;
+function validRookMove(board: ChessBoard, move: ChessMove): boolean {
+	const rowMove = Math.sign(move.from.row - move.to.row);
+	const colMove = Math.sign(move.from.col - move.to.col);
+
+	// Make sure it is in a line
+	if (rowMove != 0 && colMove != 0) {
+		return false;
+	}
+
+	// Make sure there are no pieces in the way
+	return !middlePiecesExist(board, move);
 }
 
-function validQueenMove(board: ChessBoard, team: TeamName, move: ChessMove): boolean {
-	return true;
+function middlePiecesExist(board: ChessBoard, move: ChessMove): boolean {
+	const rowMove = Math.sign(move.from.row - move.to.row);
+	const colMove = Math.sign(move.from.col - move.to.col);
+
+	let checkSquare = {
+		row: move.from.row + rowMove,
+		col: move.from.col + colMove
+	};
+	while (checkSquare.row != move.to.row && checkSquare.col != move.to.col) {
+		if (board[checkSquare.row][checkSquare.col] != null) {
+			return true;
+		}
+
+		checkSquare = {
+			row: checkSquare.row + rowMove,
+			col: checkSquare.col + colMove
+		};
+	}
+
+	return false;
+}
+
+function validQueenMove(board: ChessBoard, move: ChessMove): boolean {
+	return validBishopMove(board, move) || validRookMove(board, move);
 }
 
 function validKingMove(move: ChessMove): boolean {
