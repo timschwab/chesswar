@@ -49,8 +49,8 @@ function validMove(board: ChessBoard, team: TeamName, move: ChessMove): boolean 
 }
 
 function validPawnMove(board: ChessBoard, team: TeamName, move: ChessMove): boolean {
-	const rowChange = move.from.row - move.to.row;
-	const colChange = move.from.col - move.to.col;
+	const rowChange = move.to.row - move.from.row;
+	const colChange = move.to.col - move.from.col;
 
 	const teamValues = {
 		[TeamName.ALPHA]: {
@@ -145,14 +145,14 @@ function validRookMove(board: ChessBoard, move: ChessMove): boolean {
 }
 
 function middlePiecesExist(board: ChessBoard, move: ChessMove): boolean {
-	const rowMove = Math.sign(move.from.row - move.to.row);
-	const colMove = Math.sign(move.from.col - move.to.col);
+	const rowMove = Math.sign(move.to.row - move.from.row);
+	const colMove = Math.sign(move.to.col - move.from.col);
 
 	let checkSquare = {
 		row: move.from.row + rowMove,
 		col: move.from.col + colMove
 	};
-	while (checkSquare.row != move.to.row && checkSquare.col != move.to.col) {
+	while (checkSquare.row != move.to.row || checkSquare.col != move.to.col) {
 		if (board[checkSquare.row][checkSquare.col] != null) {
 			return true;
 		}
