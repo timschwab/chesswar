@@ -1,5 +1,5 @@
 import { Circle, Point, Vector } from "../common/data-types/shapes.ts";
-import { CommandAction, PlayerRole } from "../common/data-types/types-base.ts";
+import { ChessPiece, CommandAction, PlayerRole, TeamName } from "../common/data-types/types-base.ts";
 import map from "../common/map.ts";
 import { gameEngine } from "../common/settings.ts";
 import { inside } from "../common/shape-logic/inside.ts";
@@ -124,4 +124,34 @@ function commandOption(player: ServerPlayer): CommandAction | null {
 	}
 
 	return null;
+}
+
+export function tickVictory(): void {
+	const kings = {
+		[TeamName.ALPHA]: kingExists(TeamName.ALPHA),
+		[TeamName.BRAVO]: kingExists(TeamName.BRAVO)
+	};
+
+	if (kings[TeamName.ALPHA] && kings[TeamName.BRAVO]) {
+		state.victory = null;
+	} else if (kings[TeamName.ALPHA] && !kings[TeamName.BRAVO]) {
+		state.victory = TeamName.ALPHA;
+	} else if (!kings[TeamName.ALPHA] && kings[TeamName.BRAVO]) {
+		state.victory = TeamName.BRAVO;
+	} else {
+		state.victory = "tie";
+	}
+}
+
+// We could def store this, but eh it's just 64 locations
+function kingExists(team: TeamName): boolean {
+	for (const row of state.realBoard) {
+		for (const col of row) {
+			if (col != null && col.team == team && col.piece == ChessPiece.KING) {
+				return true;
+			}
+		}
+	}
+
+	return false;
 }

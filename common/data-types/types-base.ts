@@ -37,6 +37,8 @@ export enum CommandAction {
 	REPORT_INTEL = "report-intel"
 }
 
+export type Victory = null | TeamName | "tie";
+
 export enum ChessPiece {
 	KING = "king",
 	QUEEN = "queen",

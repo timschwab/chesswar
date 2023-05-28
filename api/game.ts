@@ -2,7 +2,7 @@ import socket from "./socket.ts";
 import { ServerMessageTypes, TeamMessage, TeamMessagePayload } from "../common/message-types/types-server.ts";
 import { ClientPlayer } from "../common/data-types/types-client.ts";
 import state, { ServerPlayer } from "./state.ts";
-import { tickPlayers } from "./tick.ts";
+import { tickPlayers, tickVictory } from "./tick.ts";
 import { addPlayer, receiveMessage, removePlayer } from "./events.ts";
 import { TeamName } from "../common/data-types/types-base.ts";
 
@@ -19,7 +19,7 @@ function init() {
 function tick(): void {
 	// Tick everything
 	tickPlayers();
-	// Other stuff eventually (maybe)
+	tickVictory();
 
 	// Broadcast state to everyone
 	const playerList = Array.from(state.allPlayers.values());
