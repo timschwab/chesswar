@@ -1,4 +1,3 @@
-import { deepCopy } from "../common/copy.ts";
 import { Circle, Point, Vector } from "../common/data-types/shapes.ts";
 import { BriefingName, ChessBoard, ChessMove, CommandAction, PlayerRole, TeamName } from "../common/data-types/types-base.ts";
 import map from "../common/map.ts";
@@ -102,8 +101,8 @@ function playerCommand(player: ServerPlayer): void {
 		if (briefing == null) {
 			throw new Error("Couldn't find the briefing");
 		} else {
-			const move = state[player.team].briefings[briefing] as ChessMove;
-			player.carrying = deepCopy(move);
+			const briefingMove = state[player.team].briefings[briefing];
+			player.carrying = structuredClone(briefingMove);
 		}
 	} else if (player.commandOption == CommandAction.COMPLETE_ORDERS) {
 		if (player.carrying != null) {
@@ -111,7 +110,7 @@ function playerCommand(player: ServerPlayer): void {
 			player.carrying == null;
 		}
 	} else if (player.commandOption == CommandAction.GATHER_INTEL) {
-		player.carrying = deepCopy(state.realBoard);
+		player.carrying = structuredClone(state.realBoard);
 	} else if (player.commandOption == CommandAction.REPORT_INTEL) {
 		state[player.team].teamBoard = player.carrying as ChessBoard;
 		player.carrying = null;
