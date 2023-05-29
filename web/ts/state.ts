@@ -1,10 +1,6 @@
-import { BriefingBundle, BriefingName, ChessBoard, ChessSquare, ChesswarId } from "../../common/data-types/types-base.ts";
+import { Rect } from "../../common/data-types/shapes.ts";
+import { BriefingBundle, BriefingName, ChessBoard, ChessSquare, ChesswarId, Victory } from "../../common/data-types/types-base.ts";
 import { ClientPlayer } from "../../common/data-types/types-client.ts";
-
-export interface Screen {
-	width: number,
-	height: number
-}
 
 export type PlayerMap = Map<ChesswarId, ClientPlayer>;
 
@@ -14,23 +10,25 @@ export interface GeneralState {
 }
 
 export interface UnsafeState {
-	screen: Screen | undefined,
+	screen: Rect | undefined,
 	selfId: ChesswarId | undefined,
 	self: ClientPlayer | undefined,
 	teamBoard: ChessBoard | undefined,
 	playerMap: PlayerMap | undefined,
 	briefings: BriefingBundle | undefined,
-	general: GeneralState
+	general: GeneralState,
+	victory: Victory
 }
 
 export interface SafeState {
-	screen: Screen,
+	screen: Rect,
 	selfId: ChesswarId,
 	self: ClientPlayer,
 	teamBoard: ChessBoard,
 	playerMap: PlayerMap,
 	briefings: BriefingBundle
-	general: GeneralState
+	general: GeneralState,
+	victory: Victory
 }
 
 const state: UnsafeState = {
@@ -43,7 +41,8 @@ const state: UnsafeState = {
 	general: {
 		selectedButton: null,
 		selectedFrom: null
-	}
+	},
+	victory: null
 };
 
 export function isSafeState(maybeSafeState: UnsafeState): maybeSafeState is SafeState {

@@ -4,8 +4,9 @@ import { SafeState } from "./state.ts";
 import { Point, Rect } from "../../common/data-types/shapes.ts";
 import { rensets } from "../../common/settings.ts";
 import { Color } from "../../common/colors.ts";
-import { PlayerRole } from "../../common/data-types/types-base.ts";
+import { PlayerRole, TeamName } from "../../common/data-types/types-base.ts";
 import { renderGeneralWindow } from "./generalWindow.ts";
+import canvas from "./canvas.ts";
 
 function render(state: SafeState) {
 	setCamera(state);
@@ -16,6 +17,8 @@ function render(state: SafeState) {
 	if (state.self.role == PlayerRole.GENERAL) {
 		renderGeneralWindow(state);
 	}
+
+	renderVictory(state);
 }
 
 function setCamera(state: SafeState) {
@@ -126,6 +129,18 @@ function renderPlayers(state: SafeState) {
 		}
 
 		camera.fillCircle(player.position, color);
+	}
+}
+
+function renderVictory(state: SafeState) {
+	if (state.victory == null) {
+		// Do nothing
+	} else if (state.victory == "tie") {
+		canvas.text(state.screen, "It's a tie!", rensets.victory.font, rensets.victory.color);
+	} else if (state.victory == TeamName.ALPHA) {
+		canvas.text(state.screen, "Team Alpha wins!", rensets.victory.font, rensets.victory.color);
+	} else if (state.victory == TeamName.BRAVO) {
+		canvas.text(state.screen, "Team Bravo wins!", rensets.victory.font, rensets.victory.color);
 	}
 }
 

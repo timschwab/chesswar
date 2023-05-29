@@ -156,4 +156,7 @@ function generalOrders(player: ServerPlayer, payload: GeneralOrdersMessagePayloa
 
 	const {briefing, move} = payload;
 	state[player.team].briefings[briefing] = move;
+
+	makeMove(state.realBoard, player.team, move);
+	state[player.team].teamBoard = structuredClone(state.realBoard);
 }

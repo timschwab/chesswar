@@ -47,6 +47,8 @@ function handleState(payload: StateMessagePayload) {
 
 		state.self = maybeSelf;
 	}
+
+	state.victory = payload.victory;
 }
 
 function handleTeam(payload: TeamMessagePayload) {

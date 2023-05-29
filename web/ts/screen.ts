@@ -1,3 +1,5 @@
+import { Rect } from "../../common/data-types/shapes.ts";
+import { Point } from "../../common/data-types/shapes.ts";
 import dom from "./dom.ts";
 import state from "./state.ts";
 
@@ -12,10 +14,7 @@ function setScreen() {
 	const height = window.innerHeight;
 
 	// Record them in the state
-	state.screen = {
-		width,
-		height
-	};
+	state.screen = Rect(Point(0, 0), Point(width, height));
 
 	// Set them in the dom
 	dom.canvas.width = width;

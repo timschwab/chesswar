@@ -61,10 +61,19 @@ function fillCircle(circle: Circle, color: Color) {
 	context.fill();
 }
 
+function text(position: Rect, message: string, font: string, color: Color) {
+	context.fillStyle = color;
+	context.font = font;
+	context.textAlign = "center";
+	context.textBaseline = "middle";
+	context.fillText(message, position.center.x, position.center.y);
+}
+
 export default {
 	line,
 	arrow,
 	outlineRect,
 	fillRect,
-	fillCircle
+	fillCircle,
+	text
 };

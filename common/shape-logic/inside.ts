@@ -37,7 +37,7 @@ function pointInsideCircle(main: Point, other: Circle): boolean {
 
 // Not sure when this would be useful
 function rectInsidePoint(main: Rect, other: Point): boolean {
-	return equals(main.topLeft, other) && equals(main.topLeft, other);
+	return equals(main.topLeft, other) && equals(main.bottomRight, other);
 }
 
 function rectInsideRect(main: Rect, other: Rect): boolean {
