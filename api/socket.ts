@@ -21,7 +21,7 @@ function newConnection(sock: WebSocket) {
 		addHook.run(id);
 	}
 
-	sock.onmessage = function(event) {
+	sock.onmessage = function(event: MessageEvent) {
 		const str = event.data;
 		console.log(`--- ${id} message ---`);
 		console.log(str);
@@ -33,7 +33,7 @@ function newConnection(sock: WebSocket) {
 		messageHook.run(messageWithId);
 	};
 
-	sock.onerror = function(error) {
+	sock.onerror = function(error: Event) {
 		console.log(`--- ${id} error ---`);
 		console.log(error);
 		console.log();
@@ -41,8 +41,9 @@ function newConnection(sock: WebSocket) {
 		// All errors will result in a close, so don't clean up the connection here
 	};
 
-	sock.onclose = function() {
+	sock.onclose = function(closeEvent: CloseEvent) {
 		console.log(`--- ${id} close ---`);
+		console.log(closeEvent);
 		console.log();
 
 		connections.delete(id);
