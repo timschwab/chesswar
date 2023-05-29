@@ -13,7 +13,7 @@ function newConnection(sock: WebSocket) {
 	const id: ChesswarId = slim.make();
 
 	sock.onopen = function() {
-		console.log("--- connection ---");
+		console.log(`--- ${id} connection ---`);
 		console.log();
 
 		connections.set(id, sock);
@@ -23,7 +23,7 @@ function newConnection(sock: WebSocket) {
 
 	sock.onmessage = function(event) {
 		const str = event.data;
-		console.log("--- message ---");
+		console.log(`--- ${id} message ---`);
 		console.log(str);
 		console.log();
 
@@ -34,7 +34,7 @@ function newConnection(sock: WebSocket) {
 	};
 
 	sock.onerror = function(error) {
-		console.log("--- error ---");
+		console.log(`--- ${id} error ---`);
 		console.log(error);
 		console.log();
 
@@ -42,7 +42,7 @@ function newConnection(sock: WebSocket) {
 	};
 
 	sock.onclose = function() {
-		console.log("--- close ---");
+		console.log(`--- ${id} close ---`);
 		console.log();
 
 		connections.delete(id);
