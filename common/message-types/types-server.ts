@@ -1,4 +1,4 @@
-import { BriefingBundle, ChessBoard, ChesswarId } from "../data-types/types-base.ts";
+import { BriefingBundle, ChessBoard, ChesswarId, Victory } from "../data-types/types-base.ts";
 import { ClientPlayer } from "../data-types/types-client.ts";
 import { AbstractMessage } from "./types-base.ts";
 
@@ -14,7 +14,8 @@ export type PlayerInitMessagePayload = {
 type PlayerInitMessage = AbstractMessage<ServerMessageTypes.PLAYER_INIT, PlayerInitMessagePayload>;
 
 export interface StateMessagePayload {
-	players: ClientPlayer[]
+	players: ClientPlayer[],
+	victory: Victory
 }
 type StateMessage = AbstractMessage<ServerMessageTypes.STATE, StateMessagePayload>;
 

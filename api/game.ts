@@ -19,12 +19,15 @@ function init() {
 function tick(): void {
 	// Tick everything
 	tickPlayers();
-	tickVictory();
+	if (state.victory == null) {
+		tickVictory();
+	}
 
 	// Broadcast state to everyone
 	const playerList = Array.from(state.allPlayers.values());
 	const payload = {
-		players: playerList.map(serverPlayerToClientPlayer)
+		players: playerList.map(serverPlayerToClientPlayer),
+		victory: state.victory
 	};
 
 	socket.sendAll({
