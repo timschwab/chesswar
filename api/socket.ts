@@ -53,7 +53,7 @@ function newConnection(sock: WebSocket) {
 function sendOne(id: ChesswarId, message: ServerMessage) {
 	const conn = connections.get(id);
 	if (conn) {
-		conn.send(JSON.stringify(message));
+		safeSend(conn, JSON.stringify(message));
 	} else {
 		throw "Could not find connection with id " + id;
 	}
@@ -64,7 +64,7 @@ function sendBulk(ids: ChesswarId[], message: ServerMessage) {
 	for (const id of ids) {
 		const conn = connections.get(id);
 		if (conn) {
-			conn.send(str);
+			safeSend(conn, str);
 		} else {
 			throw "Could not find connection with id " + id;
 		}
@@ -74,7 +74,15 @@ function sendBulk(ids: ChesswarId[], message: ServerMessage) {
 function sendAll(message: ServerMessage) {
 	const str = JSON.stringify(message);
 	for (const conn of connections.values()) {
-		conn.send(str);
+		safeSend(conn, str);
+	}
+}
+
+function safeSend(conn: WebSocket, message: string) {
+	try {
+		conn.send(message);
+	} catch (err) {
+		console.error(err);
 	}
 }
 

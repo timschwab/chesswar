@@ -54,10 +54,13 @@ function newPlayerTeam(): TeamName {
 }
 
 export function removePlayer(id: string): void {
-	const player = getPlayer(id);
-
-	state.allPlayers.delete(id);
-	state[player.team].playerMap.delete(id);
+	try {
+		const player = getPlayer(id);
+		state.allPlayers.delete(id);
+		state[player.team].playerMap.delete(id);
+	} catch (err) {
+		console.error(err);
+	}
 }
 
 export function receiveMessage(message: ClientMessageWithId): void {
