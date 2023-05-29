@@ -177,6 +177,67 @@ function commandOption(player: ServerPlayer): CommandAction | null {
 	return null;
 }
 
+export function tickTankKills(): void {
+	// Should optimize this functions at some point probably. Simple-ish optimization would be
+	// separating the map into several sectors and only consider the players in that sector or the
+	// neighboring ones.
+
+	// List of values
+	const alphaTanks: ServerPlayer[] = [];
+	const alphaOthers: ServerPlayer[] = [];
+	const bravoTanks: ServerPlayer[] = [];
+	const bravoOthers: ServerPlayer[] = [];
+
+	for (const player of state.allPlayers.values()) {
+		if (player.team == TeamName.ALPHA) {
+			if (player.role == PlayerRole.TANK) {
+				alphaTanks.push(player);
+			} else {
+				alphaOthers.push(player);
+			}
+		} else if (player.team == TeamName.BRAVO) {
+			if (player.role == PlayerRole.TANK) {
+				bravoTanks.push(player);
+			} else {
+				bravoOthers.push(player);
+			}
+		}
+	}
+
+	// Tanks killing tanks first - compare every pair
+	for (const alphaTank of alphaTanks) {
+		for (const bravoTank of bravoTanks) {
+			if (touches(alphaTank.physics.position, bravoTank.physics.position)) {
+				spawnPlayer(alphaTank);
+				spawnPlayer(bravoTank);
+			}
+		}
+	}
+
+	// Tanks killing soldiers and spies second
+	for (const alphaTank of alphaTanks) {
+		// Make sure it wasn't killed up above
+		if (alphaTank.role == PlayerRole.TANK) {
+			for (const bravoOther of bravoOthers) {
+				if (touches(alphaTank.physics.position, bravoOther.physics.position)) {
+					spawnPlayer(bravoOther);
+				}
+			}
+		}
+	}
+
+	for (const bravoTank of bravoTanks) {
+		// Make sure it wasn't killed up above
+		if (bravoTank.role == PlayerRole.TANK) {
+			for (const alphaOther of alphaOthers) {
+				if (touches(bravoTank.physics.position, alphaOther.physics.position)) {
+					spawnPlayer(alphaOther);
+				}
+			}
+		}
+	}
+}
+
 export function tickVictory(): void {
 	const kings = {
 		[TeamName.ALPHA]: kingExists(TeamName.ALPHA),
