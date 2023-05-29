@@ -14,6 +14,7 @@ export function tickPlayers() {
 		movePlayer(player);
 		checkDeathRects(player);
 		checkDeathCircles(player);
+		checkTankSafezones(player);
 
 		player.commandOption = commandOption(player);
 	}
@@ -99,6 +100,31 @@ function checkDeathCircles(player: ServerPlayer): void {
 	for (const deathCircle of map.deathCircles) {
 		if (touches(player.physics.position, deathCircle)) {
 			spawnPlayer(player);
+		}
+	}
+}
+
+function checkTankSafezones(player: ServerPlayer): void {
+	if (player.role == PlayerRole.TANK) {
+		const pos = player.physics.position;
+		if (touches(pos, map.safeZone)) {
+			spawnPlayer(player);
+			return;
+		}
+
+		const enemyBundles = map.facilities.filter(fac => fac.team != player.team);
+		for (const bundle of enemyBundles) {
+			if (touches(pos, bundle.base)) {
+				spawnPlayer(player);
+				return;
+			}
+
+			for (const outpost of bundle.outposts) {
+				if (touches(pos, outpost)) {
+					spawnPlayer(player);
+					return;
+				}
+			}
 		}
 	}
 }
