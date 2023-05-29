@@ -53,13 +53,38 @@ function movePlayer(player: ServerPlayer): void {
 	const netAcceleration = multiply(netForce, 1/physics.mass);
 	const newSpeed = add(physics.speed, netAcceleration);
 
-	// Compute position based on speed, TODO: and bounce off the sides
+	// Compute position based on speed
 	const xyVector = vectorToPoint(newSpeed);
 	const newPosition = transposePoint(physics.position.center, xyVector);
 
+	// Bounce off the sides
+	let bouncePosition = newPosition;
+	let bounceSpeed = xyVector;
+
+	if (bouncePosition.x < 0) {
+		const bounceX = 0 - (bouncePosition.x - 0);
+		bouncePosition = Point(bounceX, bouncePosition.y);
+		bounceSpeed = Point(-1*bounceSpeed.x, bounceSpeed.y);
+	} else if (bouncePosition.x > map.width) {
+		const bounceX = map.width - (bouncePosition.x - map.width);
+		bouncePosition = Point(bounceX, bouncePosition.y);
+		bounceSpeed = Point(-1*bounceSpeed.x, bounceSpeed.y);
+	}
+
+	if (bouncePosition.y < 0) {
+		const bounceY = 0 - (bouncePosition.y - 0);
+		bouncePosition = Point(bouncePosition.x, bounceY);
+		bounceSpeed = Point(bounceSpeed.x, -1*bounceSpeed.y);
+
+	} else if (bouncePosition.y > map.height) {
+		const bounceY = map.height - (bouncePosition.y - map.height);
+		bouncePosition = Point(bouncePosition.x, bounceY);
+		bounceSpeed = Point(bounceSpeed.x, -1*bounceSpeed.y);
+	}
+
 	// Set new values
-	physics.speed = newSpeed;
-	physics.position = Circle(newPosition, radius);
+	physics.speed = pointToVector(bounceSpeed);
+	physics.position = Circle(bouncePosition, radius);
 }
 
 function checkDeathRects(player: ServerPlayer): void {
