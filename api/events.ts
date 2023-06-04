@@ -1,5 +1,5 @@
 import { Circle, Point, Vector } from "../common/data-types/shapes.ts";
-import { BriefingName, ChessBoard, ChessMove, ChesswarId, CommandAction, PlayerRole, TeamName } from "../common/data-types/base.ts";
+import { BriefingName, ChesswarId, CommandAction, PlayerRole, TeamName } from "../common/data-types/base.ts";
 import map from "../common/map.ts";
 import { ClientMessageTypes, ClientMessageWithId, GeneralOrdersMessagePayload, MoveMessagePayload } from "../common/message-types/client.ts";
 import { ServerMessageTypes } from "../common/message-types/server.ts";
@@ -9,6 +9,7 @@ import { makeMove } from "./chess.ts";
 import socket from "./socket.ts";
 import { spawnPlayer } from "./spawn.ts";
 import state, { ServerPlayer } from "./state.ts";
+import { ChessBoard, ChessMove } from "../common/data-types/chess.ts";
 
 export function addPlayer(id: string): void {
 	const team = newPlayerTeam();

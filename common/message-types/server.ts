@@ -1,6 +1,7 @@
-import { BriefingBundle, ChessBoard, ChesswarId, Victory } from "../data-types/base.ts";
+import { ChesswarId, Victory } from "../data-types/base.ts";
+import { ChessBoard } from "../data-types/chess.ts";
 import { ClientPlayer } from "../data-types/client.ts";
-import { ServerStats } from "../data-types/server.ts";
+import { BriefingBundle, ServerStats } from "../data-types/server.ts";
 import { AbstractMessage } from "./base.ts";
 
 export enum ServerMessageTypes {

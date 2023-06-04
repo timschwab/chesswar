@@ -1,4 +1,5 @@
-import { ChessBoard, ChessMove, ChessPiece, ChessSquare, ChessSquareState, TeamName } from "../common/data-types/base.ts";
+import { TeamName } from "../common/data-types/base.ts";
+import { ChessBoard, ChessMove, ChessPiece, ChessSquare, ChessSquareState } from "../common/data-types/chess.ts";
 
 export function makeMove(board: ChessBoard, team: TeamName, move: ChessMove): void {
 	if (validMove(board, team, move)) {

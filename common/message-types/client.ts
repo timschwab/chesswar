@@ -1,4 +1,5 @@
-import { BriefingName, ChessMove, ChesswarId } from "../data-types/base.ts";
+import { BriefingName, ChesswarId } from "../data-types/base.ts";
+import { ChessMove } from "../data-types/chess.ts";
 import { MovementState } from "../data-types/server.ts";
 import { AbstractMessage } from "./base.ts";
 

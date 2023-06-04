@@ -1,8 +1,9 @@
 import { Circle, Point, Rect } from "../../common/data-types/shapes.ts";
-import { BriefingName, ChessPiece, ChessSquare, TeamName } from "../../common/data-types/base.ts";
+import { BriefingName, TeamName } from "../../common/data-types/base.ts";
 import { rensets } from "../../common/settings.ts";
 import canvas from "./canvas.ts";
 import { SafeState } from "./state.ts";
+import { ChessPiece, ChessSquare } from "../../common/data-types/chess.ts";
 
 export function renderBoard(state: SafeState, board: Rect) {
 	const squareSize = board.width/8;

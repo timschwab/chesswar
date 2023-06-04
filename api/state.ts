@@ -1,6 +1,7 @@
 import { Circle, Vector } from "../common/data-types/shapes.ts";
-import { BriefingBundle, BriefingName, ChessBoard, ChessMove, ChessPiece, ChessRow, ChesswarId, CommandAction, PlayerRole, TeamName, Victory } from "../common/data-types/base.ts";
-import { MovementState, ServerStats } from "../common/data-types/server.ts";
+import { BriefingName, ChesswarId, CommandAction, PlayerRole, TeamName, Victory } from "../common/data-types/base.ts";
+import { BriefingBundle, MovementState, ServerStats } from "../common/data-types/server.ts";
+import { ChessBoard, ChessMove, ChessPiece, ChessRow } from "../common/data-types/chess.ts";
 
 export interface ServerPlayerPhysics {
 	mass: number,
