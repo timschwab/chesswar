@@ -9,6 +9,18 @@ import { renderGeneralWindow } from "./generalWindow.ts";
 import canvas from "./canvas.ts";
 
 function render(state: SafeState) {
+	const startRender = performance.now();
+	renderAll(state);
+	const endRender = performance.now();
+	const renderMs = endRender-startRender;
+
+	// Only once a second, so that they are easy to read
+	if (state.renderCount % 60 == 0) {
+		state.stats.clientRenderMs = renderMs;
+	}
+}
+
+function renderAll(state: SafeState) {
 	setCamera(state);
 	renderBackground();
 	renderMap(state);
@@ -19,6 +31,7 @@ function render(state: SafeState) {
 	}
 
 	renderVictory(state);
+	renderStats(state);
 }
 
 function setCamera(state: SafeState) {
@@ -136,12 +149,26 @@ function renderVictory(state: SafeState) {
 	if (state.victory == null) {
 		// Do nothing
 	} else if (state.victory == "tie") {
-		canvas.text(state.screen, "It's a tie!", rensets.victory.font, rensets.victory.color);
+		canvas.text(state.screen, "center", "It's a tie!", rensets.victory.font, rensets.victory.color);
 	} else if (state.victory == TeamName.ALPHA) {
-		canvas.text(state.screen, "Team Alpha wins!", rensets.victory.font, rensets.victory.color);
+		canvas.text(state.screen, "center", "Team Alpha wins!", rensets.victory.font, rensets.victory.color);
 	} else if (state.victory == TeamName.BRAVO) {
-		canvas.text(state.screen, "Team Bravo wins!", rensets.victory.font, rensets.victory.color);
+		canvas.text(state.screen, "center", "Team Bravo wins!", rensets.victory.font, rensets.victory.color);
 	}
+}
+
+function renderStats(state: SafeState) {
+	// Note this is the ms for the previous render
+	const clientRenderMs = state.stats.clientRenderMs.toFixed(3);
+	const clientRendersPerSec = (1000 / state.stats.clientRenderMs).toFixed(0);
+
+	let rect = Rect(Point(10, 10), Point(100, 30));
+	let message = `clientRenderMs: ${clientRenderMs}`;
+	canvas.text(rect, "left", message, rensets.stats.font, rensets.stats.color);
+
+	rect = Rect(Point(rect.topLeft.x, rect.topLeft.y+20), Point(rect.bottomRight.x, rect.bottomRight.y+20))
+	message = `clientRendersPerSec: ${clientRendersPerSec}`;
+	canvas.text(rect, "left", message, rensets.stats.font, rensets.stats.color);
 }
 
 export default render;

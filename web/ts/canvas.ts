@@ -61,12 +61,18 @@ function fillCircle(circle: Circle, color: Color) {
 	context.fill();
 }
 
-function text(position: Rect, message: string, font: string, color: Color) {
+function text(position: Rect, align: "left" | "center" | "right", message: string, font: string, color: Color) {
+	const alignX = {
+		left: position.topLeft.x,
+		center: position.center.x,
+		right: position.bottomRight.x,
+	}[align];
+
 	context.fillStyle = color;
 	context.font = font;
-	context.textAlign = "center";
+	context.textAlign = align;
 	context.textBaseline = "middle";
-	context.fillText(message, position.center.x, position.center.y);
+	context.fillText(message, alignX, position.center.y);
 }
 
 export default {

@@ -97,6 +97,7 @@ function receiveClick(location: Point): void {
 function gameLoop() {
 	if (isSafeState(state)) {
 		render(state);
+		state.renderCount++;
 	}
 
 	requestAnimationFrame(gameLoop);

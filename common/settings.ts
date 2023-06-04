@@ -124,5 +124,9 @@ export const rensets = {
 	victory: {
 		font: "bold 128px Times New Roman",
 		color: Color.GREY_BLACK
+	},
+	stats: {
+		font: "12px Times New Roman",
+		color: Color.GREY_BLACK
 	}
 };

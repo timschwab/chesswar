@@ -9,7 +9,12 @@ export interface GeneralState {
 	selectedFrom: ChessSquare | null
 }
 
+export interface Stats {
+	clientRenderMs: number
+}
+
 export interface UnsafeState {
+	renderCount: number,
 	screen: Rect | undefined,
 	selfId: ChesswarId | undefined,
 	self: ClientPlayer | undefined,
@@ -17,10 +22,12 @@ export interface UnsafeState {
 	playerMap: PlayerMap | undefined,
 	briefings: BriefingBundle | undefined,
 	general: GeneralState,
-	victory: Victory
+	victory: Victory,
+	stats: Stats
 }
 
 export interface SafeState {
+	renderCount: number,
 	screen: Rect,
 	selfId: ChesswarId,
 	self: ClientPlayer,
@@ -28,10 +35,12 @@ export interface SafeState {
 	playerMap: PlayerMap,
 	briefings: BriefingBundle
 	general: GeneralState,
-	victory: Victory
+	victory: Victory,
+	stats: Stats
 }
 
 const state: UnsafeState = {
+	renderCount: 0,
 	screen: undefined,
 	selfId: undefined,
 	self: undefined,
@@ -42,7 +51,10 @@ const state: UnsafeState = {
 		selectedButton: null,
 		selectedFrom: null
 	},
-	victory: null
+	victory: null,
+	stats: {
+		clientRenderMs: 0
+	}
 };
 
 export function isSafeState(maybeSafeState: UnsafeState): maybeSafeState is SafeState {
