@@ -4,7 +4,9 @@ import { rensets } from "../../common/settings.ts";
 import canvas from "./canvas.ts";
 import { SafeState } from "./state.ts";
 
-export function renderBoard(state: SafeState, board: Rect, squareSize: number) {
+export function renderBoard(state: SafeState, board: Rect) {
+	const squareSize = board.width/8;
+
 	// Render all the squares
 	for (let row = 0 ; row < 8 ; row++) {
 		for (let col = 0 ; col < 8 ; col++) {

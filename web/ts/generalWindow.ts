@@ -16,7 +16,7 @@ export function renderGeneralWindow(state: SafeState): void {
 	canvas.outlineRect(values.windowRect, genwin.windowOutline, 5);
 
 	// Draw chessboard squares
-	renderBoard(state, values.boardRect, genwin.squareSize);
+	renderBoard(state, values.boardRect);
 
 	// Draw buttons
 	canvas.fillRect(values.button1Rect, genwin.button);

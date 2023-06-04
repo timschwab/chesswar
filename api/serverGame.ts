@@ -36,8 +36,7 @@ function tickAll(): void {
 	const playerList = Array.from(state.allPlayers.values());
 	const payload = {
 		players: playerList.map(serverPlayerToClientPlayer),
-		victory: state.victory,
-		stats: state.stats
+		victory: state.victory
 	};
 
 	socket.sendAll({

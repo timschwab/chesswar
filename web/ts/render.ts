@@ -7,6 +7,7 @@ import { Color } from "../../common/colors.ts";
 import { PlayerRole, TeamName } from "../../common/data-types/types-base.ts";
 import { renderGeneralWindow } from "./generalWindow.ts";
 import canvas from "./canvas.ts";
+import { renderBoard } from "./chessboard.ts";
 
 function render(state: SafeState) {
 	const startRender = performance.now();
@@ -28,6 +29,8 @@ function renderAll(state: SafeState) {
 
 	if (state.self.role == PlayerRole.GENERAL) {
 		renderGeneralWindow(state);
+	} else {
+		renderMiniChessboard(state);
 	}
 
 	renderVictory(state);
@@ -145,6 +148,11 @@ function renderPlayers(state: SafeState) {
 	}
 }
 
+function renderMiniChessboard(state: SafeState) {
+	const boardRect = Rect(Point(10, 10), Point(10+(8*20), 10+(8*20)));
+	renderBoard(state, boardRect);
+}
+
 function renderVictory(state: SafeState) {
 	if (state.victory == null) {
 		// Do nothing
@@ -173,10 +181,10 @@ function renderStats(state: SafeState) {
 		`serverTicksPerSec: ${serverTicksPerSec}`
 	];
 
-	let rect = Rect(Point(10, 10), Point(100, 30));
+	let rect = Rect(Point(10, state.screen.height-30), Point(100, state.screen.height-10));
 	for (const stat of stats) {
 		canvas.text(rect, "left", stat, rensets.stats.font, rensets.stats.color);
-		rect = Rect(Point(rect.topLeft.x, rect.topLeft.y+20), Point(rect.bottomRight.x, rect.bottomRight.y+20));
+		rect = Rect(Point(rect.topLeft.x, rect.topLeft.y-20), Point(rect.bottomRight.x, rect.bottomRight.y-20));
 	}
 }
 
