@@ -46,8 +46,8 @@ export const gameEngine = {
 		},
 		[PlayerRole.SOLDIER]: {
 			radius: 5,
-			mass: 1,
-			inputForceMag: 3
+			mass: 2,
+			inputForceMag: 5
 		},
 		[PlayerRole.TANK]: {
 			radius: 25,
@@ -56,8 +56,8 @@ export const gameEngine = {
 		},
 		[PlayerRole.OPERATIVE]: {
 			radius: 3,
-			mass: 1,
-			inputForceMag: 3
+			mass: 2,
+			inputForceMag: 5
 		}
 	}
 };
