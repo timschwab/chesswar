@@ -153,7 +153,7 @@ function renderPlayers(state: SafeState) {
 
 function renderRole(state: SafeState) {
 	const textRect = Rect(Point(10, 10), Point(200, 30));
-	canvas.fillRect(textRect, rensets.currentRole.backgroundColor);
+	canvas.fillRect(textRect, rensets.currentRole.teamColor[state.self.team]);
 	canvas.outlineRect(textRect, rensets.currentRole.outlineColor, rensets.currentRole.outlineWidth);
 	canvas.text(textRect, "center", "You are a: " + state.self.role, rensets.currentRole.textFont, rensets.currentRole.textColor)
 }

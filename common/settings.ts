@@ -132,9 +132,12 @@ export const rensets = {
 	currentRole: {
 		outlineWidth: 2,
 		outlineColor: Color.GREY_BLACK,
-		backgroundColor: Color.GREY_LIGHT,
+		teamColor: {
+			[TeamName.ALPHA]: Color.BLUE_LIGHT,
+			[TeamName.BRAVO]: Color.RED_STANDARD
+		},
 		textFont: "18px Times New Roman",
-		textColor: Color.GREY_EXTRA_DARK
+		textColor: Color.GREY_WHITE
 	},
 	victory: {
 		font: "bold 128px Times New Roman",
