@@ -30,12 +30,12 @@ function renderAll(state: SafeState) {
 	renderMap(state);
 	renderPlayers(state);
 
+	renderRole(state);
 	if (state.self.role == PlayerRole.GENERAL) {
 		renderGeneralWindow(state);
 	} else {
 		renderMiniChessboard(state);
 	}
-
 	renderActionOption(state);
 
 	renderVictory(state);
@@ -153,8 +153,15 @@ function renderPlayers(state: SafeState) {
 	}
 }
 
+function renderRole(state: SafeState) {
+	const textRect = Rect(Point(10, 10), Point(200, 30));
+	canvas.fillRect(textRect, rensets.currentRole.backgroundColor);
+	canvas.outlineRect(textRect, rensets.currentRole.outlineColor, rensets.currentRole.outlineWidth);
+	canvas.text(textRect, "center", "You are a: " + state.self.role, rensets.currentRole.textFont, rensets.currentRole.textColor)
+}
+
 function renderMiniChessboard(state: SafeState) {
-	const boardRect = Rect(Point(10, 10), Point(10+(8*20), 10+(8*20)));
+	const boardRect = Rect(Point(10, 40), Point(10+(8*20), 40+(8*20)));
 
 	const moves = [] as ChessMove[];
 	if (state.carrying.type == CarryLoadType.MOVE) {
@@ -163,7 +170,7 @@ function renderMiniChessboard(state: SafeState) {
 	renderBoard(boardRect, state.teamBoard, moves);
 
 	if (state.carrying.type == CarryLoadType.BOARD) {
-		const boardRect = Rect(Point(10, 10+10+(8*20)), Point(10+(8*20), 2*(10+(8*20))));
+		const boardRect = Rect(Point(10, 40+10+(8*20)), Point(10+(8*20), 40+10+2*((8*20))));
 		renderBoard(boardRect, state.carrying.load, []);
 	}
 }
@@ -178,7 +185,7 @@ function renderActionOption(state: SafeState) {
 
 	canvas.fillRect(actionRect, rensets.actionOption.backgroundColor);
 	canvas.outlineRect(actionRect, rensets.actionOption.outlineColor, rensets.actionOption.outlineWidth);
-	canvas.text(actionRect, "center", "Available action: " + (actionOption || ""), rensets.actionOption.textFont, rensets.actionOption.textColor)
+	canvas.text(actionRect, "center", "Available action: " + (actionOption || ""), rensets.actionOption.textFont, rensets.actionOption.textColor);
 }
 
 function renderVictory(state: SafeState) {
