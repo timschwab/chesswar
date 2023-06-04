@@ -60,10 +60,10 @@ function handleKey(event: KeyboardEvent, pressed: boolean): void {
 			payload: movement
 		});
 	} else if (code == "Space") {
-		// Send Switch command on keydown but not keyup
+		// Send action on keydown but not keyup
 		if (pressed) {
 			socket.send({
-				type: ClientMessageTypes.COMMAND,
+				type: ClientMessageTypes.ACTION,
 				payload: null
 			});
 		}

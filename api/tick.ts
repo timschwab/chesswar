@@ -1,5 +1,5 @@
 import { Circle, Point, Vector } from "../common/data-types/shapes.ts";
-import { CommandAction, PlayerRole, TeamName } from "../common/data-types/base.ts";
+import { PlayerAction, PlayerRole, TeamName } from "../common/data-types/base.ts";
 import map from "../common/map.ts";
 import { gameEngine } from "../common/settings.ts";
 import { inside } from "../common/shape-logic/inside.ts";
@@ -17,7 +17,7 @@ export function tickPlayers() {
 		checkDeathCircles(player);
 		checkTankSafezones(player);
 
-		player.commandOption = commandOption(player);
+		player.actionOption = actionOption(player);
 	}
 }
 
@@ -130,46 +130,46 @@ function checkTankSafezones(player: ServerPlayer): void {
 	}
 }
 
-function commandOption(player: ServerPlayer): CommandAction | null {
+function actionOption(player: ServerPlayer): PlayerAction | null {
 	const pos = player.physics.position;
 	const facilityBundles = map.facilities.filter(fac => fac.team == player.team);
 
 	for (const bundle of facilityBundles) {
 		if (player.role == PlayerRole.GENERAL) {
-			return CommandAction.BECOME_SOLDIER;
+			return PlayerAction.BECOME_SOLDIER;
 		} else if (inside(pos, bundle.command)) {
-			return CommandAction.BECOME_GENERAL;
+			return PlayerAction.BECOME_GENERAL;
 		} else if (inside(pos, bundle.armory)) {
-			return CommandAction.BECOME_TANK;
+			return PlayerAction.BECOME_TANK;
 		} else if (inside(pos, bundle.intel)) {
 			if (player.role == PlayerRole.OPERATIVE) {
-				return CommandAction.REPORT_INTEL;
+				return PlayerAction.REPORT_INTEL;
 			} else {
-				return CommandAction.BECOME_OPERATIVE;
+				return PlayerAction.BECOME_OPERATIVE;
 			}
 		} else if (inside(pos, bundle.briefings[0])) {
 			if (player.role == PlayerRole.SOLDIER) {
-				return CommandAction.GRAB_ORDERS;
+				return PlayerAction.GRAB_ORDERS;
 			} else {
-				return CommandAction.BECOME_SOLDIER;
+				return PlayerAction.BECOME_SOLDIER;
 			}
 		} else if (inside(pos, bundle.briefings[1])) {
 			if (player.role == PlayerRole.SOLDIER) {
-				return CommandAction.GRAB_ORDERS;
+				return PlayerAction.GRAB_ORDERS;
 			} else {
-				return CommandAction.BECOME_SOLDIER;
+				return PlayerAction.BECOME_SOLDIER;
 			}
 		} else if (inside(pos, bundle.briefings[2])) {
 			if (player.role == PlayerRole.SOLDIER) {
-				return CommandAction.GRAB_ORDERS;
+				return PlayerAction.GRAB_ORDERS;
 			} else {
-				return CommandAction.BECOME_SOLDIER;
+				return PlayerAction.BECOME_SOLDIER;
 			}
 		} else if (inside(pos, map.battlefield)) {
 			if (player.role == PlayerRole.SOLDIER) {
-				return CommandAction.COMPLETE_ORDERS;
+				return PlayerAction.COMPLETE_ORDERS;
 			} else if (player.role == PlayerRole.OPERATIVE) {
-				return CommandAction.GATHER_INTEL;
+				return PlayerAction.GATHER_INTEL;
 			}
 		}
 

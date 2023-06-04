@@ -18,7 +18,7 @@ export enum PlayerRole {
 	OPERATIVE = "operative"
 }
 
-export enum CommandAction {
+export enum PlayerAction {
 	BECOME_GENERAL = "become-general",
 	BECOME_SOLDIER = "become-soldier",
 	BECOME_TANK = "become-tank",

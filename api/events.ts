@@ -1,5 +1,5 @@
 import { Circle, Point, Vector } from "../common/data-types/shapes.ts";
-import { BriefingName, ChesswarId, CommandAction, PlayerRole, TeamName } from "../common/data-types/base.ts";
+import { BriefingName, ChesswarId, PlayerAction, PlayerRole, TeamName } from "../common/data-types/base.ts";
 import map from "../common/map.ts";
 import { ClientMessageTypes, ClientMessageWithId, GeneralOrdersMessagePayload, MoveMessagePayload } from "../common/message-types/client.ts";
 import { ServerMessageTypes } from "../common/message-types/server.ts";
@@ -17,7 +17,7 @@ export function addPlayer(id: string): void {
 		id,
 		team,
 		role: PlayerRole.SOLDIER,
-		commandOption: null,
+		actionOption: null,
 		carrying: null,
 		movement: {
 			left: false,
@@ -69,8 +69,8 @@ export function receiveMessage(message: ClientMessageWithId): void {
 
 	if (message.type == ClientMessageTypes.MOVE) {
 		playerMove(player, message.payload);
-	} else if (message.type == ClientMessageTypes.COMMAND) {
-		playerCommand(player);
+	} else if (message.type == ClientMessageTypes.ACTION) {
+		playerAction(player);
 	} else if (message.type == ClientMessageTypes.GENERAL_ORDERS) {
 		generalOrders(player, message.payload);
 	} else if (message.type == ClientMessageTypes.PING) {
@@ -91,18 +91,18 @@ function playerMove(player: ServerPlayer, keys: MoveMessagePayload): void {
 	player.movement = keys;
 }
 
-function playerCommand(player: ServerPlayer): void {
-	if (player.commandOption == null) {
+function playerAction(player: ServerPlayer): void {
+	if (player.actionOption == null) {
 		// Do nothing
-	} else if (player.commandOption == CommandAction.BECOME_GENERAL) {
+	} else if (player.actionOption == PlayerAction.BECOME_GENERAL) {
 		becomeRole(player, PlayerRole.GENERAL);
-	} else if (player.commandOption == CommandAction.BECOME_SOLDIER) {
+	} else if (player.actionOption == PlayerAction.BECOME_SOLDIER) {
 		becomeRole(player, PlayerRole.SOLDIER);
-	} else if (player.commandOption == CommandAction.BECOME_TANK) {
+	} else if (player.actionOption == PlayerAction.BECOME_TANK) {
 		becomeRole(player, PlayerRole.TANK);
-	} else if (player.commandOption == CommandAction.BECOME_OPERATIVE) {
+	} else if (player.actionOption == PlayerAction.BECOME_OPERATIVE) {
 		becomeRole(player, PlayerRole.OPERATIVE);
-	} else if (player.commandOption == CommandAction.GRAB_ORDERS) {
+	} else if (player.actionOption == PlayerAction.GRAB_ORDERS) {
 		const briefing = whichBriefing(player);
 		if (briefing == null) {
 			throw new Error("Couldn't find the briefing");
@@ -110,14 +110,14 @@ function playerCommand(player: ServerPlayer): void {
 			const briefingMove = state[player.team].briefings[briefing];
 			player.carrying = structuredClone(briefingMove);
 		}
-	} else if (player.commandOption == CommandAction.COMPLETE_ORDERS) {
+	} else if (player.actionOption == PlayerAction.COMPLETE_ORDERS) {
 		if (player.carrying != null) {
 			makeMove(state.realBoard, player.team, player.carrying as ChessMove);
 			player.carrying == null;
 		}
-	} else if (player.commandOption == CommandAction.GATHER_INTEL) {
+	} else if (player.actionOption == PlayerAction.GATHER_INTEL) {
 		player.carrying = structuredClone(state.realBoard);
-	} else if (player.commandOption == CommandAction.REPORT_INTEL) {
+	} else if (player.actionOption == PlayerAction.REPORT_INTEL) {
 		state[player.team].teamBoard = player.carrying as ChessBoard;
 		player.carrying = null;
 	}

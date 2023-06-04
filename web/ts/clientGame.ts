@@ -45,7 +45,7 @@ function receiveClick(location: Point): void {
 		state.general.selectedFrom = null;
 	} else if (state.general.selectedButton != null && square != null) {
 		if (state.general.selectedFrom) {
-			// Send command
+			// Send orders
 			const payload = {
 				briefing: state.general.selectedButton,
 				move: {

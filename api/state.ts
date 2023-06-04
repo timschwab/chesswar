@@ -1,5 +1,5 @@
 import { Circle, Vector } from "../common/data-types/shapes.ts";
-import { BriefingName, ChesswarId, CommandAction, PlayerRole, TeamName, Victory } from "../common/data-types/base.ts";
+import { BriefingName, ChesswarId, PlayerAction, PlayerRole, TeamName, Victory } from "../common/data-types/base.ts";
 import { BriefingBundle, MovementState, ServerStats } from "../common/data-types/server.ts";
 import { ChessBoard, ChessMove, ChessPiece, ChessRow } from "../common/data-types/chess.ts";
 
@@ -13,7 +13,7 @@ export interface ServerPlayer {
 	id: ChesswarId,
 	team: TeamName,
 	role: PlayerRole,
-	commandOption: CommandAction | null,
+	actionOption: PlayerAction | null,
 	carrying: null | ChessMove | ChessBoard,
 	movement: MovementState,
 	physics: ServerPlayerPhysics
