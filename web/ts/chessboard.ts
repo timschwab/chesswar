@@ -22,42 +22,7 @@ export function renderBoard(boardRect: Rect, board: ChessBoard, moves: ChessMove
 		canvas.outlineRect(toRect, rensets.generalWindow.selection, 2);
 		canvas.arrow(fromRect.center, toRect.center, rensets.generalWindow.selection, 2);
 	}
-/*
-	// Outline the selected ones
-	const from = state.general.selectedFrom;
-	if (from) {
-		const {squareRect} = getSquareValues(boardRect.topLeft, squareSize, from);
-		canvas.outlineRect(squareRect, rensets.generalWindow.selection, 2);
-	}
 
-	const b1 = state.briefings[BriefingName.ONE];
-	const b2 = state.briefings[BriefingName.TWO];
-	const b3 = state.briefings[BriefingName.THREE];
-
-	if (b1) {
-		const fromRect = getSquareValues(boardRect.topLeft, squareSize, b1.from).squareRect;
-		const toRect = getSquareValues(boardRect.topLeft, squareSize, b1.to).squareRect;
-		canvas.outlineRect(fromRect, rensets.generalWindow.selection, 2);
-		canvas.outlineRect(toRect, rensets.generalWindow.selection, 2);
-		canvas.arrow(fromRect.center, toRect.center, rensets.generalWindow.selection, 2);
-	}
-
-	if (b2) {
-		const fromRect = getSquareValues(boardRect.topLeft, squareSize, b2.from).squareRect;
-		const toRect = getSquareValues(boardRect.topLeft, squareSize, b2.to).squareRect;
-		canvas.outlineRect(fromRect, rensets.generalWindow.selection, 2);
-		canvas.outlineRect(toRect, rensets.generalWindow.selection, 2);
-		canvas.arrow(fromRect.center, toRect.center, rensets.generalWindow.selection, 2);
-	}
-
-	if (b3) {
-		const fromRect = getSquareValues(boardRect.topLeft, squareSize, b3.from).squareRect;
-		const toRect = getSquareValues(boardRect.topLeft, squareSize, b3.to).squareRect;
-		canvas.outlineRect(fromRect, rensets.generalWindow.selection, 2);
-		canvas.outlineRect(toRect, rensets.generalWindow.selection, 2);
-		canvas.arrow(fromRect.center, toRect.center, rensets.generalWindow.selection, 2);
-	}
-*/
 	// Outline them
 	canvas.outlineRect(boardRect, rensets.generalWindow.boardOutline, 2);
 }
