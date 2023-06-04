@@ -28,7 +28,9 @@ export enum PlayerAction {
 	COMPLETE_ORDERS = "complete-orders",
 
 	GATHER_INTEL = "gather-intel",
-	REPORT_INTEL = "report-intel"
+	REPORT_INTEL = "report-intel",
+
+	CONDUCT_ESPIONAGE = "conduct-espionage"
 }
 
 export type Victory = null | TeamName | "tie";
