@@ -23,6 +23,7 @@ function render(state: SafeState) {
 
 function renderAll(state: SafeState) {
 	setCamera(state);
+
 	renderBackground();
 	renderMap(state);
 	renderPlayers(state);
@@ -32,6 +33,8 @@ function renderAll(state: SafeState) {
 	} else {
 		renderMiniChessboard(state);
 	}
+
+	renderActionOption(state);
 
 	renderVictory(state);
 	renderStats(state);
@@ -151,6 +154,19 @@ function renderPlayers(state: SafeState) {
 function renderMiniChessboard(state: SafeState) {
 	const boardRect = Rect(Point(10, 10), Point(10+(8*20), 10+(8*20)));
 	renderBoard(state, boardRect);
+}
+
+function renderActionOption(state: SafeState) {
+	const actionOption = state.self.actionOption;
+
+	const actionRectWidth = 500;
+	const actionTopLeft = Point(state.screen.center.x-(actionRectWidth/2), 10);
+	const actionBottomRight = Point(state.screen.center.x+(actionRectWidth/2), 50);
+	const actionRect = Rect(actionTopLeft, actionBottomRight);
+
+	canvas.fillRect(actionRect, rensets.actionOption.backgroundColor);
+	canvas.outlineRect(actionRect, rensets.actionOption.outlineColor, rensets.actionOption.outlineWidth);
+	canvas.text(actionRect, "center", "Available action: " + (actionOption || ""), rensets.actionOption.textFont, rensets.actionOption.textColor)
 }
 
 function renderVictory(state: SafeState) {

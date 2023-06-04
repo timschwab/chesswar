@@ -121,6 +121,13 @@ export const rensets = {
 		button: Color.YELLOW_STANDARD,
 		selection: Color.GREEN_STANDARD
 	},
+	actionOption: {
+		outlineWidth: 3,
+		outlineColor: Color.GREY_BLACK,
+		backgroundColor: Color.GREY_LIGHT,
+		textFont: "24px Times New Roman",
+		textColor: Color.GREY_EXTRA_DARK
+	},
 	victory: {
 		font: "bold 128px Times New Roman",
 		color: Color.GREY_BLACK
