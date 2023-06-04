@@ -1,6 +1,6 @@
-import { ChesswarId } from "../../common/data-types/types-base.ts";
-import { ClientPlayer } from "../../common/data-types/types-client.ts";
-import { PlayerInitMessagePayload, StateMessagePayload, StatsMessagePayload, TeamMessagePayload } from "../../common/message-types/types-server.ts";
+import { ChesswarId } from "../../common/data-types/base.ts";
+import { ClientPlayer } from "../../common/data-types/client.ts";
+import { PlayerInitMessagePayload, StateMessagePayload, StatsMessagePayload, TeamMessagePayload } from "../../common/message-types/server.ts";
 import state, { PlayerMap } from "./state.ts";
 
 export function handlePlayerInit(payload: PlayerInitMessagePayload) {

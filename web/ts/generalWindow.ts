@@ -1,5 +1,5 @@
 import { Point, Rect } from "../../common/data-types/shapes.ts";
-import { BriefingName, ChessSquare } from "../../common/data-types/types-base.ts";
+import { BriefingName, ChessSquare } from "../../common/data-types/base.ts";
 import { rensets } from "../../common/settings.ts";
 import { inside } from "../../common/shape-logic/inside.ts";
 import { transposePoint } from "../../common/shape-logic/transpose.ts";

@@ -1,10 +1,10 @@
 import socket from "./socket.ts";
-import { ServerMessageTypes, TeamMessage, TeamMessagePayload } from "../common/message-types/types-server.ts";
-import { ClientPlayer } from "../common/data-types/types-client.ts";
+import { ServerMessageTypes, TeamMessage, TeamMessagePayload } from "../common/message-types/server.ts";
+import { ClientPlayer } from "../common/data-types/client.ts";
 import state, { ServerPlayer } from "./state.ts";
 import { tickPlayers, tickTankKills, tickVictory } from "./tick.ts";
 import { addPlayer, receiveMessage, removePlayer } from "./events.ts";
-import { TeamName } from "../common/data-types/types-base.ts";
+import { TeamName } from "../common/data-types/base.ts";
 
 function init() {
 	// Set up events

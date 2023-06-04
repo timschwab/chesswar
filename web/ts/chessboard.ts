@@ -1,5 +1,5 @@
 import { Circle, Point, Rect } from "../../common/data-types/shapes.ts";
-import { BriefingName, ChessPiece, ChessSquare, TeamName } from "../../common/data-types/types-base.ts";
+import { BriefingName, ChessPiece, ChessSquare, TeamName } from "../../common/data-types/base.ts";
 import { rensets } from "../../common/settings.ts";
 import canvas from "./canvas.ts";
 import { SafeState } from "./state.ts";

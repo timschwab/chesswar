@@ -1,5 +1,5 @@
 import { Color } from "./colors.ts";
-import { PlayerRole, TeamName } from "./data-types/types-base.ts";
+import { PlayerRole, TeamName } from "./data-types/base.ts";
 
 /* ----- start server origins ----- */
 export const remoteApiServer = {

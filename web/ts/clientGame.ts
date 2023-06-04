@@ -1,12 +1,12 @@
 import socket from "./socket.ts";
 import state, { isSafeState } from "./state.ts";
 import render from "./render.ts";
-import { ServerMessage, ServerMessageTypes } from "../../common/message-types/types-server.ts";
-import { PlayerRole } from "../../common/data-types/types-base.ts";
+import { ServerMessage, ServerMessageTypes } from "../../common/message-types/server.ts";
+import { PlayerRole } from "../../common/data-types/base.ts";
 import { Point } from "../../common/data-types/shapes.ts";
 import { listenClick } from "./inputs.ts";
 import { clickedButton, clickedSquare } from "./generalWindow.ts";
-import { ClientMessageTypes } from "../../common/message-types/types-client.ts";
+import { ClientMessageTypes } from "../../common/message-types/client.ts";
 import { handlePlayerInit, handlePong, handleState, handleStats, handleTeam } from "./messages.ts";
 
 export function initGame() {

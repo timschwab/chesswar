@@ -4,7 +4,7 @@ import { SafeState } from "./state.ts";
 import { Point, Rect } from "../../common/data-types/shapes.ts";
 import { rensets } from "../../common/settings.ts";
 import { Color } from "../../common/colors.ts";
-import { PlayerRole, TeamName } from "../../common/data-types/types-base.ts";
+import { PlayerRole, TeamName } from "../../common/data-types/base.ts";
 import { renderGeneralWindow } from "./generalWindow.ts";
 import canvas from "./canvas.ts";
 import { renderBoard } from "./chessboard.ts";

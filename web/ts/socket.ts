@@ -1,6 +1,6 @@
 import { createHook } from "../../common/hooks.ts";
-import { ClientMessage } from "../../common/message-types/types-client.ts";
-import { ServerMessage } from "../../common/message-types/types-server.ts";
+import { ClientMessage } from "../../common/message-types/client.ts";
+import { ServerMessage } from "../../common/message-types/server.ts";
 import { localApiServerOrigin, remoteApiServerOrigin } from "../../common/settings.ts";
 import env, { Environment } from "./environment.ts";
 

@@ -1,5 +1,5 @@
 import { Circle } from "./shapes.ts";
-import { ChesswarId, CommandAction, PlayerRole, TeamName } from "./types-base.ts";
+import { ChesswarId, CommandAction, PlayerRole, TeamName } from "./base.ts";
 
 export interface ClientPlayer {
 	id: ChesswarId,

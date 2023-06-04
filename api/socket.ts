@@ -1,8 +1,8 @@
 import slim from "../common/slim-id.ts";
 import { createHook } from "../common/hooks.ts";
-import { ClientMessage, ClientMessageWithId } from "../common/message-types/types-client.ts";
-import { ServerMessage } from "../common/message-types/types-server.ts";
-import { ChesswarId } from "../common/data-types/types-base.ts";
+import { ClientMessage, ClientMessageWithId } from "../common/message-types/client.ts";
+import { ServerMessage } from "../common/message-types/server.ts";
+import { ChesswarId } from "../common/data-types/base.ts";
 
 const connections = new Map<ChesswarId, WebSocket>();
 const addHook = createHook<string>();

@@ -1,8 +1,8 @@
 import { Circle, Point, Vector } from "../common/data-types/shapes.ts";
-import { BriefingName, ChessBoard, ChessMove, ChesswarId, CommandAction, PlayerRole, TeamName } from "../common/data-types/types-base.ts";
+import { BriefingName, ChessBoard, ChessMove, ChesswarId, CommandAction, PlayerRole, TeamName } from "../common/data-types/base.ts";
 import map from "../common/map.ts";
-import { ClientMessageTypes, ClientMessageWithId, GeneralOrdersMessagePayload, MoveMessagePayload } from "../common/message-types/types-client.ts";
-import { ServerMessageTypes } from "../common/message-types/types-server.ts";
+import { ClientMessageTypes, ClientMessageWithId, GeneralOrdersMessagePayload, MoveMessagePayload } from "../common/message-types/client.ts";
+import { ServerMessageTypes } from "../common/message-types/server.ts";
 import { gameEngine } from "../common/settings.ts";
 import { inside } from "../common/shape-logic/inside.ts";
 import { makeMove } from "./chess.ts";

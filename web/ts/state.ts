@@ -1,7 +1,7 @@
 import { Rect } from "../../common/data-types/shapes.ts";
-import { BriefingBundle, BriefingName, ChessBoard, ChessSquare, ChesswarId, Victory } from "../../common/data-types/types-base.ts";
-import { ClientPlayer } from "../../common/data-types/types-client.ts";
-import { ServerStats } from "../../common/data-types/types-server.ts";
+import { BriefingBundle, BriefingName, ChessBoard, ChessSquare, ChesswarId, Victory } from "../../common/data-types/base.ts";
+import { ClientPlayer } from "../../common/data-types/client.ts";
+import { ServerStats } from "../../common/data-types/server.ts";
 
 export type PlayerMap = Map<ChesswarId, ClientPlayer>;
 

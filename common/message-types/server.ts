@@ -1,7 +1,7 @@
-import { BriefingBundle, ChessBoard, ChesswarId, Victory } from "../data-types/types-base.ts";
-import { ClientPlayer } from "../data-types/types-client.ts";
-import { ServerStats } from "../data-types/types-server.ts";
-import { AbstractMessage } from "./types-base.ts";
+import { BriefingBundle, ChessBoard, ChesswarId, Victory } from "../data-types/base.ts";
+import { ClientPlayer } from "../data-types/client.ts";
+import { ServerStats } from "../data-types/server.ts";
+import { AbstractMessage } from "./base.ts";
 
 export enum ServerMessageTypes {
 	PLAYER_INIT = "player-init",

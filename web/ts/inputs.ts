@@ -1,6 +1,6 @@
 import { Point } from "../../common/data-types/shapes.ts";
 import { createHook } from "../../common/hooks.ts";
-import { ClientMessageTypes, MoveMessagePayload } from "../../common/message-types/types-client.ts";
+import { ClientMessageTypes, MoveMessagePayload } from "../../common/message-types/client.ts";
 import socket from "./socket.ts";
 
 enum ArrowCode {
