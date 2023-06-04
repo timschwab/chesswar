@@ -1,5 +1,5 @@
 import { localApiServer } from "../common/settings.ts";
-import game from "./game.ts";
+import game from "./serverGame.ts";
 import socket from "./socket.ts";
 
 game.init();
