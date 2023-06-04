@@ -76,7 +76,7 @@ export const rensets = {
 		width: 5
 	},
 	players: {
-		self: Color.GREEN_STANDARD,
+		self: Color.GREEN_BRIGHT,
 		teamColor: {
 			[TeamName.ALPHA]: Color.BLUE_LIGHT,
 			[TeamName.BRAVO]: Color.RED_STANDARD
