@@ -1,5 +1,5 @@
 import { BriefingName } from "./base.ts";
-import { ChessMove } from "./chess.ts";
+import { ChessBoard, ChessMove } from "./chess.ts";
 
 export type MovementState = {
 	left: boolean,
@@ -17,3 +17,26 @@ export interface BriefingBundle {
 	[BriefingName.TWO]: ChessMove | null,
 	[BriefingName.THREE]: ChessMove | null
 }
+
+export enum CarryLoadType {
+	EMPTY = "empty",
+	MOVE = "move",
+	BOARD = "board"
+}
+
+interface EmptyCarryLoad {
+	type: CarryLoadType.EMPTY,
+	load: null
+}
+
+interface ChessMoveCarryLoad {
+	type: CarryLoadType.MOVE,
+	load: ChessMove
+}
+
+interface ChessBoardCarryLoad {
+	type: CarryLoadType.BOARD,
+	load: ChessBoard
+}
+
+export type CarryLoad = EmptyCarryLoad | ChessMoveCarryLoad | ChessBoardCarryLoad;

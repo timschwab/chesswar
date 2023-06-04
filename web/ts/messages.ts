@@ -1,6 +1,6 @@
 import { ChesswarId } from "../../common/data-types/base.ts";
 import { ClientPlayer } from "../../common/data-types/client.ts";
-import { PlayerInitMessagePayload, StateMessagePayload, StatsMessagePayload, TeamMessagePayload } from "../../common/message-types/server.ts";
+import { CarryingMessagePayload, PlayerInitMessagePayload, StateMessagePayload, StatsMessagePayload, TeamMessagePayload } from "../../common/message-types/server.ts";
 import state, { PlayerMap } from "./state.ts";
 
 export function handlePlayerInit(payload: PlayerInitMessagePayload) {
@@ -32,6 +32,10 @@ export function handleState(payload: StateMessagePayload) {
 export function handleTeam(payload: TeamMessagePayload) {
 	state.teamBoard = payload.board;
 	state.briefings = payload.briefings;
+}
+
+export function handleCarrying(payload: CarryingMessagePayload) {
+	state.carrying = payload;
 }
 
 export function handlePong() {

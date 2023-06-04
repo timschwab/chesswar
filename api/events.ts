@@ -9,7 +9,7 @@ import { makeMove } from "./chess.ts";
 import socket from "./socket.ts";
 import { spawnPlayer } from "./spawn.ts";
 import state, { ServerPlayer } from "./state.ts";
-import { ChessBoard, ChessMove } from "../common/data-types/chess.ts";
+import { CarryLoad, CarryLoadType } from "../common/data-types/server.ts";
 
 export function addPlayer(id: string): void {
 	const team = newPlayerTeam();
@@ -18,7 +18,10 @@ export function addPlayer(id: string): void {
 		team,
 		role: PlayerRole.SOLDIER,
 		actionOption: null,
-		carrying: null,
+		carrying: {
+			type: CarryLoadType.EMPTY,
+			load: null
+		},
 		movement: {
 			left: false,
 			right: false,
@@ -108,18 +111,59 @@ function playerAction(player: ServerPlayer): void {
 			throw new Error("Couldn't find the briefing");
 		} else {
 			const briefingMove = state[player.team].briefings[briefing];
-			player.carrying = structuredClone(briefingMove);
+			let carryLoad: CarryLoad;
+			if (briefingMove == null) {
+				carryLoad = {
+					type: CarryLoadType.EMPTY,
+					load: null
+				};
+			} else {
+				carryLoad = {
+					type: CarryLoadType.MOVE,
+					load: briefingMove
+				};
+			}
+
+			player.carrying = carryLoad;
+			socket.sendOne(player.id, {
+				type: ServerMessageTypes.CARRYING,
+				payload: player.carrying
+			});
 		}
 	} else if (player.actionOption == PlayerAction.COMPLETE_ORDERS) {
-		if (player.carrying != null) {
-			makeMove(state.realBoard, player.team, player.carrying as ChessMove);
-			player.carrying == null;
+		if (player.carrying.type == CarryLoadType.MOVE) {
+			makeMove(state.realBoard, player.team, player.carrying.load);
+			player.carrying = {
+				type: CarryLoadType.EMPTY,
+				load: null
+			};
+			socket.sendOne(player.id, {
+				type: ServerMessageTypes.CARRYING,
+				payload: player.carrying
+			});
 		}
 	} else if (player.actionOption == PlayerAction.GATHER_INTEL) {
-		player.carrying = structuredClone(state.realBoard);
+		const load = {
+			type: CarryLoadType.BOARD,
+			load: structuredClone(state.realBoard)
+		};
+		player.carrying = load;
+		socket.sendOne(player.id, {
+			type: ServerMessageTypes.CARRYING,
+			payload: player.carrying
+		});
 	} else if (player.actionOption == PlayerAction.REPORT_INTEL) {
-		state[player.team].teamBoard = player.carrying as ChessBoard;
-		player.carrying = null;
+		if (player.carrying.type == CarryLoadType.BOARD) {
+			state[player.team].teamBoard = player.carrying.load;
+			player.carrying = {
+				type: CarryLoadType.EMPTY,
+				load: null
+			};
+			socket.sendOne(player.id, {
+				type: ServerMessageTypes.CARRYING,
+				payload: player.carrying
+			});
+		}
 	}
 }
 
@@ -152,7 +196,10 @@ function becomeRole(player: ServerPlayer, role: PlayerRole): void {
 		player.physics.speed = Vector(0, 0);
 	}
 
-	player.carrying = null;
+	player.carrying = {
+		type: CarryLoadType.EMPTY,
+		load: null
+	};
 }
 
 function generalOrders(player: ServerPlayer, payload: GeneralOrdersMessagePayload) {

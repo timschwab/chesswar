@@ -1,7 +1,7 @@
 import { Rect } from "../../common/data-types/shapes.ts";
 import { BriefingName, ChesswarId, Victory } from "../../common/data-types/base.ts";
 import { ClientPlayer } from "../../common/data-types/client.ts";
-import { BriefingBundle, ServerStats } from "../../common/data-types/server.ts";
+import { BriefingBundle, CarryLoad, CarryLoadType, ServerStats } from "../../common/data-types/server.ts";
 import { ChessBoard, ChessSquare } from "../../common/data-types/chess.ts";
 
 export type PlayerMap = Map<ChesswarId, ClientPlayer>;
@@ -28,6 +28,7 @@ export interface UnsafeState {
 	teamBoard: ChessBoard | undefined,
 	playerMap: PlayerMap | undefined,
 	briefings: BriefingBundle | undefined,
+	carrying: CarryLoad
 	general: GeneralState,
 	victory: Victory,
 	stats: Stats
@@ -40,7 +41,8 @@ export interface SafeState {
 	self: ClientPlayer,
 	teamBoard: ChessBoard,
 	playerMap: PlayerMap,
-	briefings: BriefingBundle
+	briefings: BriefingBundle,
+	carrying: CarryLoad,
 	general: GeneralState,
 	victory: Victory,
 	stats: Stats
@@ -54,6 +56,10 @@ const state: UnsafeState = {
 	teamBoard: undefined,
 	playerMap: undefined,
 	briefings: undefined,
+	carrying: {
+		type: CarryLoadType.EMPTY,
+		load: null
+	},
 	general: {
 		selectedButton: null,
 		selectedFrom: null

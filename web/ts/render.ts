@@ -8,6 +8,8 @@ import { PlayerRole, TeamName } from "../../common/data-types/base.ts";
 import { renderGeneralWindow } from "./generalWindow.ts";
 import canvas from "./canvas.ts";
 import { renderBoard } from "./chessboard.ts";
+import { ChessMove } from "../../common/data-types/chess.ts";
+import { CarryLoadType } from "../../common/data-types/server.ts";
 
 function render(state: SafeState) {
 	const startRender = performance.now();
@@ -153,7 +155,13 @@ function renderPlayers(state: SafeState) {
 
 function renderMiniChessboard(state: SafeState) {
 	const boardRect = Rect(Point(10, 10), Point(10+(8*20), 10+(8*20)));
-	renderBoard(boardRect, state.teamBoard, []);
+
+	const moves = [] as ChessMove[];
+	if (state.carrying.type == CarryLoadType.MOVE) {
+		moves.push(state.carrying.load);
+	}
+
+	renderBoard(boardRect, state.teamBoard, moves);
 }
 
 function renderActionOption(state: SafeState) {
