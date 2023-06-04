@@ -20,8 +20,9 @@ export interface BriefingBundle {
 
 export enum CarryLoadType {
 	EMPTY = "empty",
-	MOVE = "move",
-	BOARD = "board"
+	ORDERS = "orders",
+	INTEL = "intel",
+	ESPIONAGE = "espionage"
 }
 
 interface EmptyCarryLoad {
@@ -29,14 +30,19 @@ interface EmptyCarryLoad {
 	load: null
 }
 
-interface ChessMoveCarryLoad {
-	type: CarryLoadType.MOVE,
+interface OrdersCarryLoad {
+	type: CarryLoadType.ORDERS,
 	load: ChessMove
 }
 
-interface ChessBoardCarryLoad {
-	type: CarryLoadType.BOARD,
+interface IntelCarryLoad {
+	type: CarryLoadType.INTEL,
 	load: ChessBoard
 }
 
-export type CarryLoad = EmptyCarryLoad | ChessMoveCarryLoad | ChessBoardCarryLoad;
+interface EspionageCarryLoad {
+	type: CarryLoadType.ESPIONAGE,
+	load: BriefingBundle
+}
+
+export type CarryLoad = EmptyCarryLoad | OrdersCarryLoad | IntelCarryLoad | EspionageCarryLoad;

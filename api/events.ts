@@ -119,7 +119,7 @@ function playerAction(player: ServerPlayer): void {
 				};
 			} else {
 				carryLoad = {
-					type: CarryLoadType.MOVE,
+					type: CarryLoadType.ORDERS,
 					load: briefingMove
 				};
 			}
@@ -131,7 +131,7 @@ function playerAction(player: ServerPlayer): void {
 			});
 		}
 	} else if (player.actionOption == PlayerAction.COMPLETE_ORDERS) {
-		if (player.carrying.type == CarryLoadType.MOVE) {
+		if (player.carrying.type == CarryLoadType.ORDERS) {
 			makeMove(state.realBoard, player.team, player.carrying.load);
 			player.carrying = {
 				type: CarryLoadType.EMPTY,
@@ -144,7 +144,7 @@ function playerAction(player: ServerPlayer): void {
 		}
 	} else if (player.actionOption == PlayerAction.GATHER_INTEL) {
 		const load = {
-			type: CarryLoadType.BOARD,
+			type: CarryLoadType.INTEL,
 			load: structuredClone(state.realBoard)
 		};
 		player.carrying = load;
@@ -153,7 +153,7 @@ function playerAction(player: ServerPlayer): void {
 			payload: player.carrying
 		});
 	} else if (player.actionOption == PlayerAction.REPORT_INTEL) {
-		if (player.carrying.type == CarryLoadType.BOARD) {
+		if (player.carrying.type == CarryLoadType.INTEL) {
 			state[player.team].teamBoard = player.carrying.load;
 			player.carrying = {
 				type: CarryLoadType.EMPTY,
@@ -164,6 +164,17 @@ function playerAction(player: ServerPlayer): void {
 				payload: player.carrying
 			});
 		}
+	} else if (player.actionOption == PlayerAction.CONDUCT_ESPIONAGE) {
+		const oppositeTeam = player.team == TeamName.ALPHA ? TeamName.BRAVO : TeamName.ALPHA;
+		const load = {
+			type: CarryLoadType.ESPIONAGE,
+			load: structuredClone(state[oppositeTeam].briefings)
+		};
+		player.carrying = load;
+		socket.sendOne(player.id, {
+			type: ServerMessageTypes.CARRYING,
+			payload: player.carrying
+		});
 	}
 }
 

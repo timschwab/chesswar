@@ -4,7 +4,7 @@ import { SafeState } from "./state.ts";
 import { Point, Rect } from "../../common/data-types/shapes.ts";
 import { rensets } from "../../common/settings.ts";
 import { Color } from "../../common/colors.ts";
-import { PlayerRole, TeamName } from "../../common/data-types/base.ts";
+import { BriefingName, PlayerRole, TeamName } from "../../common/data-types/base.ts";
 import { renderGeneralWindow } from "./generalWindow.ts";
 import canvas from "./canvas.ts";
 import { renderBoard } from "./chessboard.ts";
@@ -164,12 +164,17 @@ function renderMiniChessboard(state: SafeState) {
 	const boardRect = Rect(Point(10, 40), Point(10+(8*20), 40+(8*20)));
 
 	const moves = [] as ChessMove[];
-	if (state.carrying.type == CarryLoadType.MOVE) {
+	if (state.carrying.type == CarryLoadType.ORDERS) {
 		moves.push(state.carrying.load);
+	} else if (state.carrying.type == CarryLoadType.ESPIONAGE) {
+		const load = state.carrying.load;
+		load[BriefingName.ONE] && moves.push(load[BriefingName.ONE]);
+		load[BriefingName.TWO] && moves.push(load[BriefingName.TWO]);
+		load[BriefingName.THREE] && moves.push(load[BriefingName.THREE]);
 	}
 	renderBoard(boardRect, state.teamBoard, moves);
 
-	if (state.carrying.type == CarryLoadType.BOARD) {
+	if (state.carrying.type == CarryLoadType.INTEL) {
 		const boardRect = Rect(Point(10, 40+10+(8*20)), Point(10+(8*20), 40+10+2*((8*20))));
 		renderBoard(boardRect, state.carrying.load, []);
 	}
