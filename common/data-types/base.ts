@@ -30,7 +30,8 @@ export enum PlayerAction {
 	GATHER_INTEL = "gather-intel",
 	REPORT_INTEL = "report-intel",
 
-	CONDUCT_ESPIONAGE = "conduct-espionage"
+	CONDUCT_ESPIONAGE = "conduct-espionage",
+	REPORT_ESPIONAGE = "report-espionage"
 }
 
 export type Victory = null | TeamName | "tie";

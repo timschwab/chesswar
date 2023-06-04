@@ -22,9 +22,10 @@ export interface ServerPlayer {
 type PlayerMap = Map<ChesswarId, ServerPlayer>;
 
 interface Team {
-	playerMap: PlayerMap
-	teamBoard: ChessBoard
-	briefings: BriefingBundle
+	playerMap: PlayerMap,
+	teamBoard: ChessBoard,
+	briefings: BriefingBundle,
+	enemyBriefings: BriefingBundle
 }
 
 interface ServerState {
@@ -49,12 +50,22 @@ const state: ServerState = {
 			[BriefingName.ONE]: null,
 			[BriefingName.TWO]: null,
 			[BriefingName.THREE]: null
+		},
+		enemyBriefings: {
+			[BriefingName.ONE]: null,
+			[BriefingName.TWO]: null,
+			[BriefingName.THREE]: null
 		}
 	},
 	[TeamName.BRAVO]: {
 		playerMap: new Map<ChesswarId, ServerPlayer>(),
 		teamBoard: newBoard(),
 		briefings: {
+			[BriefingName.ONE]: null,
+			[BriefingName.TWO]: null,
+			[BriefingName.THREE]: null
+		},
+		enemyBriefings: {
 			[BriefingName.ONE]: null,
 			[BriefingName.TWO]: null,
 			[BriefingName.THREE]: null

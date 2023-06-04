@@ -163,20 +163,21 @@ function renderRole(state: SafeState) {
 function renderMiniChessboard(state: SafeState) {
 	const boardRect = Rect(Point(10, 40), Point(10+(8*20), 40+(8*20)));
 
-	const moves = [] as ChessMove[];
+	const teamMoves = [] as ChessMove[];
+	const enemyMoves = [] as ChessMove[];
 	if (state.carrying.type == CarryLoadType.ORDERS) {
-		moves.push(state.carrying.load);
+		teamMoves.push(state.carrying.load);
 	} else if (state.carrying.type == CarryLoadType.ESPIONAGE) {
 		const load = state.carrying.load;
-		load[BriefingName.ONE] && moves.push(load[BriefingName.ONE]);
-		load[BriefingName.TWO] && moves.push(load[BriefingName.TWO]);
-		load[BriefingName.THREE] && moves.push(load[BriefingName.THREE]);
+		load[BriefingName.ONE] && enemyMoves.push(load[BriefingName.ONE]);
+		load[BriefingName.TWO] && enemyMoves.push(load[BriefingName.TWO]);
+		load[BriefingName.THREE] && enemyMoves.push(load[BriefingName.THREE]);
 	}
-	renderBoard(boardRect, state.teamBoard, moves);
+	renderBoard(boardRect, state.teamBoard, teamMoves, enemyMoves);
 
 	if (state.carrying.type == CarryLoadType.INTEL) {
 		const boardRect = Rect(Point(10, 40+10+(8*20)), Point(10+(8*20), 40+10+2*((8*20))));
-		renderBoard(boardRect, state.carrying.load, []);
+		renderBoard(boardRect, state.carrying.load, [], []);
 	}
 }
 

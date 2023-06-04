@@ -17,10 +17,15 @@ export function renderGeneralWindow(state: SafeState): void {
 	canvas.outlineRect(values.windowRect, genwin.windowOutline, 5);
 
 	// Draw chessboard squares
-	let moves = [state.briefings[BriefingName.ONE], state.briefings[BriefingName.TWO], state.briefings[BriefingName.THREE]];
-	moves.push(state.general.selectedFrom ? {from: state.general.selectedFrom, to: state.general.selectedFrom} : null);
-	moves = moves.filter(move => move != null);
-	renderBoard(values.boardRect, state.teamBoard, moves as ChessMove[]);
+	let teamMoves = [state.briefings[BriefingName.ONE], state.briefings[BriefingName.TWO], state.briefings[BriefingName.THREE]];
+	teamMoves.push(state.general.selectedFrom ? {from: state.general.selectedFrom, to: state.general.selectedFrom} : null);
+	
+	let enemyMoves = [state.enemyBriefings[BriefingName.ONE], state.enemyBriefings[BriefingName.TWO], state.enemyBriefings[BriefingName.THREE]];
+
+	teamMoves = teamMoves.filter(move => move != null);
+	enemyMoves = enemyMoves.filter(move => move != null);
+
+	renderBoard(values.boardRect, state.teamBoard, teamMoves as ChessMove[], enemyMoves as ChessMove[]);
 
 	// Draw buttons
 	canvas.fillRect(values.button1Rect, genwin.button);
@@ -29,11 +34,11 @@ export function renderGeneralWindow(state: SafeState): void {
 
 	// Draw selected button
 	if (state.general.selectedButton == BriefingName.ONE) {
-		canvas.outlineRect(values.button1Rect, genwin.selection, 3);
+		canvas.outlineRect(values.button1Rect, genwin.teamMove, 3);
 	} else if (state.general.selectedButton == BriefingName.TWO) {
-		canvas.outlineRect(values.button2Rect, genwin.selection, 3);
+		canvas.outlineRect(values.button2Rect, genwin.teamMove, 3);
 	} else if (state.general.selectedButton == BriefingName.THREE) {
-		canvas.outlineRect(values.button3Rect, genwin.selection, 3);
+		canvas.outlineRect(values.button3Rect, genwin.teamMove, 3);
 	}
 }
 

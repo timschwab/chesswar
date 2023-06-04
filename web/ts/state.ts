@@ -28,6 +28,7 @@ export interface UnsafeState {
 	teamBoard: ChessBoard | undefined,
 	playerMap: PlayerMap | undefined,
 	briefings: BriefingBundle | undefined,
+	enemyBriefings: BriefingBundle | undefined,
 	carrying: CarryLoad
 	general: GeneralState,
 	victory: Victory,
@@ -42,6 +43,7 @@ export interface SafeState {
 	teamBoard: ChessBoard,
 	playerMap: PlayerMap,
 	briefings: BriefingBundle,
+	enemyBriefings: BriefingBundle,
 	carrying: CarryLoad,
 	general: GeneralState,
 	victory: Victory,
@@ -56,6 +58,7 @@ const state: UnsafeState = {
 	teamBoard: undefined,
 	playerMap: undefined,
 	briefings: undefined,
+	enemyBriefings: undefined,
 	carrying: {
 		type: CarryLoadType.EMPTY,
 		load: null
@@ -99,6 +102,10 @@ export function isSafeState(maybeSafeState: UnsafeState): maybeSafeState is Safe
 	}
 
 	if (!maybeSafeState.briefings) {
+		return false;
+	}
+
+	if (!maybeSafeState.enemyBriefings) {
 		return false;
 	}
 

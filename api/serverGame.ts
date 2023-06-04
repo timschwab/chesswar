@@ -50,7 +50,8 @@ function tickAll(): void {
 		const teamPlayerIds = Array.from(team.playerMap.values()).map(player => player.id);
 		const teamPayload: TeamMessagePayload = {
 			board: team.teamBoard,
-			briefings: team.briefings
+			briefings: team.briefings,
+			enemyBriefings: team.enemyBriefings
 		};
 		const teamMessage: TeamMessage = {
 			type: ServerMessageTypes.TEAM,

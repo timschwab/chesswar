@@ -9,6 +9,7 @@ import { TAU_HALF, add, multiply, pointToVector, vectorToPoint } from "../common
 import { spawnPlayer } from "./spawn.ts";
 import state, { ServerPlayer } from "./state.ts";
 import { ChessPiece } from "../common/data-types/chess.ts";
+import { CarryLoadType } from "../common/data-types/server.ts";
 
 export function tickPlayers() {
 	for (const player of state.allPlayers.values()) {
@@ -137,7 +138,11 @@ function actionOption(player: ServerPlayer): PlayerAction | null {
 			if (player.role == PlayerRole.GENERAL) {
 				return PlayerAction.BECOME_SOLDIER;
 			} else if (inside(pos, bundle.command)) {
-				return PlayerAction.BECOME_GENERAL;
+				if (player.carrying.type == CarryLoadType.ESPIONAGE) {
+					return PlayerAction.REPORT_ESPIONAGE;
+				} else {
+					return PlayerAction.BECOME_GENERAL;
+				}
 			} else if (inside(pos, bundle.armory)) {
 				return PlayerAction.BECOME_TANK;
 			} else if (inside(pos, bundle.intel)) {

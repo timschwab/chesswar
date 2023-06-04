@@ -3,8 +3,9 @@ import { TeamName } from "../../common/data-types/base.ts";
 import { rensets } from "../../common/settings.ts";
 import canvas from "./canvas.ts";
 import { ChessBoard, ChessMove, ChessPiece, ChessSquare } from "../../common/data-types/chess.ts";
+import { Color } from "../../common/colors.ts";
 
-export function renderBoard(boardRect: Rect, board: ChessBoard, moves: ChessMove[]) {
+export function renderBoard(boardRect: Rect, board: ChessBoard, teamMoves: ChessMove[], enemyMoves: ChessMove[]) {
 	const squareSize = boardRect.width/8;
 
 	// Render all the squares
@@ -15,19 +16,26 @@ export function renderBoard(boardRect: Rect, board: ChessBoard, moves: ChessMove
 		}
 	}
 
-	for (const move of moves) {
-		const fromRect = getSquareValues(boardRect.topLeft, squareSize, move.from).squareRect;
-		const toRect = getSquareValues(boardRect.topLeft, squareSize, move.to).squareRect;
-		canvas.outlineRect(fromRect, rensets.generalWindow.selection, 2);
-		canvas.outlineRect(toRect, rensets.generalWindow.selection, 2);
-		canvas.arrow(fromRect.center, toRect.center, rensets.generalWindow.selection, 2);
+	for (const move of enemyMoves) {
+		renderMove(boardRect, squareSize, move, rensets.generalWindow.enemyMove);
+	}
+	for (const move of teamMoves) {
+		renderMove(boardRect, squareSize, move, rensets.generalWindow.teamMove);
 	}
 
 	// Outline them
 	canvas.outlineRect(boardRect, rensets.generalWindow.boardOutline, 2);
 }
 
-export function renderSquare(board: ChessBoard, topLeft: Point, squareSize: number, position: ChessSquare) {
+function renderMove(boardRect: Rect, squareSize: number, move: ChessMove, color: Color) {
+	const fromRect = getSquareValues(boardRect.topLeft, squareSize, move.from).squareRect;
+	const toRect = getSquareValues(boardRect.topLeft, squareSize, move.to).squareRect;
+	canvas.outlineRect(fromRect, color, 2);
+	canvas.outlineRect(toRect, color, 2);
+	canvas.arrow(fromRect.center, toRect.center, color, 2);
+}
+
+function renderSquare(board: ChessBoard, topLeft: Point, squareSize: number, position: ChessSquare) {
 	const {row, col} = position;
 	const {squareRect, color} = getSquareValues(topLeft, squareSize, position);
 
@@ -67,7 +75,7 @@ function getSquareValues(topLeft: Point, squareSize: number, position: ChessSqua
 	};
 }
 
-export function renderKing(topLeft: Point, width: number, team: TeamName) {
+function renderKing(topLeft: Point, width: number, team: TeamName) {
 	const color = rensets.generalWindow.pieceColor[team];
 	const topLeftX = topLeft.x;
 	const topLeftY = topLeft.y;
@@ -88,7 +96,7 @@ export function renderKing(topLeft: Point, width: number, team: TeamName) {
 	canvas.fillRect(Rect(crossHorizontalTopLeft, crossHorizontalBottomRight), color);
 }
 
-export function renderQueen(topLeft: Point, width: number, team: TeamName) {
+function renderQueen(topLeft: Point, width: number, team: TeamName) {
 	const color = rensets.generalWindow.pieceColor[team];
 	const topLeftX = topLeft.x;
 	const topLeftY = topLeft.y;
@@ -122,7 +130,7 @@ export function renderQueen(topLeft: Point, width: number, team: TeamName) {
 	canvas.fillCircle(jewelRight, color);
 }
 
-export function renderRook(topLeft: Point, width: number, team: TeamName) {
+function renderRook(topLeft: Point, width: number, team: TeamName) {
 	const color = rensets.generalWindow.pieceColor[team];
 	const topLeftX = topLeft.x;
 	const topLeftY = topLeft.y;
@@ -147,7 +155,7 @@ export function renderRook(topLeft: Point, width: number, team: TeamName) {
 	canvas.fillRect(Rect(rightTopLeft, rightBottomRight), color);
 }
 
-export function renderBishop(topLeft: Point, width: number, team: TeamName) {
+function renderBishop(topLeft: Point, width: number, team: TeamName) {
 	const color = rensets.generalWindow.pieceColor[team];
 	const topLeftX = topLeft.x;
 	const topLeftY = topLeft.y;
@@ -166,7 +174,7 @@ export function renderBishop(topLeft: Point, width: number, team: TeamName) {
 	canvas.fillRect(Rect(baseTopLeft, baseBottomRight), color);
 }
 
-export function renderKnight(topLeft: Point, width: number, team: TeamName) {
+function renderKnight(topLeft: Point, width: number, team: TeamName) {
 	const color = rensets.generalWindow.pieceColor[team];
 	const topLeftX = topLeft.x;
 	const topLeftY = topLeft.y;
@@ -194,7 +202,7 @@ export function renderKnight(topLeft: Point, width: number, team: TeamName) {
 	canvas.fillCircle(ear, color);
 }
 
-export function renderPawn(topLeft: Point, width: number, team: TeamName) {
+function renderPawn(topLeft: Point, width: number, team: TeamName) {
 	const color = rensets.generalWindow.pieceColor[team];
 	const topLeftX = topLeft.x;
 	const topLeftY = topLeft.y;

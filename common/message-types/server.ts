@@ -26,7 +26,8 @@ export type StateMessage = AbstractMessage<ServerMessageTypes.STATE, StateMessag
 
 export interface TeamMessagePayload {
 	board: ChessBoard,
-	briefings: BriefingBundle
+	briefings: BriefingBundle,
+	enemyBriefings: BriefingBundle
 }
 export type TeamMessage = AbstractMessage<ServerMessageTypes.TEAM, TeamMessagePayload>;
 

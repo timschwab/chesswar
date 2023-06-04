@@ -175,6 +175,18 @@ function playerAction(player: ServerPlayer): void {
 			type: ServerMessageTypes.CARRYING,
 			payload: player.carrying
 		});
+	} else if (player.actionOption == PlayerAction.REPORT_ESPIONAGE) {
+		if (player.carrying.type == CarryLoadType.ESPIONAGE) {
+			state[player.team].enemyBriefings = player.carrying.load;
+			player.carrying = {
+				type: CarryLoadType.EMPTY,
+				load: null
+			};
+			socket.sendOne(player.id, {
+				type: ServerMessageTypes.CARRYING,
+				payload: player.carrying
+			});
+		}
 	}
 }
 

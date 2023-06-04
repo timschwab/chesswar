@@ -119,7 +119,8 @@ export const rensets = {
 			[TeamName.BRAVO]: Color.RED_STANDARD
 		},
 		button: Color.YELLOW_STANDARD,
-		selection: Color.GREEN_STANDARD
+		teamMove: Color.GREEN_STANDARD,
+		enemyMove: Color.RED_STANDARD
 	},
 	actionOption: {
 		outlineWidth: 3,
