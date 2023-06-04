@@ -75,15 +75,12 @@ function gameLoop() {
 	}
 
 	if (state.count > state.stats.nextPingCount) {
-		state.stats.prevPingDelayMs = state.stats.thisPongRecv - state.stats.thisPingSend;
-
+		state.stats.nextPingCount = Infinity;
 		state.stats.thisPingSend = performance.now();
 		socket.send({
 			type: ClientMessageTypes.PING,
 			payload: null
 		});
-
-		state.stats.nextPingCount = Infinity;
 	}
 
 	state.count++;

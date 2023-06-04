@@ -194,10 +194,9 @@ function renderVictory(state: SafeState) {
 }
 
 function renderStats(state: SafeState) {
-	// Note this is the ms for the previous render
 	const clientRenderMs = state.stats.clientRenderMs.toFixed(3);
 	const clientRendersPerSec = (1000 / state.stats.clientRenderMs).toFixed(0);
-	const prevPingDelayMs = (1000 / state.stats.prevPingDelayMs).toFixed(0);
+	const prevPingDelayMs = state.stats.prevPingDelayMs.toFixed(0);
 	const serverTickMs = state.stats.server.tickMs.toFixed(3);
 	const serverTicksPerSec = (1000 / state.stats.server.tickMs).toFixed(0);
 
