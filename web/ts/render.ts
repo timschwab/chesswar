@@ -181,10 +181,10 @@ function renderStats(state: SafeState) {
 		`serverTicksPerSec: ${serverTicksPerSec}`
 	];
 
-	let rect = Rect(Point(10, state.screen.height-30), Point(100, state.screen.height-10));
+	let rect = Rect(Point(10, state.screen.height-(20*stats.length)), Point(100, state.screen.height-(20*stats.length)-20));
 	for (const stat of stats) {
 		canvas.text(rect, "left", stat, rensets.stats.font, rensets.stats.color);
-		rect = Rect(Point(rect.topLeft.x, rect.topLeft.y-20), Point(rect.bottomRight.x, rect.bottomRight.y-20));
+		rect = Rect(Point(rect.topLeft.x, rect.topLeft.y+20), Point(rect.bottomRight.x, rect.bottomRight.y+20));
 	}
 }
 
