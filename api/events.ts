@@ -132,7 +132,7 @@ function playerAction(player: ServerPlayer): void {
 		}
 	} else if (player.actionOption == PlayerAction.COMPLETE_ORDERS) {
 		if (player.carrying.type == CarryLoadType.ORDERS) {
-			makeMove(state.realBoard, player.team, player.carrying.load);
+			makeMove(state.realBoard, player.carrying.load);
 			player.carrying = {
 				type: CarryLoadType.EMPTY,
 				load: null
@@ -227,6 +227,9 @@ function becomeRole(player: ServerPlayer, role: PlayerRole): void {
 
 function generalOrders(player: ServerPlayer, payload: GeneralOrdersMessagePayload) {
 	if (player.role != PlayerRole.GENERAL) {
+		return;
+	} else if (player.team != payload.move.team) {
+		// Make sure they don't try to be cheatin
 		return;
 	}
 

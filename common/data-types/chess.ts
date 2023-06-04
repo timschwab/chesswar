@@ -22,7 +22,9 @@ export interface ChessSquare {
 	row: number,
 	col: number
 }
+
 export interface ChessMove {
+	team: TeamName,
 	from: ChessSquare,
 	to: ChessSquare
 }

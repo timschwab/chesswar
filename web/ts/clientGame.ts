@@ -51,6 +51,7 @@ function receiveClick(location: Point): void {
 			const payload = {
 				briefing: state.general.selectedButton,
 				move: {
+					team: state.self.team,
 					from: state.general.selectedFrom,
 					to: square
 				}

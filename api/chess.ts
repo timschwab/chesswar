@@ -1,8 +1,8 @@
 import { TeamName } from "../common/data-types/base.ts";
 import { ChessBoard, ChessMove, ChessPiece, ChessSquare, ChessSquareState } from "../common/data-types/chess.ts";
 
-export function makeMove(board: ChessBoard, team: TeamName, move: ChessMove): void {
-	if (validMove(board, team, move)) {
+export function makeMove(board: ChessBoard, move: ChessMove): void {
+	if (validMove(board, move)) {
 		// Move the piece
 		board[move.to.row][move.to.col] = board[move.from.row][move.from.col];
 		board[move.from.row][move.from.col] = null;
@@ -12,7 +12,7 @@ export function makeMove(board: ChessBoard, team: TeamName, move: ChessMove): vo
 	}
 }
 
-function validMove(board: ChessBoard, team: TeamName, move: ChessMove): boolean {
+function validMove(board: ChessBoard, move: ChessMove): boolean {
 	const fromCell = board[move.from.row][move.from.col];
 	const toCell = board[move.to.row][move.to.col];
 
@@ -22,18 +22,18 @@ function validMove(board: ChessBoard, team: TeamName, move: ChessMove): boolean 
 	}
 
 	// The piece in the from is the other team's
-	if (fromCell.team != team) {
+	if (fromCell.team != move.team) {
 		return false;
 	}
 
 	// The piece in the to is in this team
-	if (toCell != null && toCell.team == team) {
+	if (toCell != null && toCell.team == move.team) {
 		return false;
 	}
 
 	const piece = fromCell.piece;
 	if (piece == ChessPiece.PAWN) {
-		return validPawnMove(board, team, move);
+		return validPawnMove(board, move);
 	} else if (piece == ChessPiece.KNIGHT) {
 		return validKnightMove(move);
 	} else if (piece == ChessPiece.BISHOP) {
@@ -49,7 +49,7 @@ function validMove(board: ChessBoard, team: TeamName, move: ChessMove): boolean 
 	}
 }
 
-function validPawnMove(board: ChessBoard, team: TeamName, move: ChessMove): boolean {
+function validPawnMove(board: ChessBoard, move: ChessMove): boolean {
 	const rowChange = move.to.row - move.from.row;
 	const colChange = move.to.col - move.from.col;
 
@@ -63,7 +63,7 @@ function validPawnMove(board: ChessBoard, team: TeamName, move: ChessMove): bool
 			direction: -1
 		}
 	};
-	const teamValue = teamValues[team];
+	const teamValue = teamValues[move.team];
 
 	// Check that the direction is correct
 	if (Math.sign(rowChange) != teamValue.direction) {
@@ -94,7 +94,7 @@ function validPawnMove(board: ChessBoard, team: TeamName, move: ChessMove): bool
 	if (Math.abs(colChange) == 1 && Math.abs(rowChange) == 1) {
 		if (board[move.to.row][move.to.col] == null) {
 			return false;
-		} else if (board[move.to.row][move.to.col]?.team == team) {
+		} else if (board[move.to.row][move.to.col]?.team == move.team) {
 			return false;
 		} else {
 			return true;

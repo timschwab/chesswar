@@ -17,15 +17,15 @@ export function renderGeneralWindow(state: SafeState): void {
 	canvas.outlineRect(values.windowRect, genwin.windowOutline, 5);
 
 	// Draw chessboard squares
-	let teamMoves = [state.briefings[BriefingName.ONE], state.briefings[BriefingName.TWO], state.briefings[BriefingName.THREE]];
-	teamMoves.push(state.general.selectedFrom ? {from: state.general.selectedFrom, to: state.general.selectedFrom} : null);
+	const teamMoves = [state.briefings[BriefingName.ONE], state.briefings[BriefingName.TWO], state.briefings[BriefingName.THREE]];
+	teamMoves.push(state.general.selectedFrom ? {from: state.general.selectedFrom, to: state.general.selectedFrom, team: state.self.team} : null);
 	
-	let enemyMoves = [state.enemyBriefings[BriefingName.ONE], state.enemyBriefings[BriefingName.TWO], state.enemyBriefings[BriefingName.THREE]];
+	const enemyMoves = [state.enemyBriefings[BriefingName.ONE], state.enemyBriefings[BriefingName.TWO], state.enemyBriefings[BriefingName.THREE]];
 
-	teamMoves = teamMoves.filter(move => move != null);
-	enemyMoves = enemyMoves.filter(move => move != null);
+	let moves = enemyMoves.concat(teamMoves);
+	moves = moves.filter(move => move != null);
 
-	renderBoard(values.boardRect, state.teamBoard, teamMoves as ChessMove[], enemyMoves as ChessMove[]);
+	renderBoard(values.boardRect, state.teamBoard, moves as ChessMove[]);
 
 	// Draw buttons
 	canvas.fillRect(values.button1Rect, genwin.button);
@@ -34,11 +34,11 @@ export function renderGeneralWindow(state: SafeState): void {
 
 	// Draw selected button
 	if (state.general.selectedButton == BriefingName.ONE) {
-		canvas.outlineRect(values.button1Rect, genwin.teamMove, 3);
+		canvas.outlineRect(values.button1Rect, genwin.teamColor[state.self.team], 3);
 	} else if (state.general.selectedButton == BriefingName.TWO) {
-		canvas.outlineRect(values.button2Rect, genwin.teamMove, 3);
+		canvas.outlineRect(values.button2Rect, genwin.teamColor[state.self.team], 3);
 	} else if (state.general.selectedButton == BriefingName.THREE) {
-		canvas.outlineRect(values.button3Rect, genwin.teamMove, 3);
+		canvas.outlineRect(values.button3Rect, genwin.teamColor[state.self.team], 3);
 	}
 }
 

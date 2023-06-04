@@ -114,13 +114,11 @@ export const rensets = {
 		boardOutline: Color.GREY_BLACK,
 		boardLight: Color.GREY_LIGHT,
 		boardDark: Color.GREY_DARK,
-		pieceColor: {
+		teamColor: {
 			[TeamName.ALPHA]: Color.BLUE_LIGHT,
 			[TeamName.BRAVO]: Color.RED_STANDARD
 		},
-		button: Color.YELLOW_STANDARD,
-		teamMove: Color.GREEN_STANDARD,
-		enemyMove: Color.RED_STANDARD
+		button: Color.YELLOW_STANDARD
 	},
 	actionOption: {
 		outlineWidth: 3,

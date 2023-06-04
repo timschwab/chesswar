@@ -173,11 +173,11 @@ function renderMiniChessboard(state: SafeState) {
 		load[BriefingName.TWO] && enemyMoves.push(load[BriefingName.TWO]);
 		load[BriefingName.THREE] && enemyMoves.push(load[BriefingName.THREE]);
 	}
-	renderBoard(boardRect, state.teamBoard, teamMoves, enemyMoves);
+	renderBoard(boardRect, state.teamBoard, enemyMoves.concat(teamMoves));
 
 	if (state.carrying.type == CarryLoadType.INTEL) {
 		const boardRect = Rect(Point(10, 40+10+(8*20)), Point(10+(8*20), 40+10+2*((8*20))));
-		renderBoard(boardRect, state.carrying.load, [], []);
+		renderBoard(boardRect, state.carrying.load, []);
 	}
 }
 
