@@ -6,7 +6,7 @@ import { transposePoint } from "../../common/shape-logic/transpose.ts";
 import canvas from "./canvas.ts";
 import { renderBoard } from "./chessboard.ts";
 import { SafeState } from "./state.ts";
-import { ChessSquare } from "../../common/data-types/chess.ts";
+import { ChessMove, ChessSquare } from "../../common/data-types/chess.ts";
 
 export function renderGeneralWindow(state: SafeState): void {
 	const values = getKeyValues(state);
@@ -17,7 +17,10 @@ export function renderGeneralWindow(state: SafeState): void {
 	canvas.outlineRect(values.windowRect, genwin.windowOutline, 5);
 
 	// Draw chessboard squares
-	renderBoard(state, values.boardRect);
+	let moves = [state.briefings[BriefingName.ONE], state.briefings[BriefingName.TWO], state.briefings[BriefingName.THREE]];
+	moves.push(state.general.selectedFrom ? {from: state.general.selectedFrom, to: state.general.selectedFrom} : null);
+	moves = moves.filter(move => move != null);
+	renderBoard(values.boardRect, state.teamBoard, moves as ChessMove[]);
 
 	// Draw buttons
 	canvas.fillRect(values.button1Rect, genwin.button);

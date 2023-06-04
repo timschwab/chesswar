@@ -153,7 +153,7 @@ function renderPlayers(state: SafeState) {
 
 function renderMiniChessboard(state: SafeState) {
 	const boardRect = Rect(Point(10, 10), Point(10+(8*20), 10+(8*20)));
-	renderBoard(state, boardRect);
+	renderBoard(boardRect, state.teamBoard, []);
 }
 
 function renderActionOption(state: SafeState) {

@@ -1,25 +1,32 @@
 import { Circle, Point, Rect } from "../../common/data-types/shapes.ts";
-import { BriefingName, TeamName } from "../../common/data-types/base.ts";
+import { TeamName } from "../../common/data-types/base.ts";
 import { rensets } from "../../common/settings.ts";
 import canvas from "./canvas.ts";
-import { SafeState } from "./state.ts";
-import { ChessPiece, ChessSquare } from "../../common/data-types/chess.ts";
+import { ChessBoard, ChessMove, ChessPiece, ChessSquare } from "../../common/data-types/chess.ts";
 
-export function renderBoard(state: SafeState, board: Rect) {
-	const squareSize = board.width/8;
+export function renderBoard(boardRect: Rect, board: ChessBoard, moves: ChessMove[]) {
+	const squareSize = boardRect.width/8;
 
 	// Render all the squares
 	for (let row = 0 ; row < 8 ; row++) {
 		for (let col = 0 ; col < 8 ; col++) {
 			const position = {row, col};
-			renderSquare(state, board.topLeft, squareSize, position);
+			renderSquare(board, boardRect.topLeft, squareSize, position);
 		}
 	}
 
+	for (const move of moves) {
+		const fromRect = getSquareValues(boardRect.topLeft, squareSize, move.from).squareRect;
+		const toRect = getSquareValues(boardRect.topLeft, squareSize, move.to).squareRect;
+		canvas.outlineRect(fromRect, rensets.generalWindow.selection, 2);
+		canvas.outlineRect(toRect, rensets.generalWindow.selection, 2);
+		canvas.arrow(fromRect.center, toRect.center, rensets.generalWindow.selection, 2);
+	}
+/*
 	// Outline the selected ones
 	const from = state.general.selectedFrom;
 	if (from) {
-		const {squareRect} = getSquareValues(board.topLeft, squareSize, from);
+		const {squareRect} = getSquareValues(boardRect.topLeft, squareSize, from);
 		canvas.outlineRect(squareRect, rensets.generalWindow.selection, 2);
 	}
 
@@ -28,40 +35,40 @@ export function renderBoard(state: SafeState, board: Rect) {
 	const b3 = state.briefings[BriefingName.THREE];
 
 	if (b1) {
-		const fromRect = getSquareValues(board.topLeft, squareSize, b1.from).squareRect;
-		const toRect = getSquareValues(board.topLeft, squareSize, b1.to).squareRect;
+		const fromRect = getSquareValues(boardRect.topLeft, squareSize, b1.from).squareRect;
+		const toRect = getSquareValues(boardRect.topLeft, squareSize, b1.to).squareRect;
 		canvas.outlineRect(fromRect, rensets.generalWindow.selection, 2);
 		canvas.outlineRect(toRect, rensets.generalWindow.selection, 2);
 		canvas.arrow(fromRect.center, toRect.center, rensets.generalWindow.selection, 2);
 	}
 
 	if (b2) {
-		const fromRect = getSquareValues(board.topLeft, squareSize, b2.from).squareRect;
-		const toRect = getSquareValues(board.topLeft, squareSize, b2.to).squareRect;
+		const fromRect = getSquareValues(boardRect.topLeft, squareSize, b2.from).squareRect;
+		const toRect = getSquareValues(boardRect.topLeft, squareSize, b2.to).squareRect;
 		canvas.outlineRect(fromRect, rensets.generalWindow.selection, 2);
 		canvas.outlineRect(toRect, rensets.generalWindow.selection, 2);
 		canvas.arrow(fromRect.center, toRect.center, rensets.generalWindow.selection, 2);
 	}
 
 	if (b3) {
-		const fromRect = getSquareValues(board.topLeft, squareSize, b3.from).squareRect;
-		const toRect = getSquareValues(board.topLeft, squareSize, b3.to).squareRect;
+		const fromRect = getSquareValues(boardRect.topLeft, squareSize, b3.from).squareRect;
+		const toRect = getSquareValues(boardRect.topLeft, squareSize, b3.to).squareRect;
 		canvas.outlineRect(fromRect, rensets.generalWindow.selection, 2);
 		canvas.outlineRect(toRect, rensets.generalWindow.selection, 2);
 		canvas.arrow(fromRect.center, toRect.center, rensets.generalWindow.selection, 2);
 	}
-
+*/
 	// Outline them
-	canvas.outlineRect(board, rensets.generalWindow.boardOutline, 2);
+	canvas.outlineRect(boardRect, rensets.generalWindow.boardOutline, 2);
 }
 
-export function renderSquare(state: SafeState, topLeft: Point, squareSize: number, position: ChessSquare) {
+export function renderSquare(board: ChessBoard, topLeft: Point, squareSize: number, position: ChessSquare) {
 	const {row, col} = position;
 	const {squareRect, color} = getSquareValues(topLeft, squareSize, position);
 
 	canvas.fillRect(squareRect, color);
 
-	const cell = state.teamBoard[row][col];
+	const cell = board[row][col];
 	if (cell) {
 		if (cell.piece == ChessPiece.KING) {
 			renderKing(squareRect.topLeft, squareSize, cell.team);
