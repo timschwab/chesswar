@@ -4,3 +4,7 @@ export type MovementState = {
 	up: boolean,
 	down: boolean
 }
+
+export interface ServerStats {
+	tickMs: number,
+}

@@ -1,6 +1,7 @@
 import { Rect } from "../../common/data-types/shapes.ts";
 import { BriefingBundle, BriefingName, ChessBoard, ChessSquare, ChesswarId, Victory } from "../../common/data-types/types-base.ts";
 import { ClientPlayer } from "../../common/data-types/types-client.ts";
+import { ServerStats } from "../../common/data-types/types-server.ts";
 
 export type PlayerMap = Map<ChesswarId, ClientPlayer>;
 
@@ -10,6 +11,7 @@ export interface GeneralState {
 }
 
 export interface Stats {
+	server: ServerStats,
 	clientRenderMs: number,
 	prevPingDelayMs: number
 	thisPingSend: number,
@@ -57,6 +59,9 @@ const state: UnsafeState = {
 	},
 	victory: null,
 	stats: {
+		server: {
+			tickMs: 0
+		},
 		clientRenderMs: 0,
 		prevPingDelayMs: 0,
 		thisPingSend: 0,

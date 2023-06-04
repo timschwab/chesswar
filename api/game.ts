@@ -17,6 +17,14 @@ function init() {
 }
 
 function tick(): void {
+	const startTick = performance.now();
+	tickAll();
+	const endTick = performance.now();
+	const tickMs = endTick-startTick;
+	state.stats.tickMs = tickMs;
+}
+
+function tickAll(): void {
 	// Tick everything
 	tickPlayers();
 	if (state.victory == null) {
@@ -28,7 +36,8 @@ function tick(): void {
 	const playerList = Array.from(state.allPlayers.values());
 	const payload = {
 		players: playerList.map(serverPlayerToClientPlayer),
-		victory: state.victory
+		victory: state.victory,
+		stats: state.stats
 	};
 
 	socket.sendAll({
@@ -51,6 +60,16 @@ function tick(): void {
 
 		socket.sendBulk(teamPlayerIds, teamMessage);
 	}
+
+	// Broadcast stats to everyone once a second
+	if (state.count % 20 == 0) {
+		socket.sendAll({
+			type: ServerMessageTypes.STATS,
+			payload: state.stats
+		});
+	}
+
+	state.count++;
 }
 
 function serverPlayerToClientPlayer(player: ServerPlayer): ClientPlayer {

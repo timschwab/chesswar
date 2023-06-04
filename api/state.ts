@@ -1,6 +1,6 @@
 import { Circle, Vector } from "../common/data-types/shapes.ts";
 import { BriefingBundle, BriefingName, ChessBoard, ChessMove, ChessPiece, ChessRow, ChesswarId, CommandAction, PlayerRole, TeamName, Victory } from "../common/data-types/types-base.ts";
-import { MovementState } from "../common/data-types/types-server.ts";
+import { MovementState, ServerStats } from "../common/data-types/types-server.ts";
 
 export interface ServerPlayerPhysics {
 	mass: number,
@@ -27,14 +27,17 @@ interface Team {
 }
 
 interface ServerState {
+	count: number,
 	victory: Victory,
 	realBoard: ChessBoard,
 	allPlayers: PlayerMap,
 	[TeamName.ALPHA]: Team,
-	[TeamName.BRAVO]: Team
+	[TeamName.BRAVO]: Team,
+	stats: ServerStats
 }
 
 const state: ServerState = {
+	count: 0,
 	victory: null,
 	realBoard: newBoard(),
 	allPlayers: new Map<ChesswarId, ServerPlayer>(),
@@ -55,6 +58,9 @@ const state: ServerState = {
 			[BriefingName.TWO]: null,
 			[BriefingName.THREE]: null
 		}
+	},
+	stats: {
+		tickMs: 0
 	}
 };
 

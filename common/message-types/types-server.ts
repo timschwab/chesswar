@@ -1,12 +1,14 @@
 import { BriefingBundle, ChessBoard, ChesswarId, Victory } from "../data-types/types-base.ts";
 import { ClientPlayer } from "../data-types/types-client.ts";
+import { ServerStats } from "../data-types/types-server.ts";
 import { AbstractMessage } from "./types-base.ts";
 
 export enum ServerMessageTypes {
 	PLAYER_INIT = "player-init",
 	STATE = "state",
 	TEAM = "team",
-	PONG = "pong"
+	PONG = "pong",
+	STATS = "stats"
 }
 
 export interface PlayerInitMessagePayload {
@@ -29,4 +31,7 @@ export type TeamMessage = AbstractMessage<ServerMessageTypes.TEAM, TeamMessagePa
 export type PongMessagePayload = null;
 export type PongMessage = AbstractMessage<ServerMessageTypes.PONG, PongMessagePayload>;
 
-export type ServerMessage = PlayerInitMessage | StateMessage | TeamMessage | PongMessage;
+export type StatsMessagePayload = ServerStats;
+export type StatsMessage = AbstractMessage<ServerMessageTypes.STATS, StatsMessagePayload>;
+
+export type ServerMessage = PlayerInitMessage | StateMessage | TeamMessage | PongMessage | StatsMessage;

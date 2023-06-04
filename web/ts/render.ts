@@ -162,18 +162,22 @@ function renderStats(state: SafeState) {
 	const clientRenderMs = state.stats.clientRenderMs.toFixed(3);
 	const clientRendersPerSec = (1000 / state.stats.clientRenderMs).toFixed(0);
 	const prevPingDelayMs = (1000 / state.stats.prevPingDelayMs).toFixed(0);
+	const serverTickMs = state.stats.server.tickMs.toFixed(3);
+	const serverTicksPerSec = (1000 / state.stats.server.tickMs).toFixed(0);
+
+	const stats = [
+		`clientRenderMs: ${clientRenderMs}`,
+		`clientRendersPerSec: ${clientRendersPerSec}`,
+		`prevPingDelayMs: ${prevPingDelayMs}`,
+		`serverTickMs: ${serverTickMs}`,
+		`serverTicksPerSec: ${serverTicksPerSec}`
+	];
 
 	let rect = Rect(Point(10, 10), Point(100, 30));
-	let message = `clientRenderMs: ${clientRenderMs}`;
-	canvas.text(rect, "left", message, rensets.stats.font, rensets.stats.color);
-
-	rect = Rect(Point(rect.topLeft.x, rect.topLeft.y+20), Point(rect.bottomRight.x, rect.bottomRight.y+20));
-	message = `clientRendersPerSec: ${clientRendersPerSec}`;
-	canvas.text(rect, "left", message, rensets.stats.font, rensets.stats.color);
-
-	rect = Rect(Point(rect.topLeft.x, rect.topLeft.y+20), Point(rect.bottomRight.x, rect.bottomRight.y+20));
-	message = `prevPingDelayMs: ${prevPingDelayMs}`;
-	canvas.text(rect, "left", message, rensets.stats.font, rensets.stats.color);
+	for (const stat of stats) {
+		canvas.text(rect, "left", stat, rensets.stats.font, rensets.stats.color);
+		rect = Rect(Point(rect.topLeft.x, rect.topLeft.y+20), Point(rect.bottomRight.x, rect.bottomRight.y+20));
+	}
 }
 
 export default render;

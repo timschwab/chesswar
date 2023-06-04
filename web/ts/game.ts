@@ -1,7 +1,7 @@
 import socket from "./socket.ts";
 import state, { PlayerMap, isSafeState } from "./state.ts";
 import render from "./render.ts";
-import { PlayerInitMessagePayload, ServerMessage, ServerMessageTypes, StateMessagePayload, TeamMessagePayload } from "../../common/message-types/types-server.ts";
+import { PlayerInitMessagePayload, ServerMessage, ServerMessageTypes, StateMessagePayload, StatsMessagePayload, TeamMessagePayload } from "../../common/message-types/types-server.ts";
 import { ChesswarId, PlayerRole } from "../../common/data-types/types-base.ts";
 import { ClientPlayer } from "../../common/data-types/types-client.ts";
 import { Point } from "../../common/data-types/shapes.ts";
@@ -24,6 +24,8 @@ function receiveMessage(message: ServerMessage): void {
 		handleTeam(message.payload);
 	} else if (message.type == ServerMessageTypes.PONG) {
 		handlePong();
+	} else if (message.type == ServerMessageTypes.STATS) {
+		handleStats(message.payload);
 	}
 }
 
@@ -61,6 +63,10 @@ function handleTeam(payload: TeamMessagePayload) {
 function handlePong() {
 	state.stats.thisPongRecv = performance.now();
 	state.stats.nextPingCount = state.count + 60; // 1 second between pong recvs and ping sends
+}
+
+function handleStats(payload: StatsMessagePayload) {
+	state.stats.server = payload;
 }
 
 function receiveClick(location: Point): void {
