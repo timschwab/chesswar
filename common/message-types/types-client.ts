@@ -5,7 +5,8 @@ import { AbstractMessage } from "./types-base.ts";
 export enum ClientMessageTypes {
 	MOVE = "move",
 	COMMAND = "command",
-	GENERAL_ORDERS = "general-orders"
+	GENERAL_ORDERS = "general-orders",
+	PING = "ping"
 }
 
 export type MoveMessagePayload = MovementState;
@@ -20,5 +21,8 @@ export interface GeneralOrdersMessagePayload {
 }
 type GeneralOrdersMessage = AbstractMessage<ClientMessageTypes.GENERAL_ORDERS, GeneralOrdersMessagePayload>;
 
-export type ClientMessage = MoveMessage | CommandMessage | GeneralOrdersMessage;
+export type PingMessagePayload = null;
+type PingMessage = AbstractMessage<ClientMessageTypes.PING, PingMessagePayload>;
+
+export type ClientMessage = MoveMessage | CommandMessage | GeneralOrdersMessage | PingMessage;
 export type ClientMessageWithId = ClientMessage & { id: ChesswarId }

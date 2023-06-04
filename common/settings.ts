@@ -56,8 +56,8 @@ export const gameEngine = {
 		},
 		[PlayerRole.SPY]: {
 			radius: 3,
-			mass: 0.2,
-			inputForceMag: 0.9
+			mass: 1,
+			inputForceMag: 3
 		}
 	}
 };

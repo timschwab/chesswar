@@ -1,5 +1,5 @@
 import { Circle, Point, Vector } from "../common/data-types/shapes.ts";
-import { BriefingName, ChessBoard, ChessMove, CommandAction, PlayerRole, TeamName } from "../common/data-types/types-base.ts";
+import { BriefingName, ChessBoard, ChessMove, ChesswarId, CommandAction, PlayerRole, TeamName } from "../common/data-types/types-base.ts";
 import map from "../common/map.ts";
 import { ClientMessageTypes, ClientMessageWithId, GeneralOrdersMessagePayload, MoveMessagePayload } from "../common/message-types/types-client.ts";
 import { ServerMessageTypes } from "../common/message-types/types-server.ts";
@@ -72,6 +72,8 @@ export function receiveMessage(message: ClientMessageWithId): void {
 		playerCommand(player);
 	} else if (message.type == ClientMessageTypes.GENERAL_ORDERS) {
 		generalOrders(player, message.payload);
+	} else if (message.type == ClientMessageTypes.PING) {
+		pong(message.id);
 	}
 }
 
@@ -159,4 +161,11 @@ function generalOrders(player: ServerPlayer, payload: GeneralOrdersMessagePayloa
 
 	const {briefing, move} = payload;
 	state[player.team].briefings[briefing] = move;
+}
+
+function pong(playerId: ChesswarId) {
+	socket.sendOne(playerId, {
+		type: ServerMessageTypes.PONG,
+		payload: null
+	});
 }

@@ -5,19 +5,20 @@ import { AbstractMessage } from "./types-base.ts";
 export enum ServerMessageTypes {
 	PLAYER_INIT = "player-init",
 	STATE = "state",
-	TEAM = "team"
+	TEAM = "team",
+	PONG = "pong"
 }
 
-export type PlayerInitMessagePayload = {
+export interface PlayerInitMessagePayload {
 	id: ChesswarId
 }
-type PlayerInitMessage = AbstractMessage<ServerMessageTypes.PLAYER_INIT, PlayerInitMessagePayload>;
+export type PlayerInitMessage = AbstractMessage<ServerMessageTypes.PLAYER_INIT, PlayerInitMessagePayload>;
 
 export interface StateMessagePayload {
 	players: ClientPlayer[],
 	victory: Victory
 }
-type StateMessage = AbstractMessage<ServerMessageTypes.STATE, StateMessagePayload>;
+export type StateMessage = AbstractMessage<ServerMessageTypes.STATE, StateMessagePayload>;
 
 export interface TeamMessagePayload {
 	board: ChessBoard,
@@ -25,4 +26,7 @@ export interface TeamMessagePayload {
 }
 export type TeamMessage = AbstractMessage<ServerMessageTypes.TEAM, TeamMessagePayload>;
 
-export type ServerMessage = PlayerInitMessage | StateMessage | TeamMessage;
+export type PongMessagePayload = null;
+export type PongMessage = AbstractMessage<ServerMessageTypes.PONG, PongMessagePayload>;
+
+export type ServerMessage = PlayerInitMessage | StateMessage | TeamMessage | PongMessage;

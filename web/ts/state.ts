@@ -10,11 +10,15 @@ export interface GeneralState {
 }
 
 export interface Stats {
-	clientRenderMs: number
+	clientRenderMs: number,
+	prevPingDelayMs: number
+	thisPingSend: number,
+	thisPongRecv: number,
+	nextPingCount: number
 }
 
 export interface UnsafeState {
-	renderCount: number,
+	count: number,
 	screen: Rect | undefined,
 	selfId: ChesswarId | undefined,
 	self: ClientPlayer | undefined,
@@ -27,7 +31,7 @@ export interface UnsafeState {
 }
 
 export interface SafeState {
-	renderCount: number,
+	count: number,
 	screen: Rect,
 	selfId: ChesswarId,
 	self: ClientPlayer,
@@ -40,7 +44,7 @@ export interface SafeState {
 }
 
 const state: UnsafeState = {
-	renderCount: 0,
+	count: 0,
 	screen: undefined,
 	selfId: undefined,
 	self: undefined,
@@ -53,7 +57,11 @@ const state: UnsafeState = {
 	},
 	victory: null,
 	stats: {
-		clientRenderMs: 0
+		clientRenderMs: 0,
+		prevPingDelayMs: 0,
+		thisPingSend: 0,
+		thisPongRecv: 0,
+		nextPingCount: 120
 	}
 };
 

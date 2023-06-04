@@ -22,6 +22,8 @@ function receiveMessage(message: ServerMessage): void {
 		handleState(message.payload);
 	} else if (message.type == ServerMessageTypes.TEAM) {
 		handleTeam(message.payload);
+	} else if (message.type == ServerMessageTypes.PONG) {
+		handlePong();
 	}
 }
 
@@ -54,6 +56,11 @@ function handleState(payload: StateMessagePayload) {
 function handleTeam(payload: TeamMessagePayload) {
 	state.teamBoard = payload.board;
 	state.briefings = payload.briefings;
+}
+
+function handlePong() {
+	state.stats.thisPongRecv = performance.now();
+	state.stats.nextPingCount = state.count + 60; // 1 second between pong recvs and ping sends
 }
 
 function receiveClick(location: Point): void {
@@ -97,8 +104,20 @@ function receiveClick(location: Point): void {
 function gameLoop() {
 	if (isSafeState(state)) {
 		render(state);
-		state.renderCount++;
 	}
 
+	if (state.count > state.stats.nextPingCount) {
+		state.stats.prevPingDelayMs = state.stats.thisPongRecv - state.stats.thisPingSend;
+
+		state.stats.thisPingSend = performance.now();
+		socket.send({
+			type: ClientMessageTypes.PING,
+			payload: null
+		});
+
+		state.stats.nextPingCount = Infinity;
+	}
+
+	state.count++;
 	requestAnimationFrame(gameLoop);
 }
