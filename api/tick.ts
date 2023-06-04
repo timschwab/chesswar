@@ -142,10 +142,10 @@ function commandOption(player: ServerPlayer): CommandAction | null {
 		} else if (inside(pos, bundle.armory)) {
 			return CommandAction.BECOME_TANK;
 		} else if (inside(pos, bundle.intel)) {
-			if (player.role == PlayerRole.SPY) {
+			if (player.role == PlayerRole.OPERATIVE) {
 				return CommandAction.REPORT_INTEL;
 			} else {
-				return CommandAction.BECOME_SPY;
+				return CommandAction.BECOME_OPERATIVE;
 			}
 		} else if (inside(pos, bundle.briefings[0])) {
 			if (player.role == PlayerRole.SOLDIER) {
@@ -168,7 +168,7 @@ function commandOption(player: ServerPlayer): CommandAction | null {
 		} else if (inside(pos, map.battlefield)) {
 			if (player.role == PlayerRole.SOLDIER) {
 				return CommandAction.COMPLETE_ORDERS;
-			} else if (player.role == PlayerRole.SPY) {
+			} else if (player.role == PlayerRole.OPERATIVE) {
 				return CommandAction.GATHER_INTEL;
 			}
 		}

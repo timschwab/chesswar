@@ -54,7 +54,7 @@ export const gameEngine = {
 			mass: 5,
 			inputForceMag: 15
 		},
-		[PlayerRole.SPY]: {
+		[PlayerRole.OPERATIVE]: {
 			radius: 3,
 			mass: 1,
 			inputForceMag: 3

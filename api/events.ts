@@ -100,8 +100,8 @@ function playerCommand(player: ServerPlayer): void {
 		becomeRole(player, PlayerRole.SOLDIER);
 	} else if (player.commandOption == CommandAction.BECOME_TANK) {
 		becomeRole(player, PlayerRole.TANK);
-	} else if (player.commandOption == CommandAction.BECOME_SPY) {
-		becomeRole(player, PlayerRole.SPY);
+	} else if (player.commandOption == CommandAction.BECOME_OPERATIVE) {
+		becomeRole(player, PlayerRole.OPERATIVE);
 	} else if (player.commandOption == CommandAction.GRAB_ORDERS) {
 		const briefing = whichBriefing(player);
 		if (briefing == null) {

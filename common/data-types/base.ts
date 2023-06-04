@@ -15,14 +15,14 @@ export enum PlayerRole {
 	GENERAL = "general",
 	SOLDIER = "soldier",
 	TANK = "tank",
-	SPY = "spy"
+	OPERATIVE = "operative"
 }
 
 export enum CommandAction {
 	BECOME_GENERAL = "become-general",
 	BECOME_SOLDIER = "become-soldier",
 	BECOME_TANK = "become-tank",
-	BECOME_SPY = "become-spy",
+	BECOME_OPERATIVE = "become-operative",
 
 	GRAB_ORDERS = "grab-orders",
 	COMPLETE_ORDERS = "complete-orders",
