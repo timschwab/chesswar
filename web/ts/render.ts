@@ -143,10 +143,8 @@ function renderPlayers(state: SafeState) {
 
 		if (player.id == state.selfId) {
 			color = rensets.players.self;
-		} else if (player.team == state.self.team) {
-			color = rensets.players.allies;
 		} else {
-			color = rensets.players.enemies;
+			color = rensets.players.teamColor[player.team];
 		}
 
 		camera.fillCircle(player.position, color);

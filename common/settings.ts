@@ -76,9 +76,11 @@ export const rensets = {
 		width: 5
 	},
 	players: {
-		self: Color.BLUE_STANDARD,
-		allies: Color.GREEN_STANDARD,
-		enemies: Color.RED_STANDARD
+		self: Color.GREEN_STANDARD,
+		teamColor: {
+			[TeamName.ALPHA]: Color.BLUE_LIGHT,
+			[TeamName.BRAVO]: Color.RED_STANDARD
+		},
 	},
 	facilities: {
 		ally: {
