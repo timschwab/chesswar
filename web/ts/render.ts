@@ -160,8 +160,12 @@ function renderMiniChessboard(state: SafeState) {
 	if (state.carrying.type == CarryLoadType.MOVE) {
 		moves.push(state.carrying.load);
 	}
-
 	renderBoard(boardRect, state.teamBoard, moves);
+
+	if (state.carrying.type == CarryLoadType.BOARD) {
+		const boardRect = Rect(Point(10, 10+10+(8*20)), Point(10+(8*20), 2*(10+(8*20))));
+		renderBoard(boardRect, state.carrying.load, []);
+	}
 }
 
 function renderActionOption(state: SafeState) {
