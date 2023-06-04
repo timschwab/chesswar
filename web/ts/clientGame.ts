@@ -1,13 +1,13 @@
 import socket from "./socket.ts";
-import state, { PlayerMap, isSafeState } from "./state.ts";
+import state, { isSafeState } from "./state.ts";
 import render from "./render.ts";
-import { PlayerInitMessagePayload, ServerMessage, ServerMessageTypes, StateMessagePayload, StatsMessagePayload, TeamMessagePayload } from "../../common/message-types/types-server.ts";
-import { ChesswarId, PlayerRole } from "../../common/data-types/types-base.ts";
-import { ClientPlayer } from "../../common/data-types/types-client.ts";
+import { ServerMessage, ServerMessageTypes } from "../../common/message-types/types-server.ts";
+import { PlayerRole } from "../../common/data-types/types-base.ts";
 import { Point } from "../../common/data-types/shapes.ts";
 import { listenClick } from "./inputs.ts";
 import { clickedButton, clickedSquare } from "./generalWindow.ts";
 import { ClientMessageTypes } from "../../common/message-types/types-client.ts";
+import { handlePlayerInit, handlePong, handleState, handleStats, handleTeam } from "./messages.ts";
 
 export function initGame() {
 	socket.listen(receiveMessage);
@@ -27,46 +27,6 @@ function receiveMessage(message: ServerMessage): void {
 	} else if (message.type == ServerMessageTypes.STATS) {
 		handleStats(message.payload);
 	}
-}
-
-function handlePlayerInit(payload: PlayerInitMessagePayload) {
-	state.selfId = payload.id;
-}
-
-function handleState(payload: StateMessagePayload) {
-	const playerMap: PlayerMap = new Map<ChesswarId, ClientPlayer>();
-	for (const player of payload.players) {
-		playerMap.set(player.id, player);
-	}
-
-	state.playerMap = playerMap;
-
-	if (state.selfId) {
-		const maybeSelf = state.playerMap.get(state.selfId);
-
-		if (!maybeSelf) {
-			console.error(state.playerMap, state.selfId);
-			throw "Could not find self";
-		}
-
-		state.self = maybeSelf;
-	}
-
-	state.victory = payload.victory;
-}
-
-function handleTeam(payload: TeamMessagePayload) {
-	state.teamBoard = payload.board;
-	state.briefings = payload.briefings;
-}
-
-function handlePong() {
-	state.stats.thisPongRecv = performance.now();
-	state.stats.nextPingCount = state.count + 60; // 1 second between pong recvs and ping sends
-}
-
-function handleStats(payload: StatsMessagePayload) {
-	state.stats.server = payload;
 }
 
 function receiveClick(location: Point): void {
