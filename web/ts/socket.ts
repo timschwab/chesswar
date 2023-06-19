@@ -45,7 +45,7 @@ function safeSend(conn: WebSocket, message: string) {
 	try {
 		conn.send(message);
 	} catch (err) {
-		console.error(err);
+		console.error({message, err});
 	}
 }
 
