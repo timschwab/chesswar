@@ -18,7 +18,7 @@ export function initSocket() {
 }
 
 function sockOpen(_event: Event) {
-	// Do nothing yet
+	// Do nothing
 }
 
 function sockMessage(event: MessageEvent) {
@@ -38,7 +38,15 @@ function sockClose(event: CloseEvent) {
 }
 
 function send(message: ClientMessage) {
-	sock.send(JSON.stringify(message));
+	safeSend(sock, JSON.stringify(message));
+}
+
+function safeSend(conn: WebSocket, message: string) {
+	try {
+		conn.send(message);
+	} catch (err) {
+		console.error(err);
+	}
 }
 
 export default { send, listen: messageHook.register };
