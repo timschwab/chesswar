@@ -13,7 +13,12 @@ import { CarryLoadType } from "../common/data-types/server.ts";
 
 export function tickPlayers() {
 	for (const player of state.allPlayers.values()) {
-		movePlayer(player);
+		if (player.deathCounter > 0) {
+			moveDeathCounter(player);
+		} else {
+			movePlayer(player);
+		}
+
 		checkDeathRects(player);
 		checkDeathCircles(player);
 		checkTankSafezones(player);
@@ -129,6 +134,10 @@ function checkTankSafezones(player: ServerPlayer): void {
 			}
 		}
 	}
+}
+
+function moveDeathCounter(player: ServerPlayer) {
+	player.deathCounter--;
 }
 
 function actionOption(player: ServerPlayer): PlayerAction | null {

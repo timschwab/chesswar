@@ -36,6 +36,7 @@ export const buildSettings = {
 /* ----- start game engine ----- */
 export const gameEngine = {
 	startingRole: PlayerRole.SOLDIER,
+	deathTicks: 100,
 	frictionCoef: 0.5,
 	dragCoef: 0.1,
 	physics: {

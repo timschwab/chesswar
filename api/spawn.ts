@@ -25,6 +25,9 @@ export function spawnPlayer(player: ServerPlayer): void {
 		type: CarryLoadType.EMPTY,
 		load: null
 	};
+
+	player.deathCounter = gameEngine.deathTicks;
+
 	socket.sendOne(player.id, {
 		type: ServerMessageTypes.CARRYING,
 		payload: player.carrying

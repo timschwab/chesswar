@@ -16,7 +16,8 @@ export interface ServerPlayer {
 	actionOption: PlayerAction | null,
 	carrying: CarryLoad,
 	movement: MovementState,
-	physics: ServerPlayerPhysics
+	physics: ServerPlayerPhysics,
+	deathCounter: number
 }
 
 type PlayerMap = Map<ChesswarId, ServerPlayer>;

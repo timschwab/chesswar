@@ -32,7 +32,8 @@ export function addPlayer(id: string): void {
 			speed: Vector(0, 0),
 			mass: 0,
 			position: Circle(Point(0, 0), 0)
-		}
+		},
+		deathCounter: 0
 	}
 
 	spawnPlayer(newPlayer);
