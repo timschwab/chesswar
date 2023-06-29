@@ -7,7 +7,7 @@ import { gameEngine } from "../common/settings.ts";
 import { inside } from "../common/shape-logic/inside.ts";
 import { makeMove } from "./chess.ts";
 import socket from "./socket.ts";
-import { spawnPlayer } from "./spawn.ts";
+import { setCarrying, spawnPlayer } from "./spawn.ts";
 import state, { ServerPlayer } from "./state.ts";
 import { CarryLoad, CarryLoadType } from "../common/data-types/server.ts";
 
@@ -125,45 +125,23 @@ function playerAction(player: ServerPlayer): void {
 				};
 			}
 
-			player.carrying = carryLoad;
-			socket.sendOne(player.id, {
-				type: ServerMessageTypes.CARRYING,
-				payload: player.carrying
-			});
+			setCarrying(player, carryLoad);
 		}
 	} else if (player.actionOption == PlayerAction.COMPLETE_ORDERS) {
 		if (player.carrying.type == CarryLoadType.ORDERS) {
 			makeMove(state.realBoard, player.carrying.load);
-			player.carrying = {
-				type: CarryLoadType.EMPTY,
-				load: null
-			};
-			socket.sendOne(player.id, {
-				type: ServerMessageTypes.CARRYING,
-				payload: player.carrying
-			});
+			setCarrying(player, null);
 		}
 	} else if (player.actionOption == PlayerAction.GATHER_INTEL) {
 		const load = {
 			type: CarryLoadType.INTEL,
 			load: structuredClone(state.realBoard)
 		};
-		player.carrying = load;
-		socket.sendOne(player.id, {
-			type: ServerMessageTypes.CARRYING,
-			payload: player.carrying
-		});
+		setCarrying(player, load);
 	} else if (player.actionOption == PlayerAction.REPORT_INTEL) {
 		if (player.carrying.type == CarryLoadType.INTEL) {
 			state[player.team].teamBoard = player.carrying.load;
-			player.carrying = {
-				type: CarryLoadType.EMPTY,
-				load: null
-			};
-			socket.sendOne(player.id, {
-				type: ServerMessageTypes.CARRYING,
-				payload: player.carrying
-			});
+			setCarrying(player, null);
 		}
 	} else if (player.actionOption == PlayerAction.CONDUCT_ESPIONAGE) {
 		const oppositeTeam = player.team == TeamName.ALPHA ? TeamName.BRAVO : TeamName.ALPHA;
@@ -171,22 +149,11 @@ function playerAction(player: ServerPlayer): void {
 			type: CarryLoadType.ESPIONAGE,
 			load: structuredClone(state[oppositeTeam].briefings)
 		};
-		player.carrying = load;
-		socket.sendOne(player.id, {
-			type: ServerMessageTypes.CARRYING,
-			payload: player.carrying
-		});
+		setCarrying(player, load);
 	} else if (player.actionOption == PlayerAction.REPORT_ESPIONAGE) {
 		if (player.carrying.type == CarryLoadType.ESPIONAGE) {
 			state[player.team].enemyBriefings = player.carrying.load;
-			player.carrying = {
-				type: CarryLoadType.EMPTY,
-				load: null
-			};
-			socket.sendOne(player.id, {
-				type: ServerMessageTypes.CARRYING,
-				payload: player.carrying
-			});
+			setCarrying(player, null);
 		}
 	}
 }
@@ -220,10 +187,7 @@ function becomeRole(player: ServerPlayer, role: PlayerRole): void {
 		player.physics.speed = Vector(0, 0);
 	}
 
-	player.carrying = {
-		type: CarryLoadType.EMPTY,
-		load: null
-	};
+	setCarrying(player, null);
 }
 
 function generalOrders(player: ServerPlayer, payload: GeneralOrdersMessagePayload) {

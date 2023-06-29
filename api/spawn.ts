@@ -1,4 +1,4 @@
-import { CarryLoadType } from "../common/data-types/server.ts";
+import { CarryLoad, CarryLoadType } from "../common/data-types/server.ts";
 import { Circle, Vector } from "../common/data-types/shapes.ts";
 import map from "../common/map.ts";
 import { ServerMessageTypes } from "../common/message-types/server.ts";
@@ -21,13 +21,20 @@ export function spawnPlayer(player: ServerPlayer): void {
 		position: Circle(start, radius)
 	};
 
-	player.carrying = {
-		type: CarryLoadType.EMPTY,
-		load: null
-	};
+	setCarrying(player, null);
 
 	player.deathCounter = gameEngine.deathTicks;
+}
 
+export function setCarrying(player: ServerPlayer, load: CarryLoad | null) {
+	if (load == null) {
+		load = {
+			type: CarryLoadType.EMPTY,
+			load: null
+		}
+	}
+
+	player.carrying = load;
 	socket.sendOne(player.id, {
 		type: ServerMessageTypes.CARRYING,
 		payload: player.carrying
