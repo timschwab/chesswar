@@ -82,6 +82,10 @@ export const rensets = {
 			[TeamName.ALPHA]: Color.BLUE_LIGHT,
 			[TeamName.BRAVO]: Color.RED_STANDARD
 		},
+		deathCounter: {
+			font: "12px Times New Roman",
+			color: Color.GREY_BLACK
+		}
 	},
 	facilities: {
 		ally: {

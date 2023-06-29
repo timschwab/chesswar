@@ -148,6 +148,13 @@ function renderPlayers(state: SafeState) {
 		}
 
 		camera.fillCircle(player.position, color);
+
+		if (player.deathCounter > 0) {
+			const textRectTopLeft = Point(player.position.center.x - player.position.radius, player.position.center.y - player.position.radius);
+			const textRectBottomRight = Point(player.position.center.x + player.position.radius, player.position.center.y + player.position.radius);
+			const textRect = Rect(textRectTopLeft, textRectBottomRight);
+			camera.text(textRect, "center", String(player.deathCounter), rensets.players.deathCounter.font, rensets.players.deathCounter.color);
+		}
 	}
 }
 

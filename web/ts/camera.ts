@@ -37,11 +37,17 @@ function fillCircle(circle: Circle, color: Color) {
 	canvas.fillCircle(adjustedCircle, color);
 }
 
+function text(position: Rect, align: "left" | "center" | "right", message: string, font: string, color: Color) {
+	const adjustedPosition = transposeRect(position, camera.topLeft);
+	canvas.text(adjustedPosition, align, message, font, color);
+}
+
 export default {
 	setCamera,
 	fillScreen,
 	outlineRect,
 	fillRect,
 	line,
-	fillCircle
+	fillCircle,
+	text
 };
