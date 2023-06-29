@@ -159,11 +159,14 @@ function renderPlayers(state: SafeState) {
 		camera.fillCircle(pos, color);
 
 		if (player.deathCounter > 0) {
-			const textRectTopLeft = Point(player.position.center.x - player.position.radius, player.position.center.y - player.position.radius);
-			const textRectBottomRight = Point(player.position.center.x + player.position.radius, player.position.center.y + player.position.radius);
+			const textRectTopLeft = Point(pos.center.x - pos.radius, pos.center.y - pos.radius);
+			const textRectBottomRight = Point(pos.center.x + pos.radius, pos.center.y + pos.radius);
 			const textRect = Rect(textRectTopLeft, textRectBottomRight);
 			camera.text(textRect, "center", String(player.deathCounter), rensets.players.deathCounter.font, rensets.players.deathCounter.color);
 		}
+
+		const nameRect = Rect(Point(pos.center.x, pos.center.y+pos.radius+10), Point(pos.center.x, pos.center.y+pos.radius+10));
+		camera.text(nameRect, "center", player.id.slice(0, 4), rensets.players.name.font, rensets.players.name.color);
 	}
 }
 

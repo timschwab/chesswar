@@ -86,6 +86,10 @@ export const rensets = {
 		deathCounter: {
 			font: "12px Times New Roman",
 			color: Color.GREY_BLACK
+		},
+		name: {
+			font: "12px Times New Roman",
+			color: Color.GREY_BLACK
 		}
 	},
 	facilities: {
