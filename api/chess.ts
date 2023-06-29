@@ -1,5 +1,6 @@
 import { TeamName } from "../common/data-types/base.ts";
 import { ChessBoard, ChessMove, ChessPiece, ChessSquare, ChessSquareState } from "../common/data-types/chess.ts";
+import { kingsKillKings } from "../common/options.ts";
 
 export function makeMove(board: ChessBoard, move: ChessMove): void {
 	if (validMove(board, move)) {
@@ -43,7 +44,7 @@ function validMove(board: ChessBoard, move: ChessMove): boolean {
 	} else if (piece == ChessPiece.QUEEN) {
 		return validQueenMove(board, move);
 	} else if (piece == ChessPiece.KING) {
-		return validKingMove(move);
+		return validKingMove(board, move);
 	} else {
 		return false;
 	}
@@ -171,7 +172,14 @@ function validQueenMove(board: ChessBoard, move: ChessMove): boolean {
 	return validBishopMove(board, move) || validRookMove(board, move);
 }
 
-function validKingMove(move: ChessMove): boolean {
+function validKingMove(board: ChessBoard, move: ChessMove): boolean {
+	// If kings can't kill kings, then don't
+	if (!kingsKillKings) {
+		if (board[move.to.row][move.to.col]?.piece == ChessPiece.KING) {
+			return false;
+		}
+	}
+
 	const rowChange = Math.abs(move.from.row - move.to.row);
 	const colChange = Math.abs(move.from.col - move.to.col);
 
