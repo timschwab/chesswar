@@ -152,7 +152,9 @@ function renderPlayers(state: SafeState) {
 		}
 
 		let pos = player.position;
-		if (state.self.role == PlayerRole.TANK && player.team != state.self.team) {
+		const isEnemy = player.team != state.self.team;
+		const isSoldierOrTank = player.role == PlayerRole.SOLDIER || player.role == PlayerRole.TANK;
+		if (state.self.role == PlayerRole.TANK && isEnemy && isSoldierOrTank) {
 			pos = clampCircleInsideRect(camera.getCamera(), pos);
 		}
 
