@@ -227,13 +227,15 @@ function renderStats(state: SafeState) {
 	const prevPingDelayMs = state.stats.prevPingDelayMs.toFixed(0);
 	const serverTickMs = state.stats.server.tickMs.toFixed(3);
 	const serverTicksPerSec = (1000 / state.stats.server.tickMs).toFixed(0);
+	const playersOnline = String(state.playerMap.size);
 
 	const stats = [
 		`clientRenderMs: ${clientRenderMs}`,
 		`clientRendersPerSec: ${clientRendersPerSec}`,
 		`prevPingDelayMs: ${prevPingDelayMs}`,
 		`serverTickMs: ${serverTickMs}`,
-		`serverTicksPerSec: ${serverTicksPerSec}`
+		`serverTicksPerSec: ${serverTicksPerSec}`,
+		`playersOnline: ${playersOnline}`
 	];
 
 	let rect = Rect(Point(10, state.screen.height-(20*stats.length)), Point(100, state.screen.height-(20*stats.length)-20));
