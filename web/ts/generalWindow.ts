@@ -4,7 +4,7 @@ import { rensets } from "../../common/settings.ts";
 import { inside } from "../../common/shape-logic/inside.ts";
 import { transposePoint } from "../../common/shape-logic/transpose.ts";
 import canvas from "./canvas.ts";
-import { renderBoard } from "./chessboard.ts";
+import { renderBoard, teamPerspective, unrotateSquare } from "./chessboard.ts";
 import { SafeState } from "./state.ts";
 import { ChessMove, ChessSquare } from "../../common/data-types/chess.ts";
 
@@ -25,7 +25,8 @@ export function renderGeneralWindow(state: SafeState): void {
 	let moves = enemyMoves.concat(teamMoves);
 	moves = moves.filter(move => move != null);
 
-	renderBoard(values.boardRect, state.teamBoard, moves as ChessMove[]);
+	const perspective = teamPerspective(state.self.team);
+	renderBoard(values.boardRect, state.teamBoard, moves as ChessMove[], perspective);
 
 	// Draw buttons
 	canvas.fillRect(values.button1Rect, genwin.button);
@@ -86,6 +87,7 @@ function getKeyValues(state: SafeState) {
 }
 
 export function clickedSquare(state: SafeState, location: Point): ChessSquare | null {
+	const perspective = teamPerspective(state.self.team);
 	const values = getKeyValues(state);
 
 	if (!inside(location, values.boardRect)) {
@@ -96,10 +98,11 @@ export function clickedSquare(state: SafeState, location: Point): ChessSquare | 
 	const row = Math.floor(cornerPoint.y / rensets.generalWindow.squareSize);
 	const col = Math.floor(cornerPoint.x / rensets.generalWindow.squareSize);
 
-	return {
+	const displayClicked = {
 		row,
 		col
 	};
+	return unrotateSquare(displayClicked, perspective);
 }
 
 export function clickedButton(state: SafeState, location: Point): BriefingName | null {

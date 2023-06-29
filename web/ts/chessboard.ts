@@ -2,39 +2,90 @@ import { Circle, Point, Rect } from "../../common/data-types/shapes.ts";
 import { TeamName } from "../../common/data-types/base.ts";
 import { rensets } from "../../common/settings.ts";
 import canvas from "./canvas.ts";
-import { ChessBoard, ChessMove, ChessPiece, ChessSquare } from "../../common/data-types/chess.ts";
+import { ChessBoard, ChessMove, ChessPerspective, ChessPiece, ChessSquare } from "../../common/data-types/chess.ts";
 
-export function renderBoard(boardRect: Rect, board: ChessBoard, moves: ChessMove[]) {
+export function teamPerspective(team: TeamName): ChessPerspective {
+	if (team == TeamName.BLUE) {
+		return ChessPerspective.SOUTH;
+	} else if (team == TeamName.RED) {
+		return ChessPerspective.NORTH
+	}
+
+	throw "Can never get here";
+}
+
+export function rotateSquare(square: ChessSquare, perspective: ChessPerspective): ChessSquare {
+	let result = square;
+
+	// Turn 90 degress
+	if (perspective == ChessPerspective.WEST || perspective == ChessPerspective.EAST) {
+		result = {
+			row: result.col,
+			col: 7-result.row
+		};
+	}
+
+	// Turn 180 degres
+	if (perspective == ChessPerspective.SOUTH || perspective == ChessPerspective.WEST) {
+		result = {
+			row: 7-result.row,
+			col: 7-result.col
+		};
+	}
+
+	return result;
+}
+
+export function unrotateSquare(square: ChessSquare, perspective: ChessPerspective): ChessSquare {
+	if (perspective == ChessPerspective.NORTH) {
+		return rotateSquare(square, ChessPerspective.NORTH);
+	} else if (perspective == ChessPerspective.EAST) {
+		return rotateSquare(square, ChessPerspective.WEST);
+	} else if (perspective == ChessPerspective.SOUTH) {
+		return rotateSquare(square, ChessPerspective.SOUTH);
+	} else if (perspective == ChessPerspective.WEST) {
+		return rotateSquare(square, ChessPerspective.EAST);
+	}
+
+	throw "Can't get here";
+}
+
+export function renderBoard(boardRect: Rect, board: ChessBoard, moves: ChessMove[], perspective: ChessPerspective) {
 	const squareSize = boardRect.width/8;
 
 	// Render all the squares
 	for (let row = 0 ; row < 8 ; row++) {
 		for (let col = 0 ; col < 8 ; col++) {
 			const position = {row, col};
-			renderSquare(board, boardRect.topLeft, squareSize, position);
+			renderSquare(board, boardRect.topLeft, squareSize, position, perspective);
 		}
 	}
 
 	for (const move of moves) {
-		renderMove(boardRect, squareSize, move);
+		renderMove(boardRect, squareSize, move, perspective);
 	}
 
 	// Outline them
 	canvas.outlineRect(boardRect, rensets.generalWindow.boardOutline, 2);
 }
 
-function renderMove(boardRect: Rect, squareSize: number, move: ChessMove) {
+function renderMove(boardRect: Rect, squareSize: number, move: ChessMove, perspective: ChessPerspective) {
 	const color = rensets.generalWindow.teamColor[move.team];
-	const fromRect = getSquareValues(boardRect.topLeft, squareSize, move.from).squareRect;
-	const toRect = getSquareValues(boardRect.topLeft, squareSize, move.to).squareRect;
+
+	const displayFrom = rotateSquare(move.from, perspective);
+	const displayTo = rotateSquare(move.to, perspective);
+
+	const fromRect = getSquareValues(boardRect.topLeft, squareSize, displayFrom).squareRect;
+	const toRect = getSquareValues(boardRect.topLeft, squareSize, displayTo).squareRect;
 	canvas.outlineRect(fromRect, color, 2);
 	canvas.outlineRect(toRect, color, 2);
 	canvas.arrow(fromRect.center, toRect.center, color, 2);
 }
 
-function renderSquare(board: ChessBoard, topLeft: Point, squareSize: number, position: ChessSquare) {
+function renderSquare(board: ChessBoard, topLeft: Point, squareSize: number, position: ChessSquare, perspective: ChessPerspective) {
 	const {row, col} = position;
-	const {squareRect, color} = getSquareValues(topLeft, squareSize, position);
+	const displayPosition = rotateSquare(position, perspective);
+	const {squareRect, color} = getSquareValues(topLeft, squareSize, displayPosition);
 
 	canvas.fillRect(squareRect, color);
 

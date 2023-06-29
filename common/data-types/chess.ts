@@ -28,3 +28,10 @@ export interface ChessMove {
 	from: ChessSquare,
 	to: ChessSquare
 }
+
+export enum ChessPerspective {
+	NORTH = "north",
+	EAST = "east",
+	SOUTH = "south",
+	WEST = "west"
+}

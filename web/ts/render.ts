@@ -7,7 +7,7 @@ import { Color } from "../../common/colors.ts";
 import { BriefingName, PlayerRole, TeamName } from "../../common/data-types/base.ts";
 import { renderGeneralWindow } from "./generalWindow.ts";
 import canvas from "./canvas.ts";
-import { renderBoard } from "./chessboard.ts";
+import { renderBoard, teamPerspective } from "./chessboard.ts";
 import { ChessMove } from "../../common/data-types/chess.ts";
 import { CarryLoadType } from "../../common/data-types/server.ts";
 import { clampCircleInsideRect } from "../../common/shape-logic/clamp.ts";
@@ -179,7 +179,9 @@ function renderRole(state: SafeState) {
 
 function renderMiniChessboard(state: SafeState) {
 	const boardRect1 = Rect(Point(10, 40), Point(10+(8*20), 40+(8*20)));
-	renderBoard(boardRect1, state.teamBoard, []);
+	const perspective = teamPerspective(state.self.team);
+
+	renderBoard(boardRect1, state.teamBoard, [], perspective);
 
 	if (state.carrying.type == CarryLoadType.EMPTY) {
 		// Don't render the second board
@@ -199,12 +201,7 @@ function renderMiniChessboard(state: SafeState) {
 			board = state.carrying.load;
 		}
 
-		renderBoard(boardRect2, board, moves);
-	}
-
-	if (state.carrying.type == CarryLoadType.INTEL) {
-		const boardRect = Rect(Point(10, 40+10+(8*20)), Point(10+(8*20), 40+10+2*((8*20))));
-		renderBoard(boardRect, state.carrying.load, []);
+		renderBoard(boardRect2, board, moves, perspective);
 	}
 }
 
