@@ -40,7 +40,10 @@ function renderAll(state: SafeState) {
 	renderActionOption(state);
 
 	renderVictory(state);
-	renderStats(state);
+
+	if (state.stats.show) {
+		renderStats(state);
+	}
 }
 
 function setCamera(state: SafeState) {

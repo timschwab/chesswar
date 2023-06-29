@@ -2,6 +2,7 @@ import { Point } from "../../common/data-types/shapes.ts";
 import { createHook } from "../../common/hooks.ts";
 import { ClientMessageTypes, MoveMessagePayload } from "../../common/message-types/client.ts";
 import socket from "./socket.ts";
+import state from "./state.ts";
 
 enum ArrowCode {
 	ArrowLeft = "left",
@@ -70,6 +71,11 @@ function handleKey(event: KeyboardEvent, pressed: boolean): void {
 				type: ClientMessageTypes.ACTION,
 				payload: null
 			});
+		}
+	} else if (code == "Period") {
+		if (pressed) {
+			// Toggle stats
+			state.stats.show = !state.stats.show;
 		}
 	} else {
 		console.log("Unused key code", code);

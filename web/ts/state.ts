@@ -12,6 +12,7 @@ export interface GeneralState {
 }
 
 export interface Stats {
+	show: boolean,
 	server: ServerStats,
 	clientRenderMs: number,
 	prevPingDelayMs: number
@@ -69,6 +70,7 @@ const state: UnsafeState = {
 	},
 	victory: null,
 	stats: {
+		show: false,
 		server: {
 			tickMs: 0
 		},
