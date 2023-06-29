@@ -141,14 +141,18 @@ function moveDeathCounter(player: ServerPlayer) {
 }
 
 function actionOption(player: ServerPlayer): PlayerAction | null {
+	if (player.role == PlayerRole.GENERAL) {
+		return PlayerAction.BECOME_SOLDIER;
+	}
+
 	const pos = player.physics.position;
 	for (const bundle of map.facilities) {
 		if (bundle.team == player.team) {
-			if (player.role == PlayerRole.GENERAL) {
-				return PlayerAction.BECOME_SOLDIER;
-			} else if (inside(pos, bundle.command)) {
+			if (inside(pos, bundle.command)) {
 				if (player.carrying.type == CarryLoadType.ESPIONAGE) {
 					return PlayerAction.REPORT_ESPIONAGE;
+				} else if (player.carrying.type == CarryLoadType.INTEL) {
+					return PlayerAction.REPORT_INTEL;
 				} else {
 					return PlayerAction.BECOME_GENERAL;
 				}
@@ -156,12 +160,16 @@ function actionOption(player: ServerPlayer): PlayerAction | null {
 				return PlayerAction.BECOME_TANK;
 			} else if (inside(pos, bundle.intel)) {
 				if (player.role == PlayerRole.OPERATIVE) {
-					return PlayerAction.REPORT_INTEL;
+					if (player.carrying.type == CarryLoadType.ESPIONAGE) {
+						return PlayerAction.REPORT_ESPIONAGE;
+					} else if (player.carrying.type == CarryLoadType.INTEL) {
+						return PlayerAction.REPORT_INTEL;
+					}
 				} else {
 					return PlayerAction.BECOME_OPERATIVE;
 				}
 			} else if (inside(pos, map.battlefield)) {
-				if (player.role == PlayerRole.SOLDIER) {
+				if (player.role == PlayerRole.SOLDIER && player.carrying.type == CarryLoadType.ORDERS) {
 					return PlayerAction.COMPLETE_ORDERS;
 				} else if (player.role == PlayerRole.OPERATIVE) {
 					return PlayerAction.GATHER_INTEL;
