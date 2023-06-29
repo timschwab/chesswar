@@ -158,7 +158,7 @@ function actionOption(player: ServerPlayer): PlayerAction | null {
 				}
 			} else if (inside(pos, bundle.armory)) {
 				return PlayerAction.BECOME_TANK;
-			} else if (inside(pos, bundle.intel)) {
+			} else if (inside(pos, bundle.scif)) {
 				if (player.role == PlayerRole.OPERATIVE) {
 					if (player.carrying.type == CarryLoadType.ESPIONAGE) {
 						return PlayerAction.REPORT_ESPIONAGE;

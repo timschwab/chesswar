@@ -94,7 +94,7 @@ export const rensets = {
 			pickup: Color.YELLOW_STANDARD,
 			outpost: Color.GREY_WHITE,
 			armory: Color.PINK_STANDARD,
-			intel: Color.CYAN_STANDARD
+			scif: Color.CYAN_STANDARD
 		},
 		enemy: {
 			base: Color.GREY_EXTRA_DARK,
@@ -102,7 +102,7 @@ export const rensets = {
 			pickup: Color.YELLOW_DARK,
 			outpost: Color.GREY_EXTRA_DARK,
 			armory: Color.PINK_DARK,
-			intel: Color.CYAN_DARK
+			scif: Color.CYAN_DARK
 		}
 	},
 	death: {

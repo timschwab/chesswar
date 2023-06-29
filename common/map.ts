@@ -23,7 +23,7 @@ const alphaOutpost1 = Rect(Point(0, 0), Point(300, 300));
 const alphaArmory = Rect(Point(50, 50), Point(150, 150));
 
 const alphaOutpost2 = Rect(Point(0, height-300), Point(300, height));
-const alphaIntel = Rect(Point(50, height-150), Point(150, height-50));
+const alphaScif = Rect(Point(50, height-150), Point(150, height-50));
 
 const bravoStart1 = Point(width-200, 200);
 const bravoStart2 = Point(width-200, height-200);
@@ -40,7 +40,7 @@ const bravoOutpost1 = Rect(Point(width-300, 0), Point(width, 300));
 const bravoArmory = Rect(Point(width-150, 50), Point(width-50, 150));
 
 const bravoOutpost2 = Rect(Point(width-300, height-300), Point(width, height));
-const bravoIntel = Rect(Point(width-150, height-150), Point(width-50, height-50));
+const bravoScif = Rect(Point(width-150, height-150), Point(width-50, height-50));
 
 const deathRects = [
 	Rect(Point(middleX - 100, 100), Point(middleX + 100, 500)),
@@ -74,7 +74,7 @@ const map = {
 			briefings: [alphaBriefing1, alphaBriefing2, alphaBriefing3],
 			outposts: [alphaOutpost1, alphaOutpost2],
 			armory: alphaArmory,
-			intel: alphaIntel
+			scif: alphaScif
 		},
 		{
 			team: TeamName.BRAVO,
@@ -83,7 +83,7 @@ const map = {
 			briefings: [bravoBriefing1, bravoBriefing2, bravoBriefing3],
 			outposts: [bravoOutpost1, bravoOutpost2],
 			armory: bravoArmory,
-			intel: bravoIntel
+			scif: bravoScif
 		}
 	],
 	deathRects,

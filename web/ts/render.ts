@@ -100,7 +100,7 @@ function renderMap(state: SafeState) {
 			camera.fillRect(outpost, rensets.facilities.ally.outpost);
 		}
 		camera.fillRect(bundle.armory, rensets.facilities.ally.armory);
-		camera.fillRect(bundle.intel, rensets.facilities.ally.intel);
+		camera.fillRect(bundle.scif, rensets.facilities.ally.scif);
 	}
 
 	for (const bundle of enemyFacilityBundles) {
@@ -114,7 +114,7 @@ function renderMap(state: SafeState) {
 			camera.fillRect(outpost, rensets.facilities.enemy.outpost);
 		}
 		camera.fillRect(bundle.armory, rensets.facilities.enemy.armory);
-		camera.fillRect(bundle.intel, rensets.facilities.enemy.intel);
+		camera.fillRect(bundle.scif, rensets.facilities.enemy.scif);
 	}
 
 	// Draw death rects
