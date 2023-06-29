@@ -7,7 +7,11 @@ enum ArrowCode {
 	ArrowLeft = "left",
 	ArrowRight = "right",
 	ArrowUp = "up",
-	ArrowDown = "down"
+	ArrowDown = "down",
+	KeyW = "up",
+	KeyA = "left",
+	KeyS = "down",
+	KeyD = "right"
 }
 
 function isArrowCode(code: string): code is keyof typeof ArrowCode {
