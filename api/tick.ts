@@ -149,15 +149,13 @@ function actionOption(player: ServerPlayer): PlayerAction | null {
 	for (const bundle of map.facilities) {
 		if (bundle.team == player.team) {
 			if (inside(pos, bundle.command)) {
-				if (player.carrying.type == CarryLoadType.ESPIONAGE) {
-					return PlayerAction.REPORT_ESPIONAGE;
-				} else if (player.carrying.type == CarryLoadType.INTEL) {
-					return PlayerAction.REPORT_INTEL;
-				} else {
-					return PlayerAction.BECOME_GENERAL;
-				}
+				return PlayerAction.BECOME_GENERAL;
 			} else if (inside(pos, bundle.armory)) {
-				return PlayerAction.BECOME_TANK;
+				if (player.role == PlayerRole.TANK) {
+					// Do nothing
+				} else {
+					return PlayerAction.BECOME_TANK;
+				}
 			} else if (inside(pos, bundle.scif)) {
 				if (player.role == PlayerRole.OPERATIVE) {
 					if (player.carrying.type == CarryLoadType.ESPIONAGE) {
