@@ -79,8 +79,8 @@ export const rensets = {
 	players: {
 		self: Color.GREEN_BRIGHT,
 		teamColor: {
-			[TeamName.ALPHA]: Color.BLUE_LIGHT,
-			[TeamName.BRAVO]: Color.RED_STANDARD
+			[TeamName.BLUE]: Color.BLUE_LIGHT,
+			[TeamName.RED]: Color.RED_STANDARD
 		},
 		deathCounter: {
 			font: "12px Times New Roman",
@@ -122,8 +122,8 @@ export const rensets = {
 		boardLight: Color.GREY_LIGHT,
 		boardDark: Color.GREY_DARK,
 		teamColor: {
-			[TeamName.ALPHA]: Color.BLUE_LIGHT,
-			[TeamName.BRAVO]: Color.RED_STANDARD
+			[TeamName.BLUE]: Color.BLUE_LIGHT,
+			[TeamName.RED]: Color.RED_STANDARD
 		},
 		button: Color.YELLOW_STANDARD
 	},
@@ -138,8 +138,8 @@ export const rensets = {
 		outlineWidth: 2,
 		outlineColor: Color.GREY_BLACK,
 		teamColor: {
-			[TeamName.ALPHA]: Color.BLUE_LIGHT,
-			[TeamName.BRAVO]: Color.RED_STANDARD
+			[TeamName.BLUE]: Color.BLUE_LIGHT,
+			[TeamName.RED]: Color.RED_STANDARD
 		},
 		textFont: "18px Times New Roman",
 		textColor: Color.GREY_WHITE

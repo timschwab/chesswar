@@ -201,55 +201,55 @@ export function tickTankKills(): void {
 	// neighboring ones.
 
 	// List of values
-	const alphaTanks: ServerPlayer[] = [];
-	const alphaOthers: ServerPlayer[] = [];
-	const bravoTanks: ServerPlayer[] = [];
-	const bravoOthers: ServerPlayer[] = [];
+	const blueTanks: ServerPlayer[] = [];
+	const blueOthers: ServerPlayer[] = [];
+	const redTanks: ServerPlayer[] = [];
+	const redOthers: ServerPlayer[] = [];
 
 	for (const player of state.allPlayers.values()) {
-		if (player.team == TeamName.ALPHA) {
+		if (player.team == TeamName.BLUE) {
 			if (player.role == PlayerRole.TANK) {
-				alphaTanks.push(player);
+				blueTanks.push(player);
 			} else {
-				alphaOthers.push(player);
+				blueOthers.push(player);
 			}
-		} else if (player.team == TeamName.BRAVO) {
+		} else if (player.team == TeamName.RED) {
 			if (player.role == PlayerRole.TANK) {
-				bravoTanks.push(player);
+				redTanks.push(player);
 			} else {
-				bravoOthers.push(player);
+				redOthers.push(player);
 			}
 		}
 	}
 
 	// Tanks killing tanks first - compare every pair
-	for (const alphaTank of alphaTanks) {
-		for (const bravoTank of bravoTanks) {
-			if (touches(alphaTank.physics.position, bravoTank.physics.position)) {
-				spawnPlayer(alphaTank);
-				spawnPlayer(bravoTank);
+	for (const blueTank of blueTanks) {
+		for (const redTank of redTanks) {
+			if (touches(blueTank.physics.position, redTank.physics.position)) {
+				spawnPlayer(blueTank);
+				spawnPlayer(redTank);
 			}
 		}
 	}
 
 	// Tanks killing soldiers and spies second
-	for (const alphaTank of alphaTanks) {
+	for (const blueTank of blueTanks) {
 		// Make sure it wasn't killed up above
-		if (alphaTank.role == PlayerRole.TANK) {
-			for (const bravoOther of bravoOthers) {
-				if (touches(alphaTank.physics.position, bravoOther.physics.position)) {
-					spawnPlayer(bravoOther);
+		if (blueTank.role == PlayerRole.TANK) {
+			for (const redOther of redOthers) {
+				if (touches(blueTank.physics.position, redOther.physics.position)) {
+					spawnPlayer(redOther);
 				}
 			}
 		}
 	}
 
-	for (const bravoTank of bravoTanks) {
+	for (const redTank of redTanks) {
 		// Make sure it wasn't killed up above
-		if (bravoTank.role == PlayerRole.TANK) {
-			for (const alphaOther of alphaOthers) {
-				if (touches(bravoTank.physics.position, alphaOther.physics.position)) {
-					spawnPlayer(alphaOther);
+		if (redTank.role == PlayerRole.TANK) {
+			for (const blueOther of blueOthers) {
+				if (touches(redTank.physics.position, blueOther.physics.position)) {
+					spawnPlayer(blueOther);
 				}
 			}
 		}
@@ -258,16 +258,16 @@ export function tickTankKills(): void {
 
 export function tickVictory(): void {
 	const kings = {
-		[TeamName.ALPHA]: kingExists(TeamName.ALPHA),
-		[TeamName.BRAVO]: kingExists(TeamName.BRAVO)
+		[TeamName.BLUE]: kingExists(TeamName.BLUE),
+		[TeamName.RED]: kingExists(TeamName.RED)
 	};
 
-	if (kings[TeamName.ALPHA] && kings[TeamName.BRAVO]) {
+	if (kings[TeamName.BLUE] && kings[TeamName.RED]) {
 		state.victory = null;
-	} else if (kings[TeamName.ALPHA] && !kings[TeamName.BRAVO]) {
-		state.victory = TeamName.ALPHA;
-	} else if (!kings[TeamName.ALPHA] && kings[TeamName.BRAVO]) {
-		state.victory = TeamName.BRAVO;
+	} else if (kings[TeamName.BLUE] && !kings[TeamName.RED]) {
+		state.victory = TeamName.BLUE;
+	} else if (!kings[TeamName.BLUE] && kings[TeamName.RED]) {
+		state.victory = TeamName.RED;
 	} else {
 		state.victory = "tie";
 	}

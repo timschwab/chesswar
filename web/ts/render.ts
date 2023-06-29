@@ -220,10 +220,10 @@ function renderVictory(state: SafeState) {
 		// Do nothing
 	} else if (state.victory == "tie") {
 		canvas.text(state.screen, "center", "It's a tie!", rensets.victory.font, rensets.victory.color);
-	} else if (state.victory == TeamName.ALPHA) {
-		canvas.text(state.screen, "center", "Team Alpha wins!", rensets.victory.font, rensets.victory.color);
-	} else if (state.victory == TeamName.BRAVO) {
-		canvas.text(state.screen, "center", "Team Bravo wins!", rensets.victory.font, rensets.victory.color);
+	} else if (state.victory == TeamName.BLUE) {
+		canvas.text(state.screen, "center", "Blue team wins!", rensets.victory.font, rensets.victory.color);
+	} else if (state.victory == TeamName.RED) {
+		canvas.text(state.screen, "center", "Red team wins!", rensets.victory.font, rensets.victory.color);
 	}
 }
 

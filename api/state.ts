@@ -34,8 +34,8 @@ interface ServerState {
 	victory: Victory,
 	realBoard: ChessBoard,
 	allPlayers: PlayerMap,
-	[TeamName.ALPHA]: Team,
-	[TeamName.BRAVO]: Team,
+	[TeamName.BLUE]: Team,
+	[TeamName.RED]: Team,
 	stats: ServerStats
 }
 
@@ -44,7 +44,7 @@ const state: ServerState = {
 	victory: null,
 	realBoard: newBoard(),
 	allPlayers: new Map<ChesswarId, ServerPlayer>(),
-	[TeamName.ALPHA]: {
+	[TeamName.BLUE]: {
 		playerMap: new Map<ChesswarId, ServerPlayer>(),
 		teamBoard: newBoard(),
 		briefings: {
@@ -58,7 +58,7 @@ const state: ServerState = {
 			[BriefingName.THREE]: null
 		}
 	},
-	[TeamName.BRAVO]: {
+	[TeamName.RED]: {
 		playerMap: new Map<ChesswarId, ServerPlayer>(),
 		teamBoard: newBoard(),
 		briefings: {
@@ -79,25 +79,25 @@ const state: ServerState = {
 
 function newBoard(): ChessBoard {
 	const row1: ChessRow = [
-		{team: TeamName.ALPHA, piece: ChessPiece.ROOK},
-		{team: TeamName.ALPHA, piece: ChessPiece.KNIGHT},
-		{team: TeamName.ALPHA, piece: ChessPiece.BISHOP},
-		{team: TeamName.ALPHA, piece: ChessPiece.QUEEN},
-		{team: TeamName.ALPHA, piece: ChessPiece.KING},
-		{team: TeamName.ALPHA, piece: ChessPiece.BISHOP},
-		{team: TeamName.ALPHA, piece: ChessPiece.KNIGHT},
-		{team: TeamName.ALPHA, piece: ChessPiece.ROOK}
+		{team: TeamName.BLUE, piece: ChessPiece.ROOK},
+		{team: TeamName.BLUE, piece: ChessPiece.KNIGHT},
+		{team: TeamName.BLUE, piece: ChessPiece.BISHOP},
+		{team: TeamName.BLUE, piece: ChessPiece.QUEEN},
+		{team: TeamName.BLUE, piece: ChessPiece.KING},
+		{team: TeamName.BLUE, piece: ChessPiece.BISHOP},
+		{team: TeamName.BLUE, piece: ChessPiece.KNIGHT},
+		{team: TeamName.BLUE, piece: ChessPiece.ROOK}
 	];
 
 	const row2: ChessRow = [
-		{team: TeamName.ALPHA, piece: ChessPiece.PAWN},
-		{team: TeamName.ALPHA, piece: ChessPiece.PAWN},
-		{team: TeamName.ALPHA, piece: ChessPiece.PAWN},
-		{team: TeamName.ALPHA, piece: ChessPiece.PAWN},
-		{team: TeamName.ALPHA, piece: ChessPiece.PAWN},
-		{team: TeamName.ALPHA, piece: ChessPiece.PAWN},
-		{team: TeamName.ALPHA, piece: ChessPiece.PAWN},
-		{team: TeamName.ALPHA, piece: ChessPiece.PAWN}
+		{team: TeamName.BLUE, piece: ChessPiece.PAWN},
+		{team: TeamName.BLUE, piece: ChessPiece.PAWN},
+		{team: TeamName.BLUE, piece: ChessPiece.PAWN},
+		{team: TeamName.BLUE, piece: ChessPiece.PAWN},
+		{team: TeamName.BLUE, piece: ChessPiece.PAWN},
+		{team: TeamName.BLUE, piece: ChessPiece.PAWN},
+		{team: TeamName.BLUE, piece: ChessPiece.PAWN},
+		{team: TeamName.BLUE, piece: ChessPiece.PAWN}
 	];
 
 	const row3: ChessRow = [null, null, null, null, null, null, null, null];
@@ -106,25 +106,25 @@ function newBoard(): ChessBoard {
 	const row6: ChessRow = [null, null, null, null, null, null, null, null];
 
 	const row7: ChessRow = [
-		{team: TeamName.BRAVO, piece: ChessPiece.PAWN},
-		{team: TeamName.BRAVO, piece: ChessPiece.PAWN},
-		{team: TeamName.BRAVO, piece: ChessPiece.PAWN},
-		{team: TeamName.BRAVO, piece: ChessPiece.PAWN},
-		{team: TeamName.BRAVO, piece: ChessPiece.PAWN},
-		{team: TeamName.BRAVO, piece: ChessPiece.PAWN},
-		{team: TeamName.BRAVO, piece: ChessPiece.PAWN},
-		{team: TeamName.BRAVO, piece: ChessPiece.PAWN}
+		{team: TeamName.RED, piece: ChessPiece.PAWN},
+		{team: TeamName.RED, piece: ChessPiece.PAWN},
+		{team: TeamName.RED, piece: ChessPiece.PAWN},
+		{team: TeamName.RED, piece: ChessPiece.PAWN},
+		{team: TeamName.RED, piece: ChessPiece.PAWN},
+		{team: TeamName.RED, piece: ChessPiece.PAWN},
+		{team: TeamName.RED, piece: ChessPiece.PAWN},
+		{team: TeamName.RED, piece: ChessPiece.PAWN}
 	];
 
 	const row8: ChessRow = [
-		{team: TeamName.BRAVO, piece: ChessPiece.ROOK},
-		{team: TeamName.BRAVO, piece: ChessPiece.KNIGHT},
-		{team: TeamName.BRAVO, piece: ChessPiece.BISHOP},
-		{team: TeamName.BRAVO, piece: ChessPiece.QUEEN},
-		{team: TeamName.BRAVO, piece: ChessPiece.KING},
-		{team: TeamName.BRAVO, piece: ChessPiece.BISHOP},
-		{team: TeamName.BRAVO, piece: ChessPiece.KNIGHT},
-		{team: TeamName.BRAVO, piece: ChessPiece.ROOK}
+		{team: TeamName.RED, piece: ChessPiece.ROOK},
+		{team: TeamName.RED, piece: ChessPiece.KNIGHT},
+		{team: TeamName.RED, piece: ChessPiece.BISHOP},
+		{team: TeamName.RED, piece: ChessPiece.QUEEN},
+		{team: TeamName.RED, piece: ChessPiece.KING},
+		{team: TeamName.RED, piece: ChessPiece.BISHOP},
+		{team: TeamName.RED, piece: ChessPiece.KNIGHT},
+		{team: TeamName.RED, piece: ChessPiece.ROOK}
 	];
 
 	return [row1, row2, row3, row4, row5, row6, row7, row8];

@@ -8,39 +8,39 @@ const middleX = width/2;
 const middleY = height/2;
 const middle = Point(middleX, middleY);
 
-const alphaStart1 = Point(200, 200);
-const alphaStart2 = Point(200, height-200);
-const alphaStart3 = Point(200, middleY);
+const blueStart1 = Point(200, 200);
+const blueStart2 = Point(200, height-200);
+const blueStart3 = Point(200, middleY);
 
-const alphaBase = Rect(Point(0, middleY-300), Point(400, middleY+300));
-const alphaCommand = Rect(Point(0, middleY-100), Point(100, middleY+100));
+const blueBase = Rect(Point(0, middleY-300), Point(400, middleY+300));
+const blueCommand = Rect(Point(0, middleY-100), Point(100, middleY+100));
 
-const alphaBriefing1 = Rect(Point(150, middleY-250), Point(250, middleY-150));
-const alphaBriefing2 = Rect(Point(250, middleY-50), Point(350, middleY+50));
-const alphaBriefing3 = Rect(Point(150, middleY+150), Point(250, middleY+250));
+const blueBriefing1 = Rect(Point(150, middleY-250), Point(250, middleY-150));
+const blueBriefing2 = Rect(Point(250, middleY-50), Point(350, middleY+50));
+const blueBriefing3 = Rect(Point(150, middleY+150), Point(250, middleY+250));
 
-const alphaOutpost1 = Rect(Point(0, 0), Point(300, 300));
-const alphaArmory = Rect(Point(50, 50), Point(150, 150));
+const blueOutpost1 = Rect(Point(0, 0), Point(300, 300));
+const blueArmory = Rect(Point(50, 50), Point(150, 150));
 
-const alphaOutpost2 = Rect(Point(0, height-300), Point(300, height));
-const alphaScif = Rect(Point(50, height-150), Point(150, height-50));
+const blueOutpost2 = Rect(Point(0, height-300), Point(300, height));
+const blueScif = Rect(Point(50, height-150), Point(150, height-50));
 
-const bravoStart1 = Point(width-200, 200);
-const bravoStart2 = Point(width-200, height-200);
-const bravoStart3 = Point(width-200, middleY);
+const redStart1 = Point(width-200, 200);
+const redStart2 = Point(width-200, height-200);
+const redStart3 = Point(width-200, middleY);
 
-const bravoBase = Rect(Point(width-400, middleY-300), Point(width, middleY+300));
-const bravoCommand = Rect(Point(width-100, middleY-100), Point(width, middleY+100));
+const redBase = Rect(Point(width-400, middleY-300), Point(width, middleY+300));
+const redCommand = Rect(Point(width-100, middleY-100), Point(width, middleY+100));
 
-const bravoBriefing1 = Rect(Point(width-250, middleY-250), Point(width-150, middleY-150));
-const bravoBriefing2 = Rect(Point(width-350, middleY-50), Point(width-250, middleY+50));
-const bravoBriefing3 = Rect(Point(width-250, middleY+150), Point(width-150, middleY+250));
+const redBriefing1 = Rect(Point(width-250, middleY-250), Point(width-150, middleY-150));
+const redBriefing2 = Rect(Point(width-350, middleY-50), Point(width-250, middleY+50));
+const redBriefing3 = Rect(Point(width-250, middleY+150), Point(width-150, middleY+250));
 
-const bravoOutpost1 = Rect(Point(width-300, 0), Point(width, 300));
-const bravoArmory = Rect(Point(width-150, 50), Point(width-50, 150));
+const redOutpost1 = Rect(Point(width-300, 0), Point(width, 300));
+const redArmory = Rect(Point(width-150, 50), Point(width-50, 150));
 
-const bravoOutpost2 = Rect(Point(width-300, height-300), Point(width, height));
-const bravoScif = Rect(Point(width-150, height-150), Point(width-50, height-50));
+const redOutpost2 = Rect(Point(width-300, height-300), Point(width, height));
+const redScif = Rect(Point(width-150, height-150), Point(width-50, height-50));
 
 const deathRects = [
 	Rect(Point(middleX - 100, 100), Point(middleX + 100, 500)),
@@ -63,27 +63,27 @@ const map = {
 	width,
 	height,
 	starts: {
-		[TeamName.ALPHA]: [alphaStart1, alphaStart2, alphaStart3],
-		[TeamName.BRAVO]: [bravoStart1, bravoStart2, bravoStart3]
+		[TeamName.BLUE]: [blueStart1, blueStart2, blueStart3],
+		[TeamName.RED]: [redStart1, redStart2, redStart3]
 	},
 	facilities: [
 		{
-			team: TeamName.ALPHA,
-			command: alphaCommand,
-			base: alphaBase,
-			briefings: [alphaBriefing1, alphaBriefing2, alphaBriefing3],
-			outposts: [alphaOutpost1, alphaOutpost2],
-			armory: alphaArmory,
-			scif: alphaScif
+			team: TeamName.BLUE,
+			command: blueCommand,
+			base: blueBase,
+			briefings: [blueBriefing1, blueBriefing2, blueBriefing3],
+			outposts: [blueOutpost1, blueOutpost2],
+			armory: blueArmory,
+			scif: blueScif
 		},
 		{
-			team: TeamName.BRAVO,
-			command: bravoCommand,
-			base: bravoBase,
-			briefings: [bravoBriefing1, bravoBriefing2, bravoBriefing3],
-			outposts: [bravoOutpost1, bravoOutpost2],
-			armory: bravoArmory,
-			scif: bravoScif
+			team: TeamName.RED,
+			command: redCommand,
+			base: redBase,
+			briefings: [redBriefing1, redBriefing2, redBriefing3],
+			outposts: [redOutpost1, redOutpost2],
+			armory: redArmory,
+			scif: redScif
 		}
 	],
 	deathRects,

@@ -51,10 +51,10 @@ export function addPlayer(id: string): void {
 
 // Add them to the team with fewer players
 function newPlayerTeam(): TeamName {
-	if (state[TeamName.ALPHA].playerMap.size > state[TeamName.BRAVO].playerMap.size) {
-		return TeamName.BRAVO;
+	if (state[TeamName.BLUE].playerMap.size > state[TeamName.RED].playerMap.size) {
+		return TeamName.RED;
 	} else {
-		return TeamName.ALPHA;
+		return TeamName.BLUE;
 	}
 }
 
@@ -144,7 +144,7 @@ function playerAction(player: ServerPlayer): void {
 			setCarrying(player, null);
 		}
 	} else if (player.actionOption == PlayerAction.CONDUCT_ESPIONAGE) {
-		const oppositeTeam = player.team == TeamName.ALPHA ? TeamName.BRAVO : TeamName.ALPHA;
+		const oppositeTeam = player.team == TeamName.BLUE ? TeamName.RED : TeamName.BLUE;
 		const load = {
 			type: CarryLoadType.ESPIONAGE,
 			load: structuredClone(state[oppositeTeam].briefings)

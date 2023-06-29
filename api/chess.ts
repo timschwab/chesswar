@@ -55,11 +55,11 @@ function validPawnMove(board: ChessBoard, move: ChessMove): boolean {
 	const colChange = move.to.col - move.from.col;
 
 	const teamValues = {
-		[TeamName.ALPHA]: {
+		[TeamName.BLUE]: {
 			startRow: 1,
 			direction: 1
 		},
-		[TeamName.BRAVO]: {
+		[TeamName.RED]: {
 			startRow: 6,
 			direction: -1
 		}

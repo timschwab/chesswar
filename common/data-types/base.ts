@@ -7,8 +7,8 @@ export enum BriefingName {
 }
 
 export enum TeamName {
-	ALPHA = "alpha",
-	BRAVO = "bravo"
+	BLUE = "blue",
+	RED = "red"
 }
 
 export enum PlayerRole {
