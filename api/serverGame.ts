@@ -78,7 +78,8 @@ function serverPlayerToClientPlayer(player: ServerPlayer): ClientPlayer {
 		team: player.team,
 		role: player.role,
 		actionOption: player.actionOption,
-		position: player.physics.position
+		position: player.physics.position,
+		deathCounter: player.deathCounter
 	};
 }
 

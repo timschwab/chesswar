@@ -6,5 +6,6 @@ export interface ClientPlayer {
 	team: TeamName,
 	role: PlayerRole,
 	actionOption: PlayerAction | null,
-	position: Circle
+	position: Circle,
+	deathCounter: number
 }
