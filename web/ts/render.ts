@@ -10,6 +10,7 @@ import canvas from "./canvas.ts";
 import { renderBoard } from "./chessboard.ts";
 import { ChessMove } from "../../common/data-types/chess.ts";
 import { CarryLoadType } from "../../common/data-types/server.ts";
+import { clampCircleInsideRect } from "../../common/shape-logic/clamp.ts";
 
 function render(state: SafeState) {
 	const startRender = performance.now();
@@ -147,7 +148,12 @@ function renderPlayers(state: SafeState) {
 			color = rensets.players.teamColor[player.team];
 		}
 
-		camera.fillCircle(player.position, color);
+		let pos = player.position;
+		if (state.self.role == PlayerRole.TANK && player.team != state.self.team) {
+			pos = clampCircleInsideRect(camera.getCamera(), pos);
+		}
+
+		camera.fillCircle(pos, color);
 
 		if (player.deathCounter > 0) {
 			const textRectTopLeft = Point(player.position.center.x - player.position.radius, player.position.center.y - player.position.radius);
