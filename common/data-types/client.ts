@@ -1,5 +1,5 @@
 import { Circle } from "../shapes/types.ts";
-import { ChesswarId, PlayerAction, PlayerRole, TeamName, newGameVote } from "./base.ts";
+import { ChesswarId, PlayerAction, PlayerRole, TeamName } from "./base.ts";
 
 export interface ClientPlayer {
 	id: ChesswarId,
@@ -7,6 +7,5 @@ export interface ClientPlayer {
 	role: PlayerRole,
 	actionOption: PlayerAction | null,
 	position: Circle,
-	deathCounter: number,
-	vote: newGameVote
+	deathCounter: number
 }

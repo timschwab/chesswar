@@ -30,8 +30,6 @@ export enum PlayerAction {
 
 export type Victory = null | TeamName | "tie";
 
-export type newGameVote = boolean | null;
-
 export type MovementState = {
 	left: boolean,
 	right: boolean,

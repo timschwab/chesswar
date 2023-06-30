@@ -1,4 +1,4 @@
-import { ChesswarId, MovementState, PlayerAction, PlayerRole, TeamName, Victory, newGameVote } from "../common/data-types/base.ts";
+import { ChesswarId, MovementState, PlayerAction, PlayerRole, TeamName, Victory } from "../common/data-types/base.ts";
 import { CarryLoad } from "../common/data-types/carryLoad.ts";
 import { ChessBoard, ChessPiece, ChessRow } from "../common/data-types/chess.ts";
 import { BriefingBundle, BriefingName } from "../common/data-types/facility.ts";
@@ -19,8 +19,7 @@ export interface ServerPlayer {
 	carrying: CarryLoad,
 	movement: MovementState,
 	physics: ServerPlayerPhysics,
-	deathCounter: number,
-	vote: newGameVote
+	deathCounter: number
 }
 
 type PlayerMap = Map<ChesswarId, ServerPlayer>;

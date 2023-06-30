@@ -79,8 +79,7 @@ function serverPlayerToClientPlayer(player: ServerPlayer): ClientPlayer {
 		role: player.role,
 		actionOption: player.actionOption,
 		position: player.physics.position,
-		deathCounter: player.deathCounter,
-		vote: player.vote
+		deathCounter: player.deathCounter
 	};
 }
 
