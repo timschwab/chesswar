@@ -4,6 +4,12 @@ import { Circle, Point, Rect, Vector } from "../../common/shapes/types.ts";
 import { TAU_EIGHTH, multiply, pointToVector, vectorToPoint } from "../../common/shapes/vector.ts";
 import dom from "./dom.ts";
 
+export enum TextAlign {
+	LEFT = "left",
+	CENTER = "center",
+	RIGHT = "right"
+}
+
 const context = getContext();
 
 if (!context) {
@@ -61,7 +67,7 @@ function fillCircle(circle: Circle, color: Color) {
 	context.fill();
 }
 
-function text(position: Rect, align: "left" | "center" | "right", message: string, font: string, color: Color) {
+function text(position: Rect, align: TextAlign, message: string, font: string, color: Color) {
 	const alignX = {
 		left: position.topLeft.x,
 		center: position.center.x,

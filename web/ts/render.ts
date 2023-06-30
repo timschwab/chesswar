@@ -4,7 +4,7 @@ import { SafeState } from "./state.ts";
 import { rensets } from "../../common/settings.ts";
 import { Color } from "../../common/colors.ts";
 import { renderGeneralWindow } from "./generalWindow.ts";
-import canvas from "./canvas.ts";
+import canvas, { TextAlign } from "./canvas.ts";
 import { renderBoard, teamPerspective } from "./chessboard.ts";
 import { ChessMove } from "../../common/data-types/chess.ts";
 import { PlayerRole, TeamName } from "../../common/data-types/base.ts";
@@ -165,11 +165,11 @@ function renderPlayers(state: SafeState) {
 			const textRectTopLeft = Point(pos.center.x - pos.radius, pos.center.y - pos.radius);
 			const textRectBottomRight = Point(pos.center.x + pos.radius, pos.center.y + pos.radius);
 			const textRect = Rect(textRectTopLeft, textRectBottomRight);
-			camera.text(textRect, "center", String(player.deathCounter), rensets.players.deathCounter.font, rensets.players.deathCounter.color);
+			camera.text(textRect, TextAlign.CENTER, String(player.deathCounter), rensets.players.deathCounter.font, rensets.players.deathCounter.color);
 		}
 
 		const nameRect = Rect(Point(pos.center.x, pos.center.y+pos.radius+10), Point(pos.center.x, pos.center.y+pos.radius+10));
-		camera.text(nameRect, "center", player.id.slice(0, 4), rensets.players.name.font, rensets.players.name.color);
+		camera.text(nameRect, TextAlign.CENTER, player.id.slice(0, 4), rensets.players.name.font, rensets.players.name.color);
 	}
 }
 
@@ -177,7 +177,7 @@ function renderRole(state: SafeState) {
 	const textRect = Rect(Point(10, 10), Point(200, 30));
 	canvas.fillRect(textRect, rensets.currentRole.teamColor[state.self.team]);
 	canvas.outlineRect(textRect, rensets.currentRole.outlineColor, rensets.currentRole.outlineWidth);
-	canvas.text(textRect, "center", "You are a: " + state.self.role, rensets.currentRole.textFont, rensets.currentRole.textColor)
+	canvas.text(textRect, TextAlign.CENTER, "You are a: " + state.self.role, rensets.currentRole.textFont, rensets.currentRole.textColor)
 }
 
 function renderMiniChessboard(state: SafeState) {
@@ -218,7 +218,7 @@ function renderActionOption(state: SafeState) {
 
 	canvas.fillRect(actionRect, rensets.actionOption.backgroundColor);
 	canvas.outlineRect(actionRect, rensets.actionOption.outlineColor, rensets.actionOption.outlineWidth);
-	canvas.text(actionRect, "center", "Available action: " + (actionOption || ""), rensets.actionOption.textFont, rensets.actionOption.textColor);
+	canvas.text(actionRect, TextAlign.CENTER, "Available action: " + (actionOption || ""), rensets.actionOption.textFont, rensets.actionOption.textColor);
 }
 
 function renderVictory(state: SafeState) {
@@ -227,11 +227,11 @@ function renderVictory(state: SafeState) {
 	}
 	
 	if (state.victory == "tie") {
-		canvas.text(state.screen, "center", "It's a tie!", rensets.victory.font, rensets.victory.color);
+		canvas.text(state.screen, TextAlign.CENTER, "It's a tie!", rensets.victory.font, rensets.victory.color);
 	} else if (state.victory == TeamName.BLUE) {
-		canvas.text(state.screen, "center", "Blue team wins!", rensets.victory.font, rensets.victory.color);
+		canvas.text(state.screen, TextAlign.CENTER, "Blue team wins!", rensets.victory.font, rensets.victory.color);
 	} else if (state.victory == TeamName.RED) {
-		canvas.text(state.screen, "center", "Red team wins!", rensets.victory.font, rensets.victory.color);
+		canvas.text(state.screen, TextAlign.CENTER, "Red team wins!", rensets.victory.font, rensets.victory.color);
 	}
 
 	// New game
@@ -256,7 +256,7 @@ function renderStats(state: SafeState) {
 
 	let rect = Rect(Point(10, state.screen.height-(20*stats.length)), Point(100, state.screen.height-(20*stats.length)-20));
 	for (const stat of stats) {
-		canvas.text(rect, "left", stat, rensets.stats.font, rensets.stats.color);
+		canvas.text(rect, TextAlign.LEFT, stat, rensets.stats.font, rensets.stats.color);
 		rect = Rect(Point(rect.topLeft.x, rect.topLeft.y+20), Point(rect.bottomRight.x, rect.bottomRight.y+20));
 	}
 }

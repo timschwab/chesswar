@@ -1,7 +1,7 @@
 import { Color } from "../../common/colors.ts";
 import { transposeCircle, transposePoint, transposeRect } from "../../common/shapes/transpose.ts";
 import { Circle, Point, Rect } from "../../common/shapes/types.ts";
-import canvas from "./canvas.ts";
+import canvas, { TextAlign } from "./canvas.ts";
 
 let camRect: Rect;
 
@@ -41,7 +41,7 @@ function fillCircle(circle: Circle, color: Color) {
 	canvas.fillCircle(adjustedCircle, color);
 }
 
-function text(position: Rect, align: "left" | "center" | "right", message: string, font: string, color: Color) {
+function text(position: Rect, align: TextAlign, message: string, font: string, color: Color) {
 	const adjustedPosition = transposeRect(position, camRect.topLeft);
 	canvas.text(adjustedPosition, align, message, font, color);
 }
