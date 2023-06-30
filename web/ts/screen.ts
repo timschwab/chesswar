@@ -1,5 +1,4 @@
-import { Rect } from "../../common/data-types/shapes.ts";
-import { Point } from "../../common/data-types/shapes.ts";
+import { Point, Rect } from "../../common/shapes/types.ts";
 import dom from "./dom.ts";
 import state from "./state.ts";
 

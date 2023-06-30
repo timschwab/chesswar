@@ -1,4 +1,4 @@
-import { Circle, Point, Rect } from "../data-types/shapes.ts";
+import { Circle, Point, Rect } from "./types.ts";
 
 export function transposePoint(original: Point, move: Point): Point {
 	return Point(original.x-move.x, original.y-move.y);

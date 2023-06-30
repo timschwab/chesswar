@@ -1,15 +1,16 @@
-import { Circle, Point, Vector } from "../common/data-types/shapes.ts";
-import { BriefingName, ChesswarId, PlayerAction, PlayerRole, TeamName } from "../common/data-types/base.ts";
+import { ChesswarId, PlayerAction, PlayerRole, TeamName } from "../common/data-types/base.ts";
+import { CarryLoad, CarryLoadType } from "../common/data-types/carryLoad.ts";
+import { BriefingName } from "../common/data-types/facility.ts";
 import map from "../common/map.ts";
 import { ClientMessageTypes, ClientMessageWithId, GeneralOrdersMessagePayload, MoveMessagePayload } from "../common/message-types/client.ts";
 import { ServerMessageTypes } from "../common/message-types/server.ts";
 import { gameEngine } from "../common/settings.ts";
-import { inside } from "../common/shape-logic/inside.ts";
+import { inside } from "../common/shapes/inside.ts";
+import { Circle, Point, Vector } from "../common/shapes/types.ts";
 import { makeMove } from "./chess.ts";
 import socket from "./socket.ts";
 import { setCarrying, spawnPlayer } from "./spawn.ts";
 import state, { ServerPlayer } from "./state.ts";
-import { CarryLoad, CarryLoadType } from "../common/data-types/server.ts";
 
 export function addPlayer(id: string): void {
 	const team = newPlayerTeam();
@@ -33,7 +34,8 @@ export function addPlayer(id: string): void {
 			mass: 0,
 			position: Circle(Point(0, 0), 0)
 		},
-		deathCounter: 0
+		deathCounter: 0,
+		vote: null
 	}
 
 	spawnPlayer(newPlayer);

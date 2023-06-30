@@ -1,6 +1,6 @@
-import { Point } from "../../common/data-types/shapes.ts";
 import { createHook } from "../../common/hooks.ts";
 import { ClientMessageTypes, MoveMessagePayload } from "../../common/message-types/client.ts";
+import { Point } from "../../common/shapes/types.ts";
 import socket from "./socket.ts";
 import state from "./state.ts";
 

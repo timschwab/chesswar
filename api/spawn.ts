@@ -1,10 +1,10 @@
 import { TeamName } from "../common/data-types/base.ts";
-import { CarryLoad, CarryLoadType } from "../common/data-types/server.ts";
-import { Circle, Point, Vector } from "../common/data-types/shapes.ts";
+import { CarryLoad, CarryLoadType } from "../common/data-types/carryLoad.ts";
 import map from "../common/map.ts";
 import { ServerMessageTypes } from "../common/message-types/server.ts";
 import { gameEngine } from "../common/settings.ts";
-import { transposePoint } from "../common/shape-logic/transpose.ts";
+import { transposePoint } from "../common/shapes/transpose.ts";
+import { Circle, Point, Vector } from "../common/shapes/types.ts";
 import socket from "./socket.ts";
 import { ServerPlayer } from "./state.ts";
 

@@ -1,4 +1,4 @@
-import { Point, Vector } from "../data-types/shapes.ts";
+import { Point, Vector } from "./types.ts";
 import { transposePoint } from "./transpose.ts";
 
 export const TAU = Math.PI*2;

@@ -1,7 +1,9 @@
 import { ChesswarId, Victory } from "../data-types/base.ts";
+import { CarryLoad } from "../data-types/carryLoad.ts";
 import { ChessBoard } from "../data-types/chess.ts";
 import { ClientPlayer } from "../data-types/client.ts";
-import { BriefingBundle, CarryLoad, ServerStats } from "../data-types/server.ts";
+import { BriefingBundle } from "../data-types/facility.ts";
+import { ServerStats } from "../data-types/server.ts";
 import { AbstractMessage } from "./base.ts";
 
 export enum ServerMessageTypes {

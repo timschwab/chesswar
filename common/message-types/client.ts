@@ -1,6 +1,6 @@
-import { BriefingName, ChesswarId } from "../data-types/base.ts";
+import { ChesswarId, MovementState } from "../data-types/base.ts";
 import { ChessMove } from "../data-types/chess.ts";
-import { MovementState } from "../data-types/server.ts";
+import { BriefingName } from "../data-types/facility.ts";
 import { AbstractMessage } from "./base.ts";
 
 export enum ClientMessageTypes {

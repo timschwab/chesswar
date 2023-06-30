@@ -1,4 +1,4 @@
-import { Circle, Point, Rect } from "../data-types/shapes.ts";
+import { Circle, Point, Rect } from "./types.ts";
 
 export function clamp(min: number, max: number, val: number) {
 	if (min > max) {

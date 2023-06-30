@@ -1,5 +1,5 @@
-import { Circle, Point, Rect } from "./data-types/shapes.ts";
 import { TeamName } from "./data-types/base.ts";
+import { Circle, Point, Rect } from "./shapes/types.ts";
 
 const width = 6000;
 const height = 3000;

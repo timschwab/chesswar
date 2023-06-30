@@ -1,7 +1,9 @@
-import { Circle, Vector } from "../common/data-types/shapes.ts";
-import { BriefingName, ChesswarId, PlayerAction, PlayerRole, TeamName, Victory } from "../common/data-types/base.ts";
-import { BriefingBundle, CarryLoad, MovementState, ServerStats } from "../common/data-types/server.ts";
+import { ChesswarId, MovementState, PlayerAction, PlayerRole, TeamName, Victory, newGameVote } from "../common/data-types/base.ts";
+import { CarryLoad } from "../common/data-types/carryLoad.ts";
 import { ChessBoard, ChessPiece, ChessRow } from "../common/data-types/chess.ts";
+import { BriefingBundle, BriefingName } from "../common/data-types/facility.ts";
+import { ServerStats } from "../common/data-types/server.ts";
+import { Circle, Vector } from "../common/shapes/types.ts";
 
 export interface ServerPlayerPhysics {
 	mass: number,
@@ -17,7 +19,8 @@ export interface ServerPlayer {
 	carrying: CarryLoad,
 	movement: MovementState,
 	physics: ServerPlayerPhysics,
-	deathCounter: number
+	deathCounter: number,
+	vote: newGameVote
 }
 
 type PlayerMap = Map<ChesswarId, ServerPlayer>;

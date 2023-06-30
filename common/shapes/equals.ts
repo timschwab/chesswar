@@ -1,4 +1,4 @@
-import { Circle, Point, Rect, Shape } from "../data-types/shapes.ts";
+import { Circle, Point, Rect, Shape } from "./types.ts";
 import { isCircle, isPoint, isRect } from "./is.ts";
 
 function pointEqualsPoint(main: Point, other: Point): boolean {

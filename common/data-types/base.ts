@@ -1,11 +1,5 @@
 export type ChesswarId = string;
 
-export enum BriefingName {
-	ONE,
-	TWO,
-	THREE
-}
-
 export enum TeamName {
 	BLUE = "blue",
 	RED = "red"
@@ -35,3 +29,12 @@ export enum PlayerAction {
 }
 
 export type Victory = null | TeamName | "tie";
+
+export type newGameVote = boolean | null;
+
+export type MovementState = {
+	left: boolean,
+	right: boolean,
+	up: boolean,
+	down: boolean
+}

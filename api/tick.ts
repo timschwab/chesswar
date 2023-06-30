@@ -1,15 +1,15 @@
-import { Circle, Point, Vector } from "../common/data-types/shapes.ts";
 import { PlayerAction, PlayerRole, TeamName } from "../common/data-types/base.ts";
 import map from "../common/map.ts";
 import { gameEngine } from "../common/settings.ts";
-import { inside } from "../common/shape-logic/inside.ts";
-import { touches } from "../common/shape-logic/touches.ts";
-import { transposePoint } from "../common/shape-logic/transpose.ts";
-import { TAU_HALF, add, multiply, pointToVector, vectorToPoint } from "../common/shape-logic/vector.ts";
 import { spawnPlayer } from "./spawn.ts";
 import state, { ServerPlayer } from "./state.ts";
 import { ChessPiece } from "../common/data-types/chess.ts";
-import { CarryLoadType } from "../common/data-types/server.ts";
+import { TAU_HALF, add, multiply, pointToVector, vectorToPoint } from "../common/shapes/vector.ts";
+import { Circle, Point, Vector } from "../common/shapes/types.ts";
+import { transposePoint } from "../common/shapes/transpose.ts";
+import { touches } from "../common/shapes/touches.ts";
+import { inside } from "../common/shapes/inside.ts";
+import { CarryLoadType } from "../common/data-types/carryLoad.ts";
 
 export function tickPlayers() {
 	for (const player of state.allPlayers.values()) {

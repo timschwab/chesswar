@@ -1,8 +1,10 @@
-import { Rect } from "../../common/data-types/shapes.ts";
-import { BriefingName, ChesswarId, Victory } from "../../common/data-types/base.ts";
 import { ClientPlayer } from "../../common/data-types/client.ts";
-import { BriefingBundle, CarryLoad, CarryLoadType, ServerStats } from "../../common/data-types/server.ts";
 import { ChessBoard, ChessSquare } from "../../common/data-types/chess.ts";
+import { ChesswarId, Victory } from "../../common/data-types/base.ts";
+import { BriefingBundle, BriefingName } from "../../common/data-types/facility.ts";
+import { ServerStats } from "../../common/data-types/server.ts";
+import { Rect } from "../../common/shapes/types.ts";
+import { CarryLoad, CarryLoadType } from "../../common/data-types/carryLoad.ts";
 
 export type PlayerMap = Map<ChesswarId, ClientPlayer>;
 

@@ -3,11 +3,11 @@ import state, { isSafeState } from "./state.ts";
 import render from "./render.ts";
 import { ServerMessage, ServerMessageTypes } from "../../common/message-types/server.ts";
 import { PlayerRole } from "../../common/data-types/base.ts";
-import { Point } from "../../common/data-types/shapes.ts";
 import { listenClick } from "./inputs.ts";
 import { clickedButton, clickedSquare } from "./generalWindow.ts";
 import { ClientMessageTypes } from "../../common/message-types/client.ts";
 import { handleCarrying, handlePlayerInit, handlePong, handleState, handleStats, handleTeam } from "./messages.ts";
+import { Point } from "../../common/shapes/types.ts";
 
 export function initGame() {
 	socket.listen(receiveMessage);

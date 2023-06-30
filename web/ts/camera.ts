@@ -1,6 +1,6 @@
 import { Color } from "../../common/colors.ts";
-import { Circle, Point, Rect } from "../../common/data-types/shapes.ts";
-import { transposeCircle, transposePoint, transposeRect } from "../../common/shape-logic/transpose.ts";
+import { transposeCircle, transposePoint, transposeRect } from "../../common/shapes/transpose.ts";
+import { Circle, Point, Rect } from "../../common/shapes/types.ts";
 import canvas from "./canvas.ts";
 
 let camRect: Rect;

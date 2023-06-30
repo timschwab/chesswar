@@ -1,16 +1,17 @@
 import camera from "./camera.ts";
 import map from "../../common/map.ts";
 import { SafeState } from "./state.ts";
-import { Point, Rect } from "../../common/data-types/shapes.ts";
 import { rensets } from "../../common/settings.ts";
 import { Color } from "../../common/colors.ts";
-import { BriefingName, PlayerRole, TeamName } from "../../common/data-types/base.ts";
 import { renderGeneralWindow } from "./generalWindow.ts";
 import canvas from "./canvas.ts";
 import { renderBoard, teamPerspective } from "./chessboard.ts";
 import { ChessMove } from "../../common/data-types/chess.ts";
-import { CarryLoadType } from "../../common/data-types/server.ts";
-import { clampCircleInsideRect } from "../../common/shape-logic/clamp.ts";
+import { PlayerRole, TeamName } from "../../common/data-types/base.ts";
+import { Point, Rect } from "../../common/shapes/types.ts";
+import { clampCircleInsideRect } from "../../common/shapes/clamp.ts";
+import { CarryLoadType } from "../../common/data-types/carryLoad.ts";
+import { BriefingName } from "../../common/data-types/facility.ts";
 
 function render(state: SafeState) {
 	const startRender = performance.now();
@@ -222,14 +223,18 @@ function renderActionOption(state: SafeState) {
 
 function renderVictory(state: SafeState) {
 	if (state.victory == null) {
-		// Do nothing
-	} else if (state.victory == "tie") {
+		return;
+	}
+	
+	if (state.victory == "tie") {
 		canvas.text(state.screen, "center", "It's a tie!", rensets.victory.font, rensets.victory.color);
 	} else if (state.victory == TeamName.BLUE) {
 		canvas.text(state.screen, "center", "Blue team wins!", rensets.victory.font, rensets.victory.color);
 	} else if (state.victory == TeamName.RED) {
 		canvas.text(state.screen, "center", "Red team wins!", rensets.victory.font, rensets.victory.color);
 	}
+
+	// New game
 }
 
 function renderStats(state: SafeState) {

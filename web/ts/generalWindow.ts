@@ -1,12 +1,12 @@
-import { Point, Rect } from "../../common/data-types/shapes.ts";
-import { BriefingName } from "../../common/data-types/base.ts";
-import { rensets } from "../../common/settings.ts";
-import { inside } from "../../common/shape-logic/inside.ts";
-import { transposePoint } from "../../common/shape-logic/transpose.ts";
 import canvas from "./canvas.ts";
 import { renderBoard, teamPerspective, unrotateSquare } from "./chessboard.ts";
 import { SafeState } from "./state.ts";
 import { ChessMove, ChessSquare } from "../../common/data-types/chess.ts";
+import { rensets } from "../../common/settings.ts";
+import { BriefingName } from "../../common/data-types/facility.ts";
+import { Point, Rect } from "../../common/shapes/types.ts";
+import { transposePoint } from "../../common/shapes/transpose.ts";
+import { inside } from "../../common/shapes/inside.ts";
 
 export function renderGeneralWindow(state: SafeState): void {
 	const values = getKeyValues(state);

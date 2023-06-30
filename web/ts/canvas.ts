@@ -1,7 +1,7 @@
 import { Color } from "../../common/colors.ts";
-import { Circle, Point, Rect, Vector } from "../../common/data-types/shapes.ts";
-import { transposePoint } from "../../common/shape-logic/transpose.ts";
-import { TAU_EIGHTH, multiply, pointToVector, vectorToPoint } from "../../common/shape-logic/vector.ts";
+import { transposePoint } from "../../common/shapes/transpose.ts";
+import { Circle, Point, Rect, Vector } from "../../common/shapes/types.ts";
+import { TAU_EIGHTH, multiply, pointToVector, vectorToPoint } from "../../common/shapes/vector.ts";
 import dom from "./dom.ts";
 
 const context = getContext();
