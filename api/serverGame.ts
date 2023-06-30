@@ -1,7 +1,7 @@
 import socket from "./socket.ts";
 import { ServerMessageTypes, TeamMessage, TeamMessagePayload } from "../common/message-types/server.ts";
 import { ClientPlayer } from "../common/data-types/client.ts";
-import state, { ServerPlayer } from "./state.ts";
+import { ServerPlayer, getState, resetState } from "./state.ts";
 import { tickNewGame, tickPlayers, tickTankKills, tickVictory } from "./tick.ts";
 import { addPlayer, receiveMessage, removePlayer } from "./events.ts";
 import { TeamName } from "../common/data-types/base.ts";
@@ -23,10 +23,15 @@ function tick(): void {
 	tickAll();
 	const endTick = performance.now();
 	const tickMs = endTick-startTick;
-	state.stats.tickMs = tickMs;
+	getState().stats.tickMs = tickMs;
 }
 
 function tickAll(): void {
+	if (getState().newGameCounter == 0) {
+		resetGame();
+	}
+	const state = getState();
+
 	tickPlayers();
 	tickTankKills();
 
@@ -86,6 +91,19 @@ function serverPlayerToClientPlayer(player: ServerPlayer): ClientPlayer {
 		position: player.physics.position,
 		deathCounter: player.deathCounter
 	};
+}
+
+function resetGame() {
+	// Store player IDs
+	const players = getState().allPlayers.keys();
+
+	// Reset state
+	resetState();
+
+	// Add all players
+	for (const player of players) {
+		addPlayer(player);
+	}
 }
 
 export default {

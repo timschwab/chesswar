@@ -1,5 +1,5 @@
 import { TeamName } from "../common/data-types/base.ts";
-import { ChessBoard, ChessMove, ChessPiece, ChessSquare, ChessSquareState } from "../common/data-types/chess.ts";
+import { ChessBoard, ChessMove, ChessPiece, ChessRow, ChessSquare, ChessSquareState } from "../common/data-types/chess.ts";
 import { kingsKillKings } from "../common/options.ts";
 
 export function makeMove(board: ChessBoard, move: ChessMove): void {
@@ -195,4 +195,57 @@ function pawnToQueen(board: ChessBoard, square: ChessSquare) {
 	if (squareState.piece == ChessPiece.PAWN && (square.row == 0 || square.row == 7)) {
 		squareState.piece = ChessPiece.QUEEN;
 	}
+}
+
+export function newBoard(): ChessBoard {
+	const row1: ChessRow = [
+		{team: TeamName.BLUE, piece: ChessPiece.ROOK},
+		{team: TeamName.BLUE, piece: ChessPiece.KNIGHT},
+		{team: TeamName.BLUE, piece: ChessPiece.BISHOP},
+		{team: TeamName.BLUE, piece: ChessPiece.QUEEN},
+		{team: TeamName.BLUE, piece: ChessPiece.KING},
+		{team: TeamName.BLUE, piece: ChessPiece.BISHOP},
+		{team: TeamName.BLUE, piece: ChessPiece.KNIGHT},
+		{team: TeamName.BLUE, piece: ChessPiece.ROOK}
+	];
+
+	const row2: ChessRow = [
+		{team: TeamName.BLUE, piece: ChessPiece.PAWN},
+		{team: TeamName.BLUE, piece: ChessPiece.PAWN},
+		{team: TeamName.BLUE, piece: ChessPiece.PAWN},
+		{team: TeamName.BLUE, piece: ChessPiece.PAWN},
+		{team: TeamName.BLUE, piece: ChessPiece.PAWN},
+		{team: TeamName.BLUE, piece: ChessPiece.PAWN},
+		{team: TeamName.BLUE, piece: ChessPiece.PAWN},
+		{team: TeamName.BLUE, piece: ChessPiece.PAWN}
+	];
+
+	const row3: ChessRow = [null, null, null, null, null, null, null, null];
+	const row4: ChessRow = [null, null, null, null, null, null, null, null];
+	const row5: ChessRow = [null, null, null, null, null, null, null, null];
+	const row6: ChessRow = [null, null, null, null, null, null, null, null];
+
+	const row7: ChessRow = [
+		{team: TeamName.RED, piece: ChessPiece.PAWN},
+		{team: TeamName.RED, piece: ChessPiece.PAWN},
+		{team: TeamName.RED, piece: ChessPiece.PAWN},
+		{team: TeamName.RED, piece: ChessPiece.PAWN},
+		{team: TeamName.RED, piece: ChessPiece.PAWN},
+		{team: TeamName.RED, piece: ChessPiece.PAWN},
+		{team: TeamName.RED, piece: ChessPiece.PAWN},
+		{team: TeamName.RED, piece: ChessPiece.PAWN}
+	];
+
+	const row8: ChessRow = [
+		{team: TeamName.RED, piece: ChessPiece.ROOK},
+		{team: TeamName.RED, piece: ChessPiece.KNIGHT},
+		{team: TeamName.RED, piece: ChessPiece.BISHOP},
+		{team: TeamName.RED, piece: ChessPiece.QUEEN},
+		{team: TeamName.RED, piece: ChessPiece.KING},
+		{team: TeamName.RED, piece: ChessPiece.BISHOP},
+		{team: TeamName.RED, piece: ChessPiece.KNIGHT},
+		{team: TeamName.RED, piece: ChessPiece.ROOK}
+	];
+
+	return [row1, row2, row3, row4, row5, row6, row7, row8];
 }

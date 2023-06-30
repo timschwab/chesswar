@@ -10,9 +10,10 @@ import { Circle, Point, Vector } from "../common/shapes/types.ts";
 import { makeMove } from "./chess.ts";
 import socket from "./socket.ts";
 import { setCarrying, spawnPlayer } from "./spawn.ts";
-import state, { ServerPlayer } from "./state.ts";
+import { ServerPlayer, getState } from "./state.ts";
 
 export function addPlayer(id: string): void {
+	const state = getState();
 	const team = newPlayerTeam();
 	const newPlayer: ServerPlayer = {
 		id,
@@ -52,6 +53,7 @@ export function addPlayer(id: string): void {
 
 // Add them to the team with fewer players
 function newPlayerTeam(): TeamName {
+	const state = getState();
 	if (state[TeamName.BLUE].playerMap.size > state[TeamName.RED].playerMap.size) {
 		return TeamName.RED;
 	} else {
@@ -60,6 +62,7 @@ function newPlayerTeam(): TeamName {
 }
 
 export function removePlayer(id: string): void {
+	const state = getState();
 	try {
 		const player = getPlayer(id);
 		state.allPlayers.delete(id);
@@ -84,6 +87,7 @@ export function receiveMessage(message: ClientMessageWithId): void {
 }
 
 function getPlayer(id: string): ServerPlayer {
+	const state = getState();
 	const player = state.allPlayers.get(id);
 	if (player) {
 		return player;
@@ -97,6 +101,7 @@ function playerMove(player: ServerPlayer, keys: MoveMessagePayload): void {
 }
 
 function playerAction(player: ServerPlayer): void {
+	const state = getState();
 	if (player.actionOption == null) {
 		// Do nothing
 	} else if (player.actionOption == PlayerAction.BECOME_GENERAL) {
@@ -192,6 +197,7 @@ function becomeRole(player: ServerPlayer, role: PlayerRole): void {
 }
 
 function generalOrders(player: ServerPlayer, payload: GeneralOrdersMessagePayload) {
+	const state = getState();
 	if (player.role != PlayerRole.GENERAL) {
 		return;
 	} else if (player.team != payload.move.team) {

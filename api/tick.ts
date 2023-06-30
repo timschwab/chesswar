@@ -2,7 +2,7 @@ import { PlayerAction, PlayerRole, TeamName } from "../common/data-types/base.ts
 import map from "../common/map.ts";
 import { gameEngine } from "../common/settings.ts";
 import { spawnPlayer } from "./spawn.ts";
-import state, { ServerPlayer } from "./state.ts";
+import { ServerPlayer, getState } from "./state.ts";
 import { ChessPiece } from "../common/data-types/chess.ts";
 import { TAU_HALF, add, multiply, pointToVector, vectorToPoint } from "../common/shapes/vector.ts";
 import { Circle, Point, Vector } from "../common/shapes/types.ts";
@@ -12,6 +12,7 @@ import { inside } from "../common/shapes/inside.ts";
 import { CarryLoadType } from "../common/data-types/carryLoad.ts";
 
 export function tickPlayers() {
+	const state = getState();
 	for (const player of state.allPlayers.values()) {
 		if (player.deathCounter > 0) {
 			moveDeathCounter(player);
@@ -194,6 +195,7 @@ function actionOption(player: ServerPlayer): PlayerAction | null {
 }
 
 export function tickTankKills(): void {
+	const state = getState();
 	// Should optimize this functions at some point probably. Simple-ish optimization would be
 	// separating the map into several sectors and only consider the players in that sector or the
 	// neighboring ones.
@@ -255,6 +257,7 @@ export function tickTankKills(): void {
 }
 
 export function tickVictory(): void {
+	const state = getState();
 	const kings = {
 		[TeamName.BLUE]: kingExists(TeamName.BLUE),
 		[TeamName.RED]: kingExists(TeamName.RED)
@@ -271,16 +274,9 @@ export function tickVictory(): void {
 	}
 }
 
-export function tickNewGame(): void {
-	if (state.newGameCounter == Infinity) {
-		state.newGameCounter = gameEngine.newGameTicks;
-	}
-
-	state.newGameCounter--;
-}
-
 // We could def store this, but eh it's just 64 locations
 function kingExists(team: TeamName): boolean {
+	const state = getState();
 	for (const row of state.realBoard) {
 		for (const col of row) {
 			if (col != null && col.team == team && col.piece == ChessPiece.KING) {
@@ -288,6 +284,15 @@ function kingExists(team: TeamName): boolean {
 			}
 		}
 	}
-
+	
 	return false;
+}
+
+export function tickNewGame(): void {
+	const state = getState();
+	if (state.newGameCounter == Infinity) {
+		state.newGameCounter = gameEngine.newGameTicks;
+	}
+
+	state.newGameCounter--;
 }
