@@ -273,7 +273,7 @@ export function tickVictory(): void {
 
 export function tickNewGame(): void {
 	if (state.newGameCounter == Infinity) {
-		state.newGameCounter = 100;
+		state.newGameCounter = gameEngine.newGameTicks;
 	}
 
 	state.newGameCounter--;

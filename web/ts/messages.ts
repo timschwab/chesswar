@@ -27,6 +27,7 @@ export function handleState(payload: StateMessagePayload) {
 	}
 
 	state.victory = payload.victory;
+	state.newGameCounter = payload.newGameCounter;
 }
 
 export function handleTeam(payload: TeamMessagePayload) {

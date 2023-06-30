@@ -34,10 +34,12 @@ export const buildSettings = {
 }
 
 /* ----- start game engine ----- */
+const ticksPerSecond = 20;
+
 export const gameEngine = {
+	ticksPerSecond: ticksPerSecond,
 	startingRole: PlayerRole.SOLDIER,
 	startingClump: 100,
-	deathTicks: 100,
 	frictionCoef: 0.5,
 	dragCoef: 0.1,
 	physics: {
@@ -61,7 +63,9 @@ export const gameEngine = {
 			mass: 2,
 			inputForceMag: 5
 		}
-	}
+	},
+	deathTicks: ticksPerSecond*5,
+	newGameTicks: ticksPerSecond*30
 };
 
 /* ----- start rensets ----- */
@@ -151,7 +155,9 @@ export const rensets = {
 	},
 	victory: {
 		font: "bold 128px Times New Roman",
-		color: Color.GREY_BLACK
+		color: Color.GREY_BLACK,
+		newGameFont: "32px Times New Roman",
+		newGameColor: Color.GREY_BLACK,
 	},
 	stats: {
 		font: "12px Times New Roman",

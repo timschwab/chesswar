@@ -5,6 +5,7 @@ import state, { ServerPlayer } from "./state.ts";
 import { tickNewGame, tickPlayers, tickTankKills, tickVictory } from "./tick.ts";
 import { addPlayer, receiveMessage, removePlayer } from "./events.ts";
 import { TeamName } from "../common/data-types/base.ts";
+import { gameEngine } from "../common/settings.ts";
 
 function init() {
 	// Set up events
@@ -13,7 +14,8 @@ function init() {
 	socket.listen.message(receiveMessage);
 
 	// Set up ticking
-	setInterval(tick, 50);
+	const msPerTick = 1000/gameEngine.ticksPerSecond;
+	setInterval(tick, msPerTick);
 }
 
 function tick(): void {

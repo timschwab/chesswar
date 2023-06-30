@@ -35,6 +35,7 @@ export interface UnsafeState {
 	carrying: CarryLoad
 	general: GeneralState,
 	victory: Victory,
+	newGameCounter: number,
 	stats: Stats
 }
 
@@ -50,6 +51,7 @@ export interface SafeState {
 	carrying: CarryLoad,
 	general: GeneralState,
 	victory: Victory,
+	newGameCounter: number,
 	stats: Stats
 }
 
@@ -71,6 +73,7 @@ const state: UnsafeState = {
 		selectedFrom: null
 	},
 	victory: null,
+	newGameCounter: Infinity,
 	stats: {
 		show: false,
 		server: {

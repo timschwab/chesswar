@@ -233,6 +233,10 @@ function renderVictory(state: SafeState) {
 	} else if (state.victory == TeamName.RED) {
 		canvas.text(state.screen, TextAlign.CENTER, "Red team wins!", rensets.victory.font, rensets.victory.color);
 	}
+
+	const newGameTicksRectTopLeft = Point(state.screen.topLeft.x, state.screen.bottomRight.y/2);
+	const newGameTicksRect = Rect(newGameTicksRectTopLeft, state.screen.bottomRight);
+	canvas.text(newGameTicksRect, TextAlign.CENTER, "New game in: " + state.newGameCounter, rensets.victory.newGameFont, rensets.victory.newGameColor);
 }
 
 function renderStats(state: SafeState) {
