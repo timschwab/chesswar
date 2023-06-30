@@ -11,10 +11,10 @@ export function initSocket() {
 	const origin = env == Environment.REMOTE ? remoteApiServerOrigin : localApiServerOrigin;
 	sock = new WebSocket(origin);
 
-	sock.onopen = sockOpen;
-	sock.onmessage = sockMessage;
-	sock.onerror = sockError;
-	sock.onclose = sockClose;
+	sock.addEventListener("open", sockOpen);
+	sock.addEventListener("message", sockMessage);
+	sock.addEventListener("error", sockError);
+	sock.addEventListener("close", sockClose);
 }
 
 function sockOpen(_event: Event) {

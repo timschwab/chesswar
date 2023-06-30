@@ -12,16 +12,16 @@ const messageHook = createHook<ClientMessageWithId>();
 function newConnection(sock: WebSocket) {
 	const id: ChesswarId = slim.make();
 
-	sock.onopen = function() {
+	sock.addEventListener("open", function() {
 		console.log(`--- ${id} connection ---`);
 		console.log();
 
 		connections.set(id, sock);
 
 		addHook.run(id);
-	}
+	});
 
-	sock.onmessage = function(event: MessageEvent) {
+	sock.addEventListener("message", function(event: MessageEvent) {
 		const str = event.data;
 		console.log(`--- ${id} message ---`);
 		console.log(str);
@@ -31,24 +31,24 @@ function newConnection(sock: WebSocket) {
 		const messageWithId = {...message, id};
 
 		messageHook.run(messageWithId);
-	};
+	});
 
-	sock.onerror = function(error: Event) {
+	sock.addEventListener("error", function(error: Event) {
 		console.log(`--- ${id} error ---`);
 		console.log(error);
 		console.log();
 
 		// All errors will result in a close, so don't clean up the connection here
-	};
+	});
 
-	sock.onclose = function(closeEvent: CloseEvent) {
+	sock.addEventListener("close", function(closeEvent: CloseEvent) {
 		console.log(`--- ${id} close ---`);
 		console.log(closeEvent);
 		console.log();
 
 		connections.delete(id);
 		removeHook.run(id);
-	};
+	});
 }
 
 function sendOne(id: ChesswarId, message: ServerMessage) {
