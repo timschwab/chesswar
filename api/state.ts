@@ -38,7 +38,8 @@ interface ServerState {
 	allPlayers: PlayerMap,
 	[TeamName.BLUE]: Team,
 	[TeamName.RED]: Team,
-	stats: ServerStats
+	stats: ServerStats,
+	newGameCounter: number
 }
 
 const state: ServerState = {
@@ -76,7 +77,8 @@ const state: ServerState = {
 	},
 	stats: {
 		tickMs: 0
-	}
+	},
+	newGameCounter: Infinity
 };
 
 function newBoard(): ChessBoard {

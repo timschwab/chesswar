@@ -2,7 +2,7 @@ import socket from "./socket.ts";
 import { ServerMessageTypes, TeamMessage, TeamMessagePayload } from "../common/message-types/server.ts";
 import { ClientPlayer } from "../common/data-types/client.ts";
 import state, { ServerPlayer } from "./state.ts";
-import { tickPlayers, tickTankKills, tickVictory } from "./tick.ts";
+import { tickNewGame, tickPlayers, tickTankKills, tickVictory } from "./tick.ts";
 import { addPlayer, receiveMessage, removePlayer } from "./events.ts";
 import { TeamName } from "../common/data-types/base.ts";
 
@@ -25,18 +25,21 @@ function tick(): void {
 }
 
 function tickAll(): void {
-	// Tick everything
 	tickPlayers();
+	tickTankKills();
+
 	if (state.victory == null) {
 		tickVictory();
+	} else {
+		tickNewGame();
 	}
-	tickTankKills();
 
 	// Broadcast state to everyone
 	const playerList = Array.from(state.allPlayers.values());
 	const payload = {
 		players: playerList.map(serverPlayerToClientPlayer),
-		victory: state.victory
+		victory: state.victory,
+		newGameCounter: state.newGameCounter
 	};
 
 	socket.sendAll({

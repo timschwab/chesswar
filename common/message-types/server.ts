@@ -22,7 +22,8 @@ export type PlayerInitMessage = AbstractMessage<ServerMessageTypes.PLAYER_INIT, 
 
 export interface StateMessagePayload {
 	players: ClientPlayer[],
-	victory: Victory
+	victory: Victory,
+	newGameCounter: number
 }
 export type StateMessage = AbstractMessage<ServerMessageTypes.STATE, StateMessagePayload>;
 

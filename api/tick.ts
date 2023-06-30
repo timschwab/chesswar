@@ -271,6 +271,14 @@ export function tickVictory(): void {
 	}
 }
 
+export function tickNewGame(): void {
+	if (state.newGameCounter == Infinity) {
+		state.newGameCounter = 100;
+	}
+
+	state.newGameCounter--;
+}
+
 // We could def store this, but eh it's just 64 locations
 function kingExists(team: TeamName): boolean {
 	for (const row of state.realBoard) {
