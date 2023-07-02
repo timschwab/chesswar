@@ -36,3 +36,8 @@ export type MovementState = {
 	up: boolean,
 	down: boolean
 }
+
+export enum DeathCause {
+	TRAP = "trap",
+	TANK = "tank"
+}

@@ -1,4 +1,3 @@
-import { choose } from "../../common/random.ts";
 import { NoteFreq } from "./noteFrequencies.ts";
 
 enum NoteLen {
@@ -41,7 +40,6 @@ globalThis.audio = {
 
 	grabOrders,
 	completeOrders,
-	death,
 };
 
 export function initAudio(): void {
@@ -105,11 +103,7 @@ function completeOrders() {
 	], NoteLen.SIXTEENTH);
 }
 
-function death() {
-	choose([death1, death2, death3])();
-}
-
-function death1() {
+function tankDeath() {
 	playSequence([
 		[NoteFreq.A4, NoteFreq.CSHARP4],
 		[NoteFreq.GSHARP4, NoteFreq.C4],
@@ -124,7 +118,7 @@ function death2() {
 	], NoteLen.EIGHTH);
 }
 
-function death3() {
+function trapDeath() {
 	playSequence([
 		[NoteFreq.B1, NoteFreq.B2, NoteFreq.F3],
 	], NoteLen.QUARTER);
@@ -133,5 +127,6 @@ function death3() {
 export default {
 	grabOrders,
 	completeOrders,
-	death
+	tankDeath,
+	trapDeath
 };

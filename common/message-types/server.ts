@@ -1,4 +1,4 @@
-import { ChesswarId, Victory } from "../data-types/base.ts";
+import { ChesswarId, DeathCause, Victory } from "../data-types/base.ts";
 import { CarryLoad } from "../data-types/carryLoad.ts";
 import { ChessBoard } from "../data-types/chess.ts";
 import { ClientPlayer } from "../data-types/client.ts";
@@ -11,6 +11,7 @@ export enum ServerMessageTypes {
 	STATE = "state",
 	TEAM = "team",
 	CARRYING = "carrying",
+	DEATH = "death",
 	PONG = "pong",
 	STATS = "stats"
 }
@@ -37,10 +38,20 @@ export type TeamMessage = AbstractMessage<ServerMessageTypes.TEAM, TeamMessagePa
 export type CarryingMessagePayload = CarryLoad;
 export type CarryingMessage = AbstractMessage<ServerMessageTypes.CARRYING, CarryingMessagePayload>;
 
+export type DeathMessagePayload = DeathCause;
+export type DeathMessage = AbstractMessage<ServerMessageTypes.DEATH, DeathMessagePayload>;
+
 export type PongMessagePayload = null;
 export type PongMessage = AbstractMessage<ServerMessageTypes.PONG, PongMessagePayload>;
 
 export type StatsMessagePayload = ServerStats;
 export type StatsMessage = AbstractMessage<ServerMessageTypes.STATS, StatsMessagePayload>;
 
-export type ServerMessage = PlayerInitMessage | StateMessage | TeamMessage | CarryingMessage | PongMessage | StatsMessage;
+export type ServerMessage =
+	PlayerInitMessage |
+	StateMessage |
+	TeamMessage |
+	CarryingMessage |
+	DeathMessage |
+	PongMessage |
+	StatsMessage;

@@ -12,7 +12,6 @@ import { Point, Rect } from "../../common/shapes/types.ts";
 import { clampCircleInsideRect } from "../../common/shapes/clamp.ts";
 import { CarryLoadType } from "../../common/data-types/carryLoad.ts";
 import { BriefingName } from "../../common/data-types/facility.ts";
-import audioPlayer from "./audioPlayer.ts";
 
 function render(state: SafeState) {
 	const startRender = performance.now();
@@ -46,8 +45,6 @@ function renderAll(state: SafeState) {
 	if (state.stats.show) {
 		renderStats(state);
 	}
-
-	renderAudio(state);
 }
 
 function setCamera(state: SafeState) {
@@ -263,12 +260,6 @@ function renderStats(state: SafeState) {
 	for (const stat of stats) {
 		canvas.text(rect, TextAlign.LEFT, stat, rensets.stats.font, rensets.stats.color);
 		rect = Rect(Point(rect.topLeft.x, rect.topLeft.y+20), Point(rect.bottomRight.x, rect.bottomRight.y+20));
-	}
-}
-
-function renderAudio(state: SafeState) {
-	if (state.self.deathCounter == 100) {
-		audioPlayer.death();
 	}
 }
 

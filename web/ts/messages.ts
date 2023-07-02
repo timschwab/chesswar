@@ -1,4 +1,4 @@
-import { ChesswarId } from "../../common/data-types/base.ts";
+import { ChesswarId, DeathCause } from "../../common/data-types/base.ts";
 import { CarryLoadType } from "../../common/data-types/carryLoad.ts";
 import { ClientPlayer } from "../../common/data-types/client.ts";
 import { CarryingMessagePayload, PlayerInitMessagePayload, StateMessagePayload, StatsMessagePayload, TeamMessagePayload } from "../../common/message-types/server.ts";
@@ -48,6 +48,14 @@ export function handleCarrying(payload: CarryingMessagePayload) {
 	}
 
 	state.carrying = payload;
+}
+
+export function handleDeath(cause: DeathCause) {
+	if (cause == DeathCause.TRAP) {
+		audioPlayer.trapDeath();
+	} else if (cause == DeathCause.TANK) {
+		audioPlayer.tankDeath();
+	}
 }
 
 export function handlePong() {

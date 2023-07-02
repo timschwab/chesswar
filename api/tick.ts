@@ -1,4 +1,4 @@
-import { PlayerAction, PlayerRole, TeamName } from "../common/data-types/base.ts";
+import { DeathCause, PlayerAction, PlayerRole, TeamName } from "../common/data-types/base.ts";
 import map from "../common/map.ts";
 import { gameEngine } from "../common/settings.ts";
 import { spawnPlayer } from "./spawn.ts";
@@ -10,6 +10,8 @@ import { transposePoint } from "../common/shapes/transpose.ts";
 import { touches } from "../common/shapes/touches.ts";
 import { inside } from "../common/shapes/inside.ts";
 import { CarryLoadType } from "../common/data-types/carryLoad.ts";
+import socket from "./socket.ts";
+import { ServerMessageTypes } from "../common/message-types/server.ts";
 
 export function tickPlayers() {
 	const state = getState();
@@ -100,6 +102,10 @@ function checkDeathRects(player: ServerPlayer): void {
 	for (const deathRect of map.deathRects) {
 		if (touches(player.physics.position, deathRect)) {
 			spawnPlayer(player);
+			socket.sendOne(player.id, {
+				type: ServerMessageTypes.DEATH,
+				payload: DeathCause.TRAP
+			});
 		}
 	}
 }
@@ -108,6 +114,10 @@ function checkDeathCircles(player: ServerPlayer): void {
 	for (const deathCircle of map.deathCircles) {
 		if (touches(player.physics.position, deathCircle)) {
 			spawnPlayer(player);
+			socket.sendOne(player.id, {
+				type: ServerMessageTypes.DEATH,
+				payload: DeathCause.TRAP
+			});
 		}
 	}
 }
@@ -117,6 +127,10 @@ function checkTankSafezones(player: ServerPlayer): void {
 		const pos = player.physics.position;
 		if (touches(pos, map.safeZone)) {
 			spawnPlayer(player);
+			socket.sendOne(player.id, {
+				type: ServerMessageTypes.DEATH,
+				payload: DeathCause.TRAP
+			});
 			return;
 		}
 
@@ -124,12 +138,20 @@ function checkTankSafezones(player: ServerPlayer): void {
 		for (const bundle of enemyBundles) {
 			if (touches(pos, bundle.base)) {
 				spawnPlayer(player);
+				socket.sendOne(player.id, {
+					type: ServerMessageTypes.DEATH,
+					payload: DeathCause.TRAP
+				});
 				return;
 			}
 
 			for (const outpost of bundle.outposts) {
 				if (touches(pos, outpost)) {
 					spawnPlayer(player);
+					socket.sendOne(player.id, {
+						type: ServerMessageTypes.DEATH,
+						payload: DeathCause.TRAP
+					});
 					return;
 				}
 			}
@@ -227,7 +249,16 @@ export function tickTankKills(): void {
 		for (const redTank of redTanks) {
 			if (touches(blueTank.physics.position, redTank.physics.position)) {
 				spawnPlayer(blueTank);
+				socket.sendOne(blueTank.id, {
+					type: ServerMessageTypes.DEATH,
+					payload: DeathCause.TANK
+				});
+
 				spawnPlayer(redTank);
+				socket.sendOne(redTank.id, {
+					type: ServerMessageTypes.DEATH,
+					payload: DeathCause.TANK
+				});
 			}
 		}
 	}
@@ -239,6 +270,10 @@ export function tickTankKills(): void {
 			for (const redOther of redOthers) {
 				if (touches(blueTank.physics.position, redOther.physics.position)) {
 					spawnPlayer(redOther);
+					socket.sendOne(redOther.id, {
+						type: ServerMessageTypes.DEATH,
+						payload: DeathCause.TANK
+					});
 				}
 			}
 		}
@@ -250,6 +285,10 @@ export function tickTankKills(): void {
 			for (const blueOther of blueOthers) {
 				if (touches(redTank.physics.position, blueOther.physics.position)) {
 					spawnPlayer(blueOther);
+					socket.sendOne(blueOther.id, {
+						type: ServerMessageTypes.DEATH,
+						payload: DeathCause.TANK
+					});
 				}
 			}
 		}

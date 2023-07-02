@@ -6,7 +6,7 @@ import { PlayerRole } from "../../common/data-types/base.ts";
 import { listenClick } from "./inputs.ts";
 import { clickedButton, clickedSquare } from "./generalWindow.ts";
 import { ClientMessageTypes } from "../../common/message-types/client.ts";
-import { handleCarrying, handlePlayerInit, handlePong, handleState, handleStats, handleTeam } from "./messages.ts";
+import { handleCarrying, handleDeath, handlePlayerInit, handlePong, handleState, handleStats, handleTeam } from "./messages.ts";
 import { Point } from "../../common/shapes/types.ts";
 
 export function initGame() {
@@ -24,6 +24,8 @@ function receiveMessage(message: ServerMessage): void {
 		handleTeam(message.payload);
 	} else if (message.type == ServerMessageTypes.CARRYING) {
 		handleCarrying(message.payload);
+	} else if (message.type == ServerMessageTypes.DEATH) {
+		handleDeath(message.payload);
 	} else if (message.type == ServerMessageTypes.PONG) {
 		handlePong();
 	} else if (message.type == ServerMessageTypes.STATS) {
