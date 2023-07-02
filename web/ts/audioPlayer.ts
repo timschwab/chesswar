@@ -32,14 +32,15 @@ declare global {
 
 globalThis.audio = {
 	initAudio,
-	note,
 	NoteFreq,
 	NoteLen,
 	spm,
+	note,
+	playSequence,
 
-	yay,
-	death2,
-	playSequence
+	grabOrders,
+	completeOrders,
+	death,
 };
 
 export function initAudio(): void {
@@ -77,26 +78,9 @@ function note(n: Note, delay: number): void {
 	oscNode.stop(finish);
 }
 
-function yay() {
-	playSequence([
-		[NoteFreq.A3, NoteFreq.E3],
-		[NoteFreq.A3, NoteFreq.E3, NoteFreq.A4],
-		[NoteFreq.A3,              NoteFreq.A4]
-	], NoteLen.SIXTEENTH);
-}
-
-function death2() {
-	playSequence([
-		[NoteFreq.A4, NoteFreq.CSHARP4],
-		[NoteFreq.GSHARP4, NoteFreq.C4],
-		[NoteFreq.G4, NoteFreq.B3]
-	], NoteLen.HALF);
-}
-
 function playSequence(seq: NoteFreq[][], len: NoteLen) {
 	for (const [index, group] of seq.entries()) {
 		for (const n of group) {
-			//
 			note({
 				freq: n,
 				len: len
@@ -104,3 +88,32 @@ function playSequence(seq: NoteFreq[][], len: NoteLen) {
 		}
 	}
 }
+
+function grabOrders() {
+	playSequence([
+		[NoteFreq.A3, NoteFreq.E3],
+		[NoteFreq.A3, NoteFreq.E3, NoteFreq.A4],
+		[NoteFreq.A3,              NoteFreq.A4]
+	], NoteLen.SIXTEENTH);
+}
+
+function completeOrders() {
+	playSequence([
+		[NoteFreq.A3, NoteFreq.A4],
+		[NoteFreq.A3, NoteFreq.E3]
+	], NoteLen.SIXTEENTH);
+}
+
+function death() {
+	playSequence([
+		[NoteFreq.A4, NoteFreq.CSHARP4],
+		[NoteFreq.GSHARP4, NoteFreq.C4],
+		[NoteFreq.G4, NoteFreq.B3]
+	], NoteLen.HALF);
+}
+
+export default {
+	grabOrders,
+	completeOrders,
+	death
+};

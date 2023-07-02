@@ -1,6 +1,8 @@
 import { ChesswarId } from "../../common/data-types/base.ts";
+import { CarryLoadType } from "../../common/data-types/carryLoad.ts";
 import { ClientPlayer } from "../../common/data-types/client.ts";
 import { CarryingMessagePayload, PlayerInitMessagePayload, StateMessagePayload, StatsMessagePayload, TeamMessagePayload } from "../../common/message-types/server.ts";
+import audioPlayer from "./audioPlayer.ts";
 import state, { PlayerMap } from "./state.ts";
 
 export function handlePlayerInit(payload: PlayerInitMessagePayload) {
@@ -37,6 +39,14 @@ export function handleTeam(payload: TeamMessagePayload) {
 }
 
 export function handleCarrying(payload: CarryingMessagePayload) {
+	if (payload.type == CarryLoadType.ORDERS) {
+		audioPlayer.grabOrders();
+	} else if (payload.type == CarryLoadType.EMPTY) {
+		if (state.carrying.type == CarryLoadType.ORDERS) {
+			audioPlayer.completeOrders();
+		}
+	}
+
 	state.carrying = payload;
 }
 
