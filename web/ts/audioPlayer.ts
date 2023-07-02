@@ -1,3 +1,4 @@
+import { choose } from "../../common/random.ts";
 import { NoteFreq } from "./noteFrequencies.ts";
 
 enum NoteLen {
@@ -105,11 +106,28 @@ function completeOrders() {
 }
 
 function death() {
+	choose([death1, death2, death3])();
+}
+
+function death1() {
 	playSequence([
 		[NoteFreq.A4, NoteFreq.CSHARP4],
 		[NoteFreq.GSHARP4, NoteFreq.C4],
 		[NoteFreq.G4, NoteFreq.B3]
-	], NoteLen.HALF);
+	], NoteLen.QUARTER);
+}
+
+function death2() {
+	playSequence([
+		[NoteFreq.D3, NoteFreq.F3],
+		[NoteFreq.CSHARP3, NoteFreq.E3]
+	], NoteLen.EIGHTH);
+}
+
+function death3() {
+	playSequence([
+		[NoteFreq.B1, NoteFreq.B2, NoteFreq.F3],
+	], NoteLen.QUARTER);
 }
 
 export default {
