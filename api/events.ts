@@ -106,12 +106,28 @@ function playerAction(player: ServerPlayer): void {
 		// Do nothing
 	} else if (player.actionOption == PlayerAction.BECOME_GENERAL) {
 		becomeRole(player, PlayerRole.GENERAL);
+		socket.sendOne(player.id, {
+			type: ServerMessageTypes.ACTION_COMPLETED,
+			payload: PlayerAction.BECOME_GENERAL
+		});
 	} else if (player.actionOption == PlayerAction.BECOME_SOLDIER) {
 		becomeRole(player, PlayerRole.SOLDIER);
+		socket.sendOne(player.id, {
+			type: ServerMessageTypes.ACTION_COMPLETED,
+			payload: PlayerAction.BECOME_SOLDIER
+		});
 	} else if (player.actionOption == PlayerAction.BECOME_TANK) {
 		becomeRole(player, PlayerRole.TANK);
+		socket.sendOne(player.id, {
+			type: ServerMessageTypes.ACTION_COMPLETED,
+			payload: PlayerAction.BECOME_TANK
+		});
 	} else if (player.actionOption == PlayerAction.BECOME_OPERATIVE) {
 		becomeRole(player, PlayerRole.OPERATIVE);
+		socket.sendOne(player.id, {
+			type: ServerMessageTypes.ACTION_COMPLETED,
+			payload: PlayerAction.BECOME_OPERATIVE
+		});
 	} else if (player.actionOption == PlayerAction.GRAB_ORDERS) {
 		const briefing = whichBriefing(player);
 		if (briefing == null) {
@@ -132,11 +148,19 @@ function playerAction(player: ServerPlayer): void {
 			}
 
 			setCarrying(player, carryLoad);
+			socket.sendOne(player.id, {
+				type: ServerMessageTypes.ACTION_COMPLETED,
+				payload: PlayerAction.GRAB_ORDERS
+			});
 		}
 	} else if (player.actionOption == PlayerAction.COMPLETE_ORDERS) {
 		if (player.carrying.type == CarryLoadType.ORDERS) {
 			makeMove(state.realBoard, player.carrying.load);
 			setCarrying(player, null);
+			socket.sendOne(player.id, {
+				type: ServerMessageTypes.ACTION_COMPLETED,
+				payload: PlayerAction.COMPLETE_ORDERS
+			});
 		}
 	} else if (player.actionOption == PlayerAction.GATHER_INTEL) {
 		const load = {
@@ -144,11 +168,19 @@ function playerAction(player: ServerPlayer): void {
 			load: structuredClone(state.realBoard)
 		};
 		setCarrying(player, load);
+		socket.sendOne(player.id, {
+			type: ServerMessageTypes.ACTION_COMPLETED,
+			payload: PlayerAction.GATHER_INTEL
+		});
 	} else if (player.actionOption == PlayerAction.REPORT_INTEL) {
 		if (player.carrying.type == CarryLoadType.INTEL) {
 			state[player.team].teamBoard = player.carrying.load;
 			setCarrying(player, null);
 		}
+		socket.sendOne(player.id, {
+			type: ServerMessageTypes.ACTION_COMPLETED,
+			payload: PlayerAction.REPORT_INTEL
+		});
 	} else if (player.actionOption == PlayerAction.CONDUCT_ESPIONAGE) {
 		const oppositeTeam = player.team == TeamName.BLUE ? TeamName.RED : TeamName.BLUE;
 		const load = {
@@ -156,11 +188,19 @@ function playerAction(player: ServerPlayer): void {
 			load: structuredClone(state[oppositeTeam].briefings)
 		};
 		setCarrying(player, load);
+		socket.sendOne(player.id, {
+			type: ServerMessageTypes.ACTION_COMPLETED,
+			payload: PlayerAction.CONDUCT_ESPIONAGE
+		});
 	} else if (player.actionOption == PlayerAction.REPORT_ESPIONAGE) {
 		if (player.carrying.type == CarryLoadType.ESPIONAGE) {
 			state[player.team].enemyBriefings = player.carrying.load;
 			setCarrying(player, null);
 		}
+		socket.sendOne(player.id, {
+			type: ServerMessageTypes.ACTION_COMPLETED,
+			payload: PlayerAction.REPORT_ESPIONAGE
+		});
 	}
 }
 

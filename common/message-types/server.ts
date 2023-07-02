@@ -1,4 +1,4 @@
-import { ChesswarId, DeathCause, Victory } from "../data-types/base.ts";
+import { ChesswarId, DeathCause, PlayerAction, Victory } from "../data-types/base.ts";
 import { CarryLoad } from "../data-types/carryLoad.ts";
 import { ChessBoard } from "../data-types/chess.ts";
 import { ClientPlayer } from "../data-types/client.ts";
@@ -10,6 +10,7 @@ export enum ServerMessageTypes {
 	PLAYER_INIT = "player-init",
 	STATE = "state",
 	TEAM = "team",
+	ACTION_COMPLETED = "action-completed",
 	CARRYING = "carrying",
 	DEATH = "death",
 	PONG = "pong",
@@ -35,6 +36,9 @@ export interface TeamMessagePayload {
 }
 export type TeamMessage = AbstractMessage<ServerMessageTypes.TEAM, TeamMessagePayload>;
 
+export type ActionCompletedMessagePayload = PlayerAction;
+export type ActionCompletedMessage = AbstractMessage<ServerMessageTypes.ACTION_COMPLETED, ActionCompletedMessagePayload>;
+
 export type CarryingMessagePayload = CarryLoad;
 export type CarryingMessage = AbstractMessage<ServerMessageTypes.CARRYING, CarryingMessagePayload>;
 
@@ -51,6 +55,7 @@ export type ServerMessage =
 	PlayerInitMessage |
 	StateMessage |
 	TeamMessage |
+	ActionCompletedMessage |
 	CarryingMessage |
 	DeathMessage |
 	PongMessage |
