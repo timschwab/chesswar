@@ -1,5 +1,4 @@
-import { ChesswarId, DeathCause } from "../../common/data-types/base.ts";
-import { CarryLoadType } from "../../common/data-types/carryLoad.ts";
+import { ChesswarId, DeathCause, PlayerAction } from "../../common/data-types/base.ts";
 import { ClientPlayer } from "../../common/data-types/client.ts";
 import { CarryingMessagePayload, PlayerInitMessagePayload, StateMessagePayload, StatsMessagePayload, TeamMessagePayload } from "../../common/message-types/server.ts";
 import audioPlayer from "./audioPlayer.ts";
@@ -38,15 +37,15 @@ export function handleTeam(payload: TeamMessagePayload) {
 	state.enemyBriefings = payload.enemyBriefings;
 }
 
-export function handleCarrying(payload: CarryingMessagePayload) {
-	if (payload.type == CarryLoadType.ORDERS) {
+export function handleCompletedAction(action: PlayerAction) {
+	if (action == PlayerAction.GRAB_ORDERS) {
 		audioPlayer.grabOrders();
-	} else if (payload.type == CarryLoadType.EMPTY) {
-		if (state.carrying.type == CarryLoadType.ORDERS) {
-			audioPlayer.completeOrders();
-		}
+	} else if (action == PlayerAction.COMPLETE_ORDERS) {
+		audioPlayer.completeOrders();
 	}
+}
 
+export function handleCarrying(payload: CarryingMessagePayload) {
 	state.carrying = payload;
 }
 

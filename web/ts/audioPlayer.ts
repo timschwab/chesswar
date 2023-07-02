@@ -111,6 +111,7 @@ function tankDeath() {
 	], NoteLen.QUARTER);
 }
 
+// deno-lint-ignore no-unused-vars
 function death2() {
 	playSequence([
 		[NoteFreq.D3, NoteFreq.F3],
