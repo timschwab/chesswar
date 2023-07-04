@@ -22,8 +22,7 @@ export function tickPlayers() {
 			movePlayer(player);
 		}
 
-		checkDeathRects(player);
-		checkDeathCircles(player);
+		checkMinefields(player);
 		checkTankSafezones(player);
 
 		player.actionOption = actionOption(player);
@@ -98,25 +97,13 @@ function movePlayer(player: ServerPlayer): void {
 	physics.position = Circle(bouncePosition, radius);
 }
 
-function checkDeathRects(player: ServerPlayer): void {
-	for (const deathRect of map.deathRects) {
-		if (touches(player.physics.position, deathRect)) {
+function checkMinefields(player: ServerPlayer): void {
+	for (const minefield of map.minefields) {
+		if (touches(player.physics.position, minefield)) {
 			spawnPlayer(player);
 			socket.sendOne(player.id, {
 				type: ServerMessageTypes.DEATH,
-				payload: DeathCause.TRAP
-			});
-		}
-	}
-}
-
-function checkDeathCircles(player: ServerPlayer): void {
-	for (const deathCircle of map.deathCircles) {
-		if (touches(player.physics.position, deathCircle)) {
-			spawnPlayer(player);
-			socket.sendOne(player.id, {
-				type: ServerMessageTypes.DEATH,
-				payload: DeathCause.TRAP
+				payload: DeathCause.MINEFIELD
 			});
 		}
 	}
@@ -129,7 +116,7 @@ function checkTankSafezones(player: ServerPlayer): void {
 			spawnPlayer(player);
 			socket.sendOne(player.id, {
 				type: ServerMessageTypes.DEATH,
-				payload: DeathCause.TRAP
+				payload: DeathCause.MINEFIELD
 			});
 			return;
 		}
@@ -140,7 +127,7 @@ function checkTankSafezones(player: ServerPlayer): void {
 				spawnPlayer(player);
 				socket.sendOne(player.id, {
 					type: ServerMessageTypes.DEATH,
-					payload: DeathCause.TRAP
+					payload: DeathCause.MINEFIELD
 				});
 				return;
 			}
@@ -150,7 +137,7 @@ function checkTankSafezones(player: ServerPlayer): void {
 					spawnPlayer(player);
 					socket.sendOne(player.id, {
 						type: ServerMessageTypes.DEATH,
-						payload: DeathCause.TRAP
+						payload: DeathCause.MINEFIELD
 					});
 					return;
 				}

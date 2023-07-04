@@ -38,6 +38,6 @@ export type MovementState = {
 }
 
 export enum DeathCause {
-	TRAP = "trap",
+	MINEFIELD = "minefield",
 	TANK = "tank"
 }

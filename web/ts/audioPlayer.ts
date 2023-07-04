@@ -119,7 +119,7 @@ function death2() {
 	], NoteLen.EIGHTH);
 }
 
-function trapDeath() {
+function minefieldDeath() {
 	playSequence([
 		[NoteFreq.B1, NoteFreq.B2, NoteFreq.F3],
 	], NoteLen.QUARTER);
@@ -129,5 +129,5 @@ export default {
 	grabOrders,
 	completeOrders,
 	tankDeath,
-	trapDeath
+	minefieldDeath
 };

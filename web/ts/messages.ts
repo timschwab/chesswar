@@ -50,8 +50,8 @@ export function handleCarrying(payload: CarryingMessagePayload) {
 }
 
 export function handleDeath(cause: DeathCause) {
-	if (cause == DeathCause.TRAP) {
-		audioPlayer.trapDeath();
+	if (cause == DeathCause.MINEFIELD) {
+		audioPlayer.minefieldDeath();
 	} else if (cause == DeathCause.TANK) {
 		audioPlayer.tankDeath();
 	}

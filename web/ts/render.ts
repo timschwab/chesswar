@@ -12,6 +12,7 @@ import { Point, Rect } from "../../common/shapes/types.ts";
 import { clampCircleInsideRect } from "../../common/shapes/clamp.ts";
 import { CarryLoadType } from "../../common/data-types/carryLoad.ts";
 import { BriefingName } from "../../common/data-types/facility.ts";
+import { isCircle, isRect } from "../../common/shapes/is.ts";
 
 function render(state: SafeState) {
 	const startRender = performance.now();
@@ -121,14 +122,15 @@ function renderMap(state: SafeState) {
 		camera.fillRect(bundle.scif, rensets.facilities.enemy.scif);
 	}
 
-	// Draw death rects
-	for (const deathRect of map.deathRects) {
-		camera.fillRect(deathRect, rensets.death.color);
-	}
-
-	// Draw death circles
-	for (const deathCircle of map.deathCircles) {
-		camera.fillCircle(deathCircle, rensets.death.color);
+	// Draw minefields
+	for (const minefield of map.minefields) {
+		if (isRect(minefield)) {
+			camera.fillRect(minefield, rensets.minefield.color);
+		} else if (isCircle(minefield)) {
+			camera.fillCircle(minefield, rensets.minefield.color);
+		} else {
+			// Can't get here
+		}
 	}
 
 	// Draw safe zone and battlefield

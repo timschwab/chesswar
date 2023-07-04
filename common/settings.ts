@@ -114,7 +114,7 @@ export const rensets = {
 			scif: Color.CYAN_DARK
 		}
 	},
-	death: {
+	minefield: {
 		color: Color.GREY_BLACK
 	},
 	center: {

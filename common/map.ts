@@ -42,14 +42,12 @@ const redArmory = Rect(Point(width-150, 50), Point(width-50, 150));
 const redOutpost2 = Rect(Point(width-300, height-300), Point(width, height));
 const redScif = Rect(Point(width-150, height-150), Point(width-50, height-50));
 
-const deathRects = [
+const minefields = [
 	Rect(Point(middleX - 100, 100), Point(middleX + 100, 500)),
 	Rect(Point(middleX - 100, height-500), Point(middleX + 100, height-100)),
 	Rect(Point(middleX - 1300, 1000), Point(middleX - 1100, height-1000)),
-	Rect(Point(middleX + 1100, 1000), Point(middleX + 1300, height-1000))
-];
+	Rect(Point(middleX + 1100, 1000), Point(middleX + 1300, height-1000)),
 
-const deathCircles = [
 	Circle(Point(middleX-700, 700), 100),
 	Circle(Point(middleX+700, 700), 100),
 	Circle(Point(middleX-700, height-700), 100),
@@ -86,8 +84,7 @@ const map = {
 			scif: redScif
 		}
 	],
-	deathRects,
-	deathCircles,
+	minefields,
 	safeZone,
 	battlefield
 };
