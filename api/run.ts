@@ -1,8 +1,8 @@
 import { localApiServer } from "../common/settings.ts";
-import game from "./serverGame.ts";
+import { initGame } from "./serverGame.ts";
 import socket from "./socket.ts";
 
-game.init();
+initGame();
 
 const handler = function(req: Request): Response {
 	const {pathname} = new URL(req.url);

@@ -7,7 +7,7 @@ import { addPlayer, receiveMessage, removePlayer } from "./events.ts";
 import { TeamName } from "../common/data-types/base.ts";
 import { gameEngine } from "../common/settings.ts";
 
-function init() {
+export function initGame() {
 	// Set up events
 	socket.listen.add(addPlayer);
 	socket.listen.remove(removePlayer);
@@ -112,7 +112,3 @@ function resetGame() {
 		addPlayer(player);
 	}
 }
-
-export default {
-	init
-};
