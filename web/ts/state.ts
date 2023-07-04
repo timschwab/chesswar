@@ -36,7 +36,8 @@ export interface UnsafeState {
 	general: GeneralState,
 	victory: Victory,
 	newGameCounter: number,
-	stats: Stats
+	stats: Stats,
+	uiNeedsRender: boolean
 }
 
 export interface SafeState {
@@ -52,7 +53,8 @@ export interface SafeState {
 	general: GeneralState,
 	victory: Victory,
 	newGameCounter: number,
-	stats: Stats
+	stats: Stats,
+	uiNeedsRender: boolean
 }
 
 const state: UnsafeState = {
@@ -84,7 +86,8 @@ const state: UnsafeState = {
 		thisPingSend: 0,
 		thisPongRecv: 0,
 		nextPingCount: 120
-	}
+	},
+	uiNeedsRender: true
 };
 
 export function isSafeState(maybeSafeState: UnsafeState): maybeSafeState is SafeState {

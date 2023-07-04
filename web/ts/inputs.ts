@@ -75,6 +75,7 @@ function handleKey(event: KeyboardEvent, pressed: boolean): void {
 	} else if (code == "Period") {
 		if (pressed) {
 			// Toggle stats
+			state.uiNeedsRender = true;
 			state.stats.show = !state.stats.show;
 		}
 	} else {

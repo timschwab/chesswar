@@ -11,11 +11,9 @@ export enum TextAlign {
 }
 
 export class CWCanvas {
-	private canvas: HTMLCanvasElement;
 	private context: CanvasRenderingContext2D
 
 	constructor(htmlCanvas: HTMLCanvasElement) {
-		this.canvas = htmlCanvas;
 		this.context = this.getContext(htmlCanvas);
 	}
 
@@ -27,6 +25,10 @@ export class CWCanvas {
 		}
 
 		return maybeContext;
+	}
+
+	clear() {
+		this.context.clearRect(0, 0, this.context.canvas.width, this.context.canvas.height);
 	}
 
 	line(start: Point, finish: Point, color: Color, lineWidth: number) {

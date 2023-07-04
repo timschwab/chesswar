@@ -28,7 +28,12 @@ function render(state: SafeState) {
 
 function renderAll(state: SafeState) {
 	renderField(state);
-	renderUi(state);
+
+	// Easiest way to do this right now
+	if (state.uiNeedsRender) {
+		renderUi(state);
+		state.uiNeedsRender = false;
+	}
 }
 
 function renderField(state: SafeState) {
@@ -40,6 +45,8 @@ function renderField(state: SafeState) {
 }
 
 function renderUi(state: SafeState) {
+	clearBackground(uiCanvas);
+
 	renderRole(state, uiCanvas);
 	if (state.self.role == PlayerRole.GENERAL) {
 		renderGeneralWindow(state, uiCanvas);
@@ -180,6 +187,10 @@ function renderPlayers(state: SafeState, fieldCamera: CWCamera) {
 		const nameRect = Rect(Point(pos.center.x, pos.center.y+pos.radius+10), Point(pos.center.x, pos.center.y+pos.radius+10));
 		fieldCamera.text(nameRect, TextAlign.CENTER, player.id.slice(0, 4), rensets.players.name.font, rensets.players.name.color);
 	}
+}
+
+function clearBackground(uiCanvas: CWCanvas) {
+	uiCanvas.clear();
 }
 
 function renderRole(state: SafeState, uiCanvas: CWCanvas) {

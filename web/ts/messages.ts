@@ -38,6 +38,8 @@ export function handleTeam(payload: TeamMessagePayload) {
 }
 
 export function handleCompletedAction(action: PlayerAction) {
+	state.uiNeedsRender = true;
+
 	if (action == PlayerAction.GRAB_ORDERS) {
 		audioPlayer.grabOrders();
 	} else if (action == PlayerAction.COMPLETE_ORDERS) {
@@ -46,6 +48,7 @@ export function handleCompletedAction(action: PlayerAction) {
 }
 
 export function handleCarrying(payload: CarryingMessagePayload) {
+	state.uiNeedsRender = true;
 	state.carrying = payload;
 }
 
@@ -64,5 +67,6 @@ export function handlePong() {
 }
 
 export function handleStats(payload: StatsMessagePayload) {
+	state.uiNeedsRender = true;
 	state.stats.server = payload;
 }
