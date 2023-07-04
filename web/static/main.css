@@ -5,3 +5,11 @@ html, body, div, canvas {
 	height: 100%;
 	display: block;
 }
+
+#field {
+	z-index: 0;
+}
+
+#ui {
+	z-index: 1;
+}

@@ -10,7 +10,7 @@ export enum TextAlign {
 	RIGHT = "right"
 }
 
-class CWCanvas {
+export class CWCanvas {
 	private canvas: HTMLCanvasElement;
 	private context: CanvasRenderingContext2D
 

@@ -16,6 +16,9 @@ function setScreen() {
 	state.screen = Rect(Point(0, 0), Point(width, height));
 
 	// Set them in the dom
-	dom.canvas.width = width;
-	dom.canvas.height = height;
+	dom.field.width = width;
+	dom.field.height = height;
+
+	dom.ui.width = width;
+	dom.ui.height = height;
 }

@@ -1,4 +1,4 @@
-import canvas from "./canvas.ts";
+import { CWCanvas } from "./canvas.ts";
 import { renderBoard, teamPerspective, unrotateSquare } from "./chessboard.ts";
 import { SafeState } from "./state.ts";
 import { ChessMove, ChessSquare } from "../../common/data-types/chess.ts";
@@ -8,13 +8,13 @@ import { Point, Rect } from "../../common/shapes/types.ts";
 import { transposePoint } from "../../common/shapes/transpose.ts";
 import { inside } from "../../common/shapes/inside.ts";
 
-export function renderGeneralWindow(state: SafeState): void {
+export function renderGeneralWindow(state: SafeState, uiCanvas: CWCanvas): void {
 	const values = getKeyValues(state);
 	const genwin = rensets.generalWindow;
 
 	// Draw window
-	canvas.fillRect(values.windowRect, genwin.windowInside);
-	canvas.outlineRect(values.windowRect, genwin.windowOutline, 5);
+	uiCanvas.fillRect(values.windowRect, genwin.windowInside);
+	uiCanvas.outlineRect(values.windowRect, genwin.windowOutline, 5);
 
 	// Draw chessboard squares
 	const teamMoves = [state.briefings[BriefingName.ONE], state.briefings[BriefingName.TWO], state.briefings[BriefingName.THREE]];
@@ -29,17 +29,17 @@ export function renderGeneralWindow(state: SafeState): void {
 	renderBoard(values.boardRect, state.teamBoard, moves as ChessMove[], perspective);
 
 	// Draw buttons
-	canvas.fillRect(values.button1Rect, genwin.button);
-	canvas.fillRect(values.button2Rect, genwin.button);
-	canvas.fillRect(values.button3Rect, genwin.button);
+	uiCanvas.fillRect(values.button1Rect, genwin.button);
+	uiCanvas.fillRect(values.button2Rect, genwin.button);
+	uiCanvas.fillRect(values.button3Rect, genwin.button);
 
 	// Draw selected button
 	if (state.general.selectedButton == BriefingName.ONE) {
-		canvas.outlineRect(values.button1Rect, genwin.teamColor[state.self.team], 3);
+		uiCanvas.outlineRect(values.button1Rect, genwin.teamColor[state.self.team], 3);
 	} else if (state.general.selectedButton == BriefingName.TWO) {
-		canvas.outlineRect(values.button2Rect, genwin.teamColor[state.self.team], 3);
+		uiCanvas.outlineRect(values.button2Rect, genwin.teamColor[state.self.team], 3);
 	} else if (state.general.selectedButton == BriefingName.THREE) {
-		canvas.outlineRect(values.button3Rect, genwin.teamColor[state.self.team], 3);
+		uiCanvas.outlineRect(values.button3Rect, genwin.teamColor[state.self.team], 3);
 	}
 }
 
