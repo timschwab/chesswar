@@ -1,9 +1,15 @@
 // Get all the important dom elements
-const canvas = window.document.getElementById("canvas") as HTMLCanvasElement;
-if (canvas == null) {
+const field = window.document.getElementById("field") as HTMLCanvasElement;
+if (field == null) {
+	throw "Could not find canvas";
+}
+
+const ui = window.document.getElementById("ui") as HTMLCanvasElement;
+if (ui == null) {
 	throw "Could not find canvas";
 }
 
 export default {
-	canvas
+	field,
+	ui
 };
