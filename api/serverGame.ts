@@ -20,11 +20,13 @@ function init() {
 
 function tick(): void {
 	try {
+		console.log("starting tick");
 		const startTick = performance.now();
 		tickAll();
 		const endTick = performance.now();
 		const tickMs = endTick-startTick;
 		getState().stats.tickMs = tickMs;
+		console.log("finished tick");
 	} catch (ex) {
 		console.error("Error occurred while server ticking");
 		console.error(ex);
