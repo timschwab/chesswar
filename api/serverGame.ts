@@ -19,11 +19,16 @@ function init() {
 }
 
 function tick(): void {
-	const startTick = performance.now();
-	tickAll();
-	const endTick = performance.now();
-	const tickMs = endTick-startTick;
-	getState().stats.tickMs = tickMs;
+	try {
+		const startTick = performance.now();
+		tickAll();
+		const endTick = performance.now();
+		const tickMs = endTick-startTick;
+		getState().stats.tickMs = tickMs;
+	} catch (ex) {
+		console.error("Error occurred while server ticking");
+		console.error(ex);
+	}
 }
 
 function tickAll(): void {
