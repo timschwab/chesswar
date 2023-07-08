@@ -20,13 +20,14 @@ export function initGame() {
 
 function tick(): void {
 	try {
-		console.log("starting tick");
 		const startTick = performance.now();
 		tickAll();
 		const endTick = performance.now();
 		const tickMs = endTick-startTick;
 		getState().stats.tickMs = tickMs;
-		console.log("finished tick");
+		if (tickMs > 10) {
+			console.warn("Long tick warning: " + tickMs);
+		}
 	} catch (ex) {
 		console.error("Error occurred while server ticking");
 		console.error(ex);
