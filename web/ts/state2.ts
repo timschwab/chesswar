@@ -5,38 +5,37 @@ interface Diff<T> {
 	cur: T
 }
 
-export function makeStore<T>(initialValue: T) {
-	let previousValue: T;
-	let currentValue: T = initialValue;
-	const diffQueue: Queue<Diff<T>> = new Queue<Diff<T>>();
+export class Store<T> {
+	prevValue: T | null;
+	curValue: T;
+	diffQueue: Queue<Diff<T>>;
 
-	const getPreviousValue = function(): T {
-		return previousValue;
+	constructor(initValue: T) {
+		this.prevValue = null;
+		this.curValue = initValue;
+		this.diffQueue = new Queue<Diff<T>>();
 	}
 
-	const getCurrentValue = function(): T {
-		return currentValue;
+	prev(): T | null {
+		return this.prevValue;
 	}
 
-	const setValue = function(newValue: T): void {
-		previousValue = currentValue;
-		currentValue = newValue;
+	cur(): T {
+		return this.curValue;
+	}
+
+	set(newValue: T): void {
+		this.prevValue = this.curValue;
+		this.curValue = newValue;
 
 		const diff: Diff<T> = {
-			prev: previousValue,
-			cur: newValue
+			prev: this.prevValue,
+			cur: this.curValue
 		};
-		diffQueue.enqueue(diff);
+		this.diffQueue.enqueue(diff);
 	}
 
-	const nextDiff = function(): Diff<T> | null {
-		return diffQueue.dequeue();
+	nextDiff(): Diff<T> | null {
+		return this.diffQueue.dequeue();
 	}
-
-	return {
-		getPreviousValue,
-		getCurrentValue,
-		setValue,
-		nextDiff
-	};
 }
