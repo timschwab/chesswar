@@ -5,7 +5,7 @@ interface Diff<T> {
 	cur: T
 }
 
-export class Store<T> {
+export class DiffStore<T> {
 	prevValue: T | null;
 	curValue: T;
 	diffQueue: Queue<Diff<T>>;
@@ -16,11 +16,7 @@ export class Store<T> {
 		this.diffQueue = new Queue<Diff<T>>();
 	}
 
-	prev(): T | null {
-		return this.prevValue;
-	}
-
-	cur(): T {
+	value(): T {
 		return this.curValue;
 	}
 
