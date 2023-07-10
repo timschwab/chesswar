@@ -204,13 +204,13 @@ function renderMiniChessboard(state: SafeState) {
 	const boardRect1 = Rect(Point(10, 40), Point(10+(8*20), 40+(8*20)));
 	const perspective = teamPerspective(state.self.team);
 
-	renderBoard(boardRect1, state.teamBoard, [], perspective);
+	renderBoard(boardRect1, state.teamBoard.value(), [], perspective);
 
 	if (state.carrying.type == CarryLoadType.EMPTY) {
 		// Don't render the second board
 	} else {
 		const boardRect2 = Rect(Point(10, 40+10+(8*20)), Point(10+(8*20), 40+10+2*((8*20))));
-		let board = state.teamBoard;
+		let board = state.teamBoard.value();
 		const moves = [] as ChessMove[];
 
 		if (state.carrying.type == CarryLoadType.ORDERS) {

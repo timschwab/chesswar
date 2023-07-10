@@ -6,9 +6,9 @@ interface Diff<T> {
 }
 
 export class DiffStore<T> {
-	prevValue: T | null;
-	curValue: T;
-	diffQueue: Queue<Diff<T>>;
+	private prevValue: T | null;
+	private curValue: T;
+	private diffQueue: Queue<Diff<T>>;
 
 	constructor(initValue: T) {
 		this.prevValue = null;
@@ -20,7 +20,7 @@ export class DiffStore<T> {
 		return this.curValue;
 	}
 
-	set(newValue: T): void {
+	store(newValue: T): void {
 		this.prevValue = this.curValue;
 		this.curValue = newValue;
 
@@ -31,7 +31,10 @@ export class DiffStore<T> {
 		this.diffQueue.enqueue(diff);
 	}
 
-	nextDiff(): Diff<T> | null {
-		return this.diffQueue.dequeue();
+	*diffs(): Generator<Diff<T>, void, Diff<T>> {
+		let val;
+		while ((val = this.diffQueue.dequeue()) !== null) {
+			yield val;
+		}
 	}
 }

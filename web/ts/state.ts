@@ -5,6 +5,7 @@ import { BriefingBundle, BriefingName } from "../../common/data-types/facility.t
 import { ServerStats } from "../../common/data-types/server.ts";
 import { Rect } from "../../common/shapes/types.ts";
 import { CarryLoad, CarryLoadType } from "../../common/data-types/carryLoad.ts";
+import { DiffStore } from "./diffStore.ts";
 
 export type PlayerMap = Map<ChesswarId, ClientPlayer>;
 
@@ -23,12 +24,14 @@ export interface Stats {
 	nextPingCount: number
 }
 
+const teamBoard = new DiffStore<ChessBoard | null>(null);
+
 export interface UnsafeState {
 	count: number,
 	screen: Rect | undefined,
 	selfId: ChesswarId | undefined,
 	self: ClientPlayer | undefined,
-	teamBoard: ChessBoard | undefined,
+	teamBoard: DiffStore<ChessBoard | null>,
 	playerMap: PlayerMap | undefined,
 	briefings: BriefingBundle | undefined,
 	enemyBriefings: BriefingBundle | undefined,
@@ -45,7 +48,7 @@ export interface SafeState {
 	screen: Rect,
 	selfId: ChesswarId,
 	self: ClientPlayer,
-	teamBoard: ChessBoard,
+	teamBoard: DiffStore<ChessBoard>,
 	playerMap: PlayerMap,
 	briefings: BriefingBundle,
 	enemyBriefings: BriefingBundle,
@@ -62,7 +65,7 @@ const state: UnsafeState = {
 	screen: undefined,
 	selfId: undefined,
 	self: undefined,
-	teamBoard: undefined,
+	teamBoard,
 	playerMap: undefined,
 	briefings: undefined,
 	enemyBriefings: undefined,
@@ -103,7 +106,7 @@ export function isSafeState(maybeSafeState: UnsafeState): maybeSafeState is Safe
 		return false;
 	}
 
-	if (!maybeSafeState.teamBoard) {
+	if (maybeSafeState.teamBoard.value() == null) {
 		return false;
 	}
 

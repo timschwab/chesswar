@@ -26,7 +26,7 @@ export function renderGeneralWindow(state: SafeState, uiCanvas: CWCanvas): void 
 	moves = moves.filter(move => move != null);
 
 	const perspective = teamPerspective(state.self.team);
-	renderBoard(values.boardRect, state.teamBoard, moves as ChessMove[], perspective);
+	renderBoard(values.boardRect, state.teamBoard.value(), moves as ChessMove[], perspective);
 
 	// Draw buttons
 	uiCanvas.fillRect(values.button1Rect, genwin.button);

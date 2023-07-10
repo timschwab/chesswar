@@ -32,7 +32,8 @@ export function handleState(payload: StateMessagePayload) {
 }
 
 export function handleTeam(payload: TeamMessagePayload) {
-	state.teamBoard = payload.board;
+	state.teamBoard.store(payload.board);
+
 	state.briefings = payload.briefings;
 	state.enemyBriefings = payload.enemyBriefings;
 }
