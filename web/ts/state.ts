@@ -17,7 +17,6 @@ export interface GeneralState {
 export interface Stats {
 	show: boolean,
 	server: ServerStats,
-	clientRenderMs: number,
 	prevPingDelayMs: number
 	thisPingSend: number,
 	thisPongRecv: number,
@@ -82,7 +81,6 @@ const state: UnsafeState = {
 		server: {
 			tickMs: 0
 		},
-		clientRenderMs: 0,
 		prevPingDelayMs: 0,
 		thisPingSend: 0,
 		thisPongRecv: 0,

@@ -14,19 +14,7 @@ import { BriefingName } from "../../../common/data-types/facility.ts";
 import { isCircle, isRect } from "../../../common/shapes/is.ts";
 import { CWCamera } from "../camera.ts";
 
-function render(state: SafeState) {
-	const startRender = performance.now();
-	renderAll(state);
-	const endRender = performance.now();
-	const renderMs = endRender-startRender;
-
-	// Only once a second, so that they are easy to read
-	if (state.count % 60 == 0) {
-		state.stats.clientRenderMs = renderMs;
-	}
-}
-
-function renderAll(state: SafeState) {
+export function renderAll(state: SafeState) {
 	renderField(state);
 	renderUi(state);
 }
@@ -255,16 +243,12 @@ function renderVictory(state: SafeState, uiCanvas: CWCanvas) {
 }
 
 function renderStats(state: SafeState, uiCanvas: CWCanvas) {
-	const clientRenderMs = state.stats.clientRenderMs.toFixed(3);
-	const clientRendersPerSec = (1000 / state.stats.clientRenderMs).toFixed(0);
 	const prevPingDelayMs = state.stats.prevPingDelayMs.toFixed(0);
 	const serverTickMs = state.stats.server.tickMs.toFixed(3);
 	const serverTicksPerSec = (1000 / state.stats.server.tickMs).toFixed(0);
 	const playersOnline = String(state.playerMap.size);
 
 	const stats = [
-		`clientRenderMs: ${clientRenderMs}`,
-		`clientRendersPerSec: ${clientRendersPerSec}`,
 		`prevPingDelayMs: ${prevPingDelayMs}`,
 		`serverTickMs: ${serverTickMs}`,
 		`serverTicksPerSec: ${serverTicksPerSec}`,
@@ -277,5 +261,3 @@ function renderStats(state: SafeState, uiCanvas: CWCanvas) {
 		rect = Rect(Point(rect.topLeft.x, rect.topLeft.y+20), Point(rect.bottomRight.x, rect.bottomRight.y+20));
 	}
 }
-
-export default render;
