@@ -1,18 +1,18 @@
-import map from "../../common/map.ts";
-import { SafeState } from "./state.ts";
-import { rensets } from "../../common/settings.ts";
-import { Color } from "../../common/colors.ts";
-import { renderGeneralWindow } from "./generalWindow.ts";
-import { CWCanvas, TextAlign, fieldCanvas, uiCanvas } from "./canvas.ts";
-import { renderBoard, teamPerspective } from "./chessboard.ts";
-import { ChessMove } from "../../common/data-types/chess.ts";
-import { PlayerRole, TeamName } from "../../common/data-types/base.ts";
-import { Point, Rect } from "../../common/shapes/types.ts";
-import { clampCircleInsideRect } from "../../common/shapes/clamp.ts";
-import { CarryLoadType } from "../../common/data-types/carryLoad.ts";
-import { BriefingName } from "../../common/data-types/facility.ts";
-import { isCircle, isRect } from "../../common/shapes/is.ts";
-import { CWCamera } from "./camera.ts";
+import map from "../../../common/map.ts";
+import { SafeState } from "../state.ts";
+import { rensets } from "../../../common/settings.ts";
+import { Color } from "../../../common/colors.ts";
+import { renderGeneralWindow } from "../generalWindow.ts";
+import { CWCanvas, TextAlign, fieldCanvas, uiCanvas } from "../canvas.ts";
+import { renderBoard, teamPerspective } from "../chessboard.ts";
+import { ChessMove } from "../../../common/data-types/chess.ts";
+import { PlayerRole, TeamName } from "../../../common/data-types/base.ts";
+import { Point, Rect } from "../../../common/shapes/types.ts";
+import { clampCircleInsideRect } from "../../../common/shapes/clamp.ts";
+import { CarryLoadType } from "../../../common/data-types/carryLoad.ts";
+import { BriefingName } from "../../../common/data-types/facility.ts";
+import { isCircle, isRect } from "../../../common/shapes/is.ts";
+import { CWCamera } from "../camera.ts";
 
 function render(state: SafeState) {
 	const startRender = performance.now();
