@@ -163,7 +163,7 @@ function playerAction(player: ServerPlayer): void {
 			});
 		}
 	} else if (player.actionOption == PlayerAction.GATHER_INTEL) {
-		const load = {
+		const load: CarryLoad = {
 			type: CarryLoadType.INTEL,
 			load: structuredClone(state.realBoard)
 		};
@@ -183,7 +183,7 @@ function playerAction(player: ServerPlayer): void {
 		});
 	} else if (player.actionOption == PlayerAction.CONDUCT_ESPIONAGE) {
 		const oppositeTeam = player.team == TeamName.BLUE ? TeamName.RED : TeamName.BLUE;
-		const load = {
+		const load: CarryLoad = {
 			type: CarryLoadType.ESPIONAGE,
 			load: structuredClone(state[oppositeTeam].briefings)
 		};
