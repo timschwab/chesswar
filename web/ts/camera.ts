@@ -16,6 +16,10 @@ export class CWCamera {
 		return this.camRect;
 	}
 
+	clear() {
+		this.canvas.clear();
+	}
+
 	fillScreen(color: Color) {
 		const screenTopLeft = Point(0, 0);
 		const screenBottomRight = Point(this.camRect.width, this.camRect.height);

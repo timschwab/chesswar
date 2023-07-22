@@ -15,14 +15,14 @@ import { renderStats } from "./renderStats.ts";
 
 export function renderAll(state: SafeState) {
 	renderField(state);
-	renderUi(state);
+	//renderUi(state);
 }
 
 function renderField(state: SafeState) {
 	const fieldCamera = makeCamera(state);
 
 	renderBackground(fieldCamera);
-	renderMap(state, fieldCamera);
+	//renderMap(state, fieldCamera);
 	renderPlayers(state, fieldCamera);
 }
 

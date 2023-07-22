@@ -4,8 +4,7 @@ import { Point, Rect } from "../../../common/shapes/types.ts";
 import { CWCamera } from "../camera.ts";
 
 export function renderBackground(fieldCamera: CWCamera) {
-	// Fill in the background color
-	fieldCamera.fillScreen(rensets.background);
+	fieldCamera.clear();
 
 	// Fill in the map background color
 	const mapTopLeft = Point(0, 0);
