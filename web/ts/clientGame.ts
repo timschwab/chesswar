@@ -1,6 +1,6 @@
 import socket from "./socket.ts";
 import state, { isSafeState } from "./state.ts";
-import { renderAll } from "./render/all.ts";
+import { renderAll } from "./render/renderAll.ts";
 import { ServerMessage, ServerMessageTypes } from "../../common/message-types/server.ts";
 import { PlayerRole } from "../../common/data-types/base.ts";
 import { listenClick } from "./inputs.ts";
