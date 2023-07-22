@@ -28,12 +28,7 @@ function render(state: SafeState) {
 
 function renderAll(state: SafeState) {
 	renderField(state);
-
-	// Easiest way to do this right now
-	if (state.uiNeedsRender) {
-		renderUi(state);
-		state.uiNeedsRender = false;
-	}
+	renderUi(state);
 }
 
 function renderField(state: SafeState) {

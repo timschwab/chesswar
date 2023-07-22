@@ -47,11 +47,9 @@ function receiveClick(location: Point): void {
 	const button = clickedButton(state, location);
 	const square = clickedSquare(state, location);
 	if (button != null) {
-		state.uiNeedsRender = true;
 		state.general.selectedButton = button;
 		state.general.selectedFrom = null;
 	} else if (state.general.selectedButton != null && square != null) {
-		state.uiNeedsRender = true;
 		if (state.general.selectedFrom) {
 			// Send orders
 			const payload = {
