@@ -21,11 +21,19 @@ export interface Rect {
 	readonly width: number;
 	readonly height: number;
 	readonly center: Point;
+	readonly left: number;
+	readonly right: number;
+	readonly top: number;
+	readonly bottom: number;
 }
 export function Rect(topLeft: Point, bottomRight: Point): Rect {
 	return {
 		topLeft,
 		bottomRight,
+		left: topLeft.x,
+		right: bottomRight.x,
+		top: topLeft.y,
+		bottom: bottomRight.y,
 		width: bottomRight.x - topLeft.x,
 		height: bottomRight.y - topLeft.y,
 		center: Point((topLeft.x+bottomRight.x)/2, (topLeft.y+bottomRight.y)/2)

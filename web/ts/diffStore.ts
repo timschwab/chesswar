@@ -1,37 +1,35 @@
 import { Queue } from "../../common/data-structures/queue.ts";
 
-interface Diff<T> {
-	prev: T,
+export interface Diff<T> {
+	prev: T | null,
 	cur: T
 }
 
 export class DiffStore<T> {
-	private prevValue: T | null;
-	private curValue: T;
+	private curValue: T | null;
 	private diffQueue: Queue<Diff<T>>;
 
-	constructor(initValue: T) {
-		this.prevValue = null;
-		this.curValue = initValue;
+	constructor() {
+		this.curValue = null;
 		this.diffQueue = new Queue<Diff<T>>();
 	}
 
-	value(): T {
+	value(): T | null {
 		return this.curValue;
 	}
 
 	store(newValue: T): void {
-		this.prevValue = this.curValue;
+		const prevValue = this.curValue;
 		this.curValue = newValue;
 
 		const diff: Diff<T> = {
-			prev: this.prevValue,
+			prev: prevValue,
 			cur: this.curValue
 		};
 		this.diffQueue.enqueue(diff);
 	}
 
-	*diffs(): Generator<Diff<T>, void, Diff<T>> {
+	*diffs(): Generator<Diff<T>, void, void> {
 		let val;
 		while ((val = this.diffQueue.dequeue()) !== null) {
 			yield val;

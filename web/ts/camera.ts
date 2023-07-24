@@ -17,7 +17,7 @@ export class CWCamera {
 	}
 
 	clear() {
-		this.canvas.clear();
+		this.canvas.clearAll();
 	}
 
 	fillScreen(color: Color) {

@@ -3,7 +3,7 @@ import { ChessBoard, ChessSquare } from "../../common/data-types/chess.ts";
 import { ChesswarId, Victory } from "../../common/data-types/base.ts";
 import { BriefingBundle, BriefingName } from "../../common/data-types/facility.ts";
 import { ServerStats } from "../../common/data-types/server.ts";
-import { Rect } from "../../common/shapes/types.ts";
+import { Point, Rect } from "../../common/shapes/types.ts";
 import { CarryLoad, CarryLoadType } from "../../common/data-types/carryLoad.ts";
 import { DiffStore } from "./diffStore.ts";
 
@@ -23,13 +23,15 @@ export interface Stats {
 	nextPingCount: number
 }
 
-const teamBoard = new DiffStore<ChessBoard | null>(null);
+const teamBoard = new DiffStore<ChessBoard | null>();
+const selfPosition = new DiffStore<Point | null>();
 
 export interface UnsafeState {
 	count: number,
 	screen: Rect | undefined,
 	selfId: ChesswarId | undefined,
 	self: ClientPlayer | undefined,
+	selfPosition: DiffStore<Point | null>,
 	teamBoard: DiffStore<ChessBoard | null>,
 	playerMap: PlayerMap | undefined,
 	briefings: BriefingBundle | undefined,
@@ -46,6 +48,7 @@ export interface SafeState {
 	screen: Rect,
 	selfId: ChesswarId,
 	self: ClientPlayer,
+	selfPosition: DiffStore<Point>,
 	teamBoard: DiffStore<ChessBoard>,
 	playerMap: PlayerMap,
 	briefings: BriefingBundle,
@@ -62,6 +65,7 @@ const state: UnsafeState = {
 	screen: undefined,
 	selfId: undefined,
 	self: undefined,
+	selfPosition,
 	teamBoard,
 	playerMap: undefined,
 	briefings: undefined,
@@ -98,6 +102,10 @@ export function isSafeState(maybeSafeState: UnsafeState): maybeSafeState is Safe
 	}
 
 	if (!maybeSafeState.self) {
+		return false;
+	}
+
+	if (maybeSafeState.selfPosition.value() == null) {
 		return false;
 	}
 

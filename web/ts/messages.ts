@@ -25,6 +25,7 @@ export function handleState(payload: StateMessagePayload) {
 		}
 
 		state.self = maybeSelf;
+		state.selfPosition.store(state.self.position.center);
 	}
 
 	state.victory = payload.victory;

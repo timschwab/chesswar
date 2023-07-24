@@ -3,6 +3,7 @@ import { Circle, Point, Rect } from "./shapes/types.ts";
 
 const width = 6000;
 const height = 3000;
+const rect = Rect(Point(0, 0), Point(width, height));
 
 const middleX = width/2;
 const middleY = height/2;
@@ -60,6 +61,7 @@ const battlefield = Circle(middle, 50);
 const map = {
 	width,
 	height,
+	rect,
 	starts: {
 		[TeamName.BLUE]: [blueStart1, blueStart2, blueStart3],
 		[TeamName.RED]: [redStart1, redStart2, redStart3]

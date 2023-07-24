@@ -1,6 +1,6 @@
 import { SafeState } from "../state.ts";
 import { renderGeneralWindow } from "../generalWindow.ts";
-import { fieldCanvas, uiCanvas } from "../canvas.ts";
+import { CWCanvas, fieldCanvas, uiCanvas } from "../canvas.ts";
 import { PlayerRole } from "../../../common/data-types/base.ts";
 import { Point, Rect } from "../../../common/shapes/types.ts";
 import { CWCamera } from "../camera.ts";
@@ -19,15 +19,19 @@ export function renderAll(state: SafeState) {
 }
 
 function renderField(state: SafeState) {
-	const fieldCamera = makeCamera(state);
+	for (const diff of state.selfPosition.diffs()) {
+		renderBackground(state, diff);
+	}
+	// const fieldCamera = makeCamera(state);
+	// state.self.position.center;
 
-	renderBackground(fieldCamera);
+	// renderBackground(fieldCamera);
 	//renderMap(state, fieldCamera);
-	renderPlayers(state, fieldCamera);
+	//renderPlayers(state, fieldCamera);
 }
 
 function renderUi(state: SafeState) {
-	uiCanvas.clear();
+	uiCanvas.clearAll();
 
 	renderRole(state, uiCanvas);
 	if (state.self.role == PlayerRole.GENERAL) {
