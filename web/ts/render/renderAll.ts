@@ -25,7 +25,6 @@ function renderField(state: SafeState) {
 	// const fieldCamera = makeCamera(state);
 	// state.self.position.center;
 
-	// renderBackground(fieldCamera);
 	//renderMap(state, fieldCamera);
 	//renderPlayers(state, fieldCamera);
 }

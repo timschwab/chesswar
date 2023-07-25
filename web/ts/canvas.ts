@@ -28,12 +28,9 @@ export class CWCanvas {
 	}
 
 	clearRect(rect: Rect) {
-		const x = Math.floor(rect.left);
-		const y = Math.floor(rect.top);
-		const w = Math.ceil(rect.width);
-		const h = Math.ceil(rect.height);
-		//this.context.clearRect(x, y, w, h);
-		this.context.clearRect(rect.left, rect.top, rect.width, rect.height);
+		if (rect.width > 0 && rect.height > 0) {
+			this.context.clearRect(rect.left, rect.top, rect.width, rect.height);
+		}
 	}
 
 	clearAll() {
@@ -70,13 +67,10 @@ export class CWCanvas {
 	}
 
 	fillRect(rect: Rect, color: Color) {
-		this.context.fillStyle = color;
-		const x = Math.floor(rect.left);
-		const y = Math.floor(rect.top);
-		const w = Math.ceil(rect.width);
-		const h = Math.ceil(rect.height);
-		//this.context.fillRect(x, y, w, h);
-		this.context.fillRect(rect.left, rect.top, rect.width, rect.height);
+		if (rect.width > 0 && rect.height > 0) {
+			this.context.fillStyle = color;
+			this.context.fillRect(rect.left, rect.top, rect.width, rect.height);
+		}
 	}
 
 	fillCircle(circle: Circle, color: Color) {
