@@ -12,11 +12,3 @@ canvas {
 	left: 0;
 	top: 0;
 }
-
-#field {
-	z-index: 0;
-}
-
-#ui {
-	z-index: 1;
-}

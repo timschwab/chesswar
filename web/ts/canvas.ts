@@ -95,5 +95,5 @@ export class CWCanvas {
 	}
 }
 
-export const fieldCanvas = new CWCanvas(dom.field);
-export const uiCanvas = new CWCanvas(dom.ui);
+export const fieldCanvas = new CWCanvas(dom.FIELD);
+export const uiCanvas = new CWCanvas(dom.UI);
