@@ -1,7 +1,7 @@
 import map from "../../../common/map.ts";
 import { rensets } from "../../../common/settings.ts";
 import { Point, Rect } from "../../../common/shapes/types.ts";
-import canvas from "../canvas.ts";
+import canvas from "../canvas/canvas.ts";
 import { Diff } from "../diffStore.ts";
 import { SafeState } from "../state.ts";
 

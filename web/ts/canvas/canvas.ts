@@ -1,4 +1,4 @@
-import { objectMap } from "../../common/typescript-utils.ts";
+import { objectMap } from "../../../common/typescript-utils.ts";
 import { CWCanvas } from "./canvasTypes.ts";
 import dom from "./dom.ts";
 

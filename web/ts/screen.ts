@@ -1,5 +1,5 @@
 import { Point, Rect } from "../../common/shapes/types.ts";
-import dom from "./dom.ts";
+import dom from "./canvas/dom.ts";
 import state from "./state.ts";
 
 export function initScreen() {

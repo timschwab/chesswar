@@ -2,7 +2,7 @@ import { TeamName } from "../../common/data-types/base.ts";
 import { rensets } from "../../common/settings.ts";
 import { ChessBoard, ChessMove, ChessPerspective, ChessPiece, ChessSquare } from "../../common/data-types/chess.ts";
 import { Circle, Point, Rect } from "../../common/shapes/types.ts";
-import canvas from "./canvas.ts";
+import canvas from "./canvas/canvas.ts";
 
 export function teamPerspective(team: TeamName): ChessPerspective {
 	if (team == TeamName.BLUE) {

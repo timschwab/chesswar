@@ -6,7 +6,7 @@ import { BriefingName } from "../../common/data-types/facility.ts";
 import { Point, Rect } from "../../common/shapes/types.ts";
 import { transposePoint } from "../../common/shapes/transpose.ts";
 import { inside } from "../../common/shapes/inside.ts";
-import { CWCanvas } from "./canvasTypes.ts";
+import { CWCanvas } from "./canvas/canvasTypes.ts";
 
 export function renderGeneralWindow(state: SafeState, uiCanvas: CWCanvas): void {
 	const values = getKeyValues(state);

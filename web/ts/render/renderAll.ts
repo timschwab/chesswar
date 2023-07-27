@@ -11,7 +11,7 @@ import { renderMiniChessboard } from "./renderMiniChessboard.ts";
 import { renderActionOption } from "./renderActionOption.ts";
 import { renderVictory } from "./renderVictory.ts";
 import { renderStats } from "./renderStats.ts";
-import canvas from "../canvas.ts";
+import canvas from "../canvas/canvas.ts";
 
 export function renderAll(state: SafeState) {
 	renderField(state);

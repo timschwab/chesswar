@@ -1,7 +1,7 @@
-import { Color } from "../../common/colors.ts";
-import { transposePoint } from "../../common/shapes/transpose.ts";
-import { Circle, Point, Rect, Vector } from "../../common/shapes/types.ts";
-import { TAU_EIGHTH, multiply, pointToVector, vectorToPoint } from "../../common/shapes/vector.ts";
+import { Color } from "../../../common/colors.ts";
+import { transposePoint } from "../../../common/shapes/transpose.ts";
+import { Circle, Point, Rect, Vector } from "../../../common/shapes/types.ts";
+import { TAU_EIGHTH, multiply, pointToVector, vectorToPoint } from "../../../common/shapes/vector.ts";
 
 export enum TextAlign {
 	LEFT = "left",

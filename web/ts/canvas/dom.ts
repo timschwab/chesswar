@@ -1,4 +1,4 @@
-import { objectMap } from "../../common/typescript-utils.ts";
+import { objectMap } from "../../../common/typescript-utils.ts";
 
 enum CanvasName { FIELD, UI }
 
