@@ -11,7 +11,7 @@ import { renderMiniChessboard } from "./renderMiniChessboard.ts";
 import { renderActionOption } from "./renderActionOption.ts";
 import { renderVictory } from "./renderVictory.ts";
 import { renderStats } from "./renderStats.ts";
-import { fieldCanvas, uiCanvas } from "../canvasInstances.ts";
+import canvas from "../canvas.ts";
 
 export function renderAll(state: SafeState) {
 	renderField(state);
@@ -30,20 +30,20 @@ function renderField(state: SafeState) {
 }
 
 function renderUi(state: SafeState) {
-	uiCanvas.clearAll();
+	canvas.UI.clearAll();
 
-	renderRole(state, uiCanvas);
+	renderRole(state, canvas.UI);
 	if (state.self.role == PlayerRole.GENERAL) {
-		renderGeneralWindow(state, uiCanvas);
+		renderGeneralWindow(state, canvas.UI);
 	} else {
 		renderMiniChessboard(state);
 	}
-	renderActionOption(state, uiCanvas);
+	renderActionOption(state, canvas.UI);
 
-	renderVictory(state, uiCanvas);
+	renderVictory(state, canvas.UI);
 
 	if (state.stats.show) {
-		renderStats(state, uiCanvas);
+		renderStats(state, canvas.UI);
 	}
 }
 
@@ -60,5 +60,5 @@ function makeCamera(state: SafeState): CWCamera {
 
 	const cameraRect = Rect(topLeft, bottomRight);
 
-	return new CWCamera(fieldCanvas, cameraRect);
+	return new CWCamera(canvas.FIELD, cameraRect);
 }

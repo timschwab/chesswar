@@ -2,7 +2,7 @@ import { TeamName } from "../../common/data-types/base.ts";
 import { rensets } from "../../common/settings.ts";
 import { ChessBoard, ChessMove, ChessPerspective, ChessPiece, ChessSquare } from "../../common/data-types/chess.ts";
 import { Circle, Point, Rect } from "../../common/shapes/types.ts";
-import { uiCanvas } from "./canvasInstances.ts";
+import canvas from "./canvas.ts";
 
 export function teamPerspective(team: TeamName): ChessPerspective {
 	if (team == TeamName.BLUE) {
@@ -66,7 +66,7 @@ export function renderBoard(boardRect: Rect, board: ChessBoard, moves: ChessMove
 	}
 
 	// Outline them
-	uiCanvas.outlineRect(boardRect, rensets.generalWindow.boardOutline, 2);
+	canvas.UI.outlineRect(boardRect, rensets.generalWindow.boardOutline, 2);
 }
 
 function renderMove(boardRect: Rect, squareSize: number, move: ChessMove, perspective: ChessPerspective) {
@@ -77,9 +77,9 @@ function renderMove(boardRect: Rect, squareSize: number, move: ChessMove, perspe
 
 	const fromRect = getSquareValues(boardRect.topLeft, squareSize, displayFrom).squareRect;
 	const toRect = getSquareValues(boardRect.topLeft, squareSize, displayTo).squareRect;
-	uiCanvas.outlineRect(fromRect, color, 2);
-	uiCanvas.outlineRect(toRect, color, 2);
-	uiCanvas.arrow(fromRect.center, toRect.center, color, 2);
+	canvas.UI.outlineRect(fromRect, color, 2);
+	canvas.UI.outlineRect(toRect, color, 2);
+	canvas.UI.arrow(fromRect.center, toRect.center, color, 2);
 }
 
 function renderSquare(board: ChessBoard, topLeft: Point, squareSize: number, position: ChessSquare, perspective: ChessPerspective) {
@@ -87,7 +87,7 @@ function renderSquare(board: ChessBoard, topLeft: Point, squareSize: number, pos
 	const displayPosition = rotateSquare(position, perspective);
 	const {squareRect, color} = getSquareValues(topLeft, squareSize, displayPosition);
 
-	uiCanvas.fillRect(squareRect, color);
+	canvas.UI.fillRect(squareRect, color);
 
 	const cell = board[row][col];
 	if (cell) {
@@ -133,15 +133,15 @@ function renderKing(topLeft: Point, width: number, team: TeamName) {
 
 	const baseTopLeft = Point(middleX-(width*3/8), middleY);
 	const baseBottomRight = Point(middleX+(width*3/8), middleY+(width*3/8));
-	uiCanvas.fillRect(Rect(baseTopLeft, baseBottomRight), color);
+	canvas.UI.fillRect(Rect(baseTopLeft, baseBottomRight), color);
 
 	const crossVerticalTopLeft = Point(middleX-(width/16), middleY-(width*3/8));
 	const crossVerticalBottomRight = Point(middleX+(width/16), middleY+(width/8));
-	uiCanvas.fillRect(Rect(crossVerticalTopLeft, crossVerticalBottomRight), color);
+	canvas.UI.fillRect(Rect(crossVerticalTopLeft, crossVerticalBottomRight), color);
 
 	const crossHorizontalTopLeft = Point(middleX-(width*3/16), middleY-(width*2/8));
 	const crossHorizontalBottomRight = Point(middleX+(width*3/16), middleY-(width*1/8));
-	uiCanvas.fillRect(Rect(crossHorizontalTopLeft, crossHorizontalBottomRight), color);
+	canvas.UI.fillRect(Rect(crossHorizontalTopLeft, crossHorizontalBottomRight), color);
 }
 
 function renderQueen(topLeft: Point, width: number, team: TeamName) {
@@ -154,28 +154,28 @@ function renderQueen(topLeft: Point, width: number, team: TeamName) {
 
 	const baseTopLeft = Point(middleX-(width*3/8), middleY+(width/12));
 	const baseBottomRight = Point(middleX+(width*3/8), middleY+(width*3/8));
-	uiCanvas.fillRect(Rect(baseTopLeft, baseBottomRight), color);
+	canvas.UI.fillRect(Rect(baseTopLeft, baseBottomRight), color);
 
 	const leftTopLeft = Point(middleX-(width*3/8), middleY-(width*3/16));
 	const leftBottomRight = Point(middleX-(width/4), middleY+(width*3/8));
-	uiCanvas.fillRect(Rect(leftTopLeft, leftBottomRight), color);
+	canvas.UI.fillRect(Rect(leftTopLeft, leftBottomRight), color);
 	
 	const centerTopLeft = Point(middleX-(width/16), middleY-(width*3/16));
 	const centerBottomRight = Point(middleX+(width/16), middleY+(width*3/8));
-	uiCanvas.fillRect(Rect(centerTopLeft, centerBottomRight), color);
+	canvas.UI.fillRect(Rect(centerTopLeft, centerBottomRight), color);
 
 	const rightTopLeft = Point(middleX+(width/4), middleY-(width*3/16));
 	const rightBottomRight = Point(middleX+(width*3/8), middleY+(width*3/8));
-	uiCanvas.fillRect(Rect(rightTopLeft, rightBottomRight), color);
+	canvas.UI.fillRect(Rect(rightTopLeft, rightBottomRight), color);
 
 	const jewelLeft = Circle(Point(middleX-(width*5/16), middleY-(width/3)), width/16);
-	uiCanvas.fillCircle(jewelLeft, color);
+	canvas.UI.fillCircle(jewelLeft, color);
 
 	const jewelCenter = Circle(Point(middleX, middleY-(width/3)), width/16);
-	uiCanvas.fillCircle(jewelCenter, color);
+	canvas.UI.fillCircle(jewelCenter, color);
 
 	const jewelRight = Circle(Point(middleX+(width*5/16), middleY-(width/3)), width/16);
-	uiCanvas.fillCircle(jewelRight, color);
+	canvas.UI.fillCircle(jewelRight, color);
 }
 
 function renderRook(topLeft: Point, width: number, team: TeamName) {
@@ -188,19 +188,19 @@ function renderRook(topLeft: Point, width: number, team: TeamName) {
 
 	const baseTopLeft = Point(middleX-(width/3), middleY-(width/4));
 	const baseBottomRight = Point(middleX+(width/3), middleY+(width/3));
-	uiCanvas.fillRect(Rect(baseTopLeft, baseBottomRight), color);
+	canvas.UI.fillRect(Rect(baseTopLeft, baseBottomRight), color);
 	
 	const leftTopLeft = Point(middleX-(width/3), middleY-(width*3/8));
 	const leftBottomRight = Point(middleX-(width/6), middleY-(width/12));
-	uiCanvas.fillRect(Rect(leftTopLeft, leftBottomRight), color);
+	canvas.UI.fillRect(Rect(leftTopLeft, leftBottomRight), color);
 	
 	const centerTopLeft = Point(middleX-(width/12), middleY-(width*3/8));
 	const centerBottomRight = Point(middleX+(width/12), middleY-(width/12));
-	uiCanvas.fillRect(Rect(centerTopLeft, centerBottomRight), color);
+	canvas.UI.fillRect(Rect(centerTopLeft, centerBottomRight), color);
 
 	const rightTopLeft = Point(middleX+(width/6), middleY-(width*3/8));
 	const rightBottomRight = Point(middleX+(width/3), middleY-(width/12));
-	uiCanvas.fillRect(Rect(rightTopLeft, rightBottomRight), color);
+	canvas.UI.fillRect(Rect(rightTopLeft, rightBottomRight), color);
 }
 
 function renderBishop(topLeft: Point, width: number, team: TeamName) {
@@ -212,14 +212,14 @@ function renderBishop(topLeft: Point, width: number, team: TeamName) {
 	const middleY = topLeftY+(width/2);
 
 	const body = Circle(Point(middleX, middleY), width*(3/16));
-	uiCanvas.fillCircle(body, color);
+	canvas.UI.fillCircle(body, color);
 
 	const hat = Circle(Point(middleX, middleY - (width/4)), width/16);
-	uiCanvas.fillCircle(hat, color);
+	canvas.UI.fillCircle(hat, color);
 
 	const baseTopLeft = Point(middleX-(width/3), middleY+(width/8));
 	const baseBottomRight = Point(middleX+(width/3), middleY+(width/3));
-	uiCanvas.fillRect(Rect(baseTopLeft, baseBottomRight), color);
+	canvas.UI.fillRect(Rect(baseTopLeft, baseBottomRight), color);
 }
 
 function renderKnight(topLeft: Point, width: number, team: TeamName) {
@@ -232,22 +232,22 @@ function renderKnight(topLeft: Point, width: number, team: TeamName) {
 	
 	const baseTopLeft = Point(middleX-(width/3), middleY+(width/8));
 	const baseBottomRight = Point(middleX+(width/3), middleY+(width/3));
-	uiCanvas.fillRect(Rect(baseTopLeft, baseBottomRight), color);
+	canvas.UI.fillRect(Rect(baseTopLeft, baseBottomRight), color);
 
 	const bodyTopLeft = Point(middleX-(width/3), middleY-(width/3));
 	const bodyBottomRight = Point(middleX-(width/8), middleY+(width/3));
-	uiCanvas.fillRect(Rect(bodyTopLeft, bodyBottomRight), color);
+	canvas.UI.fillRect(Rect(bodyTopLeft, bodyBottomRight), color);
 
 	const neckTopLeft = Point(middleX-(width/3), middleY-(width/3));
 	const neckBottomRight = Point(middleX+(width/3), middleY-(width/8));
-	uiCanvas.fillRect(Rect(neckTopLeft, neckBottomRight), color);
+	canvas.UI.fillRect(Rect(neckTopLeft, neckBottomRight), color);
 
 	const noseTopLeft = Point(middleX+(width/8), middleY-(width/3));
 	const noseBottomRight = Point(middleX+(width/3), middleY);
-	uiCanvas.fillRect(Rect(noseTopLeft, noseBottomRight), color);
+	canvas.UI.fillRect(Rect(noseTopLeft, noseBottomRight), color);
 
 	const ear = Circle(Point(middleX-(width/12), middleY-(width/3)), width/12);
-	uiCanvas.fillCircle(ear, color);
+	canvas.UI.fillCircle(ear, color);
 }
 
 function renderPawn(topLeft: Point, width: number, team: TeamName) {
@@ -259,13 +259,13 @@ function renderPawn(topLeft: Point, width: number, team: TeamName) {
 	const middleY = topLeftY+(width/2);
 
 	const topCircle = Circle(Point(middleX, middleY - (width/6)), width/8);
-	uiCanvas.fillCircle(topCircle, color);
+	canvas.UI.fillCircle(topCircle, color);
 
 	const stemTopLeft = Point(middleX-(width/16), middleY - (width/6));
 	const stemBottomRight = Point(middleX+(width/16), middleY + (width/4));
-	uiCanvas.fillRect(Rect(stemTopLeft, stemBottomRight), color);
+	canvas.UI.fillRect(Rect(stemTopLeft, stemBottomRight), color);
 
 	const baseTopLeft = Point(middleX-(width/3), middleY+(width/8));
 	const baseBottomRight = Point(middleX+(width/3), middleY+(width/3));
-	uiCanvas.fillRect(Rect(baseTopLeft, baseBottomRight), color);
+	canvas.UI.fillRect(Rect(baseTopLeft, baseBottomRight), color);
 }

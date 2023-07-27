@@ -4,7 +4,7 @@ enum CanvasName { FIELD, UI }
 
 const gameRoot = window.document.getElementById("game");
 
-function createCanvas(_key: string, index: number): HTMLCanvasElement {
+function createCanvas(_key: unknown, _value: unknown, index: number): HTMLCanvasElement {
 	if (gameRoot == null) {
 		throw "Could not find game div";
 	}
@@ -15,6 +15,5 @@ function createCanvas(_key: string, index: number): HTMLCanvasElement {
 	return canvas;
 }
 
-const canvasObject = objectMap<keyof typeof CanvasName, HTMLCanvasElement>(CanvasName, createCanvas);
-
-export default canvasObject;
+const domObject = objectMap<keyof typeof CanvasName, unknown, HTMLCanvasElement>(CanvasName, createCanvas);
+export default domObject;
