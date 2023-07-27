@@ -1,5 +1,6 @@
 enum CanvasNameSource {
 	FIELD_BACKGROUND,
+	FIELD_GRID,
 	FIELD,
 	UI
 }

@@ -14,6 +14,15 @@ export function Point(x: number, y: number): Point {
 	return {x, y};
 }
 
+export interface Line {
+	readonly start: Point,
+	readonly finish: Point
+}
+
+export function Line(start: Point, finish: Point): Line {
+	return {start, finish};
+}
+
 // Note that topLeft and bottomRight are named correctly by convention, and this is not enforced
 export interface Rect {
 	readonly topLeft: Point;

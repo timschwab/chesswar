@@ -4,6 +4,7 @@ import { Point, Rect } from "../../../common/shapes/types.ts";
 import canvas from "../canvas/canvas.ts";
 import { Diff } from "../diffStore.ts";
 import { SafeState } from "../state.ts";
+import { cameraTopLeft } from "./renderUtils.ts";
 
 const background = canvas.FIELD_BACKGROUND;
 
@@ -17,18 +18,18 @@ export function renderBackground(state: SafeState, posDiff: Diff<Point>) {
 
 function newBackground(state: SafeState, pos: Point) {
 	const cameraTL = cameraTopLeft(state.screen, pos);
-	const transposedRect = transpose(map.rect, cameraTL);
-	background.fillRect(transposedRect, rensets.grid.background);
+	const transposedMap = transpose(map.rect, cameraTL);
+	background.fillRect(transposedMap, rensets.grid.background);
 }
 
 function backgroundDiff(state: SafeState, prev: Point, cur: Point) {
 	const prevCameraTL = cameraTopLeft(state.screen, prev);
-	const prevTransposedRect = transpose(map.rect, prevCameraTL);
+	const prevTransposedMap = transpose(map.rect, prevCameraTL);
 
 	const curCameraTL = cameraTopLeft(state.screen, cur);
-	const curTransposedRect = transpose(map.rect, curCameraTL);
+	const curTransposedMap = transpose(map.rect, curCameraTL);
 
-	const overlap = findOverlap(prevTransposedRect, curTransposedRect);
+	const overlap = findOverlap(prevTransposedMap, curTransposedMap);
 
 	overlap.first.left && background.clearRect(overlap.first.left);
 	overlap.first.right && background.clearRect(overlap.first.right);
@@ -39,11 +40,6 @@ function backgroundDiff(state: SafeState, prev: Point, cur: Point) {
 	overlap.second.right && background.fillRect(overlap.second.right, rensets.grid.background);
 	overlap.second.top && background.fillRect(overlap.second.top, rensets.grid.background);
 	overlap.second.bottom && background.fillRect(overlap.second.bottom, rensets.grid.background);
-}
-
-// Find where on the map the top left of the camera hits
-function cameraTopLeft(screen: Rect, pos: Point) {
-	return Point(Math.floor(pos.x - screen.width / 2), Math.floor(pos.y - screen.height / 2));
 }
 
 function transpose(mapRect: Rect, cameraTL: Point) {

@@ -12,6 +12,7 @@ import { renderActionOption } from "./renderActionOption.ts";
 import { renderVictory } from "./renderVictory.ts";
 import { renderStats } from "./renderStats.ts";
 import canvas from "../canvas/canvas.ts";
+import { renderGrid } from "./renderGrid.ts";
 
 export function renderAll(state: SafeState) {
 	renderField(state);
@@ -21,6 +22,7 @@ export function renderAll(state: SafeState) {
 function renderField(state: SafeState) {
 	for (const diff of state.selfPosition.diffs()) {
 		renderBackground(state, diff);
+		renderGrid(state, diff);
 	}
 	// const fieldCamera = makeCamera(state);
 	// state.self.position.center;
