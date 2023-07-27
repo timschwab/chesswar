@@ -5,6 +5,8 @@ import canvas from "../canvas/canvas.ts";
 import { Diff } from "../diffStore.ts";
 import { SafeState } from "../state.ts";
 
+const background = canvas.FIELD_BACKGROUND;
+
 export function renderBackground(state: SafeState, posDiff: Diff<Point>) {
 	if (posDiff.prev == null) {
 		newBackground(state, Point(Math.floor(posDiff.cur.x), Math.floor(posDiff.cur.y)));
@@ -16,7 +18,7 @@ export function renderBackground(state: SafeState, posDiff: Diff<Point>) {
 function newBackground(state: SafeState, pos: Point) {
 	const cameraTL = cameraTopLeft(state.screen, pos);
 	const transposedRect = transpose(map.rect, cameraTL);
-	canvas.FIELD.fillRect(transposedRect, rensets.grid.background);
+	background.fillRect(transposedRect, rensets.grid.background);
 }
 
 function backgroundDiff(state: SafeState, prev: Point, cur: Point) {
@@ -28,15 +30,15 @@ function backgroundDiff(state: SafeState, prev: Point, cur: Point) {
 
 	const overlap = findOverlap(prevTransposedRect, curTransposedRect);
 
-	overlap.first.left && canvas.FIELD.clearRect(overlap.first.left);
-	overlap.first.right && canvas.FIELD.clearRect(overlap.first.right);
-	overlap.first.top && canvas.FIELD.clearRect(overlap.first.top);
-	overlap.first.bottom && canvas.FIELD.clearRect(overlap.first.bottom);
+	overlap.first.left && background.clearRect(overlap.first.left);
+	overlap.first.right && background.clearRect(overlap.first.right);
+	overlap.first.top && background.clearRect(overlap.first.top);
+	overlap.first.bottom && background.clearRect(overlap.first.bottom);
 
-	overlap.second.left && canvas.FIELD.fillRect(overlap.second.left, rensets.grid.background);
-	overlap.second.right && canvas.FIELD.fillRect(overlap.second.right, rensets.grid.background);
-	overlap.second.top && canvas.FIELD.fillRect(overlap.second.top, rensets.grid.background);
-	overlap.second.bottom && canvas.FIELD.fillRect(overlap.second.bottom, rensets.grid.background);
+	overlap.second.left && background.fillRect(overlap.second.left, rensets.grid.background);
+	overlap.second.right && background.fillRect(overlap.second.right, rensets.grid.background);
+	overlap.second.top && background.fillRect(overlap.second.top, rensets.grid.background);
+	overlap.second.bottom && background.fillRect(overlap.second.bottom, rensets.grid.background);
 }
 
 // Find where on the map the top left of the camera hits
