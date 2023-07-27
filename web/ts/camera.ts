@@ -1,7 +1,7 @@
 import { Color } from "../../common/colors.ts";
 import { transposeCircle, transposePoint, transposeRect } from "../../common/shapes/transpose.ts";
 import { Circle, Point, Rect } from "../../common/shapes/types.ts";
-import { CWCanvas, TextAlign } from "./canvas.ts";
+import { CWCanvas, TextAlign } from "./canvasTypes.ts";
 
 export class CWCamera {
 	private camRect: Rect;

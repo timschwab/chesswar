@@ -1,4 +1,3 @@
-import { CWCanvas } from "./canvas.ts";
 import { renderBoard, teamPerspective, unrotateSquare } from "./chessboard.ts";
 import { SafeState } from "./state.ts";
 import { ChessMove, ChessSquare } from "../../common/data-types/chess.ts";
@@ -7,6 +6,7 @@ import { BriefingName } from "../../common/data-types/facility.ts";
 import { Point, Rect } from "../../common/shapes/types.ts";
 import { transposePoint } from "../../common/shapes/transpose.ts";
 import { inside } from "../../common/shapes/inside.ts";
+import { CWCanvas } from "./canvasTypes.ts";
 
 export function renderGeneralWindow(state: SafeState, uiCanvas: CWCanvas): void {
 	const values = getKeyValues(state);
@@ -26,7 +26,7 @@ export function renderGeneralWindow(state: SafeState, uiCanvas: CWCanvas): void 
 	moves = moves.filter(move => move != null);
 
 	const perspective = teamPerspective(state.self.team);
-	renderBoard(values.boardRect, state.teamBoard.value(), moves as ChessMove[], perspective);
+	// renderBoard(values.boardRect, state.teamBoard.value(), moves as ChessMove[], perspective);
 
 	// Draw buttons
 	uiCanvas.fillRect(values.button1Rect, genwin.button);

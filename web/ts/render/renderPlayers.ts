@@ -4,7 +4,7 @@ import { rensets } from "../../../common/settings.ts";
 import { clampCircleInsideRect } from "../../../common/shapes/clamp.ts";
 import { Point, Rect } from "../../../common/shapes/types.ts";
 import { CWCamera } from "../camera.ts";
-import { TextAlign } from "../canvas.ts";
+import { TextAlign } from "../canvasTypes.ts";
 import { SafeState } from "../state.ts";
 
 export function renderPlayers(state: SafeState, fieldCamera: CWCamera) {

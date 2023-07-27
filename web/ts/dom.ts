@@ -1,10 +1,10 @@
-enum CanvasName { FIELD, UI }
+import { objectMap } from "../../common/typescript-utils.ts";
 
-type CanvasKey = keyof typeof CanvasName;
+enum CanvasName { FIELD, UI }
 
 const gameRoot = window.document.getElementById("game");
 
-function createCanvas(index: number): HTMLCanvasElement {
+function createCanvas(_key: string, index: number): HTMLCanvasElement {
 	if (gameRoot == null) {
 		throw "Could not find game div";
 	}
@@ -15,12 +15,6 @@ function createCanvas(index: number): HTMLCanvasElement {
 	return canvas;
 }
 
-// Very annoying how much you have to hand-hold TypeScript here
-// But couldn't find a better way
-const canvasKeys = Object.keys(CanvasName) as CanvasKey[];
-const canvasEntries = canvasKeys.map((name, index) => [name, createCanvas(index)] as [CanvasKey, HTMLCanvasElement]);
-const canvasObject = Object.fromEntries(canvasEntries) as {
-    [k in CanvasKey]: HTMLCanvasElement;
-};
+const canvasObject = objectMap<keyof typeof CanvasName, HTMLCanvasElement>(CanvasName, createCanvas);
 
 export default canvasObject;

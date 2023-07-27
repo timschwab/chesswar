@@ -2,7 +2,6 @@ import { Color } from "../../common/colors.ts";
 import { transposePoint } from "../../common/shapes/transpose.ts";
 import { Circle, Point, Rect, Vector } from "../../common/shapes/types.ts";
 import { TAU_EIGHTH, multiply, pointToVector, vectorToPoint } from "../../common/shapes/vector.ts";
-import dom from "./dom.ts";
 
 export enum TextAlign {
 	LEFT = "left",
@@ -94,6 +93,3 @@ export class CWCanvas {
 		this.context.fillText(message, alignX, position.center.y);
 	}
 }
-
-export const fieldCanvas = new CWCanvas(dom.FIELD);
-export const uiCanvas = new CWCanvas(dom.UI);

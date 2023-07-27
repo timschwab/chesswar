@@ -9,7 +9,7 @@ export function renderMiniChessboard(state: SafeState) {
 	const boardRect1 = Rect(Point(10, 40), Point(10+(8*20), 40+(8*20)));
 	const perspective = teamPerspective(state.self.team);
 
-	renderBoard(boardRect1, state.teamBoard.value(), [], perspective);
+	// renderBoard(boardRect1, state.teamBoard.value(), [], perspective);
 
 	if (state.carrying.type == CarryLoadType.EMPTY) {
 		// Don't render the second board
@@ -29,6 +29,6 @@ export function renderMiniChessboard(state: SafeState) {
 			board = state.carrying.load;
 		}
 
-		renderBoard(boardRect2, board, moves, perspective);
+		// renderBoard(boardRect2, board, moves, perspective);
 	}
 }

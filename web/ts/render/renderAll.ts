@@ -1,6 +1,5 @@
 import { SafeState } from "../state.ts";
 import { renderGeneralWindow } from "../generalWindow.ts";
-import { CWCanvas, fieldCanvas, uiCanvas } from "../canvas.ts";
 import { PlayerRole } from "../../../common/data-types/base.ts";
 import { Point, Rect } from "../../../common/shapes/types.ts";
 import { CWCamera } from "../camera.ts";
@@ -12,6 +11,7 @@ import { renderMiniChessboard } from "./renderMiniChessboard.ts";
 import { renderActionOption } from "./renderActionOption.ts";
 import { renderVictory } from "./renderVictory.ts";
 import { renderStats } from "./renderStats.ts";
+import { fieldCanvas, uiCanvas } from "../canvasInstances.ts";
 
 export function renderAll(state: SafeState) {
 	renderField(state);
