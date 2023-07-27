@@ -10,7 +10,7 @@ export enum TextAlign {
 }
 
 export class CWCanvas {
-	private context: CanvasRenderingContext2D
+	private readonly context: CanvasRenderingContext2D
 
 	constructor(htmlCanvas: HTMLCanvasElement) {
 		this.context = this.getContext(htmlCanvas);

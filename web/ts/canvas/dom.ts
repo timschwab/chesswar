@@ -1,6 +1,5 @@
 import { objectMap } from "../../../common/typescript-utils.ts";
-
-enum CanvasName { FIELD, UI }
+import { CanvasName } from "./CanvasName.ts";
 
 const gameRoot = window.document.getElementById("game");
 

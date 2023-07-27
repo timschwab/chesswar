@@ -1,6 +1,6 @@
 import { rensets } from "../../../common/settings.ts";
 import { Point, Rect } from "../../../common/shapes/types.ts";
-import { CWCanvas, TextAlign } from "../canvas/canvasTypes.ts";
+import { CWCanvas, TextAlign } from "../canvas/CWCanvas.ts";
 import { SafeState } from "../state.ts";
 
 export function renderRole(state: SafeState, uiCanvas: CWCanvas) {
