@@ -5,9 +5,9 @@ export class Vector {
 	readonly mag: number;
 
 	static fromPoint(point: Point): Vector {
-		const mag = Math.sqrt(point.x*point.x + point.y*point.y);
 		const dir = Math.atan2(point.y, point.x);
-		return new Vector(mag, dir);
+		const mag = Math.sqrt(point.x*point.x + point.y*point.y);
+		return new Vector(dir, mag);
 	}
 
 	constructor(dir: number, mag: number) {
@@ -31,5 +31,9 @@ export class Vector {
 
 	multiply(scalar: number): Vector {
 		return new Vector(this.dir, this.mag*scalar);
+	}
+
+	normalize(): Vector {
+		return new Vector(this.dir, 1);
 	}
 }

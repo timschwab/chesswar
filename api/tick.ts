@@ -11,6 +11,7 @@ import { Point } from "../common/shapes/Point.ts";
 import { Vector } from "../common/shapes/Vector.ts";
 import { TAU_HALF } from "../common/Constants.ts";
 import { Circle } from "../common/shapes/Circle.ts";
+import { ZeroVector } from "../common/shapes/Zero.ts";
 
 export function tickPlayers() {
 	const state = getState();
@@ -32,20 +33,23 @@ function movePlayer(player: ServerPlayer): void {
 	const physics = player.physics;
 	const radius = gameEngine.physics[player.role].radius;
 	
-
 	// Compute input force
-	const pos = gameEngine.physics[player.role].inputForceMag;
-	const neg = -1*pos;
+	const inputForceMag = gameEngine.physics[player.role].inputForceMag;
 
-	const left = player.movement.left ? neg : 0;
-	const right = player.movement.right ? pos : 0;
-	const up = player.movement.up ? neg : 0;
-	const down = player.movement.down ? pos : 0;
+	const left = player.movement.left ? -1 : 0;
+	const right = player.movement.right ? 1 : 0;
+	const up = player.movement.up ? -1 : 0;
+	const down = player.movement.down ? 1 : 0;
 
 	const xDir = left + right;
 	const yDir = up + down;
 
-	const inputForce = Vector.fromPoint(new Point(xDir, yDir));
+	let inputForce: Vector;
+	if (xDir == 0 && yDir == 0) {
+		inputForce = ZeroVector;
+	} else {
+		inputForce = Vector.fromPoint(new Point(xDir, yDir)).normalize().multiply(inputForceMag);
+	}
 
 	// Compute net force based on input force, friction, and drag
 	const oppositeDir = physics.speed.dir + TAU_HALF;
@@ -53,8 +57,8 @@ function movePlayer(player: ServerPlayer): void {
 	const frictionMag = Math.min(gameEngine.frictionCoef * physics.mass, playerSpeed);
 	const dragMag = gameEngine.dragCoef*playerSpeed;
 
-	const frictionForce = new Vector(frictionMag, oppositeDir);
-	const dragForce = new Vector(dragMag, oppositeDir);
+	const frictionForce = new Vector(oppositeDir, frictionMag);
+	const dragForce = new Vector(oppositeDir, dragMag);
 
 	const netForce = inputForce.add(frictionForce).add(dragForce);
 
