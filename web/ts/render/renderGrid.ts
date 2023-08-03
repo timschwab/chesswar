@@ -9,9 +9,9 @@ import { cameraTopLeft } from "./renderUtils.ts";
 
 export function renderGrid(state: SafeState, posDiff: Diff<Point>) {
 	if (posDiff.prev == null) {
-		newGrid(state, posDiff.cur.floor());
+		newGrid(state, posDiff.cur);
 	} else {
-		gridDiff(state, posDiff.prev.floor(), posDiff.cur.floor());
+		gridDiff(state, posDiff.prev, posDiff.cur);
 	}
 }
 

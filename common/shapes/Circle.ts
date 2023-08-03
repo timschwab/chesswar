@@ -86,6 +86,10 @@ export class Circle extends Shape {
 		return new Circle(this.center.subtract(operand), this.radius);
 	}
 
+	floor(): Circle {
+		return new Circle(this.center.floor(), this.radius);
+	}
+
 	clampCenter(rect: Rect): Circle {
 		return new Circle(this.center.clamp(rect), this.radius);
 	}

@@ -10,9 +10,9 @@ const background = canvas.FIELD_BACKGROUND;
 
 export function renderBackground(state: SafeState, posDiff: Diff<Point>) {
 	if (posDiff.prev == null) {
-		newBackground(state, new Point(Math.floor(posDiff.cur.x), Math.floor(posDiff.cur.y)));
+		newBackground(state, posDiff.cur);
 	} else {
-		backgroundDiff(state, new Point(Math.floor(posDiff.prev.x), Math.floor(posDiff.prev.y)), new Point(Math.floor(posDiff.cur.x), Math.floor(posDiff.cur.y)));
+		backgroundDiff(state, posDiff.prev, posDiff.cur);
 	}
 }
 

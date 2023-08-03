@@ -25,7 +25,7 @@ export function deserializeClientPlayer(player: SerializedClientPlayer): ClientP
 		team: player.team,
 		role: player.role,
 		actionOption: player.actionOption,
-		position: Circle.deserialize(player.position),
+		position: Circle.deserialize(player.position).floor(),
 		deathCounter: player.deathCounter
 	};
 }
