@@ -23,6 +23,7 @@ export class Rect extends Shape {
 
 	readonly width: number;
 	readonly height: number;
+	readonly center: Point;
 
 	static isRect(maybeRect: Shape): maybeRect is Rect {
 		return maybeRect.type == ShapeName.RECT;
@@ -51,6 +52,7 @@ export class Rect extends Shape {
 
 		this.width = this.right - this.left;
 		this.height = this.bottom - this.top;
+		this.center = new Point((this.left+this.right)/2, (this.top+this.bottom)/2);
 	}
 
 	serialize(): SerializedRect {

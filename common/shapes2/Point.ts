@@ -1,4 +1,5 @@
 import { clampNumber } from "../math-utils.ts";
+import { Vector } from "./Vector.ts";
 import { Circle } from "./Circle.ts";
 import { Rect } from "./Rect.ts";
 import { Shape, SerializedShape } from "./Shape.ts";
@@ -74,6 +75,10 @@ export class Point extends Shape {
 
 	add(operand: Point): Point {
 		return new Point(this.x + operand.x, this.y + operand.y);
+	}
+
+	addVector(operand: Vector): Point {
+		return this.add(operand.toPoint());
 	}
 
 	subtract(operand: Point): Point {
