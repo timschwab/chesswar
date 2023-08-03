@@ -1,4 +1,5 @@
 export enum ShapeName {
 	POINT = "point",
-	CIRCLE = "circle"
+	CIRCLE = "circle",
+	RECT = "rect"
 }
