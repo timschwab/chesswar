@@ -81,6 +81,10 @@ export class Point extends Shape {
 		return new Point(this.x - operand.x, this.y - operand.y);
 	}
 
+	floor(): Point {
+		return new Point(Math.floor(this.x), Math.floor(this.y));
+	}
+
 	clamp(rect: Rect): Point {
 		const clampedX = clampNumber(this.x, rect.left, rect.right);
 		const clampedY = clampNumber(this.y, rect.top, rect.bottom);

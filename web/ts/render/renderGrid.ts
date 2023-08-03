@@ -9,9 +9,9 @@ import { cameraTopLeft } from "./renderUtils.ts";
 
 export function renderGrid(state: SafeState, posDiff: Diff<Point>) {
 	if (posDiff.prev == null) {
-		newGrid(state, new Point(Math.floor(posDiff.cur.x), Math.floor(posDiff.cur.y)));
+		newGrid(state, posDiff.cur.floor());
 	} else {
-		gridDiff(state, new Point(Math.floor(posDiff.prev.x), Math.floor(posDiff.prev.y)), new Point(Math.floor(posDiff.cur.x), Math.floor(posDiff.cur.y)));
+		gridDiff(state, posDiff.prev.floor(), posDiff.cur.floor());
 	}
 }
 
@@ -46,15 +46,15 @@ function getGrid(state: SafeState, pos: Point): Rect[] {
 
 	// Vertical lines
 	for (let x = 0; x <= map.width; x += rensets.grid.spacing) {
-		const start = new Point(x, 0).add(cameraTL);
-		const finish = new Point(x+rensets.grid.width, map.height).add(cameraTL);
+		const start = new Point(x, 0).subtract(cameraTL);
+		const finish = new Point(x+rensets.grid.width, map.height).subtract(cameraTL);
 		lines.push(new Rect(start, finish));
 	}
 
 	// Horizontal lines
 	for (let y = 0; y <= map.height; y += rensets.grid.spacing) {
-		const start = new Point(0, y).add(cameraTL);
-		const finish = new Point(map.width, y+rensets.grid.width).add(cameraTL);
+		const start = new Point(0, y).subtract(cameraTL);
+		const finish = new Point(map.width, y+rensets.grid.width).subtract(cameraTL);
 		lines.push(new Rect(start, finish));
 	}
 
