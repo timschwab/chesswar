@@ -1,12 +1,13 @@
 import { CarryLoadType } from "../../../common/data-types/carryLoad.ts";
 import { ChessMove } from "../../../common/data-types/chess.ts";
 import { BriefingName } from "../../../common/data-types/facility.ts";
-import { Point, Rect } from "../../../common/shapes/types.ts";
-import { renderBoard, teamPerspective } from "../chessboard.ts";
+import { Point } from "../../../common/shapes/Point.ts";
+import { Rect } from "../../../common/shapes/Rect.ts";
+import { teamPerspective } from "../chessboard.ts";
 import { SafeState } from "../state.ts";
 
 export function renderMiniChessboard(state: SafeState) {
-	const boardRect1 = Rect(Point(10, 40), Point(10+(8*20), 40+(8*20)));
+	const boardRect1 = new Rect(new Point(10, 40), new Point(10+(8*20), 40+(8*20)));
 	const perspective = teamPerspective(state.self.team);
 
 	// renderBoard(boardRect1, state.teamBoard.value(), [], perspective);
@@ -14,7 +15,7 @@ export function renderMiniChessboard(state: SafeState) {
 	if (state.carrying.type == CarryLoadType.EMPTY) {
 		// Don't render the second board
 	} else {
-		const boardRect2 = Rect(Point(10, 40+10+(8*20)), Point(10+(8*20), 40+10+2*((8*20))));
+		const boardRect2 = new Rect(new Point(10, 40+10+(8*20)), new Point(10+(8*20), 40+10+2*((8*20))));
 		let board = state.teamBoard.value();
 		const moves = [] as ChessMove[];
 

@@ -1,6 +1,7 @@
 import { TeamName } from "../../../common/data-types/base.ts";
 import { rensets } from "../../../common/settings.ts";
-import { Point, Rect } from "../../../common/shapes/types.ts";
+import { Point } from "../../../common/shapes/Point.ts";
+import { Rect } from "../../../common/shapes/Rect.ts";
 import { CWCanvas, TextAlign } from "../canvas/CWCanvas.ts";
 import { SafeState } from "../state.ts";
 
@@ -17,7 +18,7 @@ export function renderVictory(state: SafeState, uiCanvas: CWCanvas) {
 		uiCanvas.text(state.screen, TextAlign.CENTER, "Red team wins!", rensets.victory.font, rensets.victory.color);
 	}
 
-	const newGameTicksRectTopLeft = Point(state.screen.topLeft.x, state.screen.bottomRight.y/2);
-	const newGameTicksRect = Rect(newGameTicksRectTopLeft, state.screen.bottomRight);
+	const newGameTicksRectTopLeft = new Point(state.screen.leftTop.x, state.screen.rightBottom.y/2);
+	const newGameTicksRect = new Rect(newGameTicksRectTopLeft, state.screen.rightBottom);
 	uiCanvas.text(newGameTicksRect, TextAlign.CENTER, "New game in: " + state.newGameCounter, rensets.victory.newGameFont, rensets.victory.newGameColor);
 }

@@ -1,7 +1,8 @@
 import map from "../../../common/map.ts";
 import { rensets } from "../../../common/settings.ts";
-import { isCircle, isRect } from "../../../common/shapes/is.ts";
-import { Point, Rect } from "../../../common/shapes/types.ts";
+import { Circle } from "../../../common/shapes/Circle.ts";
+import { Point } from "../../../common/shapes/Point.ts";
+import { Rect } from "../../../common/shapes/Rect.ts";
 import { CWCamera } from "../camera.ts";
 import { SafeState } from "../state.ts";
 
@@ -40,9 +41,9 @@ export function renderMap(state: SafeState, fieldCamera: CWCamera) {
 
 	// Draw minefields
 	for (const minefield of map.minefields) {
-		if (isRect(minefield)) {
+		if (Rect.isRect(minefield)) {
 			fieldCamera.fillRect(minefield, rensets.minefield.color);
-		} else if (isCircle(minefield)) {
+		} else if (Circle.isCircle(minefield)) {
 			fieldCamera.fillCircle(minefield, rensets.minefield.color);
 		} else {
 			// Can't get here
@@ -54,8 +55,8 @@ export function renderMap(state: SafeState, fieldCamera: CWCamera) {
 	fieldCamera.fillCircle(map.battlefield, rensets.center.battlefield);
 
 	// Draw map boundaries
-	const mapTopLeft = Point(0, 0);
-	const mapBottomRight = Point(map.width, map.height);
-	const mapRect = Rect(mapTopLeft, mapBottomRight);
+	const mapTopLeft = new Point(0, 0);
+	const mapBottomRight = new Point(map.width, map.height);
+	const mapRect = new Rect(mapTopLeft, mapBottomRight);
 	fieldCamera.outlineRect(mapRect, rensets.mapBorder.color, rensets.mapBorder.width);
 }

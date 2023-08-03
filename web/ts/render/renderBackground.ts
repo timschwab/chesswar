@@ -1,6 +1,7 @@
 import map from "../../../common/map.ts";
 import { rensets } from "../../../common/settings.ts";
-import { Point, Rect } from "../../../common/shapes/types.ts";
+import { Point } from "../../../common/shapes/Point.ts";
+import { Rect } from "../../../common/shapes/Rect.ts";
 import canvas from "../canvas/canvas.ts";
 import { Diff } from "../diffStore.ts";
 import { SafeState } from "../state.ts";
@@ -10,9 +11,9 @@ const background = canvas.FIELD_BACKGROUND;
 
 export function renderBackground(state: SafeState, posDiff: Diff<Point>) {
 	if (posDiff.prev == null) {
-		newBackground(state, Point(Math.floor(posDiff.cur.x), Math.floor(posDiff.cur.y)));
+		newBackground(state, new Point(Math.floor(posDiff.cur.x), Math.floor(posDiff.cur.y)));
 	} else {
-		backgroundDiff(state, Point(Math.floor(posDiff.prev.x), Math.floor(posDiff.prev.y)), Point(Math.floor(posDiff.cur.x), Math.floor(posDiff.cur.y)));
+		backgroundDiff(state, new Point(Math.floor(posDiff.prev.x), Math.floor(posDiff.prev.y)), new Point(Math.floor(posDiff.cur.x), Math.floor(posDiff.cur.y)));
 	}
 }
 
@@ -43,9 +44,9 @@ function backgroundDiff(state: SafeState, prev: Point, cur: Point) {
 }
 
 function transpose(mapRect: Rect, cameraTL: Point) {
-	const mapTL = Point(mapRect.topLeft.x-cameraTL.x, mapRect.topLeft.y-cameraTL.y);
-	const mapBR = Point(mapRect.bottomRight.x-cameraTL.x, mapRect.bottomRight.y-cameraTL.y);
-	return Rect(mapTL, mapBR);
+	const mapTL = new Point(mapRect.leftTop.x-cameraTL.x, mapRect.leftTop.y-cameraTL.y);
+	const mapBR = new Point(mapRect.rightBottom.x-cameraTL.x, mapRect.rightBottom.y-cameraTL.y);
+	return new Rect(mapTL, mapBR);
 }
 
 // A kinda dumb algo but it works
@@ -74,20 +75,20 @@ function findOverlap(first: Rect, second: Rect) {
 		};
 	}
 
-	const bothTL = Point(bothLeft, bothTop);
-	const bothBR = Point(bothRight, bothBottom);
+	const bothTL = new Point(bothLeft, bothTop);
+	const bothBR = new Point(bothRight, bothBottom);
 
-	const both = Rect(bothTL, bothBR);
+	const both = new Rect(bothTL, bothBR);
 
-	const firstLeft = first.left < second.left ? Rect(first.topLeft, Point(second.left, first.bottom)) : null;
-	const firstRight = first.right > second.right ? Rect(Point(second.right, first.top), first.bottomRight) : null;
-	const firstTop = first.top < second.top ? Rect(first.topLeft, Point(first.right, second.top)) : null;
-	const firstBottom = first.bottom > second.bottom ? Rect(Point(first.left, second.bottom), first.bottomRight) : null;
+	const firstLeft = first.left < second.left ? new Rect(first.leftTop, new Point(second.left, first.bottom)) : null;
+	const firstRight = first.right > second.right ? new Rect(new Point(second.right, first.top), first.rightBottom) : null;
+	const firstTop = first.top < second.top ? new Rect(first.leftTop, new Point(first.right, second.top)) : null;
+	const firstBottom = first.bottom > second.bottom ? new Rect(new Point(first.left, second.bottom), first.rightBottom) : null;
 
-	const secondLeft = second.left < first.left ? Rect(second.topLeft, Point(first.left, second.bottom)) : null;
-	const secondRight = second.right > first.right ? Rect(Point(first.right, second.top), second.bottomRight) : null;
-	const secondTop = second.top < first.top ? Rect(second.topLeft, Point(second.right, first.top)) : null;
-	const secondBottom = second.bottom > first.bottom ? Rect(Point(second.left, first.bottom), second.bottomRight) : null;
+	const secondLeft = second.left < first.left ? new Rect(second.leftTop, new Point(first.left, second.bottom)) : null;
+	const secondRight = second.right > first.right ? new Rect(new Point(first.right, second.top), second.rightBottom) : null;
+	const secondTop = second.top < first.top ? new Rect(second.leftTop, new Point(second.right, first.top)) : null;
+	const secondBottom = second.bottom > first.bottom ? new Rect(new Point(second.left, first.bottom), second.rightBottom) : null;
 
 	return {
 		first: {
