@@ -33,6 +33,10 @@ export class Vector {
 		return new Vector(this.dir, this.mag*scalar);
 	}
 
+	divide(scalar: number): Vector {
+		return new Vector(this.dir, this.mag/scalar);
+	}
+
 	normalize(): Vector {
 		return new Vector(this.dir, 1);
 	}

@@ -63,7 +63,7 @@ function movePlayer(player: ServerPlayer): void {
 	const netForce = inputForce.add(frictionForce).add(dragForce);
 
 	// Compute speed based on force and mass
-	const netAcceleration = netForce.multiply(1/physics.mass);
+	const netAcceleration = netForce.divide(physics.mass);
 	const newSpeed = physics.speed.add(netAcceleration);
 
 	// Compute position based on speed
