@@ -1,12 +1,12 @@
 import { Circle } from "./Circle.ts";
-import { Point } from "./Point.ts";
+import { Point, SerializedPoint } from "./Point.ts";
 import { SerializedShape, Shape } from "./Shape.ts";
 import { ShapeName } from "./ShapeName.ts";
 
 interface SerializedRect extends SerializedShape {
 	type: ShapeName.RECT,
-	leftTop: Point,
-	rightBottom: Point
+	leftTop: SerializedPoint,
+	rightBottom: SerializedPoint
 }
 
 export class Rect extends Shape {
@@ -34,7 +34,9 @@ export class Rect extends Shape {
 	}
 
 	static deserialize(data: SerializedRect): Rect {
-		return new Rect(data.leftTop, data.rightBottom);
+		const lt = Point.deserialize(data.leftTop);
+		const rb = Point.deserialize(data.rightBottom);
+		return new Rect(lt, rb);
 	}
 
 	constructor(leftTop: Point, rightBottom: Point) {
@@ -58,13 +60,9 @@ export class Rect extends Shape {
 	serialize(): SerializedRect {
 		return {
 			type: ShapeName.RECT,
-			leftTop: this.leftTop,
-			rightBottom: this.rightBottom
+			leftTop: this.leftTop.serialize(),
+			rightBottom: this.rightBottom.serialize()
 		};
-	}
-
-	copy(): Rect {
-		return new Rect(this.leftTop, this.rightBottom);
 	}
 
 	equals(other: Rect): boolean {

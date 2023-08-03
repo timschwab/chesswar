@@ -1,11 +1,11 @@
-import { Point } from "./Point.ts";
+import { Point, SerializedPoint } from "./Point.ts";
 import { Rect } from "./Rect.ts";
 import { SerializedShape, Shape } from "./Shape.ts";
 import { ShapeName } from "./ShapeName.ts";
 
-interface SerializedCircle extends SerializedShape {
+export interface SerializedCircle extends SerializedShape {
 	type: ShapeName.CIRCLE,
-	center: Point,
+	center: SerializedPoint,
 	radius: number
 }
 
@@ -27,7 +27,8 @@ export class Circle extends Shape {
 	}
 
 	static deserialize(data: SerializedCircle): Circle {
-		return new Circle(data.center, data.radius);
+		const center = Point.deserialize(data.center);
+		return new Circle(center, data.radius);
 	}
 
 	constructor(center: Point, radius: number) {
@@ -44,13 +45,9 @@ export class Circle extends Shape {
 	serialize(): SerializedCircle {
 		return {
 			type: ShapeName.CIRCLE,
-			center: this.center,
+			center: this.center.serialize(),
 			radius: this.radius
 		};
-	}
-
-	copy(): Circle {
-		return new Circle(this.center, this.radius);
 	}
 
 	equals(other: Circle): boolean {

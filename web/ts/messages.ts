@@ -1,5 +1,5 @@
 import { ChesswarId, DeathCause, PlayerAction } from "../../common/data-types/base.ts";
-import { ClientPlayer } from "../../common/data-types/client.ts";
+import { ClientPlayer, deserializeClientPlayer } from "../../common/data-types/client.ts";
 import { CarryingMessagePayload, PlayerInitMessagePayload, StateMessagePayload, StatsMessagePayload, TeamMessagePayload } from "../../common/message-types/server.ts";
 import audioPlayer from "./audioPlayer.ts";
 import state, { PlayerMap } from "./state.ts";
@@ -11,7 +11,7 @@ export function handlePlayerInit(payload: PlayerInitMessagePayload) {
 export function handleState(payload: StateMessagePayload) {
 	const playerMap: PlayerMap = new Map<ChesswarId, ClientPlayer>();
 	for (const player of payload.players) {
-		playerMap.set(player.id, player);
+		playerMap.set(player.id, deserializeClientPlayer(player));
 	}
 
 	state.playerMap = playerMap;

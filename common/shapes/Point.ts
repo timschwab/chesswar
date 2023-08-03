@@ -5,7 +5,7 @@ import { Rect } from "./Rect.ts";
 import { Shape, SerializedShape } from "./Shape.ts";
 import { ShapeName } from "./ShapeName.ts";
 
-interface SerializedPoint extends SerializedShape {
+export interface SerializedPoint extends SerializedShape {
 	type: ShapeName.POINT,
 	x: number,
 	y: number
@@ -39,10 +39,6 @@ export class Point extends Shape {
 			x: this.x,
 			y: this.y
 		};
-	}
-
-	copy(): Point {
-		return new Point(this.x, this.y);
 	}
 
 	equals(other: Point): boolean {
