@@ -1,7 +1,9 @@
+import { TAU, TAU_EIGHTH } from "../../../common/Constants.ts";
 import { Color } from "../../../common/colors.ts";
-import { transposePoint } from "../../../common/shapes/transpose.ts";
-import { Circle, Point, Rect, Vector } from "../../../common/shapes/types.ts";
-import { TAU_EIGHTH, multiply, pointToVector, vectorToPoint } from "../../../common/shapes/vector.ts";
+import { Circle } from "../../../common/shapes/Circle.ts";
+import { Point } from "../../../common/shapes/Point.ts";
+import { Rect } from "../../../common/shapes/Rect.ts";
+import { Vector } from "../../../common/shapes/Vector.ts";
 
 export enum TextAlign {
 	LEFT = "left",
@@ -47,12 +49,12 @@ export class CWCanvas {
 	}
 
 	arrow(start: Point, finish: Point, color: Color, lineWidth: number) {
-		const vec = multiply(pointToVector(transposePoint(finish, start)), 1/4);
-		const leftVec = Vector(vec.mag, vec.dir+TAU_EIGHTH);
-		const rightVec = Vector(vec.mag, vec.dir-TAU_EIGHTH);
+		const vec = Vector.fromPoint(finish.add(start)).multiply(1/4);
+		const leftVec = new Vector(vec.mag, vec.dir+TAU_EIGHTH);
+		const rightVec = new Vector(vec.mag, vec.dir-TAU_EIGHTH);
 	
-		const leftWing = transposePoint(finish, vectorToPoint(leftVec));
-		const rightWing = transposePoint(finish, vectorToPoint(rightVec));
+		const leftWing = finish.add(leftVec.toPoint());
+		const rightWing = finish.add(rightVec.toPoint());
 	
 		this.line(start, finish, color, lineWidth);
 		this.line(leftWing, finish, color, lineWidth);
@@ -62,7 +64,7 @@ export class CWCanvas {
 	outlineRect(rect: Rect, color: Color, lineWidth: number) {
 		this.context.strokeStyle = color;
 		this.context.lineWidth = lineWidth;
-		this.context.strokeRect(rect.topLeft.x, rect.topLeft.y, rect.width, rect.height);
+		this.context.strokeRect(rect.left, rect.top, rect.width, rect.height);
 	}
 
 	fillRect(rect: Rect, color: Color) {
@@ -75,15 +77,15 @@ export class CWCanvas {
 	fillCircle(circle: Circle, color: Color) {
 		this.context.fillStyle = color;
 		this.context.beginPath();
-		this.context.arc(circle.center.x, circle.center.y, circle.radius, 0, 2 * Math.PI);
+		this.context.arc(circle.center.x, circle.center.y, circle.radius, 0, TAU);
 		this.context.fill();
 	}
 
 	text(position: Rect, align: TextAlign, message: string, font: string, color: Color) {
 		const alignX = {
-			left: position.topLeft.x,
+			left: position.left,
 			center: position.center.x,
-			right: position.bottomRight.x,
+			right: position.right,
 		}[align];
 	
 		this.context.fillStyle = color;

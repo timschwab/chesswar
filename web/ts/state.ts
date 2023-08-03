@@ -3,9 +3,10 @@ import { ChessBoard, ChessSquare } from "../../common/data-types/chess.ts";
 import { ChesswarId, Victory } from "../../common/data-types/base.ts";
 import { BriefingBundle, BriefingName } from "../../common/data-types/facility.ts";
 import { ServerStats } from "../../common/data-types/server.ts";
-import { Point, Rect } from "../../common/shapes/types.ts";
 import { CarryLoad, CarryLoadType } from "../../common/data-types/carryLoad.ts";
 import { DiffStore } from "./diffStore.ts";
+import { Point } from "../../common/shapes/Point.ts";
+import { Rect } from "../../common/shapes/Rect.ts";
 
 export type PlayerMap = Map<ChesswarId, ClientPlayer>;
 

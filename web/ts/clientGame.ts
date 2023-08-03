@@ -7,7 +7,7 @@ import { listenClick } from "./inputs.ts";
 import { clickedButton, clickedSquare } from "./generalWindow.ts";
 import { ClientMessageTypes } from "../../common/message-types/client.ts";
 import { handleCarrying, handleCompletedAction, handleDeath, handlePlayerInit, handlePong, handleState, handleStats, handleTeam } from "./messages.ts";
-import { Point } from "../../common/shapes/types.ts";
+import { Point } from "../../common/shapes/Point.ts";
 
 export function initGame() {
 	socket.listen(receiveMessage);

@@ -1,6 +1,6 @@
 import { createHook } from "../../common/hooks.ts";
 import { ClientMessageTypes, MoveMessagePayload } from "../../common/message-types/client.ts";
-import { Point } from "../../common/shapes/types.ts";
+import { Point } from "../../common/shapes/Point.ts";
 import socket from "./socket.ts";
 import state from "./state.ts";
 
@@ -83,7 +83,7 @@ function handleKey(event: KeyboardEvent, pressed: boolean): void {
 }
 
 function handleClick(event: MouseEvent) {
-	const location = Point(event.clientX, event.clientY);
+	const location = new Point(event.clientX, event.clientY);
 	clickHook.run(location);
 }
 
