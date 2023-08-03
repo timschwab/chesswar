@@ -3,7 +3,8 @@ import { CarryLoad } from "../common/data-types/carryLoad.ts";
 import { ChessBoard } from "../common/data-types/chess.ts";
 import { BriefingBundle, BriefingName } from "../common/data-types/facility.ts";
 import { ServerStats } from "../common/data-types/server.ts";
-import { Circle, Vector } from "../common/shapes/types.ts";
+import { Circle } from "../common/shapes/Circle.ts";
+import { Vector } from "../common/shapes/Vector.ts";
 import { newBoard } from "./chess.ts";
 
 export interface ServerPlayerPhysics {

@@ -4,14 +4,13 @@ import { gameEngine } from "../common/settings.ts";
 import { spawnPlayer } from "./spawn.ts";
 import { ServerPlayer, getState } from "./state.ts";
 import { ChessPiece } from "../common/data-types/chess.ts";
-import { TAU_HALF, add, multiply, pointToVector, vectorToPoint } from "../common/shapes/vector.ts";
-import { Circle, Point, Vector } from "../common/shapes/types.ts";
-import { transposePoint } from "../common/shapes/transpose.ts";
-import { touches } from "../common/shapes/touches.ts";
-import { inside } from "../common/shapes/inside.ts";
 import { CarryLoadType } from "../common/data-types/carryLoad.ts";
 import socket from "./socket.ts";
 import { ServerMessageTypes } from "../common/message-types/server.ts";
+import { Point } from "../common/shapes/Point.ts";
+import { Vector } from "../common/shapes/Vector.ts";
+import { TAU_HALF } from "../common/Constants.ts";
+import { Circle } from "../common/shapes/Circle.ts";
 
 export function tickPlayers() {
 	const state = getState();
@@ -46,7 +45,7 @@ function movePlayer(player: ServerPlayer): void {
 	const xDir = left + right;
 	const yDir = up + down;
 
-	const inputForce = pointToVector(Point(xDir, yDir));
+	const inputForce = Vector.fromPoint(new Point(xDir, yDir));
 
 	// Compute net force based on input force, friction, and drag
 	const oppositeDir = physics.speed.dir + TAU_HALF;
@@ -54,18 +53,18 @@ function movePlayer(player: ServerPlayer): void {
 	const frictionMag = Math.min(gameEngine.frictionCoef * physics.mass, playerSpeed);
 	const dragMag = gameEngine.dragCoef*playerSpeed;
 
-	const frictionForce = Vector(frictionMag, oppositeDir);
-	const dragForce = Vector(dragMag, oppositeDir);
+	const frictionForce = new Vector(frictionMag, oppositeDir);
+	const dragForce = new Vector(dragMag, oppositeDir);
 
-	const netForce = add(add(inputForce, frictionForce), dragForce);
+	const netForce = inputForce.add(frictionForce).add(dragForce);
 
 	// Compute speed based on force and mass
-	const netAcceleration = multiply(netForce, 1/physics.mass);
-	const newSpeed = add(physics.speed, netAcceleration);
+	const netAcceleration = netForce.multiply(1/physics.mass);
+	const newSpeed = physics.speed.add(netAcceleration);
 
 	// Compute position based on speed
-	const xyVector = vectorToPoint(newSpeed);
-	const newPosition = transposePoint(physics.position.center, xyVector);
+	const xyVector = newSpeed.toPoint();
+	const newPosition = physics.position.center.add(xyVector);
 
 	// Bounce off the sides
 	let bouncePosition = newPosition;
@@ -73,33 +72,33 @@ function movePlayer(player: ServerPlayer): void {
 
 	if (bouncePosition.x < 0) {
 		const bounceX = 0 - (bouncePosition.x - 0);
-		bouncePosition = Point(bounceX, bouncePosition.y);
-		bounceSpeed = Point(-1*bounceSpeed.x, bounceSpeed.y);
+		bouncePosition = new Point(bounceX, bouncePosition.y);
+		bounceSpeed = new Point(-1*bounceSpeed.x, bounceSpeed.y);
 	} else if (bouncePosition.x > map.width) {
 		const bounceX = map.width - (bouncePosition.x - map.width);
-		bouncePosition = Point(bounceX, bouncePosition.y);
-		bounceSpeed = Point(-1*bounceSpeed.x, bounceSpeed.y);
+		bouncePosition = new Point(bounceX, bouncePosition.y);
+		bounceSpeed = new Point(-1*bounceSpeed.x, bounceSpeed.y);
 	}
 
 	if (bouncePosition.y < 0) {
 		const bounceY = 0 - (bouncePosition.y - 0);
-		bouncePosition = Point(bouncePosition.x, bounceY);
-		bounceSpeed = Point(bounceSpeed.x, -1*bounceSpeed.y);
+		bouncePosition = new Point(bouncePosition.x, bounceY);
+		bounceSpeed = new Point(bounceSpeed.x, -1*bounceSpeed.y);
 
 	} else if (bouncePosition.y > map.height) {
 		const bounceY = map.height - (bouncePosition.y - map.height);
-		bouncePosition = Point(bouncePosition.x, bounceY);
-		bounceSpeed = Point(bounceSpeed.x, -1*bounceSpeed.y);
+		bouncePosition = new Point(bouncePosition.x, bounceY);
+		bounceSpeed = new Point(bounceSpeed.x, -1*bounceSpeed.y);
 	}
 
 	// Set new values
-	physics.speed = pointToVector(bounceSpeed);
-	physics.position = Circle(bouncePosition, radius);
+	physics.speed = Vector.fromPoint(bounceSpeed);
+	physics.position = new Circle(bouncePosition, radius);
 }
 
 function checkMinefields(player: ServerPlayer): void {
 	for (const minefield of map.minefields) {
-		if (touches(player.physics.position, minefield)) {
+		if (player.physics.position.touches(minefield)) {
 			spawnPlayer(player);
 			socket.sendOne(player.id, {
 				type: ServerMessageTypes.DEATH,
@@ -112,7 +111,7 @@ function checkMinefields(player: ServerPlayer): void {
 function checkTankSafezones(player: ServerPlayer): void {
 	if (player.role == PlayerRole.TANK) {
 		const pos = player.physics.position;
-		if (touches(pos, map.safeZone)) {
+		if (pos.touches(map.safeZone)) {
 			spawnPlayer(player);
 			socket.sendOne(player.id, {
 				type: ServerMessageTypes.DEATH,
@@ -123,7 +122,7 @@ function checkTankSafezones(player: ServerPlayer): void {
 
 		const enemyBundles = map.facilities.filter(fac => fac.team != player.team);
 		for (const bundle of enemyBundles) {
-			if (touches(pos, bundle.base)) {
+			if (pos.touches(bundle.base)) {
 				spawnPlayer(player);
 				socket.sendOne(player.id, {
 					type: ServerMessageTypes.DEATH,
@@ -133,7 +132,7 @@ function checkTankSafezones(player: ServerPlayer): void {
 			}
 
 			for (const outpost of bundle.outposts) {
-				if (touches(pos, outpost)) {
+				if (pos.touches(outpost)) {
 					spawnPlayer(player);
 					socket.sendOne(player.id, {
 						type: ServerMessageTypes.DEATH,
@@ -158,15 +157,15 @@ function actionOption(player: ServerPlayer): PlayerAction | null {
 	const pos = player.physics.position;
 	for (const bundle of map.facilities) {
 		if (bundle.team == player.team) {
-			if (inside(pos, bundle.command)) {
+			if (pos.inside(bundle.command)) {
 				return PlayerAction.BECOME_GENERAL;
-			} else if (inside(pos, bundle.armory)) {
+			} else if (pos.inside(bundle.armory)) {
 				if (player.role == PlayerRole.TANK) {
 					// Do nothing
 				} else {
 					return PlayerAction.BECOME_TANK;
 				}
-			} else if (inside(pos, bundle.scif)) {
+			} else if (pos.inside(bundle.scif)) {
 				if (player.role == PlayerRole.OPERATIVE) {
 					if (player.carrying.type == CarryLoadType.ESPIONAGE) {
 						return PlayerAction.REPORT_ESPIONAGE;
@@ -176,7 +175,7 @@ function actionOption(player: ServerPlayer): PlayerAction | null {
 				} else {
 					return PlayerAction.BECOME_OPERATIVE;
 				}
-			} else if (inside(pos, map.battlefield)) {
+			} else if (pos.inside(map.battlefield)) {
 				if (player.role == PlayerRole.SOLDIER && player.carrying.type == CarryLoadType.ORDERS) {
 					return PlayerAction.COMPLETE_ORDERS;
 				} else if (player.role == PlayerRole.OPERATIVE) {
@@ -184,7 +183,7 @@ function actionOption(player: ServerPlayer): PlayerAction | null {
 				}
 			} else {
 				for (const brief of bundle.briefings) {
-					if (inside(pos, brief)) {
+					if (pos.inside(brief)) {
 						if (player.role == PlayerRole.SOLDIER) {
 							return PlayerAction.GRAB_ORDERS;
 						} else {
@@ -194,7 +193,7 @@ function actionOption(player: ServerPlayer): PlayerAction | null {
 				}
 			}
 		} else {
-			if (player.role == PlayerRole.OPERATIVE && inside(pos, bundle.command)) {
+			if (player.role == PlayerRole.OPERATIVE && pos.inside(bundle.command)) {
 				return PlayerAction.CONDUCT_ESPIONAGE;
 			}
 		}
@@ -234,7 +233,7 @@ export function tickTankKills(): void {
 	// Tanks killing tanks first - compare every pair
 	for (const blueTank of blueTanks) {
 		for (const redTank of redTanks) {
-			if (touches(blueTank.physics.position, redTank.physics.position)) {
+			if (blueTank.physics.position.touches(redTank.physics.position)) {
 				spawnPlayer(blueTank);
 				socket.sendOne(blueTank.id, {
 					type: ServerMessageTypes.DEATH,
@@ -255,7 +254,7 @@ export function tickTankKills(): void {
 		// Make sure it wasn't killed up above
 		if (blueTank.role == PlayerRole.TANK) {
 			for (const redOther of redOthers) {
-				if (touches(blueTank.physics.position, redOther.physics.position)) {
+				if (blueTank.physics.position.touches(redOther.physics.position)) {
 					spawnPlayer(redOther);
 					socket.sendOne(redOther.id, {
 						type: ServerMessageTypes.DEATH,
@@ -270,7 +269,7 @@ export function tickTankKills(): void {
 		// Make sure it wasn't killed up above
 		if (redTank.role == PlayerRole.TANK) {
 			for (const blueOther of blueOthers) {
-				if (touches(redTank.physics.position, blueOther.physics.position)) {
+				if (redTank.physics.position.touches(blueOther.physics.position)) {
 					spawnPlayer(blueOther);
 					socket.sendOne(blueOther.id, {
 						type: ServerMessageTypes.DEATH,

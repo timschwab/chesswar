@@ -3,8 +3,9 @@ import { CarryLoad, CarryLoadType } from "../common/data-types/carryLoad.ts";
 import map from "../common/map.ts";
 import { ServerMessageTypes } from "../common/message-types/server.ts";
 import { gameEngine } from "../common/settings.ts";
-import { transposePoint } from "../common/shapes/transpose.ts";
-import { Circle, Point, Vector } from "../common/shapes/types.ts";
+import { Circle } from "../common/shapes/Circle.ts";
+import { Point } from "../common/shapes/Point.ts";
+import { ZeroVector } from "../common/shapes/Zero.ts";
 import socket from "./socket.ts";
 import { ServerPlayer } from "./state.ts";
 
@@ -17,8 +18,8 @@ export function spawnPlayer(player: ServerPlayer): void {
 	player.role = role;
 	player.physics = {
 		mass: mass,
-		speed: Vector(0, 0),
-		position: Circle(start, radius)
+		speed: ZeroVector,
+		position: new Circle(start, radius)
 	};
 
 	setCarrying(player, null);
@@ -30,9 +31,9 @@ function getStartPoint(team: TeamName): Point {
 	const startChoices = map.starts[team];
 	const start = startChoices[Math.floor(Math.random()*startChoices.length)];
 
-	const clumpingPoint = Point((Math.random()-0.5) * gameEngine.startingClump, (Math.random()-0.5) * gameEngine.startingClump);
+	const clumpingPoint = new Point((Math.random()-0.5) * gameEngine.startingClump, (Math.random()-0.5) * gameEngine.startingClump);
 
-	return transposePoint(start, clumpingPoint);
+	return start.add(clumpingPoint);
 }
 
 export function setCarrying(player: ServerPlayer, load: CarryLoad | null) {

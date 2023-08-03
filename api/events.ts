@@ -5,8 +5,8 @@ import map from "../common/map.ts";
 import { ClientMessageTypes, ClientMessageWithId, GeneralOrdersMessagePayload, MoveMessagePayload } from "../common/message-types/client.ts";
 import { ServerMessageTypes } from "../common/message-types/server.ts";
 import { gameEngine } from "../common/settings.ts";
-import { inside } from "../common/shapes/inside.ts";
-import { Circle, Point, Vector } from "../common/shapes/types.ts";
+import { Circle } from "../common/shapes/Circle.ts";
+import { ZeroCircle, ZeroVector } from "../common/shapes/Zero.ts";
 import { makeMove } from "./chess.ts";
 import socket from "./socket.ts";
 import { setCarrying, spawnPlayer } from "./spawn.ts";
@@ -31,9 +31,9 @@ export function addPlayer(id: string): void {
 			down: false
 		},
 		physics: {
-			speed: Vector(0, 0),
+			speed: ZeroVector,
 			mass: 0,
-			position: Circle(Point(0, 0), 0)
+			position: ZeroCircle
 		},
 		deathCounter: 0
 	}
@@ -209,11 +209,11 @@ function whichBriefing(player: ServerPlayer): null | BriefingName {
 	const facilityBundles = map.facilities.filter(fac => fac.team == player.team);
 
 	for (const bundle of facilityBundles) {
-		if (inside(pos, bundle.briefings[0])) {
+		if (pos.inside(bundle.briefings[0])) {
 			return BriefingName.ONE;
-		} else if (inside(pos, bundle.briefings[1])) {
+		} else if (pos.inside(bundle.briefings[1])) {
 			return BriefingName.TWO;
-		} else if (inside(pos, bundle.briefings[2])) {
+		} else if (pos.inside(bundle.briefings[2])) {
 			return BriefingName.THREE;
 		}
 	}
@@ -227,10 +227,10 @@ function becomeRole(player: ServerPlayer, role: PlayerRole): void {
 	const mass = gameEngine.physics[role].mass;
 
 	player.physics.mass = mass;
-	player.physics.position = Circle(player.physics.position.center, radius);
+	player.physics.position = new Circle(player.physics.position.center, radius);
 
 	if (role == PlayerRole.GENERAL) {
-		player.physics.speed = Vector(0, 0);
+		player.physics.speed = ZeroVector;
 	}
 
 	setCarrying(player, null);
