@@ -102,11 +102,16 @@ export class Rect extends Shape {
 	}
 
 	// Move all four walls in a certain amount
-	shrink(amount: number): Rect {
+	expand(amount: number) {
 		const shrinkPoint = new Point(amount, amount);
-		const shrunkenTopLeft = this.leftTop.add(shrinkPoint);
-		const shrunkenBottomRight = this.rightBottom.subtract(shrinkPoint);
+		const shrunkenTopLeft = this.leftTop.subtract(shrinkPoint);
+		const shrunkenBottomRight = this.rightBottom.add(shrinkPoint);
 		return new Rect(shrunkenTopLeft, shrunkenBottomRight);
+	}
+
+	// Opposite of expand
+	shrink(amount: number): Rect {
+		return this.expand(-1*amount);
 	}
 
 	// A kinda dumb algo but it works

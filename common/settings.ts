@@ -79,7 +79,7 @@ export const rensets = {
 	},
 	mapBorder: {
 		color: Color.GREEN_BRIGHT,
-		width: 5
+		width: 4
 	},
 	players: {
 		self: Color.GREEN_BRIGHT,

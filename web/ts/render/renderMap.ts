@@ -104,10 +104,16 @@ function getMapShapes(state: SafeState) {
 	circles.push([map.battlefield, rensets.center.battlefield]);
 
 	// Draw map boundaries
-	const mapTopLeft = new Point(0, 0);
-	const mapBottomRight = new Point(map.width, map.height);
-	const mapRect = new Rect(mapTopLeft, mapBottomRight);
-	//canvas.FIELD_MAP.outlineRect(mapRect, rensets.mapBorder.color, rensets.mapBorder.width);
+	const outer = map.rect.expand(rensets.mapBorder.width/2);
+	const inner = map.rect.shrink(rensets.mapBorder.width/2);
+	const overlaps = outer.overlap(inner);
+
+	if (overlaps.first.left && overlaps.first.right && overlaps.first.top && overlaps.first.bottom) {
+		rects.push([overlaps.first.left, rensets.mapBorder.color]);
+		rects.push([overlaps.first.right, rensets.mapBorder.color]);
+		rects.push([overlaps.first.top, rensets.mapBorder.color]);
+		rects.push([overlaps.first.bottom, rensets.mapBorder.color]);
+	}
 
 	return {
 		rects,
