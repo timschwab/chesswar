@@ -28,12 +28,6 @@ export class CWCanvas {
 		return maybeContext;
 	}
 
-	clearRect(rect: Rect) {
-		if (rect.width > 0 && rect.height > 0) {
-			this.context.clearRect(rect.left, rect.top, rect.width, rect.height);
-		}
-	}
-
 	clearAll() {
 		this.context.clearRect(0, 0, this.context.canvas.width, this.context.canvas.height);
 	}
@@ -71,6 +65,12 @@ export class CWCanvas {
 		if (rect.width > 0 && rect.height > 0) {
 			this.context.fillStyle = color;
 			this.context.fillRect(rect.left, rect.top, rect.width, rect.height);
+		}
+	}
+
+	clearRect(rect: Rect) {
+		if (rect.width > 0 && rect.height > 0) {
+			this.context.clearRect(rect.left, rect.top, rect.width, rect.height);
 		}
 	}
 

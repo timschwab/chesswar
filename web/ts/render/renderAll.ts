@@ -12,6 +12,7 @@ import canvas from "../canvas/canvas.ts";
 import { renderGrid } from "./renderGrid.ts";
 import { Point } from "../../../common/shapes/Point.ts";
 import { Rect } from "../../../common/shapes/Rect.ts";
+import { renderMap } from "./renderMap.ts";
 
 export function renderAll(state: SafeState) {
 	renderField(state);
@@ -22,11 +23,9 @@ function renderField(state: SafeState) {
 	for (const diff of state.selfPosition.diffs()) {
 		renderBackground(state, diff);
 		renderGrid(state, diff);
+		renderMap(state, diff);
 	}
-	// const fieldCamera = makeCamera(state);
-	// state.self.position.center;
 
-	//renderMap(state, fieldCamera);
 	//renderPlayers(state, fieldCamera);
 }
 

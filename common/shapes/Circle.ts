@@ -99,6 +99,10 @@ export class Circle extends Shape {
 		return this.clampCenter(interiorRect);
 	}
 
+	enclosingRect(): Rect {
+		return new Rect(new Point(this.left, this.top), new Point(this.right, this.bottom));
+	}
+
 	insidePoint(other: Point): boolean {
 		if (this.radius > 0) {
 			return false;

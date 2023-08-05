@@ -30,7 +30,7 @@ export class Rect extends Shape {
 	}
 
 	static isSerializedRect(maybeSerializedRect: SerializedShape): maybeSerializedRect is SerializedRect {
-		return maybeSerializedRect.type == ShapeName.CIRCLE;
+		return maybeSerializedRect.type == ShapeName.RECT;
 	}
 
 	static deserialize(data: SerializedRect): Rect {
@@ -40,7 +40,7 @@ export class Rect extends Shape {
 	}
 
 	constructor(leftTop: Point, rightBottom: Point) {
-		super(ShapeName.CIRCLE);
+		super(ShapeName.RECT);
 		this.leftTop = leftTop;
 		this.rightBottom = rightBottom;
 
@@ -220,7 +220,7 @@ export class Rect extends Shape {
 		return true;
 	}
 
-	touchesCircle(other: Circle): boolean {		
+	touchesCircle(other: Circle): boolean {
 		// Find the x/y of the closest point to the circle's center inside the rect
 		const closestPoint = other.center.clamp(this);
 
