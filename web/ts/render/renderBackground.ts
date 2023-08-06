@@ -1,5 +1,6 @@
 import map from "../../../common/map.ts";
 import { rensets } from "../../../common/settings.ts";
+import { Circle } from "../../../common/shapes/Circle.ts";
 import { Point } from "../../../common/shapes/Point.ts";
 import canvas from "../canvas/canvas.ts";
 import { Diff } from "../diffStore.ts";
@@ -8,11 +9,11 @@ import { cameraTopLeft } from "./renderUtils.ts";
 
 const background = canvas.FIELD_BACKGROUND;
 
-export function renderBackground(state: SafeState, posDiff: Diff<Point>) {
+export function renderBackground(state: SafeState, posDiff: Diff<Circle>) {
 	if (posDiff.prev == null) {
-		newBackground(state, posDiff.cur);
+		newBackground(state, posDiff.cur.center);
 	} else {
-		backgroundDiff(state, posDiff.prev, posDiff.cur);
+		backgroundDiff(state, posDiff.prev.center, posDiff.cur.center);
 	}
 }
 

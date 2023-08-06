@@ -1,7 +1,6 @@
 import { SafeState } from "../state.ts";
 import { renderGeneralWindow } from "../generalWindow.ts";
 import { PlayerRole } from "../../../common/data-types/base.ts";
-import { CWCamera } from "../camera.ts";
 import { renderBackground } from "./renderBackground.ts";
 import { renderRole } from "./renderRole.ts";
 import { renderMiniChessboard } from "./renderMiniChessboard.ts";
@@ -10,8 +9,6 @@ import { renderVictory } from "./renderVictory.ts";
 import { renderStats } from "./renderStats.ts";
 import canvas from "../canvas/canvas.ts";
 import { renderGrid } from "./renderGrid.ts";
-import { Point } from "../../../common/shapes/Point.ts";
-import { Rect } from "../../../common/shapes/Rect.ts";
 import { renderMap } from "./renderMap.ts";
 
 export function renderAll(state: SafeState) {
@@ -20,7 +17,7 @@ export function renderAll(state: SafeState) {
 }
 
 function renderField(state: SafeState) {
-	for (const diff of state.selfPosition.diffs()) {
+	for (const diff of state.self.position.diffs()) {
 		renderBackground(state, diff);
 		renderGrid(state, diff);
 		renderMap(state, diff);
@@ -47,15 +44,17 @@ function renderUi(state: SafeState) {
 	}
 }
 
+/*
 function makeCamera(state: SafeState): CWCamera {
 	const width = state.screen.width;
 	const height = state.screen.height;
-	const center = state.self.position.center;
+	const center = state.self.position.value()?.center;
 
-	const topLeft = new Point(center.x-width/2,center.y-height/2);
+	const topLeft = new Point(center.x-width/2, center.y-height/2);
 	const bottomRight = new Point(center.x+width/2, center.y+height/2);
 
 	const cameraRect = new Rect(topLeft, bottomRight);
 
 	return new CWCamera(canvas.FIELD, cameraRect);
 }
+*/

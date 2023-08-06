@@ -1,6 +1,6 @@
 import socket from "./socket.ts";
 import { ServerMessageTypes, TeamMessage, TeamMessagePayload } from "../common/message-types/server.ts";
-import { SerializedClientPlayer } from "../common/data-types/client.ts";
+import { SerializedClientPlayerState } from "../common/data-types/client.ts";
 import { ServerPlayer, getState, resetState } from "./state.ts";
 import { tickNewGame, tickPlayers, tickTankKills, tickVictory } from "./tick.ts";
 import { addPlayer, receiveMessage, removePlayer } from "./events.ts";
@@ -90,7 +90,7 @@ function tickAll(): void {
 	state.count++;
 }
 
-function serverPlayerToClientPlayer(player: ServerPlayer): SerializedClientPlayer {
+function serverPlayerToClientPlayer(player: ServerPlayer): SerializedClientPlayerState {
 	return {
 		id: player.id,
 		team: player.team,

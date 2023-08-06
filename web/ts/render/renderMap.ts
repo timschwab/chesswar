@@ -9,11 +9,11 @@ import { Diff } from "../diffStore.ts";
 import { SafeState } from "../state.ts";
 import { cameraTopLeft } from "./renderUtils.ts";
 
-export function renderMap(state: SafeState, posDiff: Diff<Point>) {
+export function renderMap(state: SafeState, posDiff: Diff<Circle>) {
 	if (posDiff.prev == null) {
-		newMap(state, posDiff.cur);
+		newMap(state, posDiff.cur.center);
 	} else {
-		mapDiff(state, posDiff.prev, posDiff.cur);
+		mapDiff(state, posDiff.prev.center, posDiff.cur.center);
 	}
 }
 

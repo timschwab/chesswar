@@ -1,5 +1,6 @@
 import map from "../../../common/map.ts";
 import { rensets } from "../../../common/settings.ts";
+import { Circle } from "../../../common/shapes/Circle.ts";
 import { Point } from "../../../common/shapes/Point.ts";
 import { Rect } from "../../../common/shapes/Rect.ts";
 import canvas from "../canvas/canvas.ts";
@@ -7,11 +8,11 @@ import { Diff } from "../diffStore.ts";
 import { SafeState } from "../state.ts";
 import { cameraTopLeft } from "./renderUtils.ts";
 
-export function renderGrid(state: SafeState, posDiff: Diff<Point>) {
+export function renderGrid(state: SafeState, posDiff: Diff<Circle>) {
 	if (posDiff.prev == null) {
-		newGrid(state, posDiff.cur);
+		newGrid(state, posDiff.cur.center);
 	} else {
-		gridDiff(state, posDiff.prev, posDiff.cur);
+		gridDiff(state, posDiff.prev.center, posDiff.cur.center);
 	}
 }
 

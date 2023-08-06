@@ -1,7 +1,7 @@
 import { ChesswarId, DeathCause, PlayerAction, Victory } from "../data-types/base.ts";
 import { CarryLoad } from "../data-types/carryLoad.ts";
 import { ChessBoard } from "../data-types/chess.ts";
-import { SerializedClientPlayer } from "../data-types/client.ts";
+import { SerializedClientPlayerState } from "../data-types/client.ts";
 import { BriefingBundle } from "../data-types/facility.ts";
 import { ServerStats } from "../data-types/server.ts";
 import { AbstractMessage } from "./base.ts";
@@ -23,7 +23,7 @@ export interface PlayerInitMessagePayload {
 export type PlayerInitMessage = AbstractMessage<ServerMessageTypes.PLAYER_INIT, PlayerInitMessagePayload>;
 
 export interface StateMessagePayload {
-	players: SerializedClientPlayer[],
+	players: SerializedClientPlayerState[],
 	victory: Victory,
 	newGameCounter: number
 }

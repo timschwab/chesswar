@@ -1,20 +1,37 @@
-import { ChesswarId, DeathCause, PlayerAction } from "../../common/data-types/base.ts";
-import { ClientPlayer, deserializeClientPlayer } from "../../common/data-types/client.ts";
+import { DeathCause, PlayerAction } from "../../common/data-types/base.ts";
 import { CarryingMessagePayload, PlayerInitMessagePayload, StateMessagePayload, StatsMessagePayload, TeamMessagePayload } from "../../common/message-types/server.ts";
+import { Circle } from "../../common/shapes/Circle.ts";
 import audioPlayer from "./audioPlayer.ts";
-import state, { PlayerMap } from "./state.ts";
+import { DiffStore } from "./diffStore.ts";
+import state from "./state.ts";
 
 export function handlePlayerInit(payload: PlayerInitMessagePayload) {
 	state.selfId = payload.id;
 }
 
 export function handleState(payload: StateMessagePayload) {
-	const playerMap: PlayerMap = new Map<ChesswarId, ClientPlayer>();
-	for (const player of payload.players) {
-		playerMap.set(player.id, deserializeClientPlayer(player));
-	}
+	for (const sentPlayer of payload.players) {
+		const storedPlayer = state.playerMap.get(sentPlayer.id);
+		if (storedPlayer == null) {
+			const newPlayer = {
+				id: sentPlayer.id,
+				team: sentPlayer.team,
+				role: sentPlayer.role,
+				actionOption: sentPlayer.actionOption,
+				position: new DiffStore<Circle>(),
+				deathCounter: sentPlayer.deathCounter
+			};
+			newPlayer.position.store(Circle.deserialize(sentPlayer.position));
 
-	state.playerMap = playerMap;
+			state.playerMap.set(sentPlayer.id, newPlayer);
+		} else {
+			storedPlayer.role = sentPlayer.role;
+			storedPlayer.actionOption = sentPlayer.actionOption;
+			storedPlayer.position.store(Circle.deserialize(sentPlayer.position));
+			storedPlayer.deathCounter = sentPlayer.deathCounter;
+
+		}
+	}
 
 	if (state.selfId) {
 		const maybeSelf = state.playerMap.get(state.selfId);
@@ -25,7 +42,6 @@ export function handleState(payload: StateMessagePayload) {
 		}
 
 		state.self = maybeSelf;
-		state.selfPosition.store(state.self.position.center);
 	}
 
 	state.victory = payload.victory;

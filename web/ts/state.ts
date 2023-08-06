@@ -1,12 +1,20 @@
-import { ClientPlayer } from "../../common/data-types/client.ts";
 import { ChessBoard, ChessSquare } from "../../common/data-types/chess.ts";
-import { ChesswarId, Victory } from "../../common/data-types/base.ts";
+import { ChesswarId, PlayerAction, PlayerRole, TeamName, Victory } from "../../common/data-types/base.ts";
 import { BriefingBundle, BriefingName } from "../../common/data-types/facility.ts";
 import { ServerStats } from "../../common/data-types/server.ts";
 import { CarryLoad, CarryLoadType } from "../../common/data-types/carryLoad.ts";
 import { DiffStore } from "./diffStore.ts";
-import { Point } from "../../common/shapes/Point.ts";
 import { Rect } from "../../common/shapes/Rect.ts";
+import { Circle } from "../../common/shapes/Circle.ts";
+
+export interface ClientPlayer {
+	id: ChesswarId,
+	team: TeamName,
+	role: PlayerRole,
+	actionOption: PlayerAction | null,
+	position: DiffStore<Circle>,
+	deathCounter: number
+}
 
 export type PlayerMap = Map<ChesswarId, ClientPlayer>;
 
@@ -25,16 +33,14 @@ export interface Stats {
 }
 
 const teamBoard = new DiffStore<ChessBoard | null>();
-const selfPosition = new DiffStore<Point | null>();
 
 export interface UnsafeState {
 	count: number,
 	screen: Rect | undefined,
 	selfId: ChesswarId | undefined,
 	self: ClientPlayer | undefined,
-	selfPosition: DiffStore<Point | null>,
 	teamBoard: DiffStore<ChessBoard | null>,
-	playerMap: PlayerMap | undefined,
+	playerMap: PlayerMap,
 	briefings: BriefingBundle | undefined,
 	enemyBriefings: BriefingBundle | undefined,
 	carrying: CarryLoad
@@ -49,7 +55,6 @@ export interface SafeState {
 	screen: Rect,
 	selfId: ChesswarId,
 	self: ClientPlayer,
-	selfPosition: DiffStore<Point>,
 	teamBoard: DiffStore<ChessBoard>,
 	playerMap: PlayerMap,
 	briefings: BriefingBundle,
@@ -66,9 +71,8 @@ const state: UnsafeState = {
 	screen: undefined,
 	selfId: undefined,
 	self: undefined,
-	selfPosition,
 	teamBoard,
-	playerMap: undefined,
+	playerMap: new Map<ChesswarId, ClientPlayer>(),
 	briefings: undefined,
 	enemyBriefings: undefined,
 	carrying: {
@@ -106,15 +110,7 @@ export function isSafeState(maybeSafeState: UnsafeState): maybeSafeState is Safe
 		return false;
 	}
 
-	if (maybeSafeState.selfPosition.value() == null) {
-		return false;
-	}
-
 	if (maybeSafeState.teamBoard.value() == null) {
-		return false;
-	}
-
-	if (!maybeSafeState.playerMap) {
 		return false;
 	}
 
