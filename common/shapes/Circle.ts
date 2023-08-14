@@ -94,7 +94,7 @@ export class Circle extends Shape {
 		return new Circle(this.center.clamp(rect), this.radius);
 	}
 
-	clampAll(rect: Rect): Circle {
+	clampInside(rect: Rect): Circle {
 		const interiorRect = rect.shrink(this.radius);
 		return this.clampCenter(interiorRect);
 	}

@@ -34,6 +34,12 @@ export class Queue<T> {
 		}
 	}
 
+	clear(): void {
+		this.values.clear();
+		this.head = 0;
+		this.tail = 0;
+	}
+
 	length(): number {
 		return this.values.size;
 	}

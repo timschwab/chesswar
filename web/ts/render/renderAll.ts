@@ -1,15 +1,8 @@
 import { SafeState } from "../state.ts";
-import { renderGeneralWindow } from "../generalWindow.ts";
-import { PlayerRole } from "../../../common/data-types/base.ts";
 import { renderBackground } from "./renderBackground.ts";
-import { renderRole } from "./renderRole.ts";
-import { renderMiniChessboard } from "./renderMiniChessboard.ts";
-import { renderActionOption } from "./renderActionOption.ts";
-import { renderVictory } from "./renderVictory.ts";
-import { renderStats } from "./renderStats.ts";
-import canvas from "../canvas/canvas.ts";
 import { renderGrid } from "./renderGrid.ts";
 import { renderMap } from "./renderMap.ts";
+import { clearRemovedPlayers, renderPlayers } from "./renderPlayers.ts";
 
 export function renderAll(state: SafeState) {
 	renderField(state);
@@ -17,15 +10,18 @@ export function renderAll(state: SafeState) {
 }
 
 function renderField(state: SafeState) {
+	// Clear old players
+	clearRemovedPlayers(state);
+
 	for (const diff of state.self.position.diffs()) {
 		renderBackground(state, diff);
 		renderGrid(state, diff);
 		renderMap(state, diff);
+		renderPlayers(state, diff);
 	}
-
-	//renderPlayers(state, fieldCamera);
 }
 
+/*
 function renderUi(state: SafeState) {
 	canvas.UI.clearAll();
 

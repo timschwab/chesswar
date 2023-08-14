@@ -1,11 +1,11 @@
 import { Queue } from "../../common/data-structures/queue.ts";
 
-export interface Diff<T> {
+export interface Diff<T extends NonNullable<unknown>> {
 	prev: T | null,
 	cur: T
 }
 
-export class DiffStore<T> {
+export class DiffStore<T extends NonNullable<unknown>> {
 	private curValue: T | null;
 	private diffQueue: Queue<Diff<T>>;
 
@@ -34,5 +34,18 @@ export class DiffStore<T> {
 		while ((val = this.diffQueue.dequeue()) !== null) {
 			yield val;
 		}
+	}
+
+	lastSeen(): T | null {
+		const last = this.diffQueue.peek();
+		if (last == null || this.curValue == null) {
+			return null;
+		} else {
+			return last.prev;
+		}
+	}
+
+	markAsRead(): void {
+		this.diffQueue.clear();
 	}
 }

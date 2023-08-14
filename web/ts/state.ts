@@ -6,6 +6,7 @@ import { CarryLoad, CarryLoadType } from "../../common/data-types/carryLoad.ts";
 import { DiffStore } from "./diffStore.ts";
 import { Rect } from "../../common/shapes/Rect.ts";
 import { Circle } from "../../common/shapes/Circle.ts";
+import { Queue } from "../../common/data-structures/queue.ts";
 
 export interface ClientPlayer {
 	id: ChesswarId,
@@ -32,15 +33,16 @@ export interface Stats {
 	nextPingCount: number
 }
 
-const teamBoard = new DiffStore<ChessBoard | null>();
+const teamBoard = new DiffStore<ChessBoard>();
 
 export interface UnsafeState {
 	count: number,
 	screen: Rect | undefined,
 	selfId: ChesswarId | undefined,
 	self: ClientPlayer | undefined,
-	teamBoard: DiffStore<ChessBoard | null>,
+	teamBoard: DiffStore<ChessBoard>,
 	playerMap: PlayerMap,
+	removedPlayers: Queue<ClientPlayer>,
 	briefings: BriefingBundle | undefined,
 	enemyBriefings: BriefingBundle | undefined,
 	carrying: CarryLoad
@@ -57,6 +59,7 @@ export interface SafeState {
 	self: ClientPlayer,
 	teamBoard: DiffStore<ChessBoard>,
 	playerMap: PlayerMap,
+	removedPlayers: Queue<ClientPlayer>,
 	briefings: BriefingBundle,
 	enemyBriefings: BriefingBundle,
 	carrying: CarryLoad,
@@ -73,6 +76,7 @@ const state: UnsafeState = {
 	self: undefined,
 	teamBoard,
 	playerMap: new Map<ChesswarId, ClientPlayer>(),
+	removedPlayers: new Queue<ClientPlayer>(),
 	briefings: undefined,
 	enemyBriefings: undefined,
 	carrying: {

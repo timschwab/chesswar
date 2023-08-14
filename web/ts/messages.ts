@@ -11,6 +11,7 @@ export function handlePlayerInit(payload: PlayerInitMessagePayload) {
 
 export function handleState(payload: StateMessagePayload) {
 	for (const sentPlayer of payload.players) {
+		// New players
 		const storedPlayer = state.playerMap.get(sentPlayer.id);
 		if (storedPlayer == null) {
 			const newPlayer = {
@@ -25,12 +26,23 @@ export function handleState(payload: StateMessagePayload) {
 
 			state.playerMap.set(sentPlayer.id, newPlayer);
 		} else {
+			// Existing players
 			storedPlayer.role = sentPlayer.role;
 			storedPlayer.actionOption = sentPlayer.actionOption;
 			storedPlayer.position.store(Circle.deserialize(sentPlayer.position));
 			storedPlayer.deathCounter = sentPlayer.deathCounter;
-
 		}
+
+		// Old players
+		const sent = new Set(payload.players.map(p => p.id));
+		for (const player of state.playerMap.values()) {
+			if (!sent.has(player.id)) {
+				console.log("Removed: ", player);
+				state.playerMap.delete(player.id);
+				state.removedPlayers.enqueue(player);
+			}
+		}
+
 	}
 
 	if (state.selfId) {
