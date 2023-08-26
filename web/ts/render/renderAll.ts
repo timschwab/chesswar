@@ -12,13 +12,13 @@ export function renderAll(state: SafeState) {
 
 function renderField(state: SafeState) {
 	// Clear old players
-	clearRemovedPlayers(state);
+	//clearRemovedPlayers(state);
 
 	for (const diff of state.self.position.diffs()) {
 		renderBackground(state, diff);
-		renderGrid(state, diff);
-		renderMap(state, diff);
-		renderPlayers(state, diff);
+		//renderGrid(state, diff);
+		//renderMap(state, diff);
+		//renderPlayers(state, diff);
 	}
 }
 
