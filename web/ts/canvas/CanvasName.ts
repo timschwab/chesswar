@@ -1,26 +1,7 @@
-enum CanvasNameSource {
-	FIELD_BACKGROUND,
-	FIELD_GRID,
-	FIELD_MAP,
-	FIELD_PLAYERS,
-	FIELD,
-	UI
-}
+import { UnpackTuple } from "../../../common/typescript-utils.ts";
 
-// WHY DO ENUMS SUCK
-// WHY IS THIS SO HARD
+export const CanvasNameList = [
+	"FIELD_BACKGROUND", "FIELD_GRID", "FIELD_MAP", "FIELD_PLAYERS", "FIELD", "UI"
+] as const;
 
-type CanvasWantedName = keyof typeof CanvasNameSource;
-type CanvasRealKey = CanvasNameSource | CanvasWantedName;
-
-const realObj = CanvasNameSource as Record<CanvasRealKey, CanvasRealKey>;
-const realKeys = Object.values(realObj);
-
-function isWantedName(maybeWantedKey: CanvasRealKey): maybeWantedKey is CanvasWantedName {
-	return typeof maybeWantedKey == "string";
-}
-
-const wantedNames = realKeys.filter(key => isWantedName(key)) as CanvasWantedName[];
-
-export type CanvasNameType = CanvasWantedName;
-export const CanvasNameList = wantedNames;
+export type CanvasNameType = UnpackTuple<typeof CanvasNameList>;

@@ -1,9 +1,9 @@
-import { objectFromEntries, tuple } from "../../../common/typescript-utils.ts";
+import { objectFromEntries } from "../../../common/typescript-utils.ts";
 import { CanvasNameList, CanvasNameType } from "./CanvasName.ts";
 
 const gameRoot = window.document.getElementById("game");
 
-function createCanvasTuple(name: CanvasNameType, index: number) {
+function createCanvasTuple(name: CanvasNameType, index: number): readonly [CanvasNameType, HTMLCanvasElement] {
 	if (gameRoot == null) {
 		throw "Could not find game div";
 	}
@@ -12,7 +12,7 @@ function createCanvasTuple(name: CanvasNameType, index: number) {
 	canvas.style.zIndex = String(index);
 	canvas.id = String(name);
 	gameRoot.appendChild(canvas);
-	return tuple(name, canvas);
+	return [name, canvas] as const;
 }
 
 const entries = CanvasNameList.map(createCanvasTuple);
