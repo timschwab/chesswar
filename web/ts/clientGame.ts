@@ -6,10 +6,7 @@ import { listenClick } from "./inputs.ts";
 import { ClientMessageTypes } from "../../common/message-types/client.ts";
 import { handleCarrying, handleCompletedAction, handleDeath, handlePlayerInit, handlePong, handleState, handleStats, handleTeam } from "./messages.ts";
 import { receiveClick } from "./click.ts";
-import { CWCamera } from "./CWCamera.ts";
-import canvas from "./canvas/canvas.ts";
-
-const camera = new CWCamera(canvas.FIELD_BACKGROUND);
+import { camera } from "./camera/camera.ts";
 
 export function initGame() {
 	socket.listen(receiveMessage);
@@ -39,6 +36,7 @@ function receiveMessage(message: ServerMessage): void {
 
 function gameLoop() {
 	if (isSafeState(state)) {
+		camera.render();
 		renderAll(state);
 	}
 
