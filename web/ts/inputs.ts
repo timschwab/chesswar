@@ -1,36 +1,45 @@
 import { createHook } from "../../common/hooks.ts";
-import { ClientMessageTypes, MoveMessagePayload } from "../../common/message-types/client.ts";
 import { Point } from "../../common/shapes/Point.ts";
-import socket from "./socket.ts";
-import state from "./state.ts";
 
-enum ArrowCode {
-	ArrowLeft = "left",
-	ArrowRight = "right",
-	ArrowUp = "up",
-	ArrowDown = "down",
-	KeyW = "up",
-	KeyA = "left",
-	KeyS = "down",
-	KeyD = "right"
+enum CWKey {
+	UP = "up",
+	DOWN = "down",
+	LEFT = "left",
+	RIGHT = "right",
+	COMMAND = "command",
+	STATS = "stats"
 }
 
-function isArrowCode(code: string): code is keyof typeof ArrowCode {
-	if (code in ArrowCode) {
+const KeyCodeTranslation = {
+	ArrowLeft: CWKey.LEFT,
+	ArrowRight: CWKey.RIGHT,
+	ArrowUp: CWKey.UP,
+	ArrowDown: CWKey.DOWN,
+
+	KeyW: CWKey.UP,
+	KeyA: CWKey.LEFT,
+	KeyS: CWKey.DOWN,
+	KeyD: CWKey.RIGHT,
+
+	Space: CWKey.COMMAND,
+	Period: CWKey.STATS
+}
+
+interface CWKeyEvent {
+	key: CWKey,
+	pressed: boolean
+}
+
+function isTranslatable(code: string): code is keyof typeof KeyCodeTranslation {
+	if (code in KeyCodeTranslation) {
 		return true;
 	} else {
 		return false;
 	}
 }
 
-const movement: MoveMessagePayload = {
-	left: false,
-	right: false,
-	up: false,
-	down: false
-};
-
 const clickHook = createHook<Point>();
+const keyHook = createHook<CWKeyEvent>();
 
 export function initInputs() {
 	document.addEventListener("keydown", handleKeydown);
@@ -54,29 +63,12 @@ function handleKeyup(event: KeyboardEvent) {
 function handleKey(event: KeyboardEvent, pressed: boolean): void {
 	const code = event.code;
 
-	if (isArrowCode(code)) {
-		// Record state
-		const key = ArrowCode[code];
-		movement[key] = pressed;
-
-		// Update server
-		socket.send({
-			type: ClientMessageTypes.MOVE,
-			payload: movement
+	if (isTranslatable(code)) {
+		const key = KeyCodeTranslation[code];
+		keyHook.run({
+			key,
+			pressed
 		});
-	} else if (code == "Space") {
-		// Send action on keydown but not keyup
-		if (pressed) {
-			socket.send({
-				type: ClientMessageTypes.ACTION,
-				payload: null
-			});
-		}
-	} else if (code == "Period") {
-		if (pressed) {
-			// Toggle stats
-			state.stats.show = !state.stats.show;
-		}
 	} else {
 		console.log("Unused key code", code);
 	}
@@ -88,3 +80,4 @@ function handleClick(event: MouseEvent) {
 }
 
 export const listenClick = clickHook.register;
+export const listenKey = keyHook.register;

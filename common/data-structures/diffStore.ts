@@ -1,4 +1,4 @@
-import { Queue } from "../../common/data-structures/queue.ts";
+import { Queue } from "./queue.ts";
 
 export interface Diff<T extends NonNullable<unknown>> {
 	prev: T | null,

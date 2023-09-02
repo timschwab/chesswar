@@ -2,25 +2,25 @@ import { clampNumber } from "../math-utils.ts";
 import { Vector } from "./Vector.ts";
 import { Circle } from "./Circle.ts";
 import { Rect } from "./Rect.ts";
-import { Shape, SerializedShape } from "./Shape.ts";
-import { ShapeName } from "./ShapeName.ts";
+import { Geometry, SerializedGeometry } from "./Geometry.ts";
+import { GeometryName } from "./GeometryName.ts";
 
-export interface SerializedPoint extends SerializedShape {
-	type: ShapeName.POINT,
+export interface SerializedPoint extends SerializedGeometry {
+	type: GeometryName.POINT,
 	x: number,
 	y: number
 }
 
-export class Point extends Shape {
+export class Point extends Geometry {
 	readonly x: number;
 	readonly y: number;
 
-	static isPoint(maybePoint: Shape): maybePoint is Point {
-		return maybePoint.type == ShapeName.POINT;
+	static isPoint(maybePoint: Geometry): maybePoint is Point {
+		return maybePoint.type == GeometryName.POINT;
 	}
 
-	static isPointData(maybeSerializedPoint: SerializedShape): maybeSerializedPoint is SerializedPoint {
-		return maybeSerializedPoint.type == ShapeName.POINT;
+	static isPointData(maybeSerializedPoint: SerializedGeometry): maybeSerializedPoint is SerializedPoint {
+		return maybeSerializedPoint.type == GeometryName.POINT;
 	}
 
 	static deserialize(data: SerializedPoint): Point {
@@ -28,14 +28,14 @@ export class Point extends Shape {
 	}
 
 	constructor(x: number, y: number) {
-		super(ShapeName.POINT);
+		super(GeometryName.POINT);
 		this.x = x;
 		this.y = y;
 	}
 
 	serialize(): SerializedPoint {
 		return {
-			type: ShapeName.POINT,
+			type: GeometryName.POINT,
 			x: this.x,
 			y: this.y
 		};
@@ -45,7 +45,7 @@ export class Point extends Shape {
 		return (this.x == other.x) && (this.y == other.y);
 	}
 
-	inside(other: Shape): boolean {
+	inside(other: Geometry): boolean {
 		if (Point.isPoint(other)) {
 			return this.insidePoint(other);
 		} else if (Rect.isRect(other)) {
@@ -57,7 +57,7 @@ export class Point extends Shape {
 		throw "Can't get here";
 	}
 
-	touches(other: Shape): boolean {
+	touches(other: Geometry): boolean {
 		if (Point.isPoint(other)) {
 			return this.touchesPoint(other);
 		} else if (Rect.isRect(other)) {

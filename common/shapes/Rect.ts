@@ -1,15 +1,15 @@
 import { Circle } from "./Circle.ts";
 import { Point, SerializedPoint } from "./Point.ts";
-import { SerializedShape, Shape } from "./Shape.ts";
-import { ShapeName } from "./ShapeName.ts";
+import { SerializedGeometry, Geometry } from "./Geometry.ts";
+import { GeometryName } from "./GeometryName.ts";
 
-interface SerializedRect extends SerializedShape {
-	type: ShapeName.RECT,
+interface SerializedRect extends SerializedGeometry {
+	type: GeometryName.RECT,
 	leftTop: SerializedPoint,
 	rightBottom: SerializedPoint
 }
 
-export class Rect extends Shape {
+export class Rect extends Geometry {
 	readonly leftTop: Point;
 	readonly rightBottom: Point;
 
@@ -25,12 +25,12 @@ export class Rect extends Shape {
 	readonly height: number;
 	readonly center: Point;
 
-	static isRect(maybeRect: Shape): maybeRect is Rect {
-		return maybeRect.type == ShapeName.RECT;
+	static isRect(maybeRect: Geometry): maybeRect is Rect {
+		return maybeRect.type == GeometryName.RECT;
 	}
 
-	static isSerializedRect(maybeSerializedRect: SerializedShape): maybeSerializedRect is SerializedRect {
-		return maybeSerializedRect.type == ShapeName.RECT;
+	static isSerializedRect(maybeSerializedRect: SerializedGeometry): maybeSerializedRect is SerializedRect {
+		return maybeSerializedRect.type == GeometryName.RECT;
 	}
 
 	static deserialize(data: SerializedRect): Rect {
@@ -40,7 +40,7 @@ export class Rect extends Shape {
 	}
 
 	constructor(leftTop: Point, rightBottom: Point) {
-		super(ShapeName.RECT);
+		super(GeometryName.RECT);
 		this.leftTop = leftTop;
 		this.rightBottom = rightBottom;
 
@@ -59,7 +59,7 @@ export class Rect extends Shape {
 
 	serialize(): SerializedRect {
 		return {
-			type: ShapeName.RECT,
+			type: GeometryName.RECT,
 			leftTop: this.leftTop.serialize(),
 			rightBottom: this.rightBottom.serialize()
 		};
@@ -69,7 +69,7 @@ export class Rect extends Shape {
 		return this.leftTop.equals(other.leftTop) && this.rightBottom.equals(other.rightBottom);
 	}
 
-	inside(other: Shape): boolean {
+	inside(other: Geometry): boolean {
 		if (Point.isPoint(other)) {
 			return this.insidePoint(other);
 		} else if (Rect.isRect(other)) {
@@ -81,7 +81,7 @@ export class Rect extends Shape {
 		throw "Can't get here";
 	}
 
-	touches(other: Shape): boolean {
+	touches(other: Geometry): boolean {
 		if (Point.isPoint(other)) {
 			return this.touchesPoint(other);
 		} else if (Rect.isRect(other)) {
@@ -99,6 +99,12 @@ export class Rect extends Shape {
 
 	subtract(operand: Point): Rect {
 		return new Rect(this.leftTop.subtract(operand), this.rightBottom.subtract(operand));
+	}
+
+	// Keep the height and width the same, but move to the center
+	moveTo(center: Point) {
+		const halfRect = new Point(this.width/2, this.height/2);
+		return new Rect(center.subtract(halfRect), center.add(halfRect));
 	}
 
 	// Move all four walls in a certain amount

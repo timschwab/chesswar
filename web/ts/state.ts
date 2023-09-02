@@ -1,12 +1,10 @@
-import { ChessBoard, ChessSquare } from "../../common/data-types/chess.ts";
-import { ChesswarId, PlayerAction, PlayerRole, TeamName, Victory } from "../../common/data-types/base.ts";
-import { BriefingBundle, BriefingName } from "../../common/data-types/facility.ts";
+import { ChessSquare } from "../../common/data-types/chess.ts";
+import { ChesswarId, PlayerAction, PlayerRole, TeamName } from "../../common/data-types/base.ts";
+import { BriefingName } from "../../common/data-types/facility.ts";
 import { ServerStats } from "../../common/data-types/server.ts";
-import { CarryLoad, CarryLoadType } from "../../common/data-types/carryLoad.ts";
-import { DiffStore } from "./diffStore.ts";
-import { Rect } from "../../common/shapes/Rect.ts";
 import { Circle } from "../../common/shapes/Circle.ts";
-import { Queue } from "../../common/data-structures/queue.ts";
+import { CWScene } from "./scene/CWScene.ts";
+import { DiffStore } from "../../common/data-structures/diffStore.ts";
 
 export interface ClientPlayer {
 	id: ChesswarId,
@@ -33,96 +31,81 @@ export interface Stats {
 	nextPingCount: number
 }
 
-const teamBoard = new DiffStore<ChessBoard>();
+// const teamBoard = new DiffStore<ChessBoard>();
 
 export interface UnsafeState {
 	count: number,
-	screen: Rect | undefined,
-	selfId: ChesswarId | undefined,
-	self: ClientPlayer | undefined,
-	teamBoard: DiffStore<ChessBoard>,
-	playerMap: PlayerMap,
-	removedPlayers: Queue<ClientPlayer>,
-	briefings: BriefingBundle | undefined,
-	enemyBriefings: BriefingBundle | undefined,
-	carrying: CarryLoad
-	general: GeneralState,
-	victory: Victory,
-	newGameCounter: number,
-	stats: Stats
+	scene: CWScene | null,
+
+	// selfId: ChesswarId | null,
+	// self: ClientPlayer | null,
+
+	// teamBoard: DiffStore<ChessBoard>,
+	// playerMap: PlayerMap,
+	// briefings: BriefingBundle | null,
+	// enemyBriefings: BriefingBundle | null,
+	// carrying: CarryLoad
+	// general: GeneralState,
+	// victory: Victory,
+	// newGameCounter: number,
+	// stats: Stats
 }
 
 export interface SafeState {
 	count: number,
-	screen: Rect,
-	selfId: ChesswarId,
-	self: ClientPlayer,
-	teamBoard: DiffStore<ChessBoard>,
-	playerMap: PlayerMap,
-	removedPlayers: Queue<ClientPlayer>,
-	briefings: BriefingBundle,
-	enemyBriefings: BriefingBundle,
-	carrying: CarryLoad,
-	general: GeneralState,
-	victory: Victory,
-	newGameCounter: number,
-	stats: Stats
+	scene: CWScene
+
+	// screen: Rect,
+	// selfId: ChesswarId,
+	// self: ClientPlayer,
+	// teamBoard: DiffStore<ChessBoard>,
+	// playerMap: PlayerMap,
+	// removedPlayers: Queue<ClientPlayer>,
+	// briefings: BriefingBundle,
+	// enemyBriefings: BriefingBundle,
+	// carrying: CarryLoad,
+	// general: GeneralState,
+	// victory: Victory,
+	// newGameCounter: number,
+	// stats: Stats
 }
 
 const state: UnsafeState = {
 	count: 0,
-	screen: undefined,
-	selfId: undefined,
-	self: undefined,
-	teamBoard,
-	playerMap: new Map<ChesswarId, ClientPlayer>(),
-	removedPlayers: new Queue<ClientPlayer>(),
-	briefings: undefined,
-	enemyBriefings: undefined,
-	carrying: {
-		type: CarryLoadType.EMPTY,
-		load: null
-	},
-	general: {
-		selectedButton: null,
-		selectedFrom: null
-	},
-	victory: null,
-	newGameCounter: Infinity,
-	stats: {
-		show: false,
-		server: {
-			tickMs: 0
-		},
-		prevPingDelayMs: 0,
-		thisPingSend: 0,
-		thisPongRecv: 0,
-		nextPingCount: 120
-	}
+	scene: null
+
+	// screen: undefined,
+	// selfId: undefined,
+	// self: undefined,
+	// teamBoard,
+	// playerMap: new Map<ChesswarId, ClientPlayer>(),
+	// removedPlayers: new Queue<ClientPlayer>(),
+	// briefings: undefined,
+	// enemyBriefings: undefined,
+	// carrying: {
+	// 	type: CarryLoadType.EMPTY,
+	// 	load: null
+	// },
+	// general: {
+	// 	selectedButton: null,
+	// 	selectedFrom: null
+	// },
+	// victory: null,
+	// newGameCounter: Infinity,
+	// stats: {
+	// 	show: false,
+	// 	server: {
+	// 		tickMs: 0
+	// 	},
+	// 	prevPingDelayMs: 0,
+	// 	thisPingSend: 0,
+	// 	thisPongRecv: 0,
+	// 	nextPingCount: 120
+	// }
 };
 
 export function isSafeState(maybeSafeState: UnsafeState): maybeSafeState is SafeState {
-	if (!maybeSafeState.screen) {
-		return false;
-	}
-
-	if (!maybeSafeState.selfId) {
-		return false;
-	}
-
-	if (!maybeSafeState.self) {
-		return false;
-	}
-
-	if (maybeSafeState.teamBoard.value() == null) {
-		return false;
-	}
-
-	if (!maybeSafeState.briefings) {
-		return false;
-	}
-
-	if (!maybeSafeState.enemyBriefings) {
+	if (maybeSafeState.scene == null) {
 		return false;
 	}
 

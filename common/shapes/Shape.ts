@@ -1,13 +1,12 @@
-import { ShapeName } from "./ShapeName.ts";
+import { Color } from "../colors.ts";
+import { Geometry } from "./Geometry.ts";
 
-export interface SerializedShape {
-	type: ShapeName;
-}
+export class Shape<T extends Geometry> {
+	readonly geo: T
+	readonly color: Color
 
-export class Shape {
-	readonly type: ShapeName;
-
-	constructor(type: ShapeName) {
-		this.type = type;
+	constructor(geo: T, color: Color) {
+		this.geo = geo;
+		this.color = color;
 	}
 }

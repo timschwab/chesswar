@@ -1,15 +1,15 @@
 import { Point, SerializedPoint } from "./Point.ts";
 import { Rect } from "./Rect.ts";
-import { SerializedShape, Shape } from "./Shape.ts";
-import { ShapeName } from "./ShapeName.ts";
+import { SerializedGeometry, Geometry } from "./Geometry.ts";
+import { GeometryName } from "./GeometryName.ts";
 
-export interface SerializedCircle extends SerializedShape {
-	type: ShapeName.CIRCLE,
+export interface SerializedCircle extends SerializedGeometry {
+	type: GeometryName.CIRCLE,
 	center: SerializedPoint,
 	radius: number
 }
 
-export class Circle extends Shape {
+export class Circle extends Geometry {
 	readonly center: Point;
 	readonly radius: number;
 
@@ -18,12 +18,12 @@ export class Circle extends Shape {
 	readonly top: number;
 	readonly bottom: number;
 
-	static isCircle(maybeCircle: Shape): maybeCircle is Circle {
-		return maybeCircle.type == ShapeName.CIRCLE;
+	static isCircle(maybeCircle: Geometry): maybeCircle is Circle {
+		return maybeCircle.type == GeometryName.CIRCLE;
 	}
 
-	static isSerializedCircle(maybeSerializedCircle: SerializedShape): maybeSerializedCircle is SerializedCircle {
-		return maybeSerializedCircle.type == ShapeName.CIRCLE;
+	static isSerializedCircle(maybeSerializedCircle: SerializedGeometry): maybeSerializedCircle is SerializedCircle {
+		return maybeSerializedCircle.type == GeometryName.CIRCLE;
 	}
 
 	static deserialize(data: SerializedCircle): Circle {
@@ -32,7 +32,7 @@ export class Circle extends Shape {
 	}
 
 	constructor(center: Point, radius: number) {
-		super(ShapeName.CIRCLE);
+		super(GeometryName.CIRCLE);
 		this.center = center;
 		this.radius = radius;
 
@@ -44,7 +44,7 @@ export class Circle extends Shape {
 
 	serialize(): SerializedCircle {
 		return {
-			type: ShapeName.CIRCLE,
+			type: GeometryName.CIRCLE,
 			center: this.center.serialize(),
 			radius: this.radius
 		};
@@ -54,7 +54,7 @@ export class Circle extends Shape {
 		return this.center.equals(other.center) && (this.radius == other.radius);
 	}
 
-	inside(other: Shape): boolean {
+	inside(other: Geometry): boolean {
 		if (Point.isPoint(other)) {
 			return this.insidePoint(other);
 		} else if (Rect.isRect(other)) {
@@ -66,7 +66,7 @@ export class Circle extends Shape {
 		throw "Can't get here";
 	}
 
-	touches(other: Shape): boolean {
+	touches(other: Geometry): boolean {
 		if (Point.isPoint(other)) {
 			return this.touchesPoint(other);
 		} else if (Rect.isRect(other)) {
