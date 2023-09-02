@@ -3,6 +3,7 @@ import { Color } from "../../../common/colors.ts";
 import { Circle } from "../../../common/shapes/Circle.ts";
 import { Point } from "../../../common/shapes/Point.ts";
 import { Rect } from "../../../common/shapes/Rect.ts";
+import { Shape } from "../../../common/shapes/Shape.ts";
 import { Vector } from "../../../common/shapes/Vector.ts";
 
 export enum TextAlign {
@@ -55,16 +56,16 @@ export class CWCanvas {
 		this.line(rightWing, finish, color, lineWidth);
 	}
 
-	outlineRect(rect: Rect, color: Color, lineWidth: number) {
-		this.context.strokeStyle = color;
+	outlineRect(rect: Shape<Rect>, lineWidth: number) {
+		this.context.strokeStyle = rect.color;
 		this.context.lineWidth = lineWidth;
-		this.context.strokeRect(rect.left, rect.top, rect.width, rect.height);
+		this.context.strokeRect(rect.geo.left, rect.geo.top, rect.geo.width, rect.geo.height);
 	}
 
-	fillRect(rect: Rect, color: Color) {
-		if (rect.width > 0 && rect.height > 0) {
-			this.context.fillStyle = color;
-			this.context.fillRect(rect.left, rect.top, rect.width, rect.height);
+	fillRect(rect: Shape<Rect>) {
+		if (rect.geo.width > 0 && rect.geo.height > 0) {
+			this.context.fillStyle = rect.color;
+			this.context.fillRect(rect.geo.left, rect.geo.top, rect.geo.width, rect.geo.height);
 		}
 	}
 
@@ -74,10 +75,10 @@ export class CWCanvas {
 		}
 	}
 
-	fillCircle(circle: Circle, color: Color) {
-		this.context.fillStyle = color;
+	fillCircle(circle: Shape<Circle>) {
+		this.context.fillStyle = circle.color;
 		this.context.beginPath();
-		this.context.arc(circle.center.x, circle.center.y, circle.radius, 0, TAU);
+		this.context.arc(circle.geo.center.x, circle.geo.center.y, circle.geo.radius, 0, TAU);
 		this.context.fill();
 	}
 
