@@ -1,5 +1,8 @@
-import { DeathCause, PlayerAction } from "../../common/data-types/base.ts";
-import { CarryingMessagePayload, PlayerInitMessagePayload, ServerMessage, ServerMessageTypes, StateMessagePayload, StatsMessagePayload, TeamMessagePayload } from "../../common/message-types/server.ts";
+import { DeathCause, PlayerAction } from "../../../common/data-types/base.ts";
+import { CarryingMessagePayload, PlayerInitMessagePayload, ServerMessage, ServerMessageTypes, StateMessagePayload, StatsMessagePayload, TeamMessagePayload } from "../../../common/message-types/server.ts";
+import { Point } from "../../../common/shapes/Point.ts";
+import { handleSelfPosition } from "./camera.ts";
+import { state } from "./state.ts";
 
 export function receiveMessage(message: ServerMessage): void {
 	if (message.type == ServerMessageTypes.PLAYER_INIT) {
@@ -22,11 +25,15 @@ export function receiveMessage(message: ServerMessage): void {
 }
 
 function handlePlayerInit(payload: PlayerInitMessagePayload) {
-	//
+	state.selfId = payload.id;
 }
 
 function handleState(payload: StateMessagePayload) {
-	//
+	for (const player of payload.players) {
+		if (player.id == state.selfId) {
+			handleSelfPosition(Point.deserialize(player.position.center));
+		}
+	}
 }
 
 function handleTeam(payload: TeamMessagePayload) {

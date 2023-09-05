@@ -6,7 +6,7 @@
 
 		"check": "deno task check-api && deno task check-web",
 		"check-api": "deno check api/run.ts",
-		"check-web": "deno check web/ts/app.ts"
+		"check-web": "deno check web/ts/clientGame.ts"
 	},
 	"compilerOptions": {
 		"lib": ["dom", "deno.ns", "deno.unstable"]

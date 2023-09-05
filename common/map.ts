@@ -1,12 +1,15 @@
 import { TeamName } from "./data-types/base.ts";
+import { rensets } from "./settings.ts";
 import { Circle } from "./shapes/Circle.ts";
 import { Point } from "./shapes/Point.ts";
 import { Rect } from "./shapes/Rect.ts";
+import { Shape } from "./shapes/Shape.ts";
 import { ZeroPoint } from "./shapes/Zero.ts";
 
 const width = 6000;
 const height = 3000;
 const rect = new Rect(ZeroPoint, new Point(width, height));
+const shape: Shape<Rect> = {geo: rect, color: rensets.grid.background};
 
 const middleX = width/2;
 const middleY = height/2;
@@ -64,7 +67,7 @@ const battlefield = new Circle(middle, 50);
 const map = {
 	width,
 	height,
-	rect,
+	shape,
 	starts: {
 		[TeamName.BLUE]: [blueStart1, blueStart2, blueStart3],
 		[TeamName.RED]: [redStart1, redStart2, redStart3]

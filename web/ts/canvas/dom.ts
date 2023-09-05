@@ -16,5 +16,4 @@ function createCanvasTuple(name: CanvasNameType, index: number): readonly [Canva
 }
 
 const entries = CanvasNameList.map(createCanvasTuple);
-const domObject = objectFromEntries(entries);
-export default domObject;
+export const domObject = objectFromEntries(entries);

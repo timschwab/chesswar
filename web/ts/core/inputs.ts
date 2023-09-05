@@ -1,5 +1,5 @@
-import { createHook } from "../../common/hooks.ts";
-import { Point } from "../../common/shapes/Point.ts";
+import { createHook } from "../../../common/hooks.ts";
+import { Point } from "../../../common/shapes/Point.ts";
 
 enum CWKey {
 	UP = "up",
@@ -41,11 +41,9 @@ function isTranslatable(code: string): code is keyof typeof KeyCodeTranslation {
 const clickHook = createHook<Point>();
 const keyHook = createHook<CWKeyEvent>();
 
-export function initInputs() {
-	document.addEventListener("keydown", handleKeydown);
-	document.addEventListener("keyup", handleKeyup);
-	document.addEventListener("click", handleClick);
-}
+document.addEventListener("keydown", handleKeydown);
+document.addEventListener("keyup", handleKeyup);
+document.addEventListener("click", handleClick);
 
 function handleKeydown(event: KeyboardEvent) {
 	if (event.repeat) {

@@ -1,7 +1,7 @@
-import { createHook } from "../../common/hooks.ts";
-import { Point } from "../../common/shapes/Point.ts";
-import { Rect } from "../../common/shapes/Rect.ts";
-import { ZeroPoint } from "../../common/shapes/Zero.ts";
+import { createHook } from "../../../common/hooks.ts";
+import { Point } from "../../../common/shapes/Point.ts";
+import { Rect } from "../../../common/shapes/Rect.ts";
+import { ZeroPoint } from "../../../common/shapes/Zero.ts";
 
 const hook = createHook<Rect>();
 export const screenChange = hook.register;

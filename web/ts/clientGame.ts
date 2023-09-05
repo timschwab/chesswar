@@ -1,24 +1,21 @@
-import socket from "./socket.ts";
-import state from "./state.ts";
-import { receiveMessage } from "./messages.ts";
+import { screenChange, screenValue } from "./core/screen.ts";
+import { socketListen } from "./core/socket.ts";
+import { handleScreenChange } from "./game-logic/camera.ts";
+import { receiveMessage } from "./game-logic/messages.ts";
+import { scene } from "./scene/scene.ts";
+
+initGame();
 
 export function initGame() {
-	socket.listen(receiveMessage);
+	socketListen(receiveMessage);
+
+	handleScreenChange(screenValue);
+	screenChange(handleScreenChange);
+
 	gameLoop();
 }
 
 function gameLoop() {
-	state.count++;
+	scene.render();
 	requestAnimationFrame(gameLoop);
 }
-
-// function ping() {
-// 	if (state.count > state.stats.nextPingCount) {
-// 		state.stats.nextPingCount = Infinity;
-// 		state.stats.thisPingSend = performance.now();
-// 		socket.send({
-// 			type: ClientMessageTypes.PING,
-// 			payload: null
-// 		});
-// 	}
-// }
