@@ -101,6 +101,10 @@ export class Rect extends Geometry {
 		return new Rect(this.leftTop.subtract(operand), this.rightBottom.subtract(operand));
 	}
 
+	floor(): Rect {
+		return new Rect(this.leftTop.floor(), this.rightBottom.floor());
+	}
+
 	// Keep the height and width the same, but move to the center
 	moveTo(center: Point) {
 		const halfRect = new Point(this.width/2, this.height/2);
