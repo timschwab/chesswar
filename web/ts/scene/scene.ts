@@ -1,9 +1,10 @@
 import map from "../../../common/map.ts";
-import { canvasObject } from "../canvas/canvas.ts";
+import { gameRoot } from "../canvas/dom.ts";
 import { CWScene } from "./CWScene.ts";
 
 // Create scene
-export const scene = new CWScene(canvasObject.FIELD_BACKGROUND);
+export const scene = new CWScene(gameRoot);
 
 // Add background
-scene.addStaticRect(map.shape);
+const backgroundLayer = scene.createLayer(0);
+backgroundLayer.addStaticRect(map.shape);

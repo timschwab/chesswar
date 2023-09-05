@@ -69,6 +69,13 @@ export class Rect extends Geometry {
 		return this.leftTop.equals(other.leftTop) && this.rightBottom.equals(other.rightBottom);
 	}
 
+	sameSize(other: Rect): boolean {
+		const sameWidth = (this.width == other.width);
+		const sameHeight = (this.height == other.height);
+
+		return sameWidth && sameHeight;
+	}
+
 	inside(other: Geometry): boolean {
 		if (Point.isPoint(other)) {
 			return this.insidePoint(other);

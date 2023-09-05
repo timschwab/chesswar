@@ -13,7 +13,7 @@ export enum TextAlign {
 }
 
 export class CWCanvas {
-	private readonly context: CanvasRenderingContext2D
+	private readonly context: CanvasRenderingContext2D;
 
 	constructor(htmlCanvas: HTMLCanvasElement) {
 		this.context = this.getContext(htmlCanvas);
@@ -27,6 +27,11 @@ export class CWCanvas {
 		}
 
 		return maybeContext;
+	}
+
+	setSize(size: Rect) {
+		this.context.canvas.width = size.width;
+		this.context.canvas.height = size.height;
 	}
 
 	clearAll() {
