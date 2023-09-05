@@ -33,29 +33,37 @@ export class CWLayer {
 
 	renderDelta(prev: Rect, next: Rect): void {
 		for (const rect of this.staticRects) {
-			const prevTransposed = rect.geo.subtract(prev.leftTop);
-			const nextTransposed = rect.geo.subtract(next.leftTop);
-			const overlap = prevTransposed.overlap(nextTransposed);
-
-			overlap.first.left && this.canvas.clearRect(overlap.first.left);
-			overlap.first.right && this.canvas.clearRect(overlap.first.right);
-			overlap.first.top && this.canvas.clearRect(overlap.first.top);
-			overlap.first.bottom && this.canvas.clearRect(overlap.first.bottom);
-
-			overlap.second.left && this.canvas.fillRect({geo: overlap.second.left, color: rect.color});
-			overlap.second.right && this.canvas.fillRect({geo: overlap.second.right, color: rect.color});
-			overlap.second.top && this.canvas.fillRect({geo: overlap.second.top, color: rect.color});
-			overlap.second.bottom && this.canvas.fillRect({geo: overlap.second.bottom, color: rect.color});
+			this.renderRectDelta(prev, next, rect);
 		}
 
-		// Not sure how to optimize this
 		for (const circle of this.staticCircles) {
-			const prevTransposed = circle.geo.subtract(prev.leftTop);
-			const nextTransposed = circle.geo.subtract(next.leftTop);
-
-			this.canvas.clearRect(prevTransposed.enclosingRect());
-			this.canvas.fillCircle({geo: nextTransposed, color: circle.color});
+			this.renderCircleDelta(prev, next, circle)
 		}
+	}
+
+	renderRectDelta(prevCamera: Rect, nextCamera: Rect, toRender: Shape<Rect>): void {
+		const prevTransposed = toRender.geo.subtract(prevCamera.leftTop);
+		const nextTransposed = toRender.geo.subtract(nextCamera.leftTop);
+		const overlap = prevTransposed.overlap(nextTransposed);
+
+		overlap.first.left && this.canvas.clearRect(overlap.first.left);
+		overlap.first.right && this.canvas.clearRect(overlap.first.right);
+		overlap.first.top && this.canvas.clearRect(overlap.first.top);
+		overlap.first.bottom && this.canvas.clearRect(overlap.first.bottom);
+
+		overlap.second.left && this.canvas.fillRect({geo: overlap.second.left, color: toRender.color});
+		overlap.second.right && this.canvas.fillRect({geo: overlap.second.right, color: toRender.color});
+		overlap.second.top && this.canvas.fillRect({geo: overlap.second.top, color: toRender.color});
+		overlap.second.bottom && this.canvas.fillRect({geo: overlap.second.bottom, color: toRender.color});
+	}
+
+	renderCircleDelta(prevCamera: Rect, nextCamera: Rect, toRender: Shape<Circle>): void {
+		// Not sure how to optimize this
+		const prevTransposed = toRender.geo.subtract(prevCamera.leftTop);
+		const nextTransposed = toRender.geo.subtract(nextCamera.leftTop);
+
+		this.canvas.clearRect(prevTransposed.enclosingRect());
+		this.canvas.fillCircle({geo: nextTransposed, color: toRender.color});
 	}
 
 	addStaticRect(toAdd: Shape<Rect>): void {
