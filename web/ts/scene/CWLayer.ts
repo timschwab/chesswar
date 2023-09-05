@@ -1,16 +1,19 @@
+import { Circle } from "../../../common/shapes/Circle.ts";
 import { Rect } from "../../../common/shapes/Rect.ts";
 import { Shape } from "../../../common/shapes/Shape.ts";
 import { CWCanvas } from "../canvas/CWCanvas.ts";
 
 export class CWLayer {
 	private readonly canvas: CWCanvas;
-	private readonly staticRects: Shape<Rect>[];
 	readonly frontend: CWLayerFrontend
+	private readonly staticRects: Shape<Rect>[];
+	private readonly staticCircles: Shape<Circle>[];
 
 	constructor(canvas: CWCanvas) {
 		this.canvas = canvas;
-		this.staticRects = [];
 		this.frontend = new CWLayerFrontend(this);
+		this.staticRects = [];
+		this.staticCircles = [];
 	}
 
 	renderFirst(camera: Rect): void {
@@ -20,6 +23,11 @@ export class CWLayer {
 		for (const rect of this.staticRects) {
 			const transposed = rect.geo.subtract(camera.leftTop);
 			this.canvas.fillRect({geo: transposed, color: rect.color});
+		}
+
+		for (const circle of this.staticCircles) {
+			const transposed = circle.geo.subtract(camera.leftTop);
+			this.canvas.fillCircle({geo: transposed, color: circle.color});
 		}
 	}
 
@@ -39,10 +47,23 @@ export class CWLayer {
 			overlap.second.top && this.canvas.fillRect({geo: overlap.second.top, color: rect.color});
 			overlap.second.bottom && this.canvas.fillRect({geo: overlap.second.bottom, color: rect.color});
 		}
+
+		// Not sure how to optimize this
+		for (const circle of this.staticCircles) {
+			const prevTransposed = circle.geo.subtract(prev.leftTop);
+			const nextTransposed = circle.geo.subtract(next.leftTop);
+
+			this.canvas.clearRect(prevTransposed.enclosingRect());
+			this.canvas.fillCircle({geo: nextTransposed, color: circle.color});
+		}
 	}
 
 	addStaticRect(toAdd: Shape<Rect>): void {
 		this.staticRects.push(toAdd);
+	}
+
+	addStaticCircle(toAdd: Shape<Circle>): void {
+		this.staticCircles.push(toAdd);
 	}
 }
 
@@ -56,5 +77,9 @@ export class CWLayerFrontend {
 
 	addStaticRect(toAdd: Shape<Rect>): void {
 		this.backend.addStaticRect(toAdd);
+	}
+
+	addStaticCircle(toAdd: Shape<Circle>): void {
+		this.backend.addStaticCircle(toAdd);
 	}
 }

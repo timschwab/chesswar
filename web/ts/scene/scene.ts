@@ -39,6 +39,10 @@ for (let y = 0; y <= map.height; y += rensets.grid.spacing) {
 
 // Map external areas
 const externalMap = scene.createLayer();
+externalMap.addStaticCircle({
+	geo: map.safeZone, color: rensets.center.safe
+});
+
 for (const bundle of map.facilities) {
 	externalMap.addStaticRect({
 		geo: bundle.base,
@@ -54,6 +58,10 @@ for (const bundle of map.facilities) {
 
 // Map internal areas
 const internalMap = scene.createLayer();
+internalMap.addStaticCircle({
+	geo: map.battlefield, color: rensets.center.battlefield
+});
+
 for (const bundle of map.facilities) {
 	internalMap.addStaticRect({
 		geo: bundle.command, color: rensets.facilities.ally.command
@@ -82,15 +90,13 @@ for (const minefield of map.minefields) {
 			geo: minefield, color: rensets.minefield.color
 		});
 	} else if (Circle.isCircle(minefield)) {
-		//circles.push([minefield, rensets.minefield.color]);
+		minefields.addStaticCircle({
+			geo: minefield, color: rensets.minefield.color
+		});
 	} else {
 		// Can't get here
 	}
 }
-
-// Draw safe zone and battlefield
-//circles.push([map.safeZone, rensets.center.safe]);
-//circles.push([map.battlefield, rensets.center.battlefield]);
 
 // Map boundaries
 const outer = map.shape.geo.expand(rensets.mapBorder.width/2);
