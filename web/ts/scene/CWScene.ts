@@ -63,7 +63,7 @@ export class CWScene {
 	}
 
 	setCamera(newCamera: Rect) {
-		this.cameraStore.set(newCamera);
+		this.cameraStore.set(newCamera.floor());
 	}
 
 	addStaticRect(toAdd: Shape<Rect>): void {
