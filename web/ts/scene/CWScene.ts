@@ -14,9 +14,8 @@ export class CWScene {
 		this.cameraStore = new Deferred(null);
 	}
 
-	createLayer(zIndex: number): CWLayerFrontend {
+	createLayer(): CWLayerFrontend {
 		const htmlCanvas = document.createElement("canvas");
-		htmlCanvas.style.zIndex = String(zIndex);
 		this.sceneRoot.appendChild(htmlCanvas);
 
 		const cwCanvas = new CWCanvas(htmlCanvas);

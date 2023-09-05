@@ -9,11 +9,11 @@ import { CWScene } from "./CWScene.ts";
 export const scene = new CWScene(gameRoot);
 
 // Background
-const background = scene.createLayer(0);
+const background = scene.createLayer();
 background.addStaticRect(map.shape);
 
 // Vertical grid
-const verticalGrid = scene.createLayer(1);
+const verticalGrid = scene.createLayer();
 for (let x = 0; x <= map.width; x += rensets.grid.spacing) {
 	const start = new Point(x, 0);
 	const finish = new Point(x+rensets.grid.width, map.height);
@@ -25,7 +25,7 @@ for (let x = 0; x <= map.width; x += rensets.grid.spacing) {
 }
 
 // Horizontal grid
-const horizontalGrid = scene.createLayer(1);
+const horizontalGrid = scene.createLayer();
 for (let y = 0; y <= map.height; y += rensets.grid.spacing) {
 	const start = new Point(0, y);
 	const finish = new Point(map.width, y+rensets.grid.width);
