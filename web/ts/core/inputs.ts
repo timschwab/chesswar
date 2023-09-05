@@ -1,13 +1,18 @@
 import { createHook } from "../../../common/hooks.ts";
 import { Point } from "../../../common/shapes/Point.ts";
 
-enum CWKey {
+export enum CWKey {
 	UP = "up",
 	DOWN = "down",
 	LEFT = "left",
 	RIGHT = "right",
 	COMMAND = "command",
 	STATS = "stats"
+}
+
+export interface CWKeyEvent {
+	key: CWKey,
+	pressed: boolean
 }
 
 const KeyCodeTranslation = {
@@ -23,11 +28,6 @@ const KeyCodeTranslation = {
 
 	Space: CWKey.COMMAND,
 	Period: CWKey.STATS
-}
-
-interface CWKeyEvent {
-	key: CWKey,
-	pressed: boolean
 }
 
 function isTranslatable(code: string): code is keyof typeof KeyCodeTranslation {
