@@ -1,7 +1,7 @@
 import { Deferred } from "../../../common/data-structures/Deferred.ts";
 import { Rect } from "../../../common/shapes/Rect.ts";
 import { CWCanvas } from "../canvas/CWCanvas.ts";
-import { CWLayer } from "./CWLayer.ts";
+import { CWLayer, CWLayerFrontend } from "./CWLayer.ts";
 
 export class CWScene {
 	private readonly cameraStore: Deferred<Rect | null>;
@@ -14,7 +14,7 @@ export class CWScene {
 		this.cameraStore = new Deferred(null);
 	}
 
-	createLayer(zIndex: number): CWLayer {
+	createLayer(zIndex: number): CWLayerFrontend {
 		const htmlCanvas = document.createElement("canvas");
 		htmlCanvas.style.zIndex = String(zIndex);
 		this.sceneRoot.appendChild(htmlCanvas);
@@ -23,7 +23,7 @@ export class CWScene {
 		const newLayer = new CWLayer(cwCanvas);
 		this.layers.push(newLayer);
 
-		return newLayer;
+		return newLayer.frontend;
 	}
 
 	render(): void {

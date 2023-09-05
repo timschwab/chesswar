@@ -3,12 +3,14 @@ import { Shape } from "../../../common/shapes/Shape.ts";
 import { CWCanvas } from "../canvas/CWCanvas.ts";
 
 export class CWLayer {
-	private canvas: CWCanvas;
-	private staticRects: Shape<Rect>[];
+	private readonly canvas: CWCanvas;
+	private readonly staticRects: Shape<Rect>[];
+	readonly frontend: CWLayerFrontend
 
 	constructor(canvas: CWCanvas) {
 		this.canvas = canvas;
 		this.staticRects = [];
+		this.frontend = new CWLayerFrontend(this);
 	}
 
 	renderFirst(camera: Rect): void {
@@ -41,5 +43,18 @@ export class CWLayer {
 
 	addStaticRect(toAdd: Shape<Rect>): void {
 		this.staticRects.push(toAdd);
+	}
+}
+
+// Make only some methods accessible to the user
+export class CWLayerFrontend {
+	private readonly backend: CWLayer;
+
+	constructor(backend: CWLayer) {
+		this.backend = backend;
+	}
+
+	addStaticRect(toAdd: Shape<Rect>): void {
+		this.backend.addStaticRect(toAdd);
 	}
 }
