@@ -57,8 +57,8 @@ export class CWLayer {
 		overlap.second.bottom && this.canvas.fillRect({geo: overlap.second.bottom, color: toRender.color});
 	}
 
+	// Not sure how to optimize this
 	renderCircleDelta(prevCamera: Rect, nextCamera: Rect, toRender: Shape<Circle>): void {
-		// Not sure how to optimize this
 		const prevTransposed = toRender.geo.subtract(prevCamera.leftTop);
 		const nextTransposed = toRender.geo.subtract(nextCamera.leftTop);
 
