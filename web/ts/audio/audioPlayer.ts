@@ -25,23 +25,6 @@ const releaseTime = 0.5;
 
 let ac: AudioContext;
 
-declare global {
-	// deno-lint-ignore no-var
-	var audio: unknown;
-}
-
-globalThis.audio = {
-	initAudio,
-	NoteFreq,
-	NoteLen,
-	spm,
-	note,
-	playSequence,
-
-	grabOrders,
-	completeOrders,
-};
-
 export function initAudio(): void {
 	ac = new AudioContext();
 
