@@ -3,11 +3,10 @@ import { rensets } from "../../../common/settings.ts";
 import { Circle } from "../../../common/shapes/Circle.ts";
 import { Point } from "../../../common/shapes/Point.ts";
 import { Rect } from "../../../common/shapes/Rect.ts";
-import { gameRoot } from "../canvas/dom.ts";
 import { CWScene } from "./CWScene.ts";
 
 // Create scene
-export const scene = new CWScene(gameRoot);
+export const scene = new CWScene();
 
 // Background
 const background = scene.staticLayer();

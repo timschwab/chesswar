@@ -31,7 +31,11 @@ export class CWStaticLayer {
 		}
 	}
 
-	renderDelta(prev: Rect, next: Rect): void {
+	renderStill(_camera: Rect): void {
+		// Do nothing
+	}
+
+	renderCameraDelta(prev: Rect, next: Rect): void {
 		for (const rect of this.staticRects) {
 			this.renderRectDelta(prev, next, rect);
 		}
