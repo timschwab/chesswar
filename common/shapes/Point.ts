@@ -11,7 +11,7 @@ export interface SerializedPoint extends SerializedGeometry {
 	y: number
 }
 
-export class Point extends Geometry {
+export class Point extends Geometry<Point> {
 	readonly x: number;
 	readonly y: number;
 

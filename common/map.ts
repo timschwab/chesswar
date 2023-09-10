@@ -9,7 +9,7 @@ import { ZeroPoint } from "./shapes/Zero.ts";
 const width = 6000;
 const height = 3000;
 const rect = new Rect(ZeroPoint, new Point(width, height));
-const shape: Shape<Rect> = {geo: rect, color: rensets.grid.background};
+const shape = new Shape(rect, rensets.grid.background);
 
 const middleX = width/2;
 const middleY = height/2;

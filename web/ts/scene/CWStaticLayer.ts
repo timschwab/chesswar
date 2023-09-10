@@ -30,12 +30,12 @@ export class CWStaticLayer {
 
 		for (const rect of this.staticRects) {
 			const transposed = rect.geo.subtract(camera.leftTop);
-			this.canvas.fillRect({geo: transposed, color: rect.color});
+			this.canvas.fillRect(new Shape(transposed, rect.color));
 		}
 
 		for (const circle of this.staticCircles) {
 			const transposed = circle.geo.subtract(camera.leftTop);
-			this.canvas.fillCircle({geo: transposed, color: circle.color});
+			this.canvas.fillCircle(new Shape(transposed, circle.color));
 		}
 	}
 
@@ -63,10 +63,10 @@ export class CWStaticLayer {
 		overlap.first.top && this.canvas.clearRect(overlap.first.top);
 		overlap.first.bottom && this.canvas.clearRect(overlap.first.bottom);
 
-		overlap.second.left && this.canvas.fillRect({geo: overlap.second.left, color: toRender.color});
-		overlap.second.right && this.canvas.fillRect({geo: overlap.second.right, color: toRender.color});
-		overlap.second.top && this.canvas.fillRect({geo: overlap.second.top, color: toRender.color});
-		overlap.second.bottom && this.canvas.fillRect({geo: overlap.second.bottom, color: toRender.color});
+		overlap.second.left && this.canvas.fillRect(new Shape(overlap.second.left, toRender.color));
+		overlap.second.right && this.canvas.fillRect(new Shape(overlap.second.right, toRender.color));
+		overlap.second.top && this.canvas.fillRect(new Shape(overlap.second.top, toRender.color));
+		overlap.second.bottom && this.canvas.fillRect(new Shape(overlap.second.bottom, toRender.color));
 	}
 
 	// Not sure how to optimize this
@@ -75,7 +75,7 @@ export class CWStaticLayer {
 		const nextTransposed = toRender.geo.subtract(nextCamera.leftTop);
 
 		this.canvas.clearRect(prevTransposed.enclosingRect());
-		this.canvas.fillCircle({geo: nextTransposed, color: toRender.color});
+		this.canvas.fillCircle(new Shape(nextTransposed, toRender.color));
 	}
 }
 

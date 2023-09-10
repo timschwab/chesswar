@@ -1,6 +1,7 @@
 import { DeathCause, PlayerAction } from "../../../common/data-types/base.ts";
 import { CarryingMessagePayload, PlayerInitMessagePayload, ServerMessage, ServerMessageTypes, StateMessagePayload, StatsMessagePayload, TeamMessagePayload } from "../../../common/message-types/server.ts";
 import { rensets } from "../../../common/settings.ts";
+import { Shape } from "../../../common/shapes/Shape.ts";
 import { playerLayer } from "../scene/scene.ts";
 import { deserializeClientPlayer } from "./ClientPlayer.ts";
 import { handleSelfPosition } from "./camera.ts";
@@ -43,7 +44,7 @@ function handleState(payload: StateMessagePayload) {
 		const geo = player.position;
 		const color = rensets.players.teamColor[player.team];
 
-		return {geo, color};
+		return new Shape(geo, color);
 	});
 
 	playerLayer.setShapes(playerShapes);

@@ -29,7 +29,7 @@ export class CWDynamicLayer {
 
 		for (const shape of shapes) {
 			const transposed = shape.geo.subtract(camera.leftTop);
-			this.canvas.fillCircle({geo: transposed, color: shape.color});
+			this.canvas.fillCircle(new Shape(transposed, shape.color));
 		}
 	}
 
@@ -53,7 +53,7 @@ export class CWDynamicLayer {
 		// Draw the new shapes
 		for (const shape of pendingShapes) {
 			const transposed = shape.geo.subtract(camera.leftTop);
-			this.canvas.fillCircle({geo: transposed, color: shape.color});
+			this.canvas.fillCircle(new Shape(transposed, shape.color));
 		}
 	}
 
@@ -74,7 +74,7 @@ export class CWDynamicLayer {
 		// Fill new shapes
 		for (const shape of pendingShapes) {
 			const transposed = shape.geo.subtract(next.leftTop);
-			this.canvas.fillCircle({geo: transposed, color: shape.color});
+			this.canvas.fillCircle(new Shape(transposed, shape.color));
 		}
 	}
 }

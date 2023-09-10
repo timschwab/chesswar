@@ -9,7 +9,7 @@ export interface SerializedCircle extends SerializedGeometry {
 	radius: number
 }
 
-export class Circle extends Geometry {
+export class Circle extends Geometry<Circle> {
 	readonly center: Point;
 	readonly radius: number;
 

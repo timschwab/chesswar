@@ -3,6 +3,7 @@ import { rensets } from "../../../common/settings.ts";
 import { Circle } from "../../../common/shapes/Circle.ts";
 import { Point } from "../../../common/shapes/Point.ts";
 import { Rect } from "../../../common/shapes/Rect.ts";
+import { Shape } from "../../../common/shapes/Shape.ts";
 import { CWScene } from "./CWScene.ts";
 
 // Create scene
@@ -17,10 +18,7 @@ const verticalGrid = scene.staticLayer();
 for (let x = 0; x <= map.width; x += rensets.grid.spacing) {
 	const start = new Point(x, 0);
 	const finish = new Point(x+rensets.grid.width, map.height);
-	const shape = {
-		geo: new Rect(start, finish),
-		color: rensets.grid.color
-	};
+	const shape = new Shape(new Rect(start, finish), rensets.grid.color);
 	verticalGrid.addRect(shape);
 }
 
@@ -29,69 +27,44 @@ const horizontalGrid = scene.staticLayer();
 for (let y = 0; y <= map.height; y += rensets.grid.spacing) {
 	const start = new Point(0, y);
 	const finish = new Point(map.width, y+rensets.grid.width);
-	const shape = {
-		geo: new Rect(start, finish),
-		color: rensets.grid.color
-	};
+	const shape = new Shape(new Rect(start, finish), rensets.grid.color);
 	horizontalGrid.addRect(shape);
 }
 
 // Map external areas
 const externalMap = scene.staticLayer();
-externalMap.addCircle({
-	geo: map.safeZone, color: rensets.center.safe
-});
+externalMap.addCircle(new Shape(map.safeZone, rensets.center.safe));
 
 for (const bundle of map.facilities) {
-	externalMap.addRect({
-		geo: bundle.base,
-		color: rensets.facilities.ally.base
-	});
+	externalMap.addRect(new Shape(bundle.base, rensets.facilities.ally.base));
 
 	for (const outpost of bundle.outposts) {
-		externalMap.addRect({
-			geo: outpost, color: rensets.facilities.ally.outpost
-		});
+		externalMap.addRect(new Shape(outpost, rensets.facilities.ally.outpost));
 	}
 }
 
 // Map internal areas
 const internalMap = scene.staticLayer();
-internalMap.addCircle({
-	geo: map.battlefield, color: rensets.center.battlefield
-});
+internalMap.addCircle(new Shape(map.battlefield, rensets.center.battlefield));
 
 for (const bundle of map.facilities) {
-	internalMap.addRect({
-		geo: bundle.command, color: rensets.facilities.ally.command
-	});
+	internalMap.addRect(new Shape(bundle.command, rensets.facilities.ally.command));
 
 	for (const briefing of bundle.briefings) {
-		internalMap.addRect({
-			geo: briefing, color: rensets.facilities.ally.pickup
-		});
+		internalMap.addRect(new Shape(briefing, rensets.facilities.ally.pickup));
 	}
 
-	internalMap.addRect({
-		geo: bundle.armory, color: rensets.facilities.ally.armory
-	});
-
-	internalMap.addRect({
-		geo: bundle.scif, color: rensets.facilities.ally.scif
-	});
+	internalMap.addRect(new Shape(bundle.armory, rensets.facilities.ally.armory));
+	internalMap.addRect(new Shape(bundle.scif, rensets.facilities.ally.scif));
 }
 
 // Minefields
 const minefields = scene.staticLayer();
 for (const minefield of map.minefields) {
 	if (minefield instanceof Rect) {
-		minefields.addRect({
-			geo: minefield, color: rensets.minefield.color
-		});
+		minefields.addRect(new Shape(minefield, rensets.minefield.color));
 	} else if (minefield instanceof Circle) {
-		minefields.addCircle({
-			geo: minefield, color: rensets.minefield.color
-		});
+		minefields.addCircle(new Shape(minefield, rensets.minefield.color));
 	} else {
 		// Can't get here
 	}
@@ -104,20 +77,12 @@ const overlaps = outer.overlap(inner);
 
 if (overlaps.first.left && overlaps.first.right && overlaps.first.top && overlaps.first.bottom) {
 	const verticalBoundaries = scene.staticLayer();
-	verticalBoundaries.addRect({
-		geo: overlaps.first.left, color: rensets.mapBorder.color
-	});
-	verticalBoundaries.addRect({
-		geo: overlaps.first.right, color: rensets.mapBorder.color
-	});
+	verticalBoundaries.addRect(new Shape(overlaps.first.left, rensets.mapBorder.color));
+	verticalBoundaries.addRect(new Shape(overlaps.first.right, rensets.mapBorder.color));
 
 	const horizontalBoundaries = scene.staticLayer();
-	horizontalBoundaries.addRect({
-		geo: overlaps.first.top, color: rensets.mapBorder.color
-	});
-	horizontalBoundaries.addRect({
-		geo: overlaps.first.bottom, color: rensets.mapBorder.color
-	});
+	horizontalBoundaries.addRect(new Shape(overlaps.first.top, rensets.mapBorder.color));
+	horizontalBoundaries.addRect(new Shape(overlaps.first.bottom, rensets.mapBorder.color));
 }
 
 // Players

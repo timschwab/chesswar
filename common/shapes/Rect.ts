@@ -9,7 +9,7 @@ interface SerializedRect extends SerializedGeometry {
 	rightBottom: SerializedPoint
 }
 
-export class Rect extends Geometry {
+export class Rect extends Geometry<Rect> {
 	readonly leftTop: Point;
 	readonly rightBottom: Point;
 
@@ -243,6 +243,6 @@ export class Rect extends Geometry {
 		const closestPoint = other.center.clamp(this);
 
 		// See if that point is inside the circle
-		return closestPoint.inside(other);
+		return closestPoint.insideCircle(other);
 	}
 }
