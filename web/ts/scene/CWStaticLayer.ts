@@ -44,38 +44,44 @@ export class CWStaticLayer {
 	}
 
 	renderCameraDelta(prev: Rect, next: Rect): void {
-		for (const rect of this.staticRects) {
-			this.renderRectDelta(prev, next, rect);
-		}
-
+		// Clear prev circles. Not sure how to optimize circles better.
 		for (const circle of this.staticCircles) {
-			this.renderCircleDelta(prev, next, circle)
+			const prevTransposed = circle.subtract(prev.leftTop);
+			this.canvas.clearRect(prevTransposed.geo.enclosingRect());
 		}
-	}
 
-	renderRectDelta(prevCamera: Rect, nextCamera: Rect, toRender: Shape<Rect>): void {
-		const prevTransposed = toRender.geo.subtract(prevCamera.leftTop);
-		const nextTransposed = toRender.geo.subtract(nextCamera.leftTop);
-		const overlap = prevTransposed.overlap(nextTransposed);
+		// Compute rect overlaps
+		const overlaps = this.staticRects.map(rect => {
+			const prevTransposed = rect.geo.subtract(prev.leftTop);
+			const nextTransposed = rect.geo.subtract(next.leftTop);
+			const overlap = prevTransposed.overlap(nextTransposed);
+			return {
+				color: rect.color,
+				overlap
+			};
+		});
 
-		overlap.first.left && this.canvas.clearRect(overlap.first.left);
-		overlap.first.right && this.canvas.clearRect(overlap.first.right);
-		overlap.first.top && this.canvas.clearRect(overlap.first.top);
-		overlap.first.bottom && this.canvas.clearRect(overlap.first.bottom);
+		// Clear prev overlaps
+		for (const overlap of overlaps) {
+			overlap.overlap.first.left && this.canvas.clearRect(overlap.overlap.first.left);
+			overlap.overlap.first.right && this.canvas.clearRect(overlap.overlap.first.right);
+			overlap.overlap.first.top && this.canvas.clearRect(overlap.overlap.first.top);
+			overlap.overlap.first.bottom && this.canvas.clearRect(overlap.overlap.first.bottom);
+		}
 
-		overlap.second.left && this.canvas.fillRect(new Shape(overlap.second.left, toRender.color));
-		overlap.second.right && this.canvas.fillRect(new Shape(overlap.second.right, toRender.color));
-		overlap.second.top && this.canvas.fillRect(new Shape(overlap.second.top, toRender.color));
-		overlap.second.bottom && this.canvas.fillRect(new Shape(overlap.second.bottom, toRender.color));
-	}
+		// Draw next overlaps
+		for (const overlap of overlaps) {
+			overlap.overlap.second.left && this.canvas.fillRect(new Shape(overlap.overlap.second.left, overlap.color));
+			overlap.overlap.second.right && this.canvas.fillRect(new Shape(overlap.overlap.second.right, overlap.color));
+			overlap.overlap.second.top && this.canvas.fillRect(new Shape(overlap.overlap.second.top, overlap.color));
+			overlap.overlap.second.bottom && this.canvas.fillRect(new Shape(overlap.overlap.second.bottom, overlap.color));
+		}
 
-	// Not sure how to optimize this
-	renderCircleDelta(prevCamera: Rect, nextCamera: Rect, toRender: Shape<Circle>): void {
-		const prevTransposed = toRender.subtract(prevCamera.leftTop);
-		const nextTransposed = toRender.subtract(nextCamera.leftTop);
-
-		this.canvas.clearRect(prevTransposed.geo.enclosingRect());
-		this.canvas.fillCircle(nextTransposed);
+		// Draw next circles
+		for (const circle of this.staticCircles) {
+			const nextTransposed = circle.subtract(next.leftTop);
+			this.canvas.fillCircle(nextTransposed);
+		}
 	}
 }
 
