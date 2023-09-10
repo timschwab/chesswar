@@ -1,11 +1,11 @@
 import { Deferred } from "../../../common/data-structures/Deferred.ts";
 import { Rect } from "../../../common/shapes/Rect.ts";
 import { CWCanvas } from "../canvas/CWCanvas.ts";
-import { CWLayer, CWLayerFrontend } from "./CWLayer.ts";
+import { CWStaticLayer, CWStaticLayerFrontend } from "./CWStaticLayer.ts";
 
 export class CWScene {
 	private readonly cameraStore: Deferred<Rect | null>;
-	private readonly layers: CWLayer[];
+	private readonly layers: CWStaticLayer[];
 	private readonly sceneRoot: HTMLDivElement;
 
 	constructor(sceneRoot: HTMLDivElement) {
@@ -14,12 +14,12 @@ export class CWScene {
 		this.cameraStore = new Deferred(null);
 	}
 
-	createLayer(): CWLayerFrontend {
+	staticLayer(): CWStaticLayerFrontend {
 		const htmlCanvas = document.createElement("canvas");
 		this.sceneRoot.appendChild(htmlCanvas);
 
 		const cwCanvas = new CWCanvas(htmlCanvas);
-		const newLayer = new CWLayer(cwCanvas);
+		const newLayer = new CWStaticLayer(cwCanvas);
 		this.layers.push(newLayer);
 
 		return newLayer.frontend;

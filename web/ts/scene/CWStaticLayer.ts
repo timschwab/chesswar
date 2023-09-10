@@ -3,15 +3,15 @@ import { Rect } from "../../../common/shapes/Rect.ts";
 import { Shape } from "../../../common/shapes/Shape.ts";
 import { CWCanvas } from "../canvas/CWCanvas.ts";
 
-export class CWLayer {
+export class CWStaticLayer {
 	private readonly canvas: CWCanvas;
-	readonly frontend: CWLayerFrontend
+	readonly frontend: CWStaticLayerFrontend
 	private readonly staticRects: Shape<Rect>[];
 	private readonly staticCircles: Shape<Circle>[];
 
 	constructor(canvas: CWCanvas) {
 		this.canvas = canvas;
-		this.frontend = new CWLayerFrontend(this);
+		this.frontend = new CWStaticLayerFrontend(this);
 		this.staticRects = [];
 		this.staticCircles = [];
 	}
@@ -66,28 +66,28 @@ export class CWLayer {
 		this.canvas.fillCircle({geo: nextTransposed, color: toRender.color});
 	}
 
-	addStaticRect(toAdd: Shape<Rect>): void {
+	addRect(toAdd: Shape<Rect>): void {
 		this.staticRects.push(toAdd);
 	}
 
-	addStaticCircle(toAdd: Shape<Circle>): void {
+	addCircle(toAdd: Shape<Circle>): void {
 		this.staticCircles.push(toAdd);
 	}
 }
 
 // Make only some methods accessible to the user
-export class CWLayerFrontend {
-	private readonly backend: CWLayer;
+export class CWStaticLayerFrontend {
+	private readonly backend: CWStaticLayer;
 
-	constructor(backend: CWLayer) {
+	constructor(backend: CWStaticLayer) {
 		this.backend = backend;
 	}
 
-	addStaticRect(toAdd: Shape<Rect>): void {
-		this.backend.addStaticRect(toAdd);
+	addRect(toAdd: Shape<Rect>): void {
+		this.backend.addRect(toAdd);
 	}
 
-	addStaticCircle(toAdd: Shape<Circle>): void {
-		this.backend.addStaticCircle(toAdd);
+	addCircle(toAdd: Shape<Circle>): void {
+		this.backend.addCircle(toAdd);
 	}
 }
