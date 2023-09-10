@@ -16,6 +16,14 @@ export class CWStaticLayer {
 		this.staticCircles = [];
 	}
 
+	addRect(toAdd: Shape<Rect>): void {
+		this.staticRects.push(toAdd);
+	}
+
+	addCircle(toAdd: Shape<Circle>): void {
+		this.staticCircles.push(toAdd);
+	}
+
 	renderFirst(camera: Rect): void {
 		this.canvas.setSize(camera);
 		this.canvas.clearAll();
@@ -68,14 +76,6 @@ export class CWStaticLayer {
 
 		this.canvas.clearRect(prevTransposed.enclosingRect());
 		this.canvas.fillCircle({geo: nextTransposed, color: toRender.color});
-	}
-
-	addRect(toAdd: Shape<Rect>): void {
-		this.staticRects.push(toAdd);
-	}
-
-	addCircle(toAdd: Shape<Circle>): void {
-		this.staticCircles.push(toAdd);
 	}
 }
 

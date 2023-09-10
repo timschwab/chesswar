@@ -1,3 +1,4 @@
+import { Deferred } from "../../../common/data-structures/Deferred.ts";
 import { Circle } from "../../../common/shapes/Circle.ts";
 import { Rect } from "../../../common/shapes/Rect.ts";
 import { Shape } from "../../../common/shapes/Shape.ts";
@@ -6,45 +7,75 @@ import { CWCanvas } from "../canvas/CWCanvas.ts";
 export class CWDynamicLayer {
 	private readonly canvas: CWCanvas;
 	readonly frontend: CWDynamicLayerFrontend
-	private readonly dynamicCircles: Shape<Circle>[];
+	private readonly shapes: Deferred<Shape<Circle>[]>;
 
 	constructor(canvas: CWCanvas) {
 		this.canvas = canvas;
 		this.frontend = new CWDynamicLayerFrontend(this);
-		this.dynamicCircles = [];
+		this.shapes = new Deferred([]);
+	}
+
+	// For now only support circles, cause that's all we need
+	setShapes(shapes: Shape<Circle>[]): void {
+		this.shapes.set(shapes);
 	}
 
 	renderFirst(camera: Rect): void {
 		this.canvas.setSize(camera);
 		this.canvas.clearAll();
 
-		for (const circle of this.dynamicCircles) {
-			const transposed = circle.geo.subtract(camera.leftTop);
-			this.canvas.fillCircle({geo: transposed, color: circle.color});
+		const shapesDelta = this.shapes.get();
+		const shapes = shapesDelta.current; // This is the first draw, so we don't care about prev
+
+		for (const shape of shapes) {
+			const transposed = shape.geo.subtract(camera.leftTop);
+			this.canvas.fillCircle({geo: transposed, color: shape.color});
 		}
 	}
 
+	// Just redraw every time. Probably a slightly better way, but not worth it.
 	renderStill(camera: Rect): void {
-		// Do some stuff
-	}
+		const shapesDelta = this.shapes.get();
+		const currentShapes = shapesDelta.current;
+		const pendingShapes = shapesDelta.pending;
 
-	renderCameraDelta(prev: Rect, next: Rect): void {
-		for (const circle of this.dynamicCircles) {
-			this.renderCircleDelta(prev, next, circle)
+		if (pendingShapes == null) {
+			// Do nothing
+			return
+		}
+
+		// Clear the old shapes
+		for (const shape of currentShapes) {
+			const transposed = shape.geo.subtract(camera.leftTop);
+			this.canvas.clearRect(transposed.enclosingRect().expand(1));
+		}
+
+		// Draw the new shapes
+		for (const shape of pendingShapes) {
+			const transposed = shape.geo.subtract(camera.leftTop);
+			this.canvas.fillCircle({geo: transposed, color: shape.color});
 		}
 	}
 
-	// Not sure how to optimize this
-	renderCircleDelta(prevCamera: Rect, nextCamera: Rect, toRender: Shape<Circle>): void {
-		const prevTransposed = toRender.geo.subtract(prevCamera.leftTop);
-		const nextTransposed = toRender.geo.subtract(nextCamera.leftTop);
+	// Just redraw every time. Probably a slightly better way, but not worth it.
+	renderCameraDelta(prev: Rect, next: Rect): void {
+		const shapesDelta = this.shapes.get();
 
-		this.canvas.clearRect(prevTransposed.enclosingRect());
-		this.canvas.fillCircle({geo: nextTransposed, color: toRender.color});
-	}
+		// If there are no pending changes, make the two equal
+		const currentShapes = shapesDelta.current;
+		const pendingShapes = shapesDelta.pending == null ? currentShapes : shapesDelta.pending;
 
-	addCircle(toAdd: Shape<Circle>): void {
-		this.dynamicCircles.push(toAdd);
+		// Clear old shapes
+		for (const shape of currentShapes) {
+			const transposed = shape.geo.subtract(prev.leftTop);
+			this.canvas.clearRect(transposed.enclosingRect().expand(1));
+		}
+
+		// Fill new shapes
+		for (const shape of pendingShapes) {
+			const transposed = shape.geo.subtract(next.leftTop);
+			this.canvas.fillCircle({geo: transposed, color: shape.color});
+		}
 	}
 }
 
@@ -56,7 +87,7 @@ export class CWDynamicLayerFrontend {
 		this.backend = backend;
 	}
 
-	addCircle(toAdd: Shape<Circle>): void {
-		this.backend.addCircle(toAdd);
+	setShapes(shapes: Shape<Circle>[]): void {
+		this.backend.setShapes(shapes);
 	}
 }

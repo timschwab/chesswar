@@ -119,3 +119,6 @@ if (overlaps.first.left && overlaps.first.right && overlaps.first.top && overlap
 		geo: overlaps.first.bottom, color: rensets.mapBorder.color
 	});
 }
+
+// Players
+export const playerLayer = scene.dynamicLayer();
