@@ -18,10 +18,6 @@ export class Circle extends Geometry {
 	readonly top: number;
 	readonly bottom: number;
 
-	static isCircle(maybeCircle: Geometry): maybeCircle is Circle {
-		return maybeCircle.type == GeometryName.CIRCLE;
-	}
-
 	static isSerializedCircle(maybeSerializedCircle: SerializedGeometry): maybeSerializedCircle is SerializedCircle {
 		return maybeSerializedCircle.type == GeometryName.CIRCLE;
 	}
@@ -29,17 +25,6 @@ export class Circle extends Geometry {
 	static deserialize(data: SerializedCircle): Circle {
 		const center = Point.deserialize(data.center);
 		return new Circle(center, data.radius);
-	}
-
-	constructor(center: Point, radius: number) {
-		super(GeometryName.CIRCLE);
-		this.center = center;
-		this.radius = radius;
-
-		this.left = center.x - radius;
-		this.right = center.x + radius;
-		this.top = center.y - radius;
-		this.bottom = center.y + radius;
 	}
 
 	serialize(): SerializedCircle {
@@ -50,16 +35,27 @@ export class Circle extends Geometry {
 		};
 	}
 
+	constructor(center: Point, radius: number) {
+		super();
+		this.center = center;
+		this.radius = radius;
+
+		this.left = center.x - radius;
+		this.right = center.x + radius;
+		this.top = center.y - radius;
+		this.bottom = center.y + radius;
+	}
+
 	equals(other: Circle): boolean {
 		return this.center.equals(other.center) && (this.radius == other.radius);
 	}
 
 	inside(other: Geometry): boolean {
-		if (Point.isPoint(other)) {
+		if (other instanceof Point) {
 			return this.insidePoint(other);
-		} else if (Rect.isRect(other)) {
+		} else if (other instanceof Rect) {
 			return this.insideRect(other);
-		} else if (Circle.isCircle(other)) {
+		} else if (other instanceof Circle) {
 			return this.insideCircle(other);
 		}
 
@@ -67,11 +63,11 @@ export class Circle extends Geometry {
 	}
 
 	touches(other: Geometry): boolean {
-		if (Point.isPoint(other)) {
+		if (other instanceof Point) {
 			return this.touchesPoint(other);
-		} else if (Rect.isRect(other)) {
+		} else if (other instanceof Rect) {
 			return this.touchesRect(other);
-		} else if (Circle.isCircle(other)) {
+		} else if (other instanceof Circle) {
 			return this.touchesCircle(other);
 		}
 

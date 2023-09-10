@@ -25,10 +25,6 @@ export class Rect extends Geometry {
 	readonly height: number;
 	readonly center: Point;
 
-	static isRect(maybeRect: Geometry): maybeRect is Rect {
-		return maybeRect.type == GeometryName.RECT;
-	}
-
 	static isSerializedRect(maybeSerializedRect: SerializedGeometry): maybeSerializedRect is SerializedRect {
 		return maybeSerializedRect.type == GeometryName.RECT;
 	}
@@ -39,8 +35,16 @@ export class Rect extends Geometry {
 		return new Rect(lt, rb);
 	}
 
+	serialize(): SerializedRect {
+		return {
+			type: GeometryName.RECT,
+			leftTop: this.leftTop.serialize(),
+			rightBottom: this.rightBottom.serialize()
+		};
+	}
+
 	constructor(leftTop: Point, rightBottom: Point) {
-		super(GeometryName.RECT);
+		super();
 		this.leftTop = leftTop;
 		this.rightBottom = rightBottom;
 
@@ -57,14 +61,6 @@ export class Rect extends Geometry {
 		this.center = new Point((this.left+this.right)/2, (this.top+this.bottom)/2);
 	}
 
-	serialize(): SerializedRect {
-		return {
-			type: GeometryName.RECT,
-			leftTop: this.leftTop.serialize(),
-			rightBottom: this.rightBottom.serialize()
-		};
-	}
-
 	equals(other: Rect): boolean {
 		return this.leftTop.equals(other.leftTop) && this.rightBottom.equals(other.rightBottom);
 	}
@@ -77,11 +73,11 @@ export class Rect extends Geometry {
 	}
 
 	inside(other: Geometry): boolean {
-		if (Point.isPoint(other)) {
+		if (other instanceof Point) {
 			return this.insidePoint(other);
-		} else if (Rect.isRect(other)) {
+		} else if (other instanceof Rect) {
 			return this.insideRect(other);
-		} else if (Circle.isCircle(other)) {
+		} else if (other instanceof Circle) {
 			return this.insideCircle(other);
 		}
 
@@ -89,11 +85,11 @@ export class Rect extends Geometry {
 	}
 
 	touches(other: Geometry): boolean {
-		if (Point.isPoint(other)) {
+		if (other instanceof Point) {
 			return this.touchesPoint(other);
-		} else if (Rect.isRect(other)) {
+		} else if (other instanceof Rect) {
 			return this.touchesRect(other);
-		} else if (Circle.isCircle(other)) {
+		} else if (other instanceof Circle) {
 			return this.touchesCircle(other);
 		}
 

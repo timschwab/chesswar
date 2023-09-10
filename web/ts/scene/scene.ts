@@ -84,11 +84,11 @@ for (const bundle of map.facilities) {
 // Minefields
 const minefields = scene.staticLayer();
 for (const minefield of map.minefields) {
-	if (Rect.isRect(minefield)) {
+	if (minefield instanceof Rect) {
 		minefields.addRect({
 			geo: minefield, color: rensets.minefield.color
 		});
-	} else if (Circle.isCircle(minefield)) {
+	} else if (minefield instanceof Circle) {
 		minefields.addCircle({
 			geo: minefield, color: rensets.minefield.color
 		});

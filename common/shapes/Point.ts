@@ -15,22 +15,12 @@ export class Point extends Geometry {
 	readonly x: number;
 	readonly y: number;
 
-	static isPoint(maybePoint: Geometry): maybePoint is Point {
-		return maybePoint.type == GeometryName.POINT;
-	}
-
-	static isPointData(maybeSerializedPoint: SerializedGeometry): maybeSerializedPoint is SerializedPoint {
+	static isSerializedPoint(maybeSerializedPoint: SerializedGeometry): maybeSerializedPoint is SerializedPoint {
 		return maybeSerializedPoint.type == GeometryName.POINT;
 	}
 
 	static deserialize(data: SerializedPoint): Point {
 		return new Point(data.x, data.y);
-	}
-
-	constructor(x: number, y: number) {
-		super(GeometryName.POINT);
-		this.x = x;
-		this.y = y;
 	}
 
 	serialize(): SerializedPoint {
@@ -41,16 +31,22 @@ export class Point extends Geometry {
 		};
 	}
 
+	constructor(x: number, y: number) {
+		super();
+		this.x = x;
+		this.y = y;
+	}
+
 	equals(other: Point): boolean {
 		return (this.x == other.x) && (this.y == other.y);
 	}
 
 	inside(other: Geometry): boolean {
-		if (Point.isPoint(other)) {
+		if (other instanceof Point) {
 			return this.insidePoint(other);
-		} else if (Rect.isRect(other)) {
+		} else if (other instanceof Rect) {
 			return this.insideRect(other);
-		} else if (Circle.isCircle(other)) {
+		} else if (other instanceof Circle) {
 			return this.insideCircle(other);
 		}
 
@@ -58,11 +54,11 @@ export class Point extends Geometry {
 	}
 
 	touches(other: Geometry): boolean {
-		if (Point.isPoint(other)) {
+		if (other instanceof Point) {
 			return this.touchesPoint(other);
-		} else if (Rect.isRect(other)) {
+		} else if (other instanceof Rect) {
 			return this.touchesRect(other);
-		} else if (Circle.isCircle(other)) {
+		} else if (other instanceof Circle) {
 			return this.touchesCircle(other);
 		}
 
