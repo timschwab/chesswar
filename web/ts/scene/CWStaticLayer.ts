@@ -29,13 +29,13 @@ export class CWStaticLayer {
 		this.canvas.clearAll();
 
 		for (const rect of this.staticRects) {
-			const transposed = rect.geo.subtract(camera.leftTop);
-			this.canvas.fillRect(new Shape(transposed, rect.color));
+			const transposed = rect.subtract(camera.leftTop);
+			this.canvas.fillRect(transposed);
 		}
 
 		for (const circle of this.staticCircles) {
-			const transposed = circle.geo.subtract(camera.leftTop);
-			this.canvas.fillCircle(new Shape(transposed, circle.color));
+			const transposed = circle.subtract(camera.leftTop);
+			this.canvas.fillCircle(transposed);
 		}
 	}
 
@@ -71,11 +71,11 @@ export class CWStaticLayer {
 
 	// Not sure how to optimize this
 	renderCircleDelta(prevCamera: Rect, nextCamera: Rect, toRender: Shape<Circle>): void {
-		const prevTransposed = toRender.geo.subtract(prevCamera.leftTop);
-		const nextTransposed = toRender.geo.subtract(nextCamera.leftTop);
+		const prevTransposed = toRender.subtract(prevCamera.leftTop);
+		const nextTransposed = toRender.subtract(nextCamera.leftTop);
 
-		this.canvas.clearRect(prevTransposed.enclosingRect());
-		this.canvas.fillCircle(new Shape(nextTransposed, toRender.color));
+		this.canvas.clearRect(prevTransposed.geo.enclosingRect());
+		this.canvas.fillCircle(nextTransposed);
 	}
 }
 

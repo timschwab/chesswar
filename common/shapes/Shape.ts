@@ -11,6 +11,7 @@ export class Shape<T extends Geometry<T>> {
 		this.color = color;
 	}
 
+	// Add methods as needed
 	subtract(operand: Point): Shape<T> {
 		return new Shape<T>(this.geo.subtract(operand), this.color);
 	}

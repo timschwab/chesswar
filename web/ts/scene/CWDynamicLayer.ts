@@ -28,8 +28,8 @@ export class CWDynamicLayer {
 		const shapes = shapesDelta.current; // This is the first draw, so we don't care about prev
 
 		for (const shape of shapes) {
-			const transposed = shape.geo.subtract(camera.leftTop);
-			this.canvas.fillCircle(new Shape(transposed, shape.color));
+			const transposed = shape.subtract(camera.leftTop);
+			this.canvas.fillCircle(transposed);
 		}
 	}
 
@@ -46,14 +46,14 @@ export class CWDynamicLayer {
 
 		// Clear the old shapes
 		for (const shape of currentShapes) {
-			const transposed = shape.geo.subtract(camera.leftTop);
-			this.canvas.clearRect(transposed.enclosingRect().expand(1));
+			const transposed = shape.subtract(camera.leftTop);
+			this.canvas.clearRect(transposed.geo.enclosingRect().expand(1));
 		}
 
 		// Draw the new shapes
 		for (const shape of pendingShapes) {
-			const transposed = shape.geo.subtract(camera.leftTop);
-			this.canvas.fillCircle(new Shape(transposed, shape.color));
+			const transposed = shape.subtract(camera.leftTop);
+			this.canvas.fillCircle(transposed);
 		}
 	}
 
@@ -67,14 +67,14 @@ export class CWDynamicLayer {
 
 		// Clear old shapes
 		for (const shape of currentShapes) {
-			const transposed = shape.geo.subtract(prev.leftTop);
-			this.canvas.clearRect(transposed.enclosingRect().expand(1));
+			const transposed = shape.subtract(prev.leftTop);
+			this.canvas.clearRect(transposed.geo.enclosingRect().expand(1));
 		}
 
 		// Fill new shapes
 		for (const shape of pendingShapes) {
-			const transposed = shape.geo.subtract(next.leftTop);
-			this.canvas.fillCircle(new Shape(transposed, shape.color));
+			const transposed = shape.subtract(next.leftTop);
+			this.canvas.fillCircle(transposed);
 		}
 	}
 }

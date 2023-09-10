@@ -6,5 +6,6 @@ export interface SerializedGeometry {
 }
 
 export abstract class Geometry<T = void> {
+	// Add methods as needed
 	abstract subtract(operand: Point): T;
 }
