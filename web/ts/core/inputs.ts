@@ -6,7 +6,7 @@ export enum CWKey {
 	DOWN = "down",
 	LEFT = "left",
 	RIGHT = "right",
-	COMMAND = "command",
+	ACTION = "action",
 	STATS = "stats"
 }
 
@@ -26,7 +26,7 @@ const KeyCodeTranslation = {
 	KeyS: CWKey.DOWN,
 	KeyD: CWKey.RIGHT,
 
-	Space: CWKey.COMMAND,
+	Space: CWKey.ACTION,
 	Period: CWKey.STATS
 }
 

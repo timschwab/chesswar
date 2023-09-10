@@ -13,8 +13,11 @@ export function handleKey(event: CWKeyEvent) {
 	const key = event.key;
 
 	switch (key) {
-		case CWKey.COMMAND:
-			// Nothing yet
+		case CWKey.ACTION:
+			socketSend({
+				type: ClientMessageTypes.ACTION,
+				payload: null
+			});
 			break;
 		case CWKey.STATS:
 			// Nothing yet
