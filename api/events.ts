@@ -19,7 +19,7 @@ export function addPlayer(id: string): void {
 		id,
 		team,
 		role: PlayerRole.SOLDIER,
-		actionOption: null,
+		actionOption: PlayerAction.NONE,
 		carrying: {
 			type: CarryLoadType.EMPTY,
 			load: null

@@ -22,7 +22,8 @@ export class Deferred<T> {
 	get() {
 		const returnValue = {
 			current: this.currentValue,
-			pending: this.pendingValue
+			pending: this.pendingValue,
+			dirty: this.dirtyValue
 		};
 
 		if (this.dirtyValue) {

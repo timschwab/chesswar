@@ -5,7 +5,7 @@ export interface SerializedClientPlayer {
 	id: ChesswarId,
 	team: TeamName,
 	role: PlayerRole,
-	actionOption: PlayerAction | null,
+	actionOption: PlayerAction,
 	position: SerializedCircle,
 	deathCounter: number
 }

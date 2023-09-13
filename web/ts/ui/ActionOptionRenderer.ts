@@ -13,16 +13,14 @@ export class ActionOptionRenderer {
 		this.actionOption = new Deferred(null);
 	}
 
-	setActionOption(option: PlayerAction | null) {
+	setActionOption(option: PlayerAction) {
 		this.actionOption.set(option);
 	}
 
 	render(cwCanvas: CWCanvas, screen: Rect) {
 		const optionDiff = this.actionOption.get();
 
-		if (optionDiff.pending == null) {
-			// Do nothing
-		} else {
+		if (optionDiff.pending != null) {
 			this.renderInternal(cwCanvas, screen, optionDiff.pending);
 		}
 	}
@@ -43,6 +41,6 @@ export class ActionOptionRenderer {
 
 		cwCanvas.fillRect(new Shape(actionRect, rensets.actionOption.backgroundColor));
 		cwCanvas.outlineRect(new Shape(actionRect, rensets.actionOption.outlineColor), rensets.actionOption.outlineWidth);
-		cwCanvas.text(actionRect, TextAlign.CENTER, "Available action: " + (option || ""), rensets.actionOption.textFont, rensets.actionOption.textColor);
+		cwCanvas.text(actionRect, TextAlign.CENTER, "Available action: " + option, rensets.actionOption.textFont, rensets.actionOption.textColor);
 	}
 }

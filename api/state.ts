@@ -17,7 +17,7 @@ export interface ServerPlayer {
 	id: ChesswarId,
 	team: TeamName,
 	role: PlayerRole,
-	actionOption: PlayerAction | null,
+	actionOption: PlayerAction,
 	carrying: CarryLoad,
 	movement: MovementState,
 	physics: ServerPlayerPhysics,

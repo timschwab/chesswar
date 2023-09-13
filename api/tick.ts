@@ -153,7 +153,7 @@ function moveDeathCounter(player: ServerPlayer) {
 	player.deathCounter--;
 }
 
-function actionOption(player: ServerPlayer): PlayerAction | null {
+function actionOption(player: ServerPlayer): PlayerAction {
 	if (player.role == PlayerRole.GENERAL) {
 		return PlayerAction.BECOME_SOLDIER;
 	}
@@ -203,7 +203,7 @@ function actionOption(player: ServerPlayer): PlayerAction | null {
 		}
 	}
 
-	return null;
+	return PlayerAction.NONE;
 }
 
 export function tickTankKills(): void {
