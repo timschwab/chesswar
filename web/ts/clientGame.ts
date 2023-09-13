@@ -5,6 +5,7 @@ import { handleScreenChange } from "./game-logic/camera.ts";
 import { handleKey } from "./game-logic/keys.ts";
 import { receiveMessage } from "./game-logic/messages.ts";
 import { scene } from "./scene/scene.ts";
+import { ui } from "./ui/ui.ts";
 
 initGame();
 
@@ -21,5 +22,6 @@ export function initGame() {
 
 function gameLoop() {
 	scene.render();
+	ui.render();
 	requestAnimationFrame(gameLoop);
 }

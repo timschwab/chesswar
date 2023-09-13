@@ -15,7 +15,7 @@ export class CWScene {
 	}
 
 	staticLayer(): CWStaticLayerFrontend {
-		const htmlCanvas = createHtmlCanvas();
+		const htmlCanvas = createHtmlCanvas(0);
 		const cwCanvas = new CWCanvas(htmlCanvas);
 		const newLayer = new CWStaticLayer(cwCanvas);
 		this.layers.push(newLayer);

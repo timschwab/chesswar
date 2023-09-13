@@ -4,6 +4,7 @@ import { rensets } from "../../../common/settings.ts";
 import { Shape } from "../../../common/shapes/Shape.ts";
 import audioPlayer from "../audio/audioPlayer.ts";
 import { playerLayer } from "../scene/scene.ts";
+import { ui } from "../ui/ui.ts";
 import { deserializeClientPlayer } from "./ClientPlayer.ts";
 import { handleSelfPosition } from "./camera.ts";
 import { state } from "./state.ts";
@@ -38,6 +39,8 @@ function handleState(payload: StateMessagePayload) {
 	for (const player of deserialized) {
 		if (player.id == state.selfId) {
 			handleSelfPosition(player.position.center);
+			ui.setTeam(player.team);
+			ui.setRole(player.role);
 		}
 	}
 
