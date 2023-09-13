@@ -39,8 +39,8 @@ function handleState(payload: StateMessagePayload) {
 	for (const player of deserialized) {
 		if (player.id == state.selfId) {
 			handleSelfPosition(player.position.center);
-			ui.setTeam(player.team);
-			ui.setRole(player.role);
+			ui.teamRole.setTeam(player.team);
+			ui.teamRole.setRole(player.role);
 		}
 	}
 
