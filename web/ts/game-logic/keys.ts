@@ -14,10 +14,12 @@ export function handleKey(event: CWKeyEvent) {
 
 	switch (key) {
 		case CWKey.ACTION:
-			socketSend({
-				type: ClientMessageTypes.ACTION,
-				payload: null
-			});
+			if (event.pressed) {
+				socketSend({
+					type: ClientMessageTypes.ACTION,
+					payload: null
+				});
+			}
 			break;
 		case CWKey.STATS:
 			// Nothing yet

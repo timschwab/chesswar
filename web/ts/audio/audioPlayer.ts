@@ -24,8 +24,9 @@ const sustainAmp = 0.2;
 const releaseTime = 0.5;
 
 let ac: AudioContext;
+initAudio();
 
-export function initAudio(): void {
+function initAudio(): void {
 	ac = new AudioContext();
 
 	if (ac.state == "suspended") {

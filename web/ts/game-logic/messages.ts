@@ -2,6 +2,7 @@ import { DeathCause, PlayerAction } from "../../../common/data-types/base.ts";
 import { CarryingMessagePayload, PlayerInitMessagePayload, ServerMessage, ServerMessageTypes, StateMessagePayload, StatsMessagePayload, TeamMessagePayload } from "../../../common/message-types/server.ts";
 import { rensets } from "../../../common/settings.ts";
 import { Shape } from "../../../common/shapes/Shape.ts";
+import audioPlayer from "../audio/audioPlayer.ts";
 import { playerLayer } from "../scene/scene.ts";
 import { deserializeClientPlayer } from "./ClientPlayer.ts";
 import { handleSelfPosition } from "./camera.ts";
@@ -63,7 +64,11 @@ function handleCarrying(payload: CarryingMessagePayload) {
 }
 
 function handleDeath(cause: DeathCause) {
-	// Do something
+	if (cause == DeathCause.MINEFIELD) {
+		audioPlayer.minefieldDeath();
+	} else if (cause == DeathCause.TANK) {
+		audioPlayer.tankDeath();
+	}
 }
 
 function handlePong() {
