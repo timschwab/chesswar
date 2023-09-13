@@ -163,4 +163,4 @@ export const rensets = {
 		font: "12px Times New Roman",
 		color: Color.GREY_BLACK
 	}
-};
+} as const;

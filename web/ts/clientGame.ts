@@ -13,7 +13,10 @@ export function initGame() {
 	socketListen(receiveMessage);
 
 	handleScreenChange(screenValue);
+	ui.setScreen(screenValue);
+
 	screenChange(handleScreenChange);
+	screenChange(ui.setScreen);
 
 	listenKey(handleKey);
 

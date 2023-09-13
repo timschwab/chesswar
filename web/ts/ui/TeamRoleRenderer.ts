@@ -23,7 +23,7 @@ export class TeamRoleRenderer {
 		this.role.set(role);
 	}
 
-	render(cwCanvas: CWCanvas) {
+	render(cwCanvas: CWCanvas, _screen: Rect) {
 		const teamDiff = this.team.get();
 		const roleDiff = this.role.get();
 
@@ -35,6 +35,17 @@ export class TeamRoleRenderer {
 			if (newTeam != null && newRole != null) {
 				this.renderInternal(cwCanvas, newTeam, newRole);
 			}
+		}
+	}
+
+	forceRender(cwCanvas: CWCanvas, _screen: Rect) {
+		const teamDiff = this.team.get();
+		const roleDiff = this.role.get();
+
+		const coalescedTeam = teamDiff.pending || teamDiff.current;
+		const coalescedRole = roleDiff.pending || roleDiff.current;
+		if (coalescedTeam != null && coalescedRole != null) {
+			this.renderInternal(cwCanvas, coalescedTeam, coalescedRole);
 		}
 	}
 
