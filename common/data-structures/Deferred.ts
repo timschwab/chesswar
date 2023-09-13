@@ -10,6 +10,11 @@ export class Deferred<T> {
 	}
 
 	set(next: T): void {
+		// Don't cause an update if there is no difference
+		if (this.currentValue == next) {
+			return;
+		}
+
 		this.pendingValue = next;
 		this.dirtyValue = true;
 	}
