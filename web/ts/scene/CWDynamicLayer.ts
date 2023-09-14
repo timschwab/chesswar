@@ -25,7 +25,7 @@ export class CWDynamicLayer {
 		this.canvas.clearAll();
 
 		const shapesDelta = this.shapes.get();
-		const shapes = shapesDelta.current; // This is the first draw, so we don't care about prev
+		const shapes = shapesDelta.latest; // This is the first draw, so we don't care about previous
 
 		for (const shape of shapes) {
 			const transposed = shape.subtract(camera.leftTop);
@@ -36,44 +36,40 @@ export class CWDynamicLayer {
 	// Just redraw every time. Probably a slightly better way, but not worth it.
 	renderStill(camera: Rect): void {
 		const shapesDelta = this.shapes.get();
-		const currentShapes = shapesDelta.current;
-		const pendingShapes = shapesDelta.pending;
 
-		if (pendingShapes == null) {
+		if (!shapesDelta.dirty) {
 			// Do nothing
 			return
 		}
 
 		// Clear the old shapes
-		for (const shape of currentShapes) {
+		for (const shape of shapesDelta.previous) {
 			const transposed = shape.subtract(camera.leftTop);
 			this.canvas.clearRect(transposed.geo.enclosingRect().expand(1));
 		}
 
 		// Draw the new shapes
-		for (const shape of pendingShapes) {
+		for (const shape of shapesDelta.latest) {
 			const transposed = shape.subtract(camera.leftTop);
 			this.canvas.fillCircle(transposed);
 		}
 	}
 
 	// Just redraw every time. Probably a slightly better way, but not worth it.
-	renderCameraDelta(prev: Rect, next: Rect): void {
+	renderCameraDelta(previousCamera: Rect, latestCamera: Rect): void {
 		const shapesDelta = this.shapes.get();
 
-		// If there are no pending changes, make the two equal
-		const currentShapes = shapesDelta.current;
-		const pendingShapes = shapesDelta.pending == null ? currentShapes : shapesDelta.pending;
+		// If there are no pending changes, previous and latest will be equal. This is fine.
 
 		// Clear old shapes
-		for (const shape of currentShapes) {
-			const transposed = shape.subtract(prev.leftTop);
+		for (const shape of shapesDelta.previous) {
+			const transposed = shape.subtract(previousCamera.leftTop);
 			this.canvas.clearRect(transposed.geo.enclosingRect().expand(1));
 		}
 
 		// Fill new shapes
-		for (const shape of pendingShapes) {
-			const transposed = shape.subtract(next.leftTop);
+		for (const shape of shapesDelta.latest) {
+			const transposed = shape.subtract(latestCamera.leftTop);
 			this.canvas.fillCircle(transposed);
 		}
 	}

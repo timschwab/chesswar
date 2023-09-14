@@ -7,40 +7,40 @@ import { Shape } from "../../../common/shapes/Shape.ts";
 import { CWCanvas, TextAlign } from "../canvas/CWCanvas.ts";
 
 export class ActionOptionRenderer {
-	private actionOption: Deferred<PlayerAction | null>;
+	private cwCanvas: CWCanvas;
+	private actionOption: Deferred<PlayerAction>;
 
-	constructor() {
-		this.actionOption = new Deferred(null);
+	constructor(cwCanvas: CWCanvas) {
+		this.cwCanvas = cwCanvas;
+		this.actionOption = new Deferred(PlayerAction.NONE);
 	}
 
 	setActionOption(option: PlayerAction) {
 		this.actionOption.set(option);
 	}
 
-	render(cwCanvas: CWCanvas, screen: Rect) {
+	render(screen: Rect) {
 		const optionDiff = this.actionOption.get();
 
-		if (optionDiff.pending != null) {
-			this.renderInternal(cwCanvas, screen, optionDiff.pending);
+		if (optionDiff.dirty) {
+			this.renderInternal(screen, optionDiff.latest);
 		}
 	}
 
-	forceRender(cwCanvas: CWCanvas, screen: Rect) {
+	forceRender(screen: Rect) {
 		const optionDiff = this.actionOption.get();
-		const coalescedOption = optionDiff.pending || optionDiff.current;
-		if (coalescedOption != null) {
-			this.renderInternal(cwCanvas, screen, coalescedOption);
-		}
+		
+		this.renderInternal(screen, optionDiff.latest);
 	}
 
-	renderInternal(cwCanvas: CWCanvas, screen: Rect, option: PlayerAction) {
+	renderInternal(screen: Rect, option: PlayerAction) {
 		const actionRectWidth = 500;
 		const actionTopLeft = new Point(screen.center.x-(actionRectWidth/2), 10);
 		const actionBottomRight = new Point(screen.center.x+(actionRectWidth/2), 50);
 		const actionRect = new Rect(actionTopLeft, actionBottomRight);
 
-		cwCanvas.fillRect(new Shape(actionRect, rensets.actionOption.backgroundColor));
-		cwCanvas.outlineRect(new Shape(actionRect, rensets.actionOption.outlineColor), rensets.actionOption.outlineWidth);
-		cwCanvas.text(actionRect, TextAlign.CENTER, "Available action: " + option, rensets.actionOption.textFont, rensets.actionOption.textColor);
+		this.cwCanvas.fillRect(new Shape(actionRect, rensets.actionOption.backgroundColor));
+		this.cwCanvas.outlineRect(new Shape(actionRect, rensets.actionOption.outlineColor), rensets.actionOption.outlineWidth);
+		this.cwCanvas.text(actionRect, TextAlign.CENTER, "Available action: " + option, rensets.actionOption.textFont, rensets.actionOption.textColor);
 	}
 }

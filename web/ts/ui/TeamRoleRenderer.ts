@@ -7,12 +7,14 @@ import { Shape } from "../../../common/shapes/Shape.ts";
 import { CWCanvas, TextAlign } from "../canvas/CWCanvas.ts";
 
 export class TeamRoleRenderer {
+	private cwCanvas: CWCanvas;
 	private team: Deferred<TeamName | null>;
-	private role: Deferred<PlayerRole | null>;
+	private role: Deferred<PlayerRole>;
 
-	constructor() {
+	constructor(cwCanvas: CWCanvas) {
+		this.cwCanvas = cwCanvas;
 		this.team = new Deferred(null);
-		this.role = new Deferred(null);
+		this.role = new Deferred(PlayerRole.SOLDIER);
 	}
 
 	setTeam(team: TeamName) {
@@ -23,36 +25,30 @@ export class TeamRoleRenderer {
 		this.role.set(role);
 	}
 
-	render(cwCanvas: CWCanvas, _screen: Rect) {
+	render(_screen: Rect) {
 		const teamDiff = this.team.get();
 		const roleDiff = this.role.get();
 
-		if (teamDiff.pending == null && roleDiff.pending == null) {
-			// Do nothing
-		} else {
-			const newTeam = teamDiff.pending || teamDiff.current;
-			const newRole = roleDiff.pending || roleDiff.current;
-			if (newTeam != null && newRole != null) {
-				this.renderInternal(cwCanvas, newTeam, newRole);
-			}
+		if (teamDiff.dirty || roleDiff.dirty) {
+			this.renderInternal(teamDiff.latest, roleDiff.latest);
 		}
 	}
 
-	forceRender(cwCanvas: CWCanvas, _screen: Rect) {
+	forceRender(_screen: Rect) {
 		const teamDiff = this.team.get();
 		const roleDiff = this.role.get();
 
-		const coalescedTeam = teamDiff.pending || teamDiff.current;
-		const coalescedRole = roleDiff.pending || roleDiff.current;
-		if (coalescedTeam != null && coalescedRole != null) {
-			this.renderInternal(cwCanvas, coalescedTeam, coalescedRole);
-		}
+		this.renderInternal(teamDiff.latest, roleDiff.latest);
 	}
 
-	renderInternal(cwCanvas: CWCanvas, team: TeamName, role: PlayerRole) {
+	renderInternal(team: TeamName | null, role: PlayerRole) {
+		if (team == null) {
+			return;
+		}
+
 		const textRect = new Rect(new Point(10,10), new Point(200,30));
-		cwCanvas.fillRect(new Shape(textRect, rensets.currentRole.teamColor[team]));
-		cwCanvas.outlineRect(new Shape(textRect, rensets.currentRole.outlineColor), rensets.currentRole.outlineWidth);
-		cwCanvas.text(textRect, TextAlign.CENTER, "You are a: " + role, rensets.currentRole.textFont, rensets.currentRole.textColor);
+		this.cwCanvas.fillRect(new Shape(textRect, rensets.currentRole.teamColor[team]));
+		this.cwCanvas.outlineRect(new Shape(textRect, rensets.currentRole.outlineColor), rensets.currentRole.outlineWidth);
+		this.cwCanvas.text(textRect, TextAlign.CENTER, "You are a: " + role, rensets.currentRole.textFont, rensets.currentRole.textColor);
 	}
 }

@@ -7,43 +7,38 @@ import { TeamRoleRenderer } from "./TeamRoleRenderer.ts";
 
 export class CwUserInterface {
 	private cwCanvas: CWCanvas;
-	private screen: Deferred<Rect | null>;
+	private screen: Deferred<Rect>;
 	public readonly teamRole: TeamRoleRenderer;
 	public readonly actionOption: ActionOptionRenderer;
 
-	constructor() {
+	constructor(screen: Rect) {
 		const htmlCanvas = createHtmlCanvas(1);
 		this.cwCanvas = new CWCanvas(htmlCanvas);
-		this.screen = new Deferred(null);
+		this.screen = new Deferred(screen);
 
-		this.teamRole = new TeamRoleRenderer();
-		this.actionOption = new ActionOptionRenderer();
+		this.teamRole = new TeamRoleRenderer(this.cwCanvas);
+		this.actionOption = new ActionOptionRenderer(this.cwCanvas);
 	}
 
 	render() {
 		const screenDiff = this.screen.get();
-		if (screenDiff.pending == null) {
-			if (screenDiff.current == null) {
-				// No screen yet
-				// Do nothing
-			} else {
-				// No change in the screen
-				this.renderAll(screenDiff.current);
-			}
-		} else {
+		if (screenDiff.dirty) {
 			// New screen
-			this.forceRenderAll(screenDiff.pending);
+			this.forceRenderAll(screenDiff.latest);
+		} else {
+			// No change in the screen
+			this.renderAll(screenDiff.latest);
 		}
 	}
 
 	renderAll(screen: Rect) {
-		this.teamRole.render(this.cwCanvas, screen);
-		this.actionOption.render(this.cwCanvas, screen);
+		this.teamRole.render(screen);
+		this.actionOption.render(screen);
 	}
 
 	forceRenderAll(screen: Rect) {
-		this.teamRole.forceRender(this.cwCanvas, screen);
-		this.actionOption.forceRender(this.cwCanvas, screen);
+		this.teamRole.forceRender(screen);
+		this.actionOption.forceRender(screen);
 	}
 
 	setScreen(newScreen: Rect) {

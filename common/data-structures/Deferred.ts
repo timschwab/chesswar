@@ -1,37 +1,38 @@
 export class Deferred<T> {
-	private currentValue: T;
-	private pendingValue: T | null;
+	private latestValue: T;
+	private previousValue: T;
 	private dirtyValue: boolean;
 
 	constructor(initial: T) {
-		this.currentValue = initial;
-		this.pendingValue = null;
+		this.latestValue = initial;
+		this.previousValue = initial;
 		this.dirtyValue = false;
 	}
 
 	set(next: T): void {
 		// Don't cause an update if there is no difference
-		if (this.currentValue == next) {
+		if (this.latestValue == next) {
 			return;
 		}
 
-		this.pendingValue = next;
+		this.latestValue = next;
 		this.dirtyValue = true;
 	}
 
 	get() {
 		const returnValue = {
-			current: this.currentValue,
-			pending: this.pendingValue,
-			dirty: this.dirtyValue
+			dirty: this.dirtyValue,
+			latest: this.latestValue,
+			previous: this.previousValue
 		};
 
-		if (this.dirtyValue) {
-			this.currentValue = (this.pendingValue as T);
-			this.pendingValue = null;
-			this.dirtyValue = false;
-		}
+		this.previousValue = this.latestValue;
+		this.dirtyValue = false;
 
 		return returnValue;
+	}
+
+	trigger() {
+		this.dirtyValue = true;
 	}
 }

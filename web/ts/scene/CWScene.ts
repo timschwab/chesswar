@@ -1,17 +1,18 @@
 import { Deferred } from "../../../common/data-structures/Deferred.ts";
 import { Rect } from "../../../common/shapes/Rect.ts";
+import { ZeroRect } from "../../../common/shapes/Zero.ts";
 import { CWCanvas } from "../canvas/CWCanvas.ts";
 import { createHtmlCanvas } from "../canvas/dom.ts";
 import { CWDynamicLayer, CWDynamicLayerFrontend } from "./CWDynamicLayer.ts";
 import { CWStaticLayer, CWStaticLayerFrontend } from "./CWStaticLayer.ts";
 
 export class CWScene {
-	private readonly cameraStore: Deferred<Rect | null>;
+	private readonly cameraStore: Deferred<Rect>;
 	private readonly layers: (CWStaticLayer | CWDynamicLayer)[];
 
 	constructor() {
 		this.layers = [];
-		this.cameraStore = new Deferred(null);
+		this.cameraStore = new Deferred(ZeroRect);
 	}
 
 	staticLayer(): CWStaticLayerFrontend {
@@ -33,28 +34,22 @@ export class CWScene {
 	}
 
 	render(): void {
-		const cameraMove = this.cameraStore.get();
+		const cameraDiff = this.cameraStore.get();
 
-		if (cameraMove.current == null) {
-			if (cameraMove.pending == null) {
-				// No camera yet
+		if (cameraDiff.latest == ZeroRect) {
+			return;
+		}
+
+		if (cameraDiff.dirty) {
+			if (cameraDiff.latest.sameSize(cameraDiff.previous)) {
+				// A normal delta
+				this.renderCameraDelta(cameraDiff.previous, cameraDiff.latest);
 			} else {
-				// First render
-				this.renderFirst(cameraMove.pending);
+				// Screen resize, which means the canvas got erased
+				this.renderFirst(cameraDiff.latest);
 			}
 		} else {
-			if (cameraMove.pending == null) {
-				// No camera changes
-				this.renderStill(cameraMove.current);
-			} else {
-				if (cameraMove.current.sameSize(cameraMove.pending)) {
-					// A normal delta
-					this.renderCameraDelta(cameraMove.current, cameraMove.pending);
-				} else {
-					// Screen resize, which means the canvas got erased
-					this.renderFirst(cameraMove.pending);
-				}
-			}
+			this.renderStill(cameraDiff.latest);
 		}
 	}
 
@@ -70,9 +65,9 @@ export class CWScene {
 		}
 	}
 
-	private renderCameraDelta(prev: Rect, next: Rect): void {
+	private renderCameraDelta(previous: Rect, latest: Rect): void {
 		for (const layer of this.layers) {
-			layer.renderCameraDelta(prev, next);
+			layer.renderCameraDelta(previous, latest);
 		}
 	}
 
