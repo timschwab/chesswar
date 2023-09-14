@@ -13,6 +13,7 @@ export class ActionOptionRenderer {
 	constructor(cwCanvas: CWCanvas) {
 		this.cwCanvas = cwCanvas;
 		this.actionOption = new Deferred(PlayerAction.NONE);
+		this.actionOption.trigger();
 	}
 
 	setActionOption(option: PlayerAction) {
