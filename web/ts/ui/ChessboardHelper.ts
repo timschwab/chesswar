@@ -40,17 +40,14 @@ export function rotateSquare(square: ChessSquare, perspective: ChessPerspective)
 }
 
 export function unrotateSquare(square: ChessSquare, perspective: ChessPerspective): ChessSquare {
-	if (perspective == ChessPerspective.NORTH) {
-		return rotateSquare(square, ChessPerspective.NORTH);
-	} else if (perspective == ChessPerspective.EAST) {
-		return rotateSquare(square, ChessPerspective.WEST);
-	} else if (perspective == ChessPerspective.SOUTH) {
-		return rotateSquare(square, ChessPerspective.SOUTH);
-	} else if (perspective == ChessPerspective.WEST) {
-		return rotateSquare(square, ChessPerspective.EAST);
-	}
-
-	throw "Can't get here";
+	const opposites = {
+		[ChessPerspective.NORTH]: ChessPerspective.NORTH,
+		[ChessPerspective.EAST]: ChessPerspective.WEST,
+		[ChessPerspective.SOUTH]: ChessPerspective.SOUTH,
+		[ChessPerspective.WEST]: ChessPerspective.EAST
+	};
+	const opposite = opposites[perspective];
+	return rotateSquare(square, opposite);
 }
 
 export function renderBoard(cwCanvas: CWCanvas, boardRect: Rect, board: ChessBoard, moves: ChessMove[], perspective: ChessPerspective) {
