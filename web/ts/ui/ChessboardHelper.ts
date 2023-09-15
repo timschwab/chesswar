@@ -80,6 +80,7 @@ function renderMove(cwCanvas: CWCanvas, boardRect: Rect, squareSize: number, mov
 
 	const fromRect = getSquareValues(boardRect.leftTop, squareSize, displayFrom).squareRect;
 	const toRect = getSquareValues(boardRect.leftTop, squareSize, displayTo).squareRect;
+
 	cwCanvas.outlineRect(new Shape(fromRect, color), 2);
 	cwCanvas.outlineRect(new Shape(toRect, color), 2);
 	cwCanvas.arrow(fromRect.center, toRect.center, color, 2);

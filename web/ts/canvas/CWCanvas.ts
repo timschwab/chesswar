@@ -49,12 +49,14 @@ export class CWCanvas {
 	}
 
 	arrow(start: Point, finish: Point, color: Color, lineWidth: number) {
-		const vec = Vector.fromPoint(finish.add(start)).multiply(1/4);
-		const leftVec = new Vector(vec.mag, vec.dir+TAU_EIGHTH);
-		const rightVec = new Vector(vec.mag, vec.dir-TAU_EIGHTH);
+		const vec = Vector.fromPoint(start.subtract(finish)).divide(4);
+		const leftVec = new Vector(vec.dir+TAU_EIGHTH, vec.mag);
+		const rightVec = new Vector(vec.dir-TAU_EIGHTH, vec.mag);
 	
 		const leftWing = finish.add(leftVec.toPoint());
 		const rightWing = finish.add(rightVec.toPoint());
+
+		console.log(start, finish, vec, leftVec, leftWing);
 	
 		this.line(start, finish, color, lineWidth);
 		this.line(leftWing, finish, color, lineWidth);

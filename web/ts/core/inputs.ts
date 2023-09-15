@@ -38,8 +38,8 @@ function isTranslatable(code: string): code is keyof typeof KeyCodeTranslation {
 	}
 }
 
-const clickHook = createHook<Point>();
 const keyHook = createHook<CWKeyEvent>();
+const clickHook = createHook<Point>();
 
 document.addEventListener("keydown", handleKeydown);
 document.addEventListener("keyup", handleKeyup);

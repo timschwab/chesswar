@@ -38,6 +38,8 @@ function handleState(payload: StateMessagePayload) {
 
 	for (const player of deserialized) {
 		if (player.id == state.selfId) {
+			state.selfPlayer = player;
+
 			handleSelfPosition(player.position.center);
 			ui.teamRole.setTeam(player.team);
 			ui.teamRole.setRole(player.role);

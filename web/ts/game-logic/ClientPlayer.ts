@@ -2,7 +2,7 @@ import { ChesswarId, PlayerAction, PlayerRole, TeamName } from "../../../common/
 import { SerializedClientPlayer } from "../../../common/data-types/client.ts";
 import { Circle } from "../../../common/shapes/Circle.ts";
 
-interface ClientPlayer {
+export interface ClientPlayer {
 	id: ChesswarId,
 	team: TeamName,
 	role: PlayerRole,
