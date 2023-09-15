@@ -66,7 +66,11 @@ function handleTeam(payload: TeamMessagePayload) {
 }
 
 function handleCompletedAction(action: PlayerAction) {
-	// Do something
+	if (action == PlayerAction.GRAB_ORDERS) {
+		audioPlayer.grabOrders();
+	} else if (action == PlayerAction.COMPLETE_ORDERS) {
+		audioPlayer.completeOrders();
+	}
 }
 
 function handleCarrying(payload: CarryingMessagePayload) {
