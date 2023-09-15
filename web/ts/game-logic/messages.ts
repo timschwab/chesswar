@@ -1,4 +1,4 @@
-import { DeathCause, PlayerAction } from "../../../common/data-types/base.ts";
+import { DeathCause, PlayerAction, PlayerRole } from "../../../common/data-types/base.ts";
 import { CarryingMessagePayload, PlayerInitMessagePayload, ServerMessage, ServerMessageTypes, StateMessagePayload, StatsMessagePayload, TeamMessagePayload } from "../../../common/message-types/server.ts";
 import { rensets } from "../../../common/settings.ts";
 import { Shape } from "../../../common/shapes/Shape.ts";
@@ -42,6 +42,10 @@ function handleState(payload: StateMessagePayload) {
 			ui.teamRole.setTeam(player.team);
 			ui.teamRole.setRole(player.role);
 			ui.actionOption.setActionOption(player.actionOption);
+
+			const isGeneral = (player.role == PlayerRole.GENERAL);
+			ui.generalWindow.setTeam(player.team);
+			ui.generalWindow.setShow(isGeneral);
 		}
 	}
 
@@ -56,7 +60,9 @@ function handleState(payload: StateMessagePayload) {
 }
 
 function handleTeam(payload: TeamMessagePayload) {
-	// Do something
+	ui.generalWindow.setTeamBoard(payload.board);
+	ui.generalWindow.setBriefings(payload.briefings);
+	ui.generalWindow.setEnemyBriefings(payload.enemyBriefings);
 }
 
 function handleCompletedAction(action: PlayerAction) {
