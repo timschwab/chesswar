@@ -2,21 +2,29 @@ import { Deferred } from "../../../common/data-structures/Deferred.ts";
 import { Circle } from "../../../common/shapes/Circle.ts";
 import { Rect } from "../../../common/shapes/Rect.ts";
 import { Shape } from "../../../common/shapes/Shape.ts";
+import { Text } from "../../../common/shapes/Text.ts";
 import { CWCanvas } from "../canvas/CWCanvas.ts";
+
+interface ShapeList {
+	circles: Shape<Circle>[],
+	texts: Text[]
+}
 
 export class CWDynamicLayer {
 	private readonly canvas: CWCanvas;
 	readonly frontend: CWDynamicLayerFrontend
-	private readonly shapes: Deferred<Shape<Circle>[]>;
+	private readonly shapes: Deferred<ShapeList>;
 
 	constructor(canvas: CWCanvas) {
 		this.canvas = canvas;
 		this.frontend = new CWDynamicLayerFrontend(this);
-		this.shapes = new Deferred([]);
+		this.shapes = new Deferred({
+			circles: [],
+			texts: []
+		});
 	}
 
-	// For now only support circles, cause that's all we need
-	setShapes(shapes: Shape<Circle>[]): void {
+	setShapes(shapes: ShapeList): void {
 		this.shapes.set(shapes);
 	}
 
@@ -27,9 +35,14 @@ export class CWDynamicLayer {
 		const shapesDelta = this.shapes.get();
 		const shapes = shapesDelta.latest; // This is the first draw, so we don't care about previous
 
-		for (const shape of shapes) {
-			const transposed = shape.subtract(camera.leftTop);
+		for (const circle of shapes.circles) {
+			const transposed = circle.subtract(camera.leftTop);
 			this.canvas.fillCircle(transposed);
+		}
+
+		for (const text of shapes.texts) {
+			const transposed = text.subtract(camera.leftTop);
+			this.canvas.text(transposed);
 		}
 	}
 
@@ -43,15 +56,25 @@ export class CWDynamicLayer {
 		}
 
 		// Clear the old shapes
-		for (const shape of shapesDelta.previous) {
-			const transposed = shape.subtract(camera.leftTop);
+		for (const circle of shapesDelta.previous.circles) {
+			const transposed = circle.subtract(camera.leftTop);
 			this.canvas.clearRect(transposed.geo.enclosingRect().expand(1));
 		}
 
+		for (const text of shapesDelta.previous.texts) {
+			const transposed = text.subtract(camera.leftTop);
+			this.canvas.clearRect(transposed.geo);
+		}
+
 		// Draw the new shapes
-		for (const shape of shapesDelta.latest) {
-			const transposed = shape.subtract(camera.leftTop);
+		for (const circle of shapesDelta.latest.circles) {
+			const transposed = circle.subtract(camera.leftTop);
 			this.canvas.fillCircle(transposed);
+		}
+
+		for (const text of shapesDelta.previous.texts) {
+			const transposed = text.subtract(camera.leftTop);
+			this.canvas.text(transposed);
 		}
 	}
 
@@ -62,15 +85,25 @@ export class CWDynamicLayer {
 		// If there are no pending changes, previous and latest will be equal. This is fine.
 
 		// Clear old shapes
-		for (const shape of shapesDelta.previous) {
-			const transposed = shape.subtract(previousCamera.leftTop);
+		for (const circle of shapesDelta.previous.circles) {
+			const transposed = circle.subtract(previousCamera.leftTop);
 			this.canvas.clearRect(transposed.geo.enclosingRect().expand(1));
 		}
 
+		for (const text of shapesDelta.previous.texts) {
+			const transposed = text.subtract(previousCamera.leftTop);
+			this.canvas.clearRect(transposed.geo);
+		}
+
 		// Fill new shapes
-		for (const shape of shapesDelta.latest) {
-			const transposed = shape.subtract(latestCamera.leftTop);
+		for (const circle of shapesDelta.latest.circles) {
+			const transposed = circle.subtract(latestCamera.leftTop);
 			this.canvas.fillCircle(transposed);
+		}
+
+		for (const text of shapesDelta.previous.texts) {
+			const transposed = text.subtract(latestCamera.leftTop);
+			this.canvas.text(transposed);
 		}
 	}
 }
@@ -83,7 +116,7 @@ export class CWDynamicLayerFrontend {
 		this.backend = backend;
 	}
 
-	setShapes(shapes: Shape<Circle>[]): void {
+	setShapes(shapes: ShapeList): void {
 		this.backend.setShapes(shapes);
 	}
 }

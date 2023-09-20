@@ -4,7 +4,8 @@ import { rensets } from "../../../common/settings.ts";
 import { Point } from "../../../common/shapes/Point.ts";
 import { Rect } from "../../../common/shapes/Rect.ts";
 import { Shape } from "../../../common/shapes/Shape.ts";
-import { CWCanvas, TextAlign } from "../canvas/CWCanvas.ts";
+import { Text, TextAlign } from "../../../common/shapes/Text.ts";
+import { CWCanvas } from "../canvas/CWCanvas.ts";
 
 export class ActionOptionRenderer {
 	private cwCanvas: CWCanvas;
@@ -39,9 +40,10 @@ export class ActionOptionRenderer {
 		const actionTopLeft = new Point(screen.center.x-(actionRectWidth/2), 10);
 		const actionBottomRight = new Point(screen.center.x+(actionRectWidth/2), 50);
 		const actionRect = new Rect(actionTopLeft, actionBottomRight);
+		const action = new Text(actionRect, "Available action: " + option, TextAlign.CENTER, rensets.actionOption.textFont, rensets.actionOption.textColor);
 
 		this.cwCanvas.fillRect(new Shape(actionRect, rensets.actionOption.backgroundColor));
 		this.cwCanvas.outlineRect(new Shape(actionRect, rensets.actionOption.outlineColor), rensets.actionOption.outlineWidth);
-		this.cwCanvas.text(actionRect, TextAlign.CENTER, "Available action: " + option, rensets.actionOption.textFont, rensets.actionOption.textColor);
+		this.cwCanvas.text(action);
 	}
 }

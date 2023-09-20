@@ -4,7 +4,8 @@ import { rensets } from "../../../common/settings.ts";
 import { Point } from "../../../common/shapes/Point.ts";
 import { Rect } from "../../../common/shapes/Rect.ts";
 import { Shape } from "../../../common/shapes/Shape.ts";
-import { CWCanvas, TextAlign } from "../canvas/CWCanvas.ts";
+import { Text, TextAlign } from "../../../common/shapes/Text.ts";
+import { CWCanvas } from "../canvas/CWCanvas.ts";
 
 export class TeamRoleRenderer {
 	private cwCanvas: CWCanvas;
@@ -47,8 +48,9 @@ export class TeamRoleRenderer {
 		}
 
 		const textRect = new Rect(new Point(10,10), new Point(200,30));
+		const roleText = new Text(textRect, "You are a: " + role, TextAlign.CENTER, rensets.currentRole.textFont, rensets.currentRole.textColor);
 		this.cwCanvas.fillRect(new Shape(textRect, rensets.currentRole.teamColor[team]));
 		this.cwCanvas.outlineRect(new Shape(textRect, rensets.currentRole.outlineColor), rensets.currentRole.outlineWidth);
-		this.cwCanvas.text(textRect, TextAlign.CENTER, "You are a: " + role, rensets.currentRole.textFont, rensets.currentRole.textColor);
+		this.cwCanvas.text(roleText);
 	}
 }

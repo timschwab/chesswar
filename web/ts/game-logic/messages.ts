@@ -1,7 +1,10 @@
 import { DeathCause, PlayerAction, PlayerRole } from "../../../common/data-types/base.ts";
 import { CarryingMessagePayload, PlayerInitMessagePayload, ServerMessage, ServerMessageTypes, StateMessagePayload, StatsMessagePayload, TeamMessagePayload } from "../../../common/message-types/server.ts";
 import { rensets } from "../../../common/settings.ts";
+import { Point } from "../../../common/shapes/Point.ts";
+import { Rect } from "../../../common/shapes/Rect.ts";
 import { Shape } from "../../../common/shapes/Shape.ts";
+import { Text, TextAlign } from "../../../common/shapes/Text.ts";
 import audioPlayer from "../audio/audioPlayer.ts";
 import { playerLayer } from "../scene/scene.ts";
 import { ui } from "../ui/ui.ts";
@@ -36,31 +39,41 @@ function handlePlayerInit(payload: PlayerInitMessagePayload) {
 function handleState(payload: StateMessagePayload) {
 	const deserialized = payload.players.map(deserializeClientPlayer);
 
-	for (const player of deserialized) {
-		if (player.id == state.selfId) {
-			state.selfPlayer = player;
+	const selfPlayer = deserialized.find(player => player.id == state.selfId);
+	if (selfPlayer) {
+		state.selfPlayer = selfPlayer;
 
-			handleSelfPosition(player.position.center);
-			ui.teamRole.setTeam(player.team);
-			ui.teamRole.setRole(player.role);
-			ui.actionOption.setActionOption(player.actionOption);
+		handleSelfPosition(selfPlayer.position.center);
+		ui.teamRole.setTeam(selfPlayer.team);
+		ui.teamRole.setRole(selfPlayer.role);
+		ui.actionOption.setActionOption(selfPlayer.actionOption);
 
-			const isGeneral = (player.role == PlayerRole.GENERAL);
-			ui.generalWindow.setTeam(player.team);
-			ui.generalWindow.setShow(isGeneral);
+		const isGeneral = (selfPlayer.role == PlayerRole.GENERAL);
+		ui.generalWindow.setTeam(selfPlayer.team);
+		ui.generalWindow.setShow(isGeneral);
 
-			ui.miniChessboard.setTeam(player.team);
-		}
+		ui.miniChessboard.setTeam(selfPlayer.team);
 	}
 
-	const playerShapes = deserialized.map(player => {
+	const playerShapes = deserialized.flatMap(player => {
 		const geo = player.position;
 		const color = rensets.players.teamColor[player.team];
 
-		return new Shape(geo, color);
+		const nameRect = new Rect(new Point(geo.center.x, geo.center.y+geo.radius+10), new Point(geo.center.x, geo.center.y+geo.radius+10));
+		const nameText = new Text(nameRect, player.id.slice(0, 4), TextAlign.CENTER, rensets.players.name.font, rensets.players.name.color);
+
+		return {
+			circle: new Shape(geo, color),
+			text: nameText
+		};
 	});
 
-	playerLayer.setShapes(playerShapes);
+	const bundle = {
+		circles: playerShapes.map(elem => elem.circle),
+		texts: playerShapes.map(elem => elem.text)
+	};
+
+	playerLayer.setShapes(bundle);
 }
 
 function handleTeam(payload: TeamMessagePayload) {

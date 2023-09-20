@@ -4,13 +4,8 @@ import { Circle } from "../../../common/shapes/Circle.ts";
 import { Point } from "../../../common/shapes/Point.ts";
 import { Rect } from "../../../common/shapes/Rect.ts";
 import { Shape } from "../../../common/shapes/Shape.ts";
+import { Text } from "../../../common/shapes/Text.ts";
 import { Vector } from "../../../common/shapes/Vector.ts";
-
-export enum TextAlign {
-	LEFT = "left",
-	CENTER = "center",
-	RIGHT = "right"
-}
 
 export class CWCanvas {
 	private readonly context: CanvasRenderingContext2D;
@@ -89,17 +84,17 @@ export class CWCanvas {
 		this.context.fill();
 	}
 
-	text(position: Rect, align: TextAlign, message: string, font: string, color: Color) {
+	text(text: Text) {
 		const alignX = {
-			left: position.left,
-			center: position.center.x,
-			right: position.right,
-		}[align];
+			left: text.geo.left,
+			center: text.geo.center.x,
+			right: text.geo.right,
+		}[text.align];
 	
-		this.context.fillStyle = color;
-		this.context.font = font;
-		this.context.textAlign = align;
+		this.context.fillStyle = text.color;
+		this.context.font = text.font;
+		this.context.textAlign = text.align;
 		this.context.textBaseline = "middle";
-		this.context.fillText(message, alignX, position.center.y);
+		this.context.fillText(text.message, alignX, text.geo.center.y);
 	}
 }
