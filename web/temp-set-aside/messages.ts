@@ -1,10 +1,3 @@
-
-
-function handleCarrying(payload: CarryingMessagePayload) {
-	// state.carrying = payload;
-}
-
-
 function handlePong() {
 	// state.stats.thisPongRecv = performance.now();
 	// state.stats.prevPingDelayMs = state.stats.thisPongRecv - state.stats.thisPingSend;

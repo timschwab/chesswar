@@ -4,6 +4,7 @@ import { CWCanvas } from "../canvas/CWCanvas.ts";
 import { createHtmlCanvas } from "../canvas/dom.ts";
 import { ActionOptionRenderer } from "./ActionOptionRenderer.ts";
 import { GeneralWindowRenderer } from "./GeneralWindowRenderer.ts";
+import { MiniChessboardRenderer } from "./MiniChessboardRenderer.ts";
 import { TeamRoleRenderer } from "./TeamRoleRenderer.ts";
 
 export class CwUserInterface {
@@ -12,6 +13,7 @@ export class CwUserInterface {
 	public readonly teamRole: TeamRoleRenderer;
 	public readonly actionOption: ActionOptionRenderer;
 	public readonly generalWindow: GeneralWindowRenderer;
+	public readonly miniChessboard: MiniChessboardRenderer;
 
 	constructor(screen: Rect) {
 		const htmlCanvas = createHtmlCanvas(1);
@@ -21,6 +23,7 @@ export class CwUserInterface {
 		this.teamRole = new TeamRoleRenderer(this.cwCanvas);
 		this.actionOption = new ActionOptionRenderer(this.cwCanvas);
 		this.generalWindow = new GeneralWindowRenderer(this.cwCanvas);
+		this.miniChessboard = new MiniChessboardRenderer(this.cwCanvas);
 	}
 
 	render() {
@@ -38,12 +41,14 @@ export class CwUserInterface {
 		this.teamRole.render(screen);
 		this.actionOption.render(screen);
 		this.generalWindow.render(screen);
+		this.miniChessboard.render(screen);
 	}
 
 	forceRenderAll(screen: Rect) {
 		this.teamRole.forceRender(screen);
 		this.actionOption.forceRender(screen);
 		this.generalWindow.forceRender(screen);
+		this.miniChessboard.forceRender(screen);
 	}
 
 	setScreen(newScreen: Rect) {

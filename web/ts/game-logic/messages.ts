@@ -48,6 +48,8 @@ function handleState(payload: StateMessagePayload) {
 			const isGeneral = (player.role == PlayerRole.GENERAL);
 			ui.generalWindow.setTeam(player.team);
 			ui.generalWindow.setShow(isGeneral);
+
+			ui.miniChessboard.setTeam(player.team);
 		}
 	}
 
@@ -65,6 +67,8 @@ function handleTeam(payload: TeamMessagePayload) {
 	ui.generalWindow.setTeamBoard(payload.board);
 	ui.generalWindow.setBriefings(payload.briefings);
 	ui.generalWindow.setEnemyBriefings(payload.enemyBriefings);
+
+	ui.miniChessboard.setTeamBoard(payload.board);
 }
 
 function handleCompletedAction(action: PlayerAction) {
@@ -76,7 +80,7 @@ function handleCompletedAction(action: PlayerAction) {
 }
 
 function handleCarrying(payload: CarryingMessagePayload) {
-	// Do something
+	ui.miniChessboard.setCarrying(payload);
 }
 
 function handleDeath(cause: DeathCause) {
