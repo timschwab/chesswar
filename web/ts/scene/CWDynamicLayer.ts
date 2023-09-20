@@ -72,7 +72,7 @@ export class CWDynamicLayer {
 			this.canvas.fillCircle(transposed);
 		}
 
-		for (const text of shapesDelta.previous.texts) {
+		for (const text of shapesDelta.latest.texts) {
 			const transposed = text.subtract(camera.leftTop);
 			this.canvas.text(transposed);
 		}
@@ -101,7 +101,7 @@ export class CWDynamicLayer {
 			this.canvas.fillCircle(transposed);
 		}
 
-		for (const text of shapesDelta.previous.texts) {
+		for (const text of shapesDelta.latest.texts) {
 			const transposed = text.subtract(latestCamera.leftTop);
 			this.canvas.text(transposed);
 		}

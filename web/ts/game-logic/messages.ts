@@ -55,11 +55,11 @@ function handleState(payload: StateMessagePayload) {
 		ui.miniChessboard.setTeam(selfPlayer.team);
 	}
 
-	const playerShapes = deserialized.flatMap(player => {
+	const playerShapes = deserialized.map(player => {
 		const geo = player.position;
 		const color = rensets.players.teamColor[player.team];
 
-		const nameRect = new Rect(new Point(geo.center.x, geo.center.y+geo.radius+10), new Point(geo.center.x, geo.center.y+geo.radius+10));
+		const nameRect = new Rect(new Point(geo.center.x-50, geo.center.y+geo.radius+10), new Point(geo.center.x+50, geo.center.y+geo.radius+30));
 		const nameText = new Text(nameRect, player.id.slice(0, 4), TextAlign.CENTER, rensets.players.name.font, rensets.players.name.color);
 
 		return {
