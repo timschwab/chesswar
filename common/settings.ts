@@ -64,7 +64,7 @@ export const gameEngine = {
 			inputForceMag: 5
 		}
 	},
-	deathTicks: ticksPerSecond*0.1,
+	deathTicks: ticksPerSecond*5,
 	newGameTicks: ticksPerSecond*30
 };
 

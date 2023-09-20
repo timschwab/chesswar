@@ -59,18 +59,26 @@ function handleState(payload: StateMessagePayload) {
 		const geo = player.position;
 		const color = rensets.players.teamColor[player.team];
 
+		const texts = [];
 		const nameRect = new Rect(new Point(geo.center.x-50, geo.center.y+geo.radius+10), new Point(geo.center.x+50, geo.center.y+geo.radius+30));
 		const nameText = new Text(nameRect, player.id.slice(0, 4), TextAlign.CENTER, rensets.players.name.font, rensets.players.name.color);
+		texts.push(nameText);
+
+		if (player.deathCounter > 0) {
+			const textRect = geo.enclosingRect().expand(5);
+			const counterText = new Text(textRect, String(player.deathCounter), TextAlign.CENTER, rensets.players.deathCounter.font, rensets.players.deathCounter.color);
+			texts.push(counterText);
+		}
 
 		return {
-			circle: new Shape(geo, color),
-			text: nameText
+			circles: new Shape(geo, color),
+			texts: texts
 		};
 	});
 
 	const bundle = {
-		circles: playerShapes.map(elem => elem.circle),
-		texts: playerShapes.map(elem => elem.text)
+		circles: playerShapes.map(elem => elem.circles),
+		texts: playerShapes.flatMap(elem => elem.texts)
 	};
 
 	playerLayer.setShapes(bundle);
