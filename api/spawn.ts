@@ -2,6 +2,7 @@ import { TeamName } from "../common/data-types/base.ts";
 import { CarryLoad, CarryLoadType } from "../common/data-types/carryLoad.ts";
 import map from "../common/map.ts";
 import { ServerMessageTypes } from "../common/message-types/server.ts";
+import { randomChoose, randomPointClump } from "../common/random.ts";
 import { gameEngine } from "../common/settings.ts";
 import { Circle } from "../common/shapes/Circle.ts";
 import { Point } from "../common/shapes/Point.ts";
@@ -29,11 +30,11 @@ export function spawnPlayer(player: ServerPlayer): void {
 
 function getStartPoint(team: TeamName): Point {
 	const startChoices = map.starts[team];
-	const start = startChoices[Math.floor(Math.random()*startChoices.length)];
+	const start = randomChoose(startChoices);
 
-	const clumpingPoint = new Point((Math.random()-0.5) * gameEngine.startingClump, (Math.random()-0.5) * gameEngine.startingClump);
+	const clumpingPoint = randomPointClump(start, gameEngine.startingClump);
 
-	return start.add(clumpingPoint);
+	return clumpingPoint;
 }
 
 export function setCarrying(player: ServerPlayer, load: CarryLoad | null) {
