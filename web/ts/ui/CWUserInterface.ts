@@ -6,24 +6,33 @@ import { ActionOptionRenderer } from "./ActionOptionRenderer.ts";
 import { GeneralWindowRenderer } from "./GeneralWindowRenderer.ts";
 import { MiniChessboardRenderer } from "./MiniChessboardRenderer.ts";
 import { TeamRoleRenderer } from "./TeamRoleRenderer.ts";
+import { VictoryRenderer } from "./VictoryRenderer.ts";
 
 export class CwUserInterface {
-	private cwCanvas: CWCanvas;
 	private screen: Deferred<Rect>;
+	private mainCanvas: CWCanvas;
+	private victoryCanvas: CWCanvas;
+
 	public readonly teamRole: TeamRoleRenderer;
 	public readonly actionOption: ActionOptionRenderer;
 	public readonly generalWindow: GeneralWindowRenderer;
 	public readonly miniChessboard: MiniChessboardRenderer;
+	public readonly victory: VictoryRenderer;
 
 	constructor(screen: Rect) {
-		const htmlCanvas = createHtmlCanvas(1);
-		this.cwCanvas = new CWCanvas(htmlCanvas);
 		this.screen = new Deferred(screen);
 
-		this.teamRole = new TeamRoleRenderer(this.cwCanvas);
-		this.actionOption = new ActionOptionRenderer(this.cwCanvas);
-		this.generalWindow = new GeneralWindowRenderer(this.cwCanvas);
-		this.miniChessboard = new MiniChessboardRenderer(this.cwCanvas);
+		const mainHtmlCanvas = createHtmlCanvas(1);
+		const victoryHtmlCanvas = createHtmlCanvas(2);
+
+		this.mainCanvas = new CWCanvas(mainHtmlCanvas);
+		this.victoryCanvas = new CWCanvas(victoryHtmlCanvas);
+
+		this.teamRole = new TeamRoleRenderer(this.mainCanvas);
+		this.actionOption = new ActionOptionRenderer(this.mainCanvas);
+		this.generalWindow = new GeneralWindowRenderer(this.mainCanvas);
+		this.miniChessboard = new MiniChessboardRenderer(this.mainCanvas);
+		this.victory = new VictoryRenderer(this.victoryCanvas);
 	}
 
 	render() {
@@ -42,6 +51,7 @@ export class CwUserInterface {
 		this.actionOption.render(screen);
 		this.generalWindow.render(screen);
 		this.miniChessboard.render(screen);
+		this.victory.render(screen);
 	}
 
 	forceRenderAll(screen: Rect) {
@@ -49,10 +59,12 @@ export class CwUserInterface {
 		this.actionOption.forceRender(screen);
 		this.generalWindow.forceRender(screen);
 		this.miniChessboard.forceRender(screen);
+		this.victory.forceRender(screen);
 	}
 
 	setScreen(newScreen: Rect) {
-		this.cwCanvas.setSize(newScreen);
+		this.mainCanvas.setSize(newScreen);
+		this.victoryCanvas.setSize(newScreen);
 		this.screen.set(newScreen);
 	}
 }

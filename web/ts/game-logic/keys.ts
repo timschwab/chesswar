@@ -28,7 +28,7 @@ export function handleKey(event: CWKeyEvent) {
 		case CWKey.DOWN:
 		case CWKey.LEFT:
 		case CWKey.RIGHT:
-			movement[key] = event.pressed
+			movement[key] = event.pressed;
 			socketSend({
 				type: ClientMessageTypes.MOVE,
 				payload: movement

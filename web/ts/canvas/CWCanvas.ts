@@ -50,8 +50,6 @@ export class CWCanvas {
 	
 		const leftWing = finish.add(leftVec.toPoint());
 		const rightWing = finish.add(rightVec.toPoint());
-
-		console.log(start, finish, vec, leftVec, leftWing);
 	
 		this.line(start, finish, color, lineWidth);
 		this.line(leftWing, finish, color, lineWidth);

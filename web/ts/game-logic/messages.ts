@@ -82,6 +82,8 @@ function handleState(payload: StateMessagePayload) {
 	};
 
 	playerLayer.setShapes(bundle);
+	ui.victory.setVictory(payload.victory);
+	ui.victory.setNewGameTicks(payload.newGameCounter);
 }
 
 function handleTeam(payload: TeamMessagePayload) {

@@ -22,3 +22,8 @@ export function objectMap<K extends PropertyKey, V1, V2>(obj: Record<K, V1>, map
 
 	return result;
 }
+
+export function assertNever(obj: never) {
+	console.error(obj);
+	throw new Error("Should not have gotten here");
+}
