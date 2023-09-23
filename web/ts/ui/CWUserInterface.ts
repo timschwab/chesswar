@@ -5,6 +5,7 @@ import { createHtmlCanvas } from "../canvas/dom.ts";
 import { ActionOptionRenderer } from "./ActionOptionRenderer.ts";
 import { GeneralWindowRenderer } from "./GeneralWindowRenderer.ts";
 import { MiniChessboardRenderer } from "./MiniChessboardRenderer.ts";
+import { StatsRenderer } from "./StatsRenderer.ts";
 import { TeamRoleRenderer } from "./TeamRoleRenderer.ts";
 import { VictoryRenderer } from "./VictoryRenderer.ts";
 
@@ -18,6 +19,7 @@ export class CwUserInterface {
 	public readonly generalWindow: GeneralWindowRenderer;
 	public readonly miniChessboard: MiniChessboardRenderer;
 	public readonly victory: VictoryRenderer;
+	public readonly stats: StatsRenderer
 
 	constructor(screen: Rect) {
 		this.screen = new Deferred(screen);
@@ -33,6 +35,7 @@ export class CwUserInterface {
 		this.generalWindow = new GeneralWindowRenderer(this.mainCanvas);
 		this.miniChessboard = new MiniChessboardRenderer(this.mainCanvas);
 		this.victory = new VictoryRenderer(this.victoryCanvas);
+		this.stats = new StatsRenderer(this.mainCanvas);
 	}
 
 	render() {
@@ -52,6 +55,7 @@ export class CwUserInterface {
 		this.generalWindow.render(screen);
 		this.miniChessboard.render(screen);
 		this.victory.render(screen);
+		this.stats.render(screen);
 	}
 
 	forceRenderAll(screen: Rect) {
@@ -60,6 +64,7 @@ export class CwUserInterface {
 		this.generalWindow.forceRender(screen);
 		this.miniChessboard.forceRender(screen);
 		this.victory.forceRender(screen);
+		this.stats.forceRender(screen);
 	}
 
 	setScreen(newScreen: Rect) {
