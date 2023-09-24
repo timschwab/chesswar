@@ -43,18 +43,24 @@ export class StatsRenderer {
 	}
 
 	renderInternal(screen: Rect, visible: boolean, stats: GameStats) {
+		const jsRenderTimeMs = stats.jsRenderTimeValue.toFixed(1);
 		// const prevPingDelayMs = state.stats.prevPingDelayMs.toFixed(0);
 		// const serverTickMs = state.stats.server.tickMs.toFixed(3);
 		// const serverTicksPerSec = (1000 / state.stats.server.tickMs).toFixed(0);
+		const playersOnline = stats.playersOnlineValue;
 
 		const statStrings = [
+			`jsRenderTimeMs ${jsRenderTimeMs}`,
 			// `prevPingDelayMs: ${prevPingDelayMs}`,
 			// `serverTickMs: ${serverTickMs}`,
 			// `serverTicksPerSec: ${serverTicksPerSec}`,
-			`playersOnline: ${stats.playersOnline}`
+			`playersOnline: ${playersOnline}`
 		];
 
-		let rect = new Rect(new Point(10, screen.height-(20*statStrings.length)-20), new Point(100, screen.height-(20*statStrings.length)));
+		const lineHeight = 20;
+		const lineWidth = 200;
+		const statsTop = screen.height - (lineHeight*(statStrings.length+1));
+		let rect = new Rect(new Point(10, statsTop), new Point(10+lineWidth, statsTop+lineHeight));
 		for (const stat of statStrings) {
 			if (visible) {
 				const statText = new Text(rect, stat, TextAlign.LEFT, rensets.stats.font, rensets.stats.color);
@@ -63,7 +69,7 @@ export class StatsRenderer {
 			} else {
 				this.cwCanvas.clearRect(rect);
 			}
-			rect = new Rect(new Point(rect.leftTop.x, rect.leftTop.y+20), new Point(rect.rightBottom.x, rect.rightBottom.y+20));
+			rect = rect.add(new Point(0, lineHeight));
 		}
 	}
 }
