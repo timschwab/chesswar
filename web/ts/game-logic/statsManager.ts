@@ -1,3 +1,4 @@
+import { ServerStats } from "../../../common/data-types/server.ts";
 import { ui } from "../ui/ui.ts";
 import { GameStats } from "./GameStats.ts";
 
@@ -16,6 +17,14 @@ export function recordJsRenderTime(timeTaken: number) {
 	const diff = timeTaken - stats.jsRenderTimeValue;
 	const newTime = stats.jsRenderTimeValue + (diff/lowPassStrength);
 	stats = stats.jsRenderTime(newTime);
+	setStats();
+}
+
+export function recordServerStats(serverStats: ServerStats) {
+	// Another low pass filter
+	const diff = serverStats.tickMs - stats.serverTickTimeValue;
+	const newTime = stats.serverTickTimeValue + (diff/lowPassStrength)
+	stats = stats.serverTickTime(newTime);
 	setStats();
 }
 

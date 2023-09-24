@@ -11,7 +11,7 @@ import { ui } from "../ui/ui.ts";
 import { deserializeClientPlayer } from "./ClientPlayer.ts";
 import { handleSelfPosition } from "./camera.ts";
 import { state } from "./state.ts";
-import { recordPlayersOnline } from "./statsManager.ts";
+import { recordPlayersOnline, recordServerStats } from "./statsManager.ts";
 
 export function receiveMessage(message: ServerMessage): void {
 	if (message.type == ServerMessageTypes.PLAYER_INIT) {
@@ -121,5 +121,5 @@ function handlePong() {
 }
 
 function handleServerStats(payload: StatsMessagePayload) {
-	// Do something
+	recordServerStats(payload);
 }

@@ -79,13 +79,11 @@ function tickAll(): void {
 		socket.sendBulk(teamPlayerIds, teamMessage);
 	}
 
-	// Broadcast stats to everyone once a second
-	if (state.count % 20 == 0) {
-		socket.sendAll({
-			type: ServerMessageTypes.STATS,
-			payload: state.stats
-		});
-	}
+	// Broadcast stats
+	socket.sendAll({
+		type: ServerMessageTypes.STATS,
+		payload: state.stats
+	});
 
 	state.count++;
 }
