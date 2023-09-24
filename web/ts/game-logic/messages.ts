@@ -11,6 +11,7 @@ import { ui } from "../ui/ui.ts";
 import { deserializeClientPlayer } from "./ClientPlayer.ts";
 import { handleSelfPosition } from "./camera.ts";
 import { state } from "./state.ts";
+import { recordPlayersOnline } from "./statsManager.ts";
 
 export function receiveMessage(message: ServerMessage): void {
 	if (message.type == ServerMessageTypes.PLAYER_INIT) {
@@ -28,7 +29,7 @@ export function receiveMessage(message: ServerMessage): void {
 	} else if (message.type == ServerMessageTypes.PONG) {
 		handlePong();
 	} else if (message.type == ServerMessageTypes.STATS) {
-		handleStats(message.payload);
+		handleServerStats(message.payload);
 	}
 }
 
@@ -84,7 +85,7 @@ function handleState(payload: StateMessagePayload) {
 	playerLayer.setShapes(bundle);
 	ui.victory.setVictory(payload.victory);
 	ui.victory.setNewGameTicks(payload.newGameCounter);
-	ui.stats.setPlayersOnline(payload.players.length);
+	recordPlayersOnline(payload.players.length);
 }
 
 function handleTeam(payload: TeamMessagePayload) {
@@ -119,6 +120,6 @@ function handlePong() {
 	// Do something
 }
 
-function handleStats(payload: StatsMessagePayload) {
+function handleServerStats(payload: StatsMessagePayload) {
 	// Do something
 }

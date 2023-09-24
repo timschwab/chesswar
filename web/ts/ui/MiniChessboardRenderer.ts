@@ -1,4 +1,4 @@
-import { Deferred } from "../../../common/data-structures/Deferred.ts";
+import { Deferred, SimpleDeferred } from "../../../common/data-structures/Deferred.ts";
 import { TeamName } from "../../../common/data-types/base.ts";
 import { CarryLoad, CarryLoadType } from "../../../common/data-types/carryLoad.ts";
 import { ChessBoard, ChessMove } from "../../../common/data-types/chess.ts";
@@ -10,13 +10,13 @@ import { renderBoard, teamPerspective } from "./ChessboardHelper.ts";
 
 export class MiniChessboardRenderer {
 	private cwCanvas: CWCanvas;
-	private team: Deferred<TeamName | null>;
+	private team: SimpleDeferred<TeamName | null>;
 	private teamBoard: Deferred<ChessBoard | null>;
 	private carrying: Deferred<CarryLoad>;
 
 	constructor(cwCanvas: CWCanvas) {
 		this.cwCanvas = cwCanvas;
-		this.team = new Deferred(null);
+		this.team = new SimpleDeferred(null);
 		this.teamBoard = new Deferred(null);
 		this.carrying = new Deferred({
 			type: CarryLoadType.EMPTY,

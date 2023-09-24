@@ -1,4 +1,4 @@
-import { Deferred } from "../../../common/data-structures/Deferred.ts";
+import { SimpleDeferred } from "../../../common/data-structures/Deferred.ts";
 import { Victory } from "../../../common/data-types/base.ts";
 import { rensets } from "../../../common/settings.ts";
 import { Point } from "../../../common/shapes/Point.ts";
@@ -8,13 +8,13 @@ import { CWCanvas } from "../canvas/CWCanvas.ts";
 
 export class VictoryRenderer {
 	private cwCanvas: CWCanvas;
-	private victory: Deferred<Victory>;
-	private newGameTicks: Deferred<number>;
+	private victory: SimpleDeferred<Victory>;
+	private newGameTicks: SimpleDeferred<number>;
 
 	constructor(cwCanvas: CWCanvas) {
 		this.cwCanvas = cwCanvas;
-		this.victory = new Deferred(null);
-		this.newGameTicks = new Deferred(0);
+		this.victory = new SimpleDeferred(null);
+		this.newGameTicks = new SimpleDeferred(0);
 	}
 
 	setVictory(victory: Victory) {

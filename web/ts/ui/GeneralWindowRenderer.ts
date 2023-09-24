@@ -1,7 +1,7 @@
-import { Deferred } from "../../../common/data-structures/Deferred.ts";
+import { Deferred, SimpleDeferred } from "../../../common/data-structures/Deferred.ts";
 import { TeamName } from "../../../common/data-types/base.ts";
 import { ChessBoard, ChessMove } from "../../../common/data-types/chess.ts";
-import { BriefingBundle, BriefingName, empytBriefingBundle } from "../../../common/data-types/facility.ts";
+import { BriefingBundle, BriefingName, emptyBriefingBundle } from "../../../common/data-types/facility.ts";
 import { rensets } from "../../../common/settings.ts";
 import { Rect } from "../../../common/shapes/Rect.ts";
 import { Shape } from "../../../common/shapes/Shape.ts";
@@ -12,19 +12,19 @@ import { getImportantValues } from "./GeneralWindowHelper.ts";
 
 export class GeneralWindowRenderer {
 	private cwCanvas: CWCanvas;
-	private team: Deferred<TeamName>;
-	private show: Deferred<boolean>;
+	private team: SimpleDeferred<TeamName>;
+	private show: SimpleDeferred<boolean>;
 	private teamBoard: Deferred<ChessBoard | null>;
 	private briefings: Deferred<BriefingBundle>;
 	private enemyBriefings: Deferred<BriefingBundle>;
 
 	constructor(cwCanvas: CWCanvas) {
 		this.cwCanvas = cwCanvas;
-		this.team = new Deferred(TeamName.BLUE);
-		this.show = new Deferred(false);
+		this.team = new SimpleDeferred(TeamName.BLUE);
+		this.show = new SimpleDeferred(false);
 		this.teamBoard = new Deferred(null);
-		this.briefings = new Deferred(empytBriefingBundle());
-		this.enemyBriefings = new Deferred(empytBriefingBundle());
+		this.briefings = new Deferred(emptyBriefingBundle());
+		this.enemyBriefings = new Deferred(emptyBriefingBundle());
 	}
 
 	setTeam(team: TeamName) {

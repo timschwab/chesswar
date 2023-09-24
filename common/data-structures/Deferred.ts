@@ -1,3 +1,5 @@
+import { Comparable } from "../Comparable.ts";
+
 export class Deferred<T> {
 	private latestValue: T;
 	private previousValue: T;
@@ -10,11 +12,6 @@ export class Deferred<T> {
 	}
 
 	set(next: T): void {
-		// Don't cause an update if there is no difference
-		if (this.latestValue == next) {
-			return;
-		}
-
 		this.latestValue = next;
 		this.dirtyValue = true;
 	}
@@ -32,7 +29,43 @@ export class Deferred<T> {
 		return returnValue;
 	}
 
+	peek() {
+		return {
+			dirty: this.dirtyValue,
+			latest: this.latestValue,
+			previous: this.previousValue
+		}
+	}
+
 	trigger() {
 		this.dirtyValue = true;
+	}
+}
+
+export class SimpleDeferred<T extends string | number | boolean | null> extends Deferred<T> {
+	constructor(initial: T) {
+		super(initial);
+	}
+
+	set(next: T): void {
+		if (this.peek().latest == next) {
+			// Do nothing
+		} else {
+			super.set(next);
+		}
+	}
+}
+
+export class ComparableDeferred<T extends Comparable<T>> extends Deferred<T> {
+	constructor(initial: T) {
+		super(initial);
+	}
+
+	set(next: T): void {
+	  if (this.peek().latest.equals(next)) {
+		// Do nothing
+	  } else {
+		super.set(next);
+	  }
 	}
 }

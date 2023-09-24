@@ -1,4 +1,4 @@
-import { Deferred } from "../../../common/data-structures/Deferred.ts";
+import { ComparableDeferred } from "../../../common/data-structures/Deferred.ts";
 import { Rect } from "../../../common/shapes/Rect.ts";
 import { CWCanvas } from "../canvas/CWCanvas.ts";
 import { createHtmlCanvas } from "../canvas/dom.ts";
@@ -10,7 +10,7 @@ import { TeamRoleRenderer } from "./TeamRoleRenderer.ts";
 import { VictoryRenderer } from "./VictoryRenderer.ts";
 
 export class CwUserInterface {
-	private screen: Deferred<Rect>;
+	private screen: ComparableDeferred<Rect>;
 	private mainCanvas: CWCanvas;
 	private victoryCanvas: CWCanvas;
 
@@ -22,7 +22,7 @@ export class CwUserInterface {
 	public readonly stats: StatsRenderer
 
 	constructor(screen: Rect) {
-		this.screen = new Deferred(screen);
+		this.screen = new ComparableDeferred(screen);
 
 		const mainHtmlCanvas = createHtmlCanvas(1);
 		const victoryHtmlCanvas = createHtmlCanvas(2);

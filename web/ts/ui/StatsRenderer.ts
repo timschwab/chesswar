@@ -1,63 +1,61 @@
-import { Deferred } from "../../../common/data-structures/Deferred.ts";
+import { ComparableDeferred, SimpleDeferred } from "../../../common/data-structures/Deferred.ts";
 import { rensets } from "../../../common/settings.ts";
 import { Point } from "../../../common/shapes/Point.ts";
 import { Rect } from "../../../common/shapes/Rect.ts";
 import { Text, TextAlign } from "../../../common/shapes/Text.ts";
 import { CWCanvas } from "../canvas/CWCanvas.ts";
+import { GameStats } from "../game-logic/GameStats.ts";
 
 export class StatsRenderer {
 	private cwCanvas: CWCanvas;
-	private visible: Deferred<boolean>;
-	private playersOnline: Deferred<number>;
+	private visible: SimpleDeferred<boolean>;
+	private stats: ComparableDeferred<GameStats>;
 
 	constructor(cwCanvas: CWCanvas) {
 		this.cwCanvas = cwCanvas;
-		this.visible = new Deferred(false);
-		this.playersOnline = new Deferred(0);
+		this.visible = new SimpleDeferred(false);
+		this.stats = new ComparableDeferred(GameStats.Zero);
 	}
 
 	toggleVisible() {
 		const newVisible = !this.visible.get().latest;
-		console.log("toggling " + newVisible);
 		this.visible.set(newVisible);
 	}
 
-	setPlayersOnline(playersOnline: number) {
-		this.playersOnline.set(playersOnline);
+	setStats(stats: GameStats) {
+		this.stats.set(stats);
 	}
 
 	render(screen: Rect) {
 		const visibleDiff = this.visible.get();
-		const playersOnlineDiff = this.playersOnline.get();
+		const statsDiff = this.stats.get();
 
-		if (visibleDiff.dirty) {
-			this.renderInternal(screen, visibleDiff.latest, playersOnlineDiff.latest);
-		} else if (visibleDiff.latest && (playersOnlineDiff.dirty)) {
-			this.renderInternal(screen, visibleDiff.latest, playersOnlineDiff.latest);
+		if (visibleDiff.dirty || statsDiff.dirty) {
+			this.renderInternal(screen, visibleDiff.latest, statsDiff.latest);
 		}
 	}
 
 	forceRender(screen: Rect) {
 		const visibleDiff = this.visible.get();
-		const playersOnlineDiff = this.playersOnline.get();
+		const statsDiff = this.stats.get();
 
-		this.renderInternal(screen, visibleDiff.latest, playersOnlineDiff.latest);
+		this.renderInternal(screen, visibleDiff.latest, statsDiff.latest);
 	}
 
-	renderInternal(screen: Rect, visible: boolean, playersOnline: number) {
+	renderInternal(screen: Rect, visible: boolean, stats: GameStats) {
 		// const prevPingDelayMs = state.stats.prevPingDelayMs.toFixed(0);
 		// const serverTickMs = state.stats.server.tickMs.toFixed(3);
 		// const serverTicksPerSec = (1000 / state.stats.server.tickMs).toFixed(0);
 
-		const stats = [
+		const statStrings = [
 			// `prevPingDelayMs: ${prevPingDelayMs}`,
 			// `serverTickMs: ${serverTickMs}`,
 			// `serverTicksPerSec: ${serverTicksPerSec}`,
-			`playersOnline: ${playersOnline}`
+			`playersOnline: ${stats.playersOnline}`
 		];
 
-		let rect = new Rect(new Point(10, screen.height-(20*stats.length)-20), new Point(100, screen.height-(20*stats.length)));
-		for (const stat of stats) {
+		let rect = new Rect(new Point(10, screen.height-(20*statStrings.length)-20), new Point(100, screen.height-(20*statStrings.length)));
+		for (const stat of statStrings) {
 			if (visible) {
 				const statText = new Text(rect, stat, TextAlign.LEFT, rensets.stats.font, rensets.stats.color);
 				this.cwCanvas.clearRect(rect);

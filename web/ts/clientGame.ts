@@ -4,6 +4,7 @@ import { socketListen } from "./core/socket.ts";
 import { handleScreenChange } from "./game-logic/camera.ts";
 import { handleKey } from "./game-logic/keys.ts";
 import { receiveMessage } from "./game-logic/messages.ts";
+import { recordJsRenderTime } from "./game-logic/statsManager.ts";
 import { scene } from "./scene/scene.ts";
 import { handleClick } from "./ui/GeneralWindowHelper.ts";
 import { ui } from "./ui/ui.ts";
@@ -23,7 +24,14 @@ export function initGame() {
 }
 
 function gameLoop() {
+	const start = performance.now();
+
 	scene.render();
 	ui.render();
+
+	const finish = performance.now();
+	const diff = finish-start;
+	recordJsRenderTime(diff);
+
 	requestAnimationFrame(gameLoop);
 }

@@ -1,4 +1,4 @@
-import { Deferred } from "../../../common/data-structures/Deferred.ts";
+import { SimpleDeferred } from "../../../common/data-structures/Deferred.ts";
 import { PlayerRole, TeamName } from "../../../common/data-types/base.ts";
 import { rensets } from "../../../common/settings.ts";
 import { Point } from "../../../common/shapes/Point.ts";
@@ -9,13 +9,13 @@ import { CWCanvas } from "../canvas/CWCanvas.ts";
 
 export class TeamRoleRenderer {
 	private cwCanvas: CWCanvas;
-	private team: Deferred<TeamName | null>;
-	private role: Deferred<PlayerRole>;
+	private team: SimpleDeferred<TeamName | null>;
+	private role: SimpleDeferred<PlayerRole>;
 
 	constructor(cwCanvas: CWCanvas) {
 		this.cwCanvas = cwCanvas;
-		this.team = new Deferred(null);
-		this.role = new Deferred(PlayerRole.SOLDIER);
+		this.team = new SimpleDeferred(null);
+		this.role = new SimpleDeferred(PlayerRole.SOLDIER);
 	}
 
 	setTeam(team: TeamName) {

@@ -1,4 +1,4 @@
-import { Deferred } from "../../../common/data-structures/Deferred.ts";
+import { ComparableDeferred } from "../../../common/data-structures/Deferred.ts";
 import { Rect } from "../../../common/shapes/Rect.ts";
 import { ZeroRect } from "../../../common/shapes/Zero.ts";
 import { CWCanvas } from "../canvas/CWCanvas.ts";
@@ -7,12 +7,12 @@ import { CWDynamicLayer, CWDynamicLayerFrontend } from "./CWDynamicLayer.ts";
 import { CWStaticLayer, CWStaticLayerFrontend } from "./CWStaticLayer.ts";
 
 export class CWScene {
-	private readonly cameraStore: Deferred<Rect>;
+	private readonly cameraStore: ComparableDeferred<Rect>;
 	private readonly layers: (CWStaticLayer | CWDynamicLayer)[];
 
 	constructor() {
 		this.layers = [];
-		this.cameraStore = new Deferred(ZeroRect);
+		this.cameraStore = new ComparableDeferred(ZeroRect);
 	}
 
 	staticLayer(): CWStaticLayerFrontend {

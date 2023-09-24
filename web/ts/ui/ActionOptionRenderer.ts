@@ -1,4 +1,4 @@
-import { Deferred } from "../../../common/data-structures/Deferred.ts";
+import { Deferred, SimpleDeferred } from "../../../common/data-structures/Deferred.ts";
 import { PlayerAction } from "../../../common/data-types/base.ts";
 import { rensets } from "../../../common/settings.ts";
 import { Point } from "../../../common/shapes/Point.ts";
@@ -13,7 +13,7 @@ export class ActionOptionRenderer {
 
 	constructor(cwCanvas: CWCanvas) {
 		this.cwCanvas = cwCanvas;
-		this.actionOption = new Deferred(PlayerAction.NONE);
+		this.actionOption = new SimpleDeferred(PlayerAction.NONE);
 		this.actionOption.trigger();
 	}
 

@@ -12,7 +12,7 @@ export interface BriefingBundle {
 	[BriefingName.THREE]: ChessMove | null
 }
 
-export function empytBriefingBundle() {
+export function emptyBriefingBundle(): BriefingBundle {
 	return {
 		[BriefingName.ONE]:  null,
 		[BriefingName.TWO]: null,
