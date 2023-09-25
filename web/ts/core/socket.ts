@@ -33,15 +33,17 @@ function sockClose(event: CloseEvent) {
 	console.warn(event);
 }
 
-export function socketSend(message: ClientMessage) {
-	safeSend(sock, JSON.stringify(message));
+export function socketSend(message: ClientMessage): boolean {
+	return safeSend(sock, JSON.stringify(message));
 }
 
-function safeSend(conn: WebSocket, message: string) {
+function safeSend(conn: WebSocket, message: string): boolean {
 	try {
 		conn.send(message);
+		return true;
 	} catch (err) {
 		console.error({message, err});
+		return false;
 	}
 }
 

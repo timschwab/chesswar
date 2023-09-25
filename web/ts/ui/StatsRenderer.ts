@@ -44,14 +44,14 @@ export class StatsRenderer {
 
 	renderInternal(screen: Rect, visible: boolean, stats: GameStats) {
 		const jsRenderTimeMs = stats.jsRenderTimeValue.toFixed(1);
-		// const prevPingDelayMs = state.stats.prevPingDelayMs.toFixed(0);
+		const pingTimeMs = stats.pingTimeValue.toFixed(0);
 		const serverTickMs = stats.serverTickTimeValue.toFixed(3);
 		const serverTicksPerSec = (1000 / stats.serverTickTimeValue).toFixed(0);
 		const playersOnline = stats.playersOnlineValue;
 
 		const statStrings = [
 			`jsRenderTimeMs ${jsRenderTimeMs}`,
-			// `prevPingDelayMs: ${prevPingDelayMs}`,
+			`pingTimeMs: ${pingTimeMs}`,
 			`serverTickMs: ${serverTickMs}`,
 			`serverTicksPerSec: ${serverTicksPerSec}`,
 			`playersOnline: ${playersOnline}`

@@ -4,6 +4,7 @@ import { socketListen } from "./core/socket.ts";
 import { handleScreenChange } from "./game-logic/camera.ts";
 import { handleKey } from "./game-logic/keys.ts";
 import { receiveMessage } from "./game-logic/messages.ts";
+import { beginPings } from "./game-logic/pingManager.ts";
 import { recordJsRenderTime } from "./game-logic/statsManager.ts";
 import { scene } from "./scene/scene.ts";
 import { handleClick } from "./ui/GeneralWindowHelper.ts";
@@ -13,6 +14,7 @@ initGame();
 
 export function initGame() {
 	socketListen(receiveMessage);
+	beginPings();
 
 	handleScreenChange(screenValue);
 	screenChange(handleScreenChange);

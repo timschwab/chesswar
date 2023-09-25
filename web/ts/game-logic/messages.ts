@@ -10,6 +10,7 @@ import { playerLayer } from "../scene/scene.ts";
 import { ui } from "../ui/ui.ts";
 import { deserializeClientPlayer } from "./ClientPlayer.ts";
 import { handleSelfPosition } from "./camera.ts";
+import { reportPong } from "./pingManager.ts";
 import { state } from "./state.ts";
 import { recordPlayersOnline, recordServerStats } from "./statsManager.ts";
 
@@ -117,7 +118,7 @@ function handleDeath(cause: DeathCause) {
 }
 
 function handlePong() {
-	// Do something
+	reportPong();
 }
 
 function handleServerStats(payload: StatsMessagePayload) {
