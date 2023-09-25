@@ -30,7 +30,9 @@ export class StatsRenderer {
 		const visibleDiff = this.visible.get();
 		const statsDiff = this.stats.get();
 
-		if (visibleDiff.dirty || statsDiff.dirty) {
+		if (visibleDiff.dirty) {
+			this.renderInternal(screen, visibleDiff.latest, statsDiff.latest);
+		} else if (visibleDiff.latest && statsDiff.dirty) {
 			this.renderInternal(screen, visibleDiff.latest, statsDiff.latest);
 		}
 	}
@@ -64,7 +66,7 @@ export class StatsRenderer {
 		for (const stat of statStrings) {
 			if (visible) {
 				const statText = new Text(rect, stat, TextAlign.LEFT, rensets.stats.font, rensets.stats.color);
-				this.cwCanvas.clearRect(rect);
+				this.cwCanvas.clearRect(rect.expand(2));
 				this.cwCanvas.text(statText);
 			} else {
 				this.cwCanvas.clearRect(rect);

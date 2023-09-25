@@ -1,5 +1,5 @@
 export class Queue<T> {
-	values: Map<number,T>;
+	values: Map<number, T>;
 	head: number;
 	tail: number;
 
