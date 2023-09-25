@@ -45,18 +45,22 @@ export class StatsRenderer {
 	}
 
 	renderInternal(screen: Rect, visible: boolean, stats: GameStats) {
-		const jsRenderTimeMs = stats.jsRenderTimeValue.toFixed(1);
+		const playersOnline = stats.playersOnlineValue;
 		const pingTimeMs = stats.pingTimeValue.toFixed(0);
 		const serverTickMs = stats.serverTickTimeValue.toFixed(3);
 		const serverTicksPerSec = (1000 / stats.serverTickTimeValue).toFixed(0);
-		const playersOnline = stats.playersOnlineValue;
+		const animationMs = stats.animationTimeValue.toFixed(1);
+		const animationPerSec = (1000 / stats.animationTimeValue).toFixed(1);
+		const jsRenderTimeMs = stats.jsRenderTimeValue.toFixed(1);
 
 		const statStrings = [
-			`jsRenderTimeMs ${jsRenderTimeMs}`,
+			`playersOnline: ${playersOnline}`,
 			`pingTimeMs: ${pingTimeMs}`,
 			`serverTickMs: ${serverTickMs}`,
 			`serverTicksPerSec: ${serverTicksPerSec}`,
-			`playersOnline: ${playersOnline}`
+			`animationMs: ${animationMs}`,
+			`animationPerSec: ${animationPerSec}`,
+			`jsRenderTimeMs: ${jsRenderTimeMs}`,
 		];
 
 		const lineHeight = 20;
@@ -66,10 +70,10 @@ export class StatsRenderer {
 		for (const stat of statStrings) {
 			if (visible) {
 				const statText = new Text(rect, stat, TextAlign.LEFT, rensets.stats.font, rensets.stats.color);
-				this.cwCanvas.clearRect(rect.expand(2));
+				this.cwCanvas.clearRect(rect);
 				this.cwCanvas.text(statText);
 			} else {
-				this.cwCanvas.clearRect(rect);
+				this.cwCanvas.clearRect(rect.expand(2));
 			}
 			rect = rect.add(new Point(0, lineHeight));
 		}

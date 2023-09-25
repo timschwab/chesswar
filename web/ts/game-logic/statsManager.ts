@@ -3,16 +3,21 @@ import { ServerStats } from "../../../common/data-types/server.ts";
 import { ui } from "../ui/ui.ts";
 import { GameStats } from "./GameStats.ts";
 
-const lowPassStrength = 10;
-
-const jsRenderTimeFilter = new LowPassFilter(lowPassStrength);
-const serverTickFilter = new LowPassFilter(lowPassStrength);
-const pingTimeFilter = new LowPassFilter(lowPassStrength);
+const animationTimeFilter = new LowPassFilter(60);
+const jsRenderTimeFilter = new LowPassFilter(60);
+const serverTickFilter = new LowPassFilter(20);
+const pingTimeFilter = new LowPassFilter(2);
 
 let stats = GameStats.Zero;
 
 export function recordPlayersOnline(playersOnline: number) {
 	stats = stats.playersOnline(playersOnline);
+	setStats();
+}
+
+export function recordAnimationTime(timeTaken: number) {
+	animationTimeFilter.set(timeTaken);
+	stats = stats.animationTime(animationTimeFilter.read());
 	setStats();
 }
 
