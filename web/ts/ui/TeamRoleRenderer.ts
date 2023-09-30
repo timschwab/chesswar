@@ -49,8 +49,8 @@ export class TeamRoleRenderer {
 
 		const textRect = new Rect(new Point(10,10), new Point(200,30));
 		const roleText = new Text(textRect, "You are a: " + role, TextAlign.CENTER, rensets.currentRole.textFont, rensets.currentRole.textColor);
-		this.cwCanvas.fillRect(new Shape(textRect, rensets.currentRole.teamColor[team]));
-		this.cwCanvas.outlineRect(new Shape(textRect, rensets.currentRole.outlineColor), rensets.currentRole.outlineWidth);
+		this.cwCanvas.fillRect(Shape.from(textRect, rensets.currentRole.teamColor[team]));
+		this.cwCanvas.outlineRect(Shape.from(textRect, rensets.currentRole.outlineColor), rensets.currentRole.outlineWidth);
 		this.cwCanvas.text(roleText);
 	}
 }

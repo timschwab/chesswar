@@ -46,7 +46,6 @@ export class CWDynamicLayer {
 		}
 	}
 
-	// Just redraw every time. Probably a slightly better way, but not worth it.
 	renderStill(camera: Rect): void {
 		const shapesDelta = this.shapes.get();
 
@@ -58,7 +57,6 @@ export class CWDynamicLayer {
 		this.renderInternal(camera, camera, shapesDelta.previous, shapesDelta.previous);
 	}
 
-	// Just redraw every time. Probably a slightly better way, but not worth it.
 	renderCameraDelta(previousCamera: Rect, latestCamera: Rect): void {
 		const shapesDelta = this.shapes.get();
 
@@ -69,6 +67,8 @@ export class CWDynamicLayer {
 	}
 
 	renderInternal(previousCamera: Rect, latestCamera: Rect, previousShapes: ShapeList, latestShapes: ShapeList) {
+		// Just redraw every time. Probably a slightly better way, but not worth it until it is needed.
+
 		// Clear the old shapes
 		for (const circle of previousShapes.circles) {
 			const transposed = circle.subtract(previousCamera.leftTop);

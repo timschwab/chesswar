@@ -57,14 +57,14 @@ export class CWCanvas {
 	}
 
 	outlineRect(rect: Shape<Rect>, lineWidth: number) {
-		this.context.strokeStyle = rect.color;
+		this.context.strokeStyle = rect.settings.color;
 		this.context.lineWidth = lineWidth;
 		this.context.strokeRect(rect.geo.left, rect.geo.top, rect.geo.width, rect.geo.height);
 	}
 
 	fillRect(rect: Shape<Rect>) {
 		if (rect.geo.width > 0 && rect.geo.height > 0) {
-			this.context.fillStyle = rect.color;
+			this.context.fillStyle = rect.settings.color;
 			this.context.fillRect(rect.geo.left, rect.geo.top, rect.geo.width, rect.geo.height);
 		}
 	}
@@ -76,7 +76,7 @@ export class CWCanvas {
 	}
 
 	fillCircle(circle: Shape<Circle>) {
-		this.context.fillStyle = circle.color;
+		this.context.fillStyle = circle.settings.color;
 		this.context.beginPath();
 		this.context.arc(circle.geo.center.x, circle.geo.center.y, circle.geo.radius, 0, TAU);
 		this.context.fill();
@@ -89,7 +89,7 @@ export class CWCanvas {
 			right: text.geo.right,
 		}[text.align];
 	
-		this.context.fillStyle = text.color;
+		this.context.fillStyle = text.settings.color;
 		this.context.font = text.font;
 		this.context.textAlign = text.align;
 		this.context.textBaseline = "middle";

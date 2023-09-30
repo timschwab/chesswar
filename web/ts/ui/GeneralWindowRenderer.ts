@@ -74,21 +74,21 @@ export class GeneralWindowRenderer {
 
 		if (show) {
 			// Draw window
-			this.cwCanvas.fillRect(new Shape(importantValues.windowRect, genwin.windowInside));
-			this.cwCanvas.outlineRect(new Shape(importantValues.windowRect, genwin.windowOutline), 5);
+			this.cwCanvas.fillRect(Shape.from(importantValues.windowRect, genwin.windowInside));
+			this.cwCanvas.outlineRect(Shape.from(importantValues.windowRect, genwin.windowOutline), 5);
 
 			// Draw buttons
-			this.cwCanvas.fillRect(new Shape(importantValues.button1Rect, genwin.button));
-			this.cwCanvas.fillRect(new Shape(importantValues.button2Rect, genwin.button));
-			this.cwCanvas.fillRect(new Shape(importantValues.button3Rect, genwin.button));
+			this.cwCanvas.fillRect(Shape.from(importantValues.button1Rect, genwin.button));
+			this.cwCanvas.fillRect(Shape.from(importantValues.button2Rect, genwin.button));
+			this.cwCanvas.fillRect(Shape.from(importantValues.button3Rect, genwin.button));
 
 			// Draw selected button
 			if (state.general.selectedButton == BriefingName.ONE) {
-				this.cwCanvas.outlineRect(new Shape(importantValues.button1Rect, genwin.teamColor[team]), 3);
+				this.cwCanvas.outlineRect(Shape.from(importantValues.button1Rect, genwin.teamColor[team]), 3);
 			} else if (state.general.selectedButton == BriefingName.TWO) {
-				this.cwCanvas.outlineRect(new Shape(importantValues.button2Rect, genwin.teamColor[team]), 3);
+				this.cwCanvas.outlineRect(Shape.from(importantValues.button2Rect, genwin.teamColor[team]), 3);
 			} else if (state.general.selectedButton == BriefingName.THREE) {
-				this.cwCanvas.outlineRect(new Shape(importantValues.button3Rect, genwin.teamColor[team]), 3);
+				this.cwCanvas.outlineRect(Shape.from(importantValues.button3Rect, genwin.teamColor[team]), 3);
 			}
 
 			// Draw chessboard squares

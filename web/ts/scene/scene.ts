@@ -18,7 +18,7 @@ const verticalGrid = scene.staticLayer();
 for (let x = 0; x <= map.width; x += rensets.grid.spacing) {
 	const start = new Point(x, 0);
 	const finish = new Point(x+rensets.grid.width, map.height);
-	const shape = new Shape(new Rect(start, finish), rensets.grid.color);
+	const shape = Shape.from(new Rect(start, finish), rensets.grid.color);
 	verticalGrid.addRect(shape);
 }
 
@@ -27,44 +27,44 @@ const horizontalGrid = scene.staticLayer();
 for (let y = 0; y <= map.height; y += rensets.grid.spacing) {
 	const start = new Point(0, y);
 	const finish = new Point(map.width, y+rensets.grid.width);
-	const shape = new Shape(new Rect(start, finish), rensets.grid.color);
+	const shape = Shape.from(new Rect(start, finish), rensets.grid.color);
 	horizontalGrid.addRect(shape);
 }
 
 // Map external areas
 const externalMap = scene.staticLayer();
-externalMap.addCircle(new Shape(map.safeZone, rensets.center.safe));
+externalMap.addCircle(Shape.from(map.safeZone, rensets.center.safe));
 
 for (const bundle of map.facilities) {
-	externalMap.addRect(new Shape(bundle.base, rensets.facilities.ally.base));
+	externalMap.addRect(Shape.from(bundle.base, rensets.facilities.ally.base));
 
 	for (const outpost of bundle.outposts) {
-		externalMap.addRect(new Shape(outpost, rensets.facilities.ally.outpost));
+		externalMap.addRect(Shape.from(outpost, rensets.facilities.ally.outpost));
 	}
 }
 
 // Map internal areas
 const internalMap = scene.staticLayer();
-internalMap.addCircle(new Shape(map.battlefield, rensets.center.battlefield));
+internalMap.addCircle(Shape.from(map.battlefield, rensets.center.battlefield));
 
 for (const bundle of map.facilities) {
-	internalMap.addRect(new Shape(bundle.command, rensets.facilities.ally.command));
+	internalMap.addRect(Shape.from(bundle.command, rensets.facilities.ally.command));
 
 	for (const briefing of bundle.briefings) {
-		internalMap.addRect(new Shape(briefing, rensets.facilities.ally.pickup));
+		internalMap.addRect(Shape.from(briefing, rensets.facilities.ally.pickup));
 	}
 
-	internalMap.addRect(new Shape(bundle.armory, rensets.facilities.ally.armory));
-	internalMap.addRect(new Shape(bundle.scif, rensets.facilities.ally.scif));
+	internalMap.addRect(Shape.from(bundle.armory, rensets.facilities.ally.armory));
+	internalMap.addRect(Shape.from(bundle.scif, rensets.facilities.ally.scif));
 }
 
 // Minefields
 const minefields = scene.staticLayer();
 for (const minefield of map.minefields) {
 	if (minefield instanceof Rect) {
-		minefields.addRect(new Shape(minefield, rensets.minefield.color));
+		minefields.addRect(Shape.from(minefield, rensets.minefield.color));
 	} else if (minefield instanceof Circle) {
-		minefields.addCircle(new Shape(minefield, rensets.minefield.color));
+		minefields.addCircle(Shape.from(minefield, rensets.minefield.color));
 	} else {
 		// Can't get here
 	}
@@ -77,12 +77,12 @@ const overlaps = outer.overlap(inner);
 
 if (overlaps.first.left && overlaps.first.right && overlaps.first.top && overlaps.first.bottom) {
 	const verticalBoundaries = scene.staticLayer();
-	verticalBoundaries.addRect(new Shape(overlaps.first.left, rensets.mapBorder.color));
-	verticalBoundaries.addRect(new Shape(overlaps.first.right, rensets.mapBorder.color));
+	verticalBoundaries.addRect(Shape.from(overlaps.first.left, rensets.mapBorder.color));
+	verticalBoundaries.addRect(Shape.from(overlaps.first.right, rensets.mapBorder.color));
 
 	const horizontalBoundaries = scene.staticLayer();
-	horizontalBoundaries.addRect(new Shape(overlaps.first.top, rensets.mapBorder.color));
-	horizontalBoundaries.addRect(new Shape(overlaps.first.bottom, rensets.mapBorder.color));
+	horizontalBoundaries.addRect(Shape.from(overlaps.first.top, rensets.mapBorder.color));
+	horizontalBoundaries.addRect(Shape.from(overlaps.first.bottom, rensets.mapBorder.color));
 }
 
 // Players

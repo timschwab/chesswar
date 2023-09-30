@@ -42,8 +42,8 @@ export class ActionOptionRenderer {
 		const actionRect = new Rect(actionTopLeft, actionBottomRight);
 		const action = new Text(actionRect, "Available action: " + option, TextAlign.CENTER, rensets.actionOption.textFont, rensets.actionOption.textColor);
 
-		this.cwCanvas.fillRect(new Shape(actionRect, rensets.actionOption.backgroundColor));
-		this.cwCanvas.outlineRect(new Shape(actionRect, rensets.actionOption.outlineColor), rensets.actionOption.outlineWidth);
+		this.cwCanvas.fillRect(Shape.from(actionRect, rensets.actionOption.backgroundColor));
+		this.cwCanvas.outlineRect(Shape.from(actionRect, rensets.actionOption.outlineColor), rensets.actionOption.outlineWidth);
 		this.cwCanvas.text(action);
 	}
 }

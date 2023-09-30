@@ -78,7 +78,7 @@ function handleState(payload: StateMessagePayload) {
 		}
 
 		return {
-			circles: new Shape(geo, color),
+			circles: Shape.from(geo, color),
 			texts: texts
 		};
 	});

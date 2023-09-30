@@ -15,13 +15,13 @@ export class Text extends Shape<Rect> {
 	readonly font: string;
 
 	constructor(position: Rect, message: string, align: TextAlign, font: string, color: Color) {
-		super(position, color);
+		super(position, {color, clampToScreen: false});
 		this.message = message;
 		this.align = align;
 		this.font = font;
 	}
 
 	subtract(operand: Point): Text {
-		return new Text(this.geo.subtract(operand), this.message, this.align, this.font, this.color);
+		return new Text(this.geo.subtract(operand), this.message, this.align, this.font, this.settings.color);
 	}
 }

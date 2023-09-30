@@ -56,7 +56,7 @@ export class CWStaticLayer {
 			const nextTransposed = rect.geo.subtract(next.leftTop);
 			const overlap = prevTransposed.overlap(nextTransposed);
 			return {
-				color: rect.color,
+				color: rect.settings.color,
 				overlap
 			};
 		});
@@ -71,10 +71,10 @@ export class CWStaticLayer {
 
 		// Draw next overlaps
 		for (const overlap of overlaps) {
-			overlap.overlap.second.left && this.canvas.fillRect(new Shape(overlap.overlap.second.left, overlap.color));
-			overlap.overlap.second.right && this.canvas.fillRect(new Shape(overlap.overlap.second.right, overlap.color));
-			overlap.overlap.second.top && this.canvas.fillRect(new Shape(overlap.overlap.second.top, overlap.color));
-			overlap.overlap.second.bottom && this.canvas.fillRect(new Shape(overlap.overlap.second.bottom, overlap.color));
+			overlap.overlap.second.left && this.canvas.fillRect(Shape.from(overlap.overlap.second.left, overlap.color));
+			overlap.overlap.second.right && this.canvas.fillRect(Shape.from(overlap.overlap.second.right, overlap.color));
+			overlap.overlap.second.top && this.canvas.fillRect(Shape.from(overlap.overlap.second.top, overlap.color));
+			overlap.overlap.second.bottom && this.canvas.fillRect(Shape.from(overlap.overlap.second.bottom, overlap.color));
 		}
 
 		// Draw next circles
