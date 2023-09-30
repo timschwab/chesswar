@@ -55,6 +55,11 @@ function handleState(payload: StateMessagePayload) {
 		ui.generalWindow.setShow(isGeneral);
 
 		ui.miniChessboard.setTeam(selfPlayer.team);
+	} else {
+		console.warn("Could not find self player", {
+			players: deserialized,
+			selfId: state.selfId
+		});
 	}
 
 	const playerShapes = deserialized.map(player => {
