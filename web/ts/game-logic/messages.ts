@@ -28,7 +28,7 @@ export function receiveMessage(message: ServerMessage): void {
 	} else if (message.type == ServerMessageTypes.DEATH) {
 		handleDeath(message.payload);
 	} else if (message.type == ServerMessageTypes.PONG) {
-		handlePong();
+		handlePong(message.payload);
 	} else if (message.type == ServerMessageTypes.STATS) {
 		handleServerStats(message.payload);
 	}
@@ -97,10 +97,10 @@ function handleTeam(payload: TeamMessagePayload) {
 	ui.miniChessboard.setTeamBoard(payload.board);
 }
 
-function handleCompletedAction(action: PlayerAction) {
-	if (action == PlayerAction.GRAB_ORDERS) {
+function handleCompletedAction(payload: PlayerAction) {
+	if (payload == PlayerAction.GRAB_ORDERS) {
 		audioPlayer.grabOrders();
-	} else if (action == PlayerAction.COMPLETE_ORDERS) {
+	} else if (payload == PlayerAction.COMPLETE_ORDERS) {
 		audioPlayer.completeOrders();
 	}
 }
@@ -109,15 +109,15 @@ function handleCarrying(payload: CarryingMessagePayload) {
 	ui.miniChessboard.setCarrying(payload);
 }
 
-function handleDeath(cause: DeathCause) {
-	if (cause == DeathCause.MINEFIELD) {
+function handleDeath(payload: DeathCause) {
+	if (payload == DeathCause.MINEFIELD) {
 		audioPlayer.minefieldDeath();
-	} else if (cause == DeathCause.TANK) {
+	} else if (payload == DeathCause.TANK) {
 		audioPlayer.tankDeath();
 	}
 }
 
-function handlePong() {
+function handlePong(_payload: null) {
 	reportPong();
 }
 

@@ -55,53 +55,38 @@ export class CWDynamicLayer {
 			return
 		}
 
-		// Clear the old shapes
-		for (const circle of shapesDelta.previous.circles) {
-			const transposed = circle.subtract(camera.leftTop);
-			this.canvas.clearRect(transposed.geo.enclosingRect().expand(1));
-		}
-
-		for (const text of shapesDelta.previous.texts) {
-			const transposed = text.subtract(camera.leftTop);
-			this.canvas.clearRect(transposed.geo);
-		}
-
-		// Draw the new shapes
-		for (const circle of shapesDelta.latest.circles) {
-			const transposed = circle.subtract(camera.leftTop);
-			this.canvas.fillCircle(transposed);
-		}
-
-		for (const text of shapesDelta.latest.texts) {
-			const transposed = text.subtract(camera.leftTop);
-			this.canvas.text(transposed);
-		}
+		this.renderInternal(camera, camera, shapesDelta.previous, shapesDelta.previous);
 	}
 
 	// Just redraw every time. Probably a slightly better way, but not worth it.
 	renderCameraDelta(previousCamera: Rect, latestCamera: Rect): void {
 		const shapesDelta = this.shapes.get();
 
-		// If there are no pending changes, previous and latest will be equal. This is fine.
+		// If there are no pending changes, previous and latest shapes will be equal.
+		// This is okay because camera has still changed.
 
-		// Clear old shapes
-		for (const circle of shapesDelta.previous.circles) {
+		this.renderInternal(previousCamera, latestCamera, shapesDelta.previous, shapesDelta.previous);
+	}
+
+	renderInternal(previousCamera: Rect, latestCamera: Rect, previousShapes: ShapeList, latestShapes: ShapeList) {
+		// Clear the old shapes
+		for (const circle of previousShapes.circles) {
 			const transposed = circle.subtract(previousCamera.leftTop);
 			this.canvas.clearRect(transposed.geo.enclosingRect().expand(1));
 		}
 
-		for (const text of shapesDelta.previous.texts) {
+		for (const text of previousShapes.texts) {
 			const transposed = text.subtract(previousCamera.leftTop);
 			this.canvas.clearRect(transposed.geo);
 		}
 
 		// Fill new shapes
-		for (const circle of shapesDelta.latest.circles) {
+		for (const circle of latestShapes.circles) {
 			const transposed = circle.subtract(latestCamera.leftTop);
 			this.canvas.fillCircle(transposed);
 		}
 
-		for (const text of shapesDelta.latest.texts) {
+		for (const text of latestShapes.texts) {
 			const transposed = text.subtract(latestCamera.leftTop);
 			this.canvas.text(transposed);
 		}
