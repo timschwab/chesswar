@@ -54,7 +54,7 @@ export class CWDynamicLayer {
 			return
 		}
 
-		this.renderInternal(camera, camera, shapesDelta.previous, shapesDelta.previous);
+		this.renderInternal(camera, camera, shapesDelta.previous, shapesDelta.latest);
 	}
 
 	renderCameraDelta(previousCamera: Rect, latestCamera: Rect): void {
@@ -63,7 +63,7 @@ export class CWDynamicLayer {
 		// If there are no pending changes, previous and latest shapes will be equal.
 		// This is okay because camera has still changed.
 
-		this.renderInternal(previousCamera, latestCamera, shapesDelta.previous, shapesDelta.previous);
+		this.renderInternal(previousCamera, latestCamera, shapesDelta.previous, shapesDelta.latest);
 	}
 
 	renderInternal(previousCamera: Rect, latestCamera: Rect, previousShapes: ShapeList, latestShapes: ShapeList) {
