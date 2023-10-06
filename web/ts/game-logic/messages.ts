@@ -5,10 +5,11 @@ import { Point } from "../../../common/shapes/Point.ts";
 import { Rect } from "../../../common/shapes/Rect.ts";
 import { Shape } from "../../../common/shapes/Shape.ts";
 import { Text, TextAlign } from "../../../common/shapes/Text.ts";
+import { assertNever } from "../../../common/typescript-utils.ts";
 import audioPlayer from "../audio/audioPlayer.ts";
 import { playerLayer } from "../scene/scene.ts";
 import { ui } from "../ui/ui.ts";
-import { deserializeClientPlayer } from "./ClientPlayer.ts";
+import { ClientPlayer, deserializeClientPlayer } from "./ClientPlayer.ts";
 import { handleSelfPosition } from "./camera.ts";
 import { reportPong } from "./pingManager.ts";
 import { state } from "./state.ts";
@@ -42,25 +43,26 @@ function handleState(payload: StateMessagePayload) {
 	const deserialized = payload.players.map(deserializeClientPlayer);
 
 	const selfPlayer = deserialized.find(player => player.id == state.selfId);
-	if (selfPlayer) {
-		state.selfPlayer = selfPlayer;
-
-		handleSelfPosition(selfPlayer.position.center);
-		ui.teamRole.setTeam(selfPlayer.team);
-		ui.teamRole.setRole(selfPlayer.role);
-		ui.actionOption.setActionOption(selfPlayer.actionOption);
-
-		const isGeneral = (selfPlayer.role == PlayerRole.GENERAL);
-		ui.generalWindow.setTeam(selfPlayer.team);
-		ui.generalWindow.setShow(isGeneral);
-
-		ui.miniChessboard.setTeam(selfPlayer.team);
-	} else {
+	if (!selfPlayer) {
 		console.warn("Could not find self player", {
 			players: deserialized,
 			selfId: state.selfId
 		});
+		return;
 	}
+
+	state.selfPlayer = selfPlayer;
+
+	handleSelfPosition(selfPlayer.position.center);
+	ui.teamRole.setTeam(selfPlayer.team);
+	ui.teamRole.setRole(selfPlayer.role);
+	ui.actionOption.setActionOption(selfPlayer.actionOption);
+
+	const isGeneral = (selfPlayer.role == PlayerRole.GENERAL);
+	ui.generalWindow.setTeam(selfPlayer.team);
+	ui.generalWindow.setShow(isGeneral);
+
+	ui.miniChessboard.setTeam(selfPlayer.team);
 
 	const playerShapes = deserialized.map(player => {
 		const geo = player.position;
@@ -78,7 +80,7 @@ function handleState(payload: StateMessagePayload) {
 		}
 
 		return {
-			circles: Shape.from(geo, color),
+			circles: Shape.from(geo, color, shouldClamp(selfPlayer, player)),
 			texts: texts
 		};
 	});
@@ -92,6 +94,29 @@ function handleState(payload: StateMessagePayload) {
 	ui.victory.setVictory(payload.victory);
 	ui.victory.setNewGameTicks(payload.newGameCounter);
 	recordPlayersOnline(payload.players.length);
+}
+
+function shouldClamp(selfPlayer: ClientPlayer, otherPlayer: ClientPlayer): boolean {
+	if (selfPlayer.role != PlayerRole.TANK) {
+		return false;
+	}
+
+	if (selfPlayer.team == otherPlayer.team) {
+		return false;
+	}
+
+	if (otherPlayer.role == PlayerRole.GENERAL) {
+		return false;
+	} else if (otherPlayer.role == PlayerRole.SOLDIER) {
+		return true;
+	} else if (otherPlayer.role == PlayerRole.TANK) {
+		return true;
+	} else if (otherPlayer.role == PlayerRole.OPERATIVE) {
+		return false;
+	}
+
+	assertNever(otherPlayer.role);
+	return false;
 }
 
 function handleTeam(payload: TeamMessagePayload) {

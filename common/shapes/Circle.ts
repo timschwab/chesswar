@@ -87,7 +87,7 @@ export class Circle extends Geometry<Circle> {
 	}
 
 	clampCenter(rect: Rect): Circle {
-		return new Circle(this.center.clamp(rect), this.radius);
+		return new Circle(this.center.clampInside(rect), this.radius);
 	}
 
 	clampInside(rect: Rect): Circle {

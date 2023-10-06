@@ -81,7 +81,7 @@ export class Point extends Geometry<Point> {
 		return new Point(Math.floor(this.x), Math.floor(this.y));
 	}
 
-	clamp(rect: Rect): Point {
+	clampInside(rect: Rect): Point {
 		const clampedX = clampNumber(this.x, rect.left, rect.right);
 		const clampedY = clampNumber(this.y, rect.top, rect.bottom);
 		return new Point(clampedX, clampedY);

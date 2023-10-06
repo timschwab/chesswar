@@ -108,6 +108,14 @@ export class Rect extends Geometry<Rect> {
 		return new Rect(this.leftTop.floor(), this.rightBottom.floor());
 	}
 
+	clampInside(_otherRect: Rect): Rect {
+		throw "Not implemented yet lol";
+	}
+
+	standardize(): Rect {
+		return this.subtract(this.leftTop);
+	}
+
 	// Keep the height and width the same, but move to the center
 	moveTo(center: Point) {
 		const halfRect = new Point(this.width/2, this.height/2);
@@ -240,7 +248,7 @@ export class Rect extends Geometry<Rect> {
 
 	touchesCircle(other: Circle): boolean {
 		// Find the x/y of the closest point to the circle's center inside the rect
-		const closestPoint = other.center.clamp(this);
+		const closestPoint = other.center.clampInside(this);
 
 		// See if that point is inside the circle
 		return closestPoint.insideCircle(other);

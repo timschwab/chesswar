@@ -1,6 +1,7 @@
 import { Color } from "../colors.ts";
 import { Geometry } from "./Geometry.ts";
 import { Point } from "./Point.ts";
+import { Rect } from "./Rect.ts";
 
 interface RenderSettings {
 	color: Color,
@@ -27,5 +28,9 @@ export class Shape<T extends Geometry<T>> {
 	// Add methods as needed
 	subtract(operand: Point): Shape<T> {
 		return new Shape<T>(this.geo.subtract(operand), this.settings);
+	}
+
+	clampInside(rect: Rect): Shape<T> {
+		return new Shape<T>(this.geo.clampInside(rect), this.settings);
 	}
 }

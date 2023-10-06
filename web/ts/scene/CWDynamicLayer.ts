@@ -71,7 +71,10 @@ export class CWDynamicLayer {
 
 		// Clear the old shapes
 		for (const circle of previousShapes.circles) {
-			const transposed = circle.subtract(previousCamera.leftTop);
+			let transposed = circle.subtract(previousCamera.leftTop);
+			if (transposed.settings.clampToScreen) {
+				transposed = transposed.clampInside(previousCamera.standardize());
+			}
 			this.canvas.clearRect(transposed.geo.enclosingRect().expand(1));
 		}
 
@@ -82,7 +85,10 @@ export class CWDynamicLayer {
 
 		// Fill new shapes
 		for (const circle of latestShapes.circles) {
-			const transposed = circle.subtract(latestCamera.leftTop);
+			let transposed = circle.subtract(latestCamera.leftTop);
+			if (transposed.settings.clampToScreen) {
+				transposed = transposed.clampInside(latestCamera.standardize());
+			}
 			this.canvas.fillCircle(transposed);
 		}
 
