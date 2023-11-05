@@ -1,13 +1,13 @@
 import socket from "./socket.ts";
 import { ServerMessageTypes, TeamMessage, TeamMessagePayload } from "../common/message-types/server.ts";
-import { ClientPlayer } from "../common/data-types/client.ts";
+import { SerializedClientPlayer } from "../common/data-types/client.ts";
 import { ServerPlayer, getState, resetState } from "./state.ts";
 import { tickNewGame, tickPlayers, tickTankKills, tickVictory } from "./tick.ts";
 import { addPlayer, receiveMessage, removePlayer } from "./events.ts";
 import { TeamName } from "../common/data-types/base.ts";
 import { gameEngine } from "../common/settings.ts";
 
-function init() {
+export function initGame() {
 	// Set up events
 	socket.listen.add(addPlayer);
 	socket.listen.remove(removePlayer);
@@ -20,13 +20,14 @@ function init() {
 
 function tick(): void {
 	try {
-		console.log("starting tick");
 		const startTick = performance.now();
 		tickAll();
 		const endTick = performance.now();
 		const tickMs = endTick-startTick;
 		getState().stats.tickMs = tickMs;
-		console.log("finished tick");
+		if (tickMs > 10) {
+			console.warn("Long tick warning: " + tickMs);
+		}
 	} catch (ex) {
 		console.error("Error occurred while server ticking");
 		console.error(ex);
@@ -78,24 +79,22 @@ function tickAll(): void {
 		socket.sendBulk(teamPlayerIds, teamMessage);
 	}
 
-	// Broadcast stats to everyone once a second
-	if (state.count % 20 == 0) {
-		socket.sendAll({
-			type: ServerMessageTypes.STATS,
-			payload: state.stats
-		});
-	}
+	// Broadcast stats
+	socket.sendAll({
+		type: ServerMessageTypes.STATS,
+		payload: state.stats
+	});
 
 	state.count++;
 }
 
-function serverPlayerToClientPlayer(player: ServerPlayer): ClientPlayer {
+function serverPlayerToClientPlayer(player: ServerPlayer): SerializedClientPlayer {
 	return {
 		id: player.id,
 		team: player.team,
 		role: player.role,
 		actionOption: player.actionOption,
-		position: player.physics.position,
+		position: player.physics.position.serialize(),
 		deathCounter: player.deathCounter
 	};
 }
@@ -112,7 +111,3 @@ function resetGame() {
 		addPlayer(player);
 	}
 }
-
-export default {
-	init
-};

@@ -1,30 +1,43 @@
-import { Point, Vector } from "./types.ts";
-import { transposePoint } from "./transpose.ts";
+import { Point } from "./Point.ts";
 
-export const TAU = Math.PI*2;
-export const TAU_HALF = TAU/2;
-export const TAU_EIGHTH = TAU/8;
+export class Vector {
+	readonly dir: number; // In radians
+	readonly mag: number;
 
-export function vectorToPoint(vector: Vector): Point {
-	const x = Math.cos(vector.dir)*vector.mag;
-	const y = Math.sin(vector.dir)*vector.mag;
-	return Point(x, y);
-}
+	static fromPoint(point: Point): Vector {
+		const dir = Math.atan2(point.y, point.x);
+		const mag = Math.sqrt(point.x*point.x + point.y*point.y);
+		return new Vector(dir, mag);
+	}
 
-export function pointToVector(point: Point): Vector {
-	const mag = Math.sqrt(point.x*point.x + point.y*point.y);
-	const dir = Math.atan2(point.y, point.x);
-	return Vector(mag, dir);
-}
+	constructor(dir: number, mag: number) {
+		this.dir = dir;
+		this.mag = mag;
+	}
 
-export function add(vector1: Vector, vector2: Vector): Vector {
-	const point1 = vectorToPoint(vector1);
-	const point2 = vectorToPoint(vector2);
-	const resultant = transposePoint(point1, point2);
+	toPoint(): Point {
+		const x = Math.cos(this.dir) * this.mag;
+		const y = Math.sin(this.dir) * this.mag;
+		return new Point(x, y);
+	}
 
-	return pointToVector(resultant);
-}
+	add(other: Vector): Vector {
+		const thisPoint = this.toPoint();
+		const otherPoint = other.toPoint();
+		const result = thisPoint.add(otherPoint);
 
-export function multiply(vector: Vector, scalar: number): Vector {
-	return Vector(vector.mag*scalar, vector.dir);
+		return Vector.fromPoint(result);
+	}
+
+	multiply(scalar: number): Vector {
+		return new Vector(this.dir, this.mag*scalar);
+	}
+
+	divide(scalar: number): Vector {
+		return new Vector(this.dir, this.mag/scalar);
+	}
+
+	normalize(): Vector {
+		return new Vector(this.dir, 1);
+	}
 }

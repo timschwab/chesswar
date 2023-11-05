@@ -24,25 +24,9 @@ const sustainAmp = 0.2;
 const releaseTime = 0.5;
 
 let ac: AudioContext;
+initAudio();
 
-declare global {
-	// deno-lint-ignore no-var
-	var audio: unknown;
-}
-
-globalThis.audio = {
-	initAudio,
-	NoteFreq,
-	NoteLen,
-	spm,
-	note,
-	playSequence,
-
-	grabOrders,
-	completeOrders,
-};
-
-export function initAudio(): void {
+function initAudio(): void {
 	ac = new AudioContext();
 
 	if (ac.state == "suspended") {
@@ -119,7 +103,7 @@ function death2() {
 	], NoteLen.EIGHTH);
 }
 
-function trapDeath() {
+function minefieldDeath() {
 	playSequence([
 		[NoteFreq.B1, NoteFreq.B2, NoteFreq.F3],
 	], NoteLen.QUARTER);
@@ -129,5 +113,5 @@ export default {
 	grabOrders,
 	completeOrders,
 	tankDeath,
-	trapDeath
+	minefieldDeath
 };

@@ -11,3 +11,11 @@ export interface BriefingBundle {
 	[BriefingName.TWO]: ChessMove | null,
 	[BriefingName.THREE]: ChessMove | null
 }
+
+export function emptyBriefingBundle(): BriefingBundle {
+	return {
+		[BriefingName.ONE]:  null,
+		[BriefingName.TWO]: null,
+		[BriefingName.THREE]: null
+	};
+}

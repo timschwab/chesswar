@@ -13,6 +13,8 @@ export enum PlayerRole {
 }
 
 export enum PlayerAction {
+	NONE = "none",
+
 	BECOME_GENERAL = "become-general",
 	BECOME_SOLDIER = "become-soldier",
 	BECOME_TANK = "become-tank",
@@ -38,6 +40,6 @@ export type MovementState = {
 }
 
 export enum DeathCause {
-	TRAP = "trap",
+	MINEFIELD = "minefield",
 	TANK = "tank"
 }

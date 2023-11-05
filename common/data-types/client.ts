@@ -1,11 +1,11 @@
-import { Circle } from "../shapes/types.ts";
+import { SerializedCircle } from "../shapes/Circle.ts";
 import { ChesswarId, PlayerAction, PlayerRole, TeamName } from "./base.ts";
 
-export interface ClientPlayer {
+export interface SerializedClientPlayer {
 	id: ChesswarId,
 	team: TeamName,
 	role: PlayerRole,
-	actionOption: PlayerAction | null,
-	position: Circle,
+	actionOption: PlayerAction,
+	position: SerializedCircle,
 	deathCounter: number
 }

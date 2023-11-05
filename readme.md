@@ -1,5 +1,11 @@
 # chesswar
 
+## Links
+
+* https://chesswar.io/
+* https://discord.gg/Vu2pjXkXk
+* https://www.buymeacoffee.com/pyzaist
+
 ## Prereqs
 
 Deno: https://deno.com/manual/getting_started/installation

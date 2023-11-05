@@ -1,3 +1,3 @@
 export interface ServerStats {
-	tickMs: number,
+	tickMs: number
 }

@@ -1,93 +1,44 @@
-import socket from "./socket.ts";
-import state, { isSafeState } from "./state.ts";
-import render from "./render.ts";
-import { ServerMessage, ServerMessageTypes } from "../../common/message-types/server.ts";
-import { PlayerRole } from "../../common/data-types/base.ts";
-import { listenClick } from "./inputs.ts";
-import { clickedButton, clickedSquare } from "./generalWindow.ts";
-import { ClientMessageTypes } from "../../common/message-types/client.ts";
-import { handleCarrying, handleCompletedAction, handleDeath, handlePlayerInit, handlePong, handleState, handleStats, handleTeam } from "./messages.ts";
-import { Point } from "../../common/shapes/types.ts";
+import { listenClick, listenKey } from "./core/inputs.ts";
+import { screenChange, screenValue } from "./core/screen.ts";
+import { socketListen } from "./core/socket.ts";
+import { handleScreenChange } from "./game-logic/camera.ts";
+import { handleKey } from "./game-logic/keys.ts";
+import { receiveMessage } from "./game-logic/messages.ts";
+import { beginPings } from "./game-logic/pingManager.ts";
+import { recordAnimationTime, recordJsRenderTime } from "./game-logic/statsManager.ts";
+import { scene } from "./scene/scene.ts";
+import { handleClick } from "./ui/GeneralWindowHelper.ts";
+import { ui } from "./ui/ui.ts";
+
+initGame();
 
 export function initGame() {
-	socket.listen(receiveMessage);
-	listenClick(receiveClick);
-	gameLoop();
+	socketListen(receiveMessage);
+	beginPings();
+
+	handleScreenChange(screenValue);
+	screenChange(handleScreenChange);
+
+	listenKey(handleKey);
+	listenClick(handleClick);
+
+	requestAnimationFrame(gameLoop);
 }
 
-function receiveMessage(message: ServerMessage): void {
-	if (message.type == ServerMessageTypes.PLAYER_INIT) {
-		handlePlayerInit(message.payload);
-	} else if (message.type == ServerMessageTypes.STATE) {
-		handleState(message.payload);
-	} else if (message.type == ServerMessageTypes.TEAM) {
-		handleTeam(message.payload);
-	} else if (message.type == ServerMessageTypes.ACTION_COMPLETED) {
-		handleCompletedAction(message.payload);
-	} else if (message.type == ServerMessageTypes.CARRYING) {
-		handleCarrying(message.payload);
-	} else if (message.type == ServerMessageTypes.DEATH) {
-		handleDeath(message.payload);
-	} else if (message.type == ServerMessageTypes.PONG) {
-		handlePong();
-	} else if (message.type == ServerMessageTypes.STATS) {
-		handleStats(message.payload);
-	}
-}
+let prevTimestamp = 0;
+function gameLoop(timestamp: number) {
+	const start = performance.now();
 
-function receiveClick(location: Point): void {
-	if (!isSafeState(state)) {
-		return;
-	}
+	const animationTimeDiff = timestamp - prevTimestamp;
+	prevTimestamp = timestamp;
+	recordAnimationTime(animationTimeDiff);
 
-	if (state.self.role != PlayerRole.GENERAL) {
-		return;
-	}
+	scene.render();
+	ui.render();
 
-	const button = clickedButton(state, location);
-	const square = clickedSquare(state, location);
-	if (button != null) {
-		state.general.selectedButton = button;
-		state.general.selectedFrom = null;
-	} else if (state.general.selectedButton != null && square != null) {
-		if (state.general.selectedFrom) {
-			// Send orders
-			const payload = {
-				briefing: state.general.selectedButton,
-				move: {
-					team: state.self.team,
-					from: state.general.selectedFrom,
-					to: square
-				}
-			};
-			socket.send({
-				type: ClientMessageTypes.GENERAL_ORDERS,
-				payload
-			});
+	const finish = performance.now();
+	const jsTimeDiff = finish-start;
+	recordJsRenderTime(jsTimeDiff);
 
-			// Clear state
-			state.general.selectedButton = null;
-			state.general.selectedFrom = null;
-		} else {
-			state.general.selectedFrom = square;
-		}
-	}
-}
-
-function gameLoop() {
-	if (isSafeState(state)) {
-		render(state);
-	}
-
-	if (state.count > state.stats.nextPingCount) {
-		state.stats.nextPingCount = Infinity;
-		state.stats.thisPingSend = performance.now();
-		socket.send({
-			type: ClientMessageTypes.PING,
-			payload: null
-		});
-	}
-
-	state.count++;
 	requestAnimationFrame(gameLoop);
 }

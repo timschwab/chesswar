@@ -79,7 +79,7 @@ export const rensets = {
 	},
 	mapBorder: {
 		color: Color.GREEN_BRIGHT,
-		width: 5
+		width: 4
 	},
 	players: {
 		self: Color.GREEN_BRIGHT,
@@ -114,7 +114,7 @@ export const rensets = {
 			scif: Color.CYAN_DARK
 		}
 	},
-	death: {
+	minefield: {
 		color: Color.GREY_BLACK
 	},
 	center: {
@@ -163,4 +163,4 @@ export const rensets = {
 		font: "12px Times New Roman",
 		color: Color.GREY_BLACK
 	}
-};
+} as const;
