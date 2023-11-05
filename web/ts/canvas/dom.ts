@@ -1,4 +1,4 @@
-export const gameRoot = window.document.getElementById("game") as HTMLDivElement;
+export const gameRoot = window.document.getElementById("canvas-root") as HTMLDivElement;
 
 export function createHtmlCanvas(zIndex?: number): HTMLCanvasElement {
 	const htmlCanvas = document.createElement("canvas");
