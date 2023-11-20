@@ -22,6 +22,8 @@ const handler = function(req: Request): Response {
 	return response;
 };
 
+console.log(Deno.version);
+
 Deno.serve({
 	port: localApiServer.port,
 	hostname: "0.0.0.0"

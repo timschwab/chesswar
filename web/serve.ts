@@ -1,6 +1,6 @@
 import { buildSettings, localWebServer } from "../common/settings.ts";
 
-const handler = async (req: Request): Promise<Response> => {
+async function handler(req: Request): Promise<Response> {
 	const {pathname} = new URL(req.url);
 	console.log(pathname);
 
@@ -11,7 +11,7 @@ const handler = async (req: Request): Promise<Response> => {
 	} else if (req.method == "GET" && pathname == "/main.css") {
 		file = await Deno.open("web/static/main.css");
 		contentType = "text/css";
-	}else if (req.method == "GET" && pathname == "/clientGame.js") {
+	} else if (req.method == "GET" && pathname == "/clientGame.js") {
 		file = await Deno.open(buildSettings.bundleDir + "/clientGame.js");
 		contentType = "application/javascript";
 	} else if (req.method == "GET" && pathname == "/clientGame.js.map") {
@@ -31,6 +31,8 @@ const handler = async (req: Request): Promise<Response> => {
 		});
 	}
 };
+
+console.log(Deno.version);
 
 Deno.serve({
 	port: localWebServer.port,
