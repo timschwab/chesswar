@@ -70,6 +70,8 @@ export const gameEngine = {
 
 /* ----- start rensets ----- */
 export const rensets = {
+	fps: 30,
+	fpsMsMargin: 1,
 	background: Color.GREY_DARK,
 	grid: {
 		background: Color.GREY_STANDARD,

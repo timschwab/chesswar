@@ -1,3 +1,4 @@
+import { rensets } from "../../common/settings.ts";
 import { listenClick, listenKey } from "./core/inputs.ts";
 import { screenChange, screenValue } from "./core/screen.ts";
 import { socketListen } from "./core/socket.ts";
@@ -27,9 +28,17 @@ export function initGame() {
 
 let prevTimestamp = 0;
 function gameLoop(timestamp: number) {
-	const start = performance.now();
+	requestAnimationFrame(gameLoop);
 
+	const start = performance.now();
 	const animationTimeDiff = timestamp - prevTimestamp;
+
+	// Cap the FPS
+	const expectedDiff = 1000/rensets.fps;
+	if (animationTimeDiff < (expectedDiff-rensets.fpsMsMargin)) {
+		return;
+	}
+
 	prevTimestamp = timestamp;
 	recordAnimationTime(animationTimeDiff);
 
@@ -39,6 +48,4 @@ function gameLoop(timestamp: number) {
 	const finish = performance.now();
 	const jsTimeDiff = finish-start;
 	recordJsRenderTime(jsTimeDiff);
-
-	requestAnimationFrame(gameLoop);
 }
