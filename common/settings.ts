@@ -34,10 +34,14 @@ export const buildSettings = {
 }
 
 /* ----- start game engine ----- */
-const ticksPerSecond = 20;
+const tps = 20;
+const mspt = 1000/tps;
 
 export const gameEngine = {
-	ticksPerSecond: ticksPerSecond,
+	tps,
+	mspt,
+	deathTicks: tps*5,
+	newGameTicks: tps*30,
 	startingRole: PlayerRole.SOLDIER,
 	startingClump: 100,
 	frictionCoef: 0.5,
@@ -63,14 +67,14 @@ export const gameEngine = {
 			mass: 2,
 			inputForceMag: 5
 		}
-	},
-	deathTicks: ticksPerSecond*5,
-	newGameTicks: ticksPerSecond*30
+	}
 };
 
 /* ----- start rensets ----- */
+const fps = 30;
 export const rensets = {
-	fps: 30,
+	fps,
+	mspf: 1000/fps,
 	fpsMsMargin: 1,
 	background: Color.GREY_DARK,
 	grid: {

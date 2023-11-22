@@ -1,12 +1,13 @@
 import { LowPassFilter } from "../../../common/data-structures/LowPassFilter.ts";
 import { ServerStats } from "../../../common/data-types/server.ts";
+import { gameEngine, rensets } from "../../../common/settings.ts";
 import { ui } from "../ui/ui.ts";
 import { GameStats } from "./GameStats.ts";
 
-const animationTimeFilter = new LowPassFilter(60);
-const jsRenderTimeFilter = new LowPassFilter(60);
-const serverTickFilter = new LowPassFilter(20);
-const pingTimeFilter = new LowPassFilter(2);
+const animationTimeFilter = new LowPassFilter(rensets.fps, rensets.mspf);
+const jsRenderTimeFilter = new LowPassFilter(rensets.fps, rensets.mspf);
+const serverTickFilter = new LowPassFilter(gameEngine.tps, gameEngine.mspt);
+const pingTimeFilter = new LowPassFilter(2, 0);
 
 let stats = GameStats.Zero;
 

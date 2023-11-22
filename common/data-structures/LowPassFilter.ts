@@ -2,9 +2,10 @@
 
 export class LowPassFilter {
 	private readonly strength: number;
-	private value = 0;
+	private value: number;
 
-	constructor(strength: number) {
+	constructor(strength: number, initialValue?: number) {
+		this.value = initialValue || 0;
 		this.strength = strength;
 	}
 

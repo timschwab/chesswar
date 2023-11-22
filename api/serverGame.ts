@@ -14,8 +14,7 @@ export function initGame() {
 	socket.listen.message(receiveMessage);
 
 	// Set up ticking
-	const msPerTick = 1000/gameEngine.ticksPerSecond;
-	setInterval(tick, msPerTick);
+	setInterval(tick, gameEngine.mspt);
 }
 
 function tick(): void {
