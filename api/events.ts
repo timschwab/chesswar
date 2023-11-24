@@ -129,6 +129,7 @@ function playerAction(player: ServerPlayer): void {
 			payload: PlayerAction.BECOME_OPERATIVE
 		});
 	} else if (player.actionOption == PlayerAction.GRAB_ORDERS) {
+		becomeRole(player, PlayerRole.SOLDIER);
 		const briefing = whichBriefing(player);
 		if (briefing == null) {
 			throw new Error("Couldn't find the briefing");

@@ -75,7 +75,7 @@ const fps = 30;
 export const rensets = {
 	fps,
 	mspf: 1000/fps,
-	fpsMsMargin: 1,
+	fpsMsMargin: 0.1,
 	background: Color.GREY_DARK,
 	grid: {
 		background: Color.GREY_STANDARD,

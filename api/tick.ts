@@ -188,11 +188,7 @@ function actionOption(player: ServerPlayer): PlayerAction {
 			} else {
 				for (const brief of bundle.briefings) {
 					if (pos.inside(brief)) {
-						if (player.role == PlayerRole.SOLDIER) {
-							return PlayerAction.GRAB_ORDERS;
-						} else {
-							return PlayerAction.BECOME_SOLDIER;
-						}
+						return PlayerAction.GRAB_ORDERS;
 					}
 				}
 			}
