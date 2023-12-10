@@ -47,7 +47,7 @@ requestAnimationFrame(() => drawTriangles(gl));
 // Functions
 
 function drawTriangles(gl: WebGLRenderingContext) {
-	requestAnimationFrame(() => drawTriangles(gl));
+	// requestAnimationFrame(() => drawTriangles(gl));
 
 	// Clear the canvas
 	gl.clearColor(0, 0, 0, 0);
@@ -65,7 +65,7 @@ function drawTriangles(gl: WebGLRenderingContext) {
 	gl.vertexAttribPointer(positionAttributeLocation, size, type, normalize, stride, attribOffset)
 
 	// draw random triangles in random colors
-	for (let ii = 0; ii < 10; ++ii) {
+	for (const _i of count(1)) {
 		const positions = [
 			randomInt(width), randomInt(height),
 			randomInt(width), randomInt(height),
@@ -85,4 +85,10 @@ function drawTriangles(gl: WebGLRenderingContext) {
 // Returns a random integer in [0, range)
 function randomInt(range: number) {
 	return Math.floor(Math.random() * range);
+}
+
+function *count(amount: number) {
+	for (let i = 0 ; i < amount ; i++) {
+		yield i;
+	}
 }
