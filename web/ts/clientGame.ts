@@ -1,6 +1,6 @@
 import { createHtmlCanvas } from "./dom.ts";
-import fragmentShaderSource from "./fragmentShader.ts";
-import vertexShaderSource from "./vertexShader.ts";
+import fragmentShaderSource from "./fragmentShader.glsl";
+import vertexShaderSource from "./vertexShader.glsl";
 import { createProgram, createShader } from "./webglUtils.ts";
 
 // Get the basic context

@@ -1,5 +1,5 @@
 import { buildSettings } from "../common/settings.ts";
-import { esbuild } from '../deps.ts'
+import { esbuild, esbuildPluginGlsl } from '../deps.ts'
 
 const options = {
 	entryPoints: ['web/ts/clientGame.ts'],
@@ -7,8 +7,8 @@ const options = {
 	target: 'esnext',
 	bundle: true,
 	minify: true,
-	sourcemap: true
+	sourcemap: true,
+	plugins: [esbuildPluginGlsl.glsl()]
 };
 
 await esbuild.build(options);
-esbuild.stop()
