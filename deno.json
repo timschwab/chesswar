@@ -9,7 +9,6 @@
 		"check-web": "deno check web/ts/clientGame.ts"
 	},
 	"compilerOptions": {
-		"lib": ["dom", "deno.ns", "deno.unstable"],
-		"types": ["modules.d.ts"]
+		"lib": ["dom", "deno.ns", "deno.unstable"]
 	}
 }

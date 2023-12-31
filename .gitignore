@@ -1,3 +1,4 @@
 web/bundle/*
+web/ts/generated/*
 .DS_STORE
 
