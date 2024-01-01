@@ -1,7 +1,7 @@
 import { LowPassFilter } from "../../../common/data-structures/LowPassFilter.ts";
 import { ServerStats } from "../../../common/data-types/server.ts";
 import { gameEngine, rensets } from "../../../common/settings.ts";
-import { ui } from "../ui/ui.ts";
+//import { ui } from "../ui/ui.ts";
 import { GameStats } from "./GameStats.ts";
 
 const animationTimeFilter = new LowPassFilter(rensets.fps, rensets.mspf);
@@ -41,5 +41,5 @@ export function recordPingTime(timeTaken: number) {
 }
 
 function setStats() {
-	ui.stats.setStats(stats);
+	//ui.stats.setStats(stats);
 }

@@ -7,13 +7,14 @@ import { Shape } from "../../../common/shapes/Shape.ts";
 import { Text, TextAlign } from "../../../common/shapes/Text.ts";
 import { assertNever } from "../../../common/typescript-utils.ts";
 import audioPlayer from "../audio/audioPlayer.ts";
-import { playerLayer } from "../scene/scene.ts";
-import { ui } from "../ui/ui.ts";
+//import { playerLayer } from "../scene/scene.ts";
+//import { ui } from "../ui/ui.ts";
 import { ClientPlayer, deserializeClientPlayer } from "./ClientPlayer.ts";
-import { handleSelfPosition } from "./camera.ts";
-import { reportPong } from "./pingManager.ts";
 import { state } from "./state.ts";
-import { recordPlayersOnline, recordServerStats } from "./statsManager.ts";
+//import { handleSelfPosition } from "./camera.ts";
+//import { reportPong } from "./pingManager.ts";
+//import { state } from "./state.ts";
+//import { recordPlayersOnline, recordServerStats } from "./statsManager.ts";
 
 export function receiveMessage(message: ServerMessage): void {
 	if (message.type == ServerMessageTypes.PLAYER_INIT) {
@@ -53,7 +54,7 @@ function handleState(payload: StateMessagePayload) {
 
 	state.selfPlayer = selfPlayer;
 
-	handleSelfPosition(selfPlayer.position.center);
+	/*handleSelfPosition(selfPlayer.position.center);
 	ui.teamRole.setTeam(selfPlayer.team);
 	ui.teamRole.setRole(selfPlayer.role);
 	ui.actionOption.setActionOption(selfPlayer.actionOption);
@@ -93,7 +94,7 @@ function handleState(payload: StateMessagePayload) {
 	playerLayer.setShapes(bundle);
 	ui.victory.setVictory(payload.victory);
 	ui.victory.setNewGameTicks(payload.newGameCounter);
-	recordPlayersOnline(payload.players.length);
+	recordPlayersOnline(payload.players.length);*/
 }
 
 function shouldClamp(selfPlayer: ClientPlayer, otherPlayer: ClientPlayer): boolean {
@@ -120,11 +121,11 @@ function shouldClamp(selfPlayer: ClientPlayer, otherPlayer: ClientPlayer): boole
 }
 
 function handleTeam(payload: TeamMessagePayload) {
-	ui.generalWindow.setTeamBoard(payload.board);
+	/*ui.generalWindow.setTeamBoard(payload.board);
 	ui.generalWindow.setBriefings(payload.briefings);
 	ui.generalWindow.setEnemyBriefings(payload.enemyBriefings);
 
-	ui.miniChessboard.setTeamBoard(payload.board);
+	ui.miniChessboard.setTeamBoard(payload.board);*/
 }
 
 function handleCompletedAction(payload: PlayerAction) {
@@ -136,7 +137,7 @@ function handleCompletedAction(payload: PlayerAction) {
 }
 
 function handleCarrying(payload: CarryingMessagePayload) {
-	ui.miniChessboard.setCarrying(payload);
+	/*ui.miniChessboard.setCarrying(payload);*/
 }
 
 function handleDeath(payload: DeathCause) {
@@ -148,9 +149,9 @@ function handleDeath(payload: DeathCause) {
 }
 
 function handlePong(_payload: null) {
-	reportPong();
+	/*reportPong();*/
 }
 
 function handleServerStats(payload: StatsMessagePayload) {
-	recordServerStats(payload);
+	/*recordServerStats(payload);*/
 }

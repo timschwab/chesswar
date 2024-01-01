@@ -1,4 +1,6 @@
+import { Point } from "../../../common/shapes/Point.ts";
 import { Triangle } from "../../../common/shapes/Triangle.ts";
+import { createHtmlCanvas } from "../dom.ts";
 import fragmentShaderSource from "./generated/fragmentShader.ts";
 import vertexShaderSource from "./generated/vertexShader.ts";
 import { assignData, createProgram, createShader, getGl, makeBuffer, setData } from "./webglUtils.ts";
@@ -13,8 +15,8 @@ let colorAttributeLocation: number;
 let positionBufferId: WebGLBuffer;
 let colorBufferId: WebGLBuffer;
 
-export function webglInit(canvasIn: HTMLCanvasElement) {
-	canvas = canvasIn;
+export function webglInit() {
+	canvas = createHtmlCanvas();
 	gl = getGl(canvas);
 
 	// Build the 2 shaders and link them into a program
@@ -34,7 +36,7 @@ export function webglInit(canvasIn: HTMLCanvasElement) {
 	colorBufferId = makeBuffer(gl);
 }
 
-export function drawTriangles(triangleData: Triangle[], camera: {x: number, y: number}) {
+export function drawTriangles(triangleData: Triangle[], camera: Point) {
 	const width = canvas.width;
 	const height = canvas.height;
 
