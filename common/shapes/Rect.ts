@@ -2,6 +2,7 @@ import { Circle } from "./Circle.ts";
 import { Point, SerializedPoint } from "./Point.ts";
 import { SerializedGeometry, Geometry } from "./Geometry.ts";
 import { GeometryName } from "./GeometryName.ts";
+import { TriangleVertices } from "./Triangle.ts";
 
 interface SerializedRect extends SerializedGeometry {
 	type: GeometryName.RECT,
@@ -94,6 +95,12 @@ export class Rect extends Geometry<Rect> {
 		}
 
 		throw "Can't get here";
+	}
+
+	toTriangleVertices(): TriangleVertices[] {
+		const leftTop = new TriangleVertices(this.leftTop, this.rightTop, this.leftBottom);
+		const rightBottom = new TriangleVertices(this.rightBottom, this.rightTop, this.leftBottom);
+		return [leftTop, rightBottom];
 	}
 
 	add(operand: Point): Rect {

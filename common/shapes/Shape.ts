@@ -2,6 +2,7 @@ import { Color } from "../Color.ts";
 import { Geometry } from "./Geometry.ts";
 import { Point } from "./Point.ts";
 import { Rect } from "./Rect.ts";
+import { Triangle } from "./Triangle.ts";
 
 interface RenderSettings {
 	color: Color,
@@ -32,5 +33,9 @@ export class Shape<T extends Geometry<T>> {
 
 	clampInside(rect: Rect): Shape<T> {
 		return new Shape<T>(this.geo.clampInside(rect), this.settings);
+	}
+
+	toTriangles(): Triangle[] {
+		return this.geo.toTriangleVertices().map(tri => new Triangle(tri, this.settings.color));
 	}
 }
