@@ -35,5 +35,30 @@ export function createProgram(gl: WebGLRenderingContext, vertexShader: WebGLShad
 		gl.deleteProgram(program);
 		throw "Yep def your fault this time";
 	}
+}
 
+export function makeBuffer(gl: WebGLRenderingContext): WebGLBuffer {
+	const bufferId = gl.createBuffer();
+	if (bufferId == null) {
+		throw "Coulnd't make a new buffer";
+	}
+	gl.bindBuffer(gl.ARRAY_BUFFER, bufferId);
+	return bufferId;
+}
+
+export function setData(gl: WebGLRenderingContext, bufferId: WebGLBuffer, bufferData: number[]) {
+	gl.bindBuffer(gl.ARRAY_BUFFER, bufferId);
+	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(bufferData), gl.STATIC_DRAW);
+}
+
+export function assignData(gl: WebGLRenderingContext, bufferId: WebGLBuffer, attributeLocation: number, size: number) {
+	gl.bindBuffer(gl.ARRAY_BUFFER, bufferId);
+	gl.enableVertexAttribArray(attributeLocation);
+
+	// Tell the attribute how to get data out of the buffer
+	const type = gl.FLOAT;   // the data is 32bit floats
+	const normalize = false; // don't normalize the data
+	const stride = 0;        // 0 = move forward size * sizeof(type) each iteration to get the next position
+	const attribOffset = 0;  // start at the beginning of the buffer
+	gl.vertexAttribPointer(attributeLocation, size, type, normalize, stride, attribOffset);
 }

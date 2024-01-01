@@ -2,10 +2,9 @@
 // to pick one. mediump is a good default. It means "medium precision"
 precision mediump float;
 
-uniform vec4 u_color;
+varying vec3 v_vertex_color;
  
 void main() {
-	// gl_FragColor is a special variable a fragment shader
-	// is responsible for setting
-	gl_FragColor = u_color;
+	// Set the final color to what was passed in
+	gl_FragColor = vec4(v_vertex_color, 1.0);
 }
