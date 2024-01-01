@@ -5,10 +5,10 @@ console.log("Starting build");
 
 // Generate TS files from the GLSL files
 console.log("Generating fragment shader TS");
-generateGlslFile("web/ts/fragmentShader.glsl", "web/ts/generated/fragmentShader.ts");
+generateGlslFile("web/ts/webgl/fragmentShader.glsl", "web/ts/webgl/generated/fragmentShader.ts");
 
 console.log("Generating vertex shader TS");
-generateGlslFile("web/ts/vertexShader.glsl", "web/ts/generated/vertexShader.ts");
+generateGlslFile("web/ts/webgl/vertexShader.glsl", "web/ts/webgl/generated/vertexShader.ts");
 
 // Create a JS bundle from the TS code
 const options = {

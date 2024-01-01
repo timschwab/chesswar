@@ -1,5 +1,5 @@
 import { createHtmlCanvas } from "./dom.ts";
-import { CWTriangle, drawTriangles, webglInit } from "./webglRender.ts";
+import { CWTriangle, drawTriangles, webglInit } from "./webgl/webglRender.ts";
 
 
 // Get the basic context
