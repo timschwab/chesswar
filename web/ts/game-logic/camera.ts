@@ -1,13 +1,13 @@
 import { Point } from "../../../common/shapes/Point.ts";
 import { Rect } from "../../../common/shapes/Rect.ts";
-import { scene } from "../scene/scene.ts";
-import { ui } from "../ui/ui.ts";
+//import { scene } from "../scene/scene.ts";
+//import { ui } from "../ui/ui.ts";
 
 let widthHeight: null | Point = null;
 let center: null | Point = null;
 
 export function handleScreenChange(rect: Rect) {
-	ui.setScreen(rect);
+	//ui.setScreen(rect);
 	widthHeight = rect.rightBottom;
 	setCamera();
 }
@@ -27,5 +27,5 @@ function setCamera() {
 	const rightBottom = center.add(halfWidthHeight);
 	const rect = new Rect(leftTop, rightBottom);
 
-	scene.setCamera(rect);
+	//scene.setCamera(rect);
 }

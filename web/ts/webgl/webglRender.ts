@@ -1,5 +1,7 @@
 import { Point } from "../../../common/shapes/Point.ts";
+import { Rect } from "../../../common/shapes/Rect.ts";
 import { Triangle } from "../../../common/shapes/Triangle.ts";
+import { screenValue } from "../core/screen.ts";
 import { createHtmlCanvas } from "../dom.ts";
 import fragmentShaderSource from "./generated/fragmentShader.ts";
 import vertexShaderSource from "./generated/vertexShader.ts";
@@ -15,8 +17,15 @@ let colorAttributeLocation: number;
 let positionBufferId: WebGLBuffer;
 let colorBufferId: WebGLBuffer;
 
+function handleScreenChange(rect: Rect) {
+	canvas.width = rect.right;
+	canvas.height = rect.bottom;
+}
+
 export function webglInit() {
 	canvas = createHtmlCanvas();
+	handleScreenChange(screenValue);
+
 	gl = getGl(canvas);
 
 	// Build the 2 shaders and link them into a program
