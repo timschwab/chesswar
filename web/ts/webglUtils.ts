@@ -1,5 +1,13 @@
 type ShaderType = WebGLRenderingContext["VERTEX_SHADER"] | WebGLRenderingContext["FRAGMENT_SHADER"];
 
+export function getGl(canvas: HTMLCanvasElement): WebGLRenderingContext {
+	const gl = canvas.getContext("webgl");
+	if (gl == null) {
+		throw "Can't use WebGL apparently";
+	}
+	return gl;
+}
+
 export function createShader(gl: WebGLRenderingContext, type: ShaderType, source: string): WebGLShader {
 	const shader = gl.createShader(type);
 	if (shader == null) {

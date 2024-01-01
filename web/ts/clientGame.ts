@@ -1,7 +1,7 @@
 import { createHtmlCanvas } from "./dom.ts";
 import fragmentShaderSource from "./generated/fragmentShader.ts";
 import vertexShaderSource from "./generated/vertexShader.ts";
-import { assignData, createProgram, createShader, makeBuffer, setData } from "./webglUtils.ts";
+import { assignData, createProgram, createShader, getGl, makeBuffer, setData } from "./webglUtils.ts";
 
 // Get the basic context
 const width = globalThis.innerWidth;
@@ -10,10 +10,7 @@ const height = globalThis.innerHeight;
 const canvas = createHtmlCanvas();
 canvas.width = width;
 canvas.height = height;
-const gl = canvas.getContext("webgl");
-if (gl == null) {
-	throw "Can't use WebGL apparently";
-}
+const gl = getGl(canvas);
 
 // Build the 2 shaders and link them into a program
 const vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
@@ -38,19 +35,18 @@ gl.useProgram(program);
 // set the resolution
 gl.uniform2f(resolutionUniformLocation, width, height);
 
-// End of initialization code, beginning of render code
-
-requestAnimationFrame(() => drawTriangles(gl));
+requestAnimationFrame(render);
 
 // Functions
 
-function drawTriangles(gl: WebGLRenderingContext) {
-	requestAnimationFrame(() => drawTriangles(gl));
+function render() {
+	requestAnimationFrame(render);
+	const triangleData = Array(5).fill(null).map(() => randomTriangle());
+	drawTriangles(gl, triangleData);
+}
 
-	// Generate the triangle data
-	const triangleData = [randomTriangle(), randomTriangle()];
-
-	const trianglePositions = triangleData.map(tri => tri.coords).flat(1);
+function drawTriangles(gl: WebGLRenderingContext, triangleData: CWTriangle[]) {
+	const trianglePositions = triangleData.map(tri => tri.coords).flat(2);
 	const triangleColors = triangleData.map(tri => Array(3).fill(tri.color)).flat(2);
 
 	// Clear the canvas
@@ -69,12 +65,17 @@ function drawTriangles(gl: WebGLRenderingContext) {
 	gl.drawArrays(gl.TRIANGLES, 0, triangleData.length*3);
 }
 
-function randomTriangle() {
+interface CWTriangle {
+	coords: [[number, number], [number, number], [number, number]],
+	color: [number, number, number]
+};
+
+function randomTriangle(): CWTriangle {
 	return {
 		coords: [
-			randomInt(width), randomInt(height),
-			randomInt(width), randomInt(height),
-			randomInt(width), randomInt(height)
+			[randomInt(width), randomInt(height)],
+			[randomInt(width), randomInt(height)],
+			[randomInt(width), randomInt(height)]
 		],
 		color: [Math.random(), Math.random(), Math.random()]
 	};
