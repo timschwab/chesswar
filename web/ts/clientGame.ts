@@ -37,7 +37,7 @@ const triangles = [
 	),
 	new Triangle(
 		new TriangleVertices(new Point(0, 1000), new Point(100, 1000), new Point(0, 900)),
-		CWColor.RED_STANDARD
+		CWColor.BLUE_STANDARD
 	),
 	new Triangle(
 		new TriangleVertices(new Point(1000, 1000), new Point(900, 1000), new Point(1000, 900)),

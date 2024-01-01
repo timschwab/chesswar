@@ -1,7 +1,18 @@
 import { Color } from "../Color.ts";
 import { Point } from "./Point.ts";
 
-export type TriangleVerticesArray = [number, number, number, number, number, number];
+export type TriangleVerticesArray = [
+	number, number,
+	number, number,
+	number, number
+];
+
+// Need one rgb per vertex
+export type TriangleColorArray = [
+	number, number, number,
+	number, number, number,
+	number, number, number
+];
 
 export class TriangleVertices {
 	readonly v1: Point;
@@ -30,5 +41,17 @@ export class Triangle {
 	constructor(vertices: TriangleVertices, color: Color) {
 		this.vertices = vertices;
 		this.color = color;
+	}
+
+	verticesArray(): TriangleVerticesArray {
+		return this.vertices.asArray();
+	}
+
+	colorArray(): TriangleColorArray {
+		return [
+			...this.color.asArray(),
+			...this.color.asArray(),
+			...this.color.asArray()
+		]
 	}
 }

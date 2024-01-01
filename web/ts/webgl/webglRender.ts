@@ -57,8 +57,8 @@ export function drawTriangles(triangleData: Triangle[], camera: Point) {
 	gl.uniform2f(cameraUniformLocation, camera.x, camera.y);
 
 	// Some quick pre-processing to separate positions from colors
-	const trianglePositions = triangleData.flatMap(tri => tri.vertices.asArray());
-	const triangleColors = triangleData.flatMap(tri => tri.color.asArray());
+	const trianglePositions = triangleData.flatMap(tri => tri.verticesArray());
+	const triangleColors = triangleData.flatMap(tri => tri.colorArray());
 
 	// Clear the canvas (not sure this is actually needed)
 	gl.clearColor(0, 0, 0, 0);

@@ -1,10 +1,6 @@
 import { clampNumber } from "./math-utils.ts";
 
-export type ColorWebglArray = [
-	number, number, number,
-	number, number, number,
-	number, number, number
-];
+export type ColorArray = [number, number, number];
 
 export class Color {
 	readonly r: number;
@@ -30,8 +26,8 @@ export class Color {
 		return "#" + rStr + gStr + bStr;
 	}
 
-	asArray(): ColorWebglArray {
-		return [this.r, this.g, this.b, this.r, this.g, this.b, this.r, this.g, this.b];
+	asArray(): ColorArray {
+		return [this.r, this.g, this.b];
 	}
 }
 
