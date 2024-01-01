@@ -1,5 +1,5 @@
 import { TAU, TAU_EIGHTH } from "../../../common/Constants.ts";
-import { Color } from "../../../common/colors.ts";
+import { Color } from "../../../common/Color.ts";
 import { Circle } from "../../../common/shapes/Circle.ts";
 import { Point } from "../../../common/shapes/Point.ts";
 import { Rect } from "../../../common/shapes/Rect.ts";

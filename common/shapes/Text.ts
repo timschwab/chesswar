@@ -1,4 +1,4 @@
-import { Color } from "../colors.ts";
+import { Color } from "../Color.ts";
 import { Point } from "./Point.ts";
 import { Rect } from "./Rect.ts";
 import { Shape } from "./Shape.ts";

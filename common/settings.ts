@@ -1,4 +1,4 @@
-import { Color } from "./colors.ts";
+import { CWColor } from "./Color.ts";
 import { PlayerRole, TeamName } from "./data-types/base.ts";
 
 /* ----- start server origins ----- */
@@ -76,97 +76,97 @@ export const rensets = {
 	fps,
 	mspf: 1000/fps,
 	fpsMsMargin: 0.1,
-	background: Color.GREY_DARK,
+	background: CWColor.GREY_DARK,
 	grid: {
-		background: Color.GREY_STANDARD,
-		color: Color.GREY_EXTRA_DARK,
+		background: CWColor.GREY_STANDARD,
+		color: CWColor.GREY_EXTRA_DARK,
 		width: 1,
 		spacing: 100
 	},
 	mapBorder: {
-		color: Color.GREEN_BRIGHT,
+		color: CWColor.GREEN_BRIGHT,
 		width: 4
 	},
 	players: {
-		self: Color.GREEN_BRIGHT,
+		self: CWColor.GREEN_BRIGHT,
 		teamColor: {
-			[TeamName.BLUE]: Color.BLUE_LIGHT,
-			[TeamName.RED]: Color.RED_STANDARD
+			[TeamName.BLUE]: CWColor.BLUE_LIGHT,
+			[TeamName.RED]: CWColor.RED_STANDARD
 		},
 		deathCounter: {
 			font: "12px Times New Roman",
-			color: Color.GREY_BLACK
+			color: CWColor.GREY_BLACK
 		},
 		name: {
 			font: "12px Times New Roman",
-			color: Color.GREY_BLACK
+			color: CWColor.GREY_BLACK
 		}
 	},
 	facilities: {
 		ally: {
-			base: Color.GREY_WHITE,
-			command: Color.GREY_LIGHT,
-			pickup: Color.YELLOW_STANDARD,
-			outpost: Color.GREY_WHITE,
-			armory: Color.PINK_STANDARD,
-			scif: Color.CYAN_STANDARD
+			base: CWColor.GREY_WHITE,
+			command: CWColor.GREY_LIGHT,
+			pickup: CWColor.YELLOW_STANDARD,
+			outpost: CWColor.GREY_WHITE,
+			armory: CWColor.PINK_STANDARD,
+			scif: CWColor.CYAN_STANDARD
 		},
 		enemy: {
-			base: Color.GREY_EXTRA_DARK,
-			command: Color.GREY_BLACK,
-			pickup: Color.YELLOW_DARK,
-			outpost: Color.GREY_EXTRA_DARK,
-			armory: Color.PINK_DARK,
-			scif: Color.CYAN_DARK
+			base: CWColor.GREY_EXTRA_DARK,
+			command: CWColor.GREY_BLACK,
+			pickup: CWColor.YELLOW_DARK,
+			outpost: CWColor.GREY_EXTRA_DARK,
+			armory: CWColor.PINK_DARK,
+			scif: CWColor.CYAN_DARK
 		}
 	},
 	minefield: {
-		color: Color.GREY_BLACK
+		color: CWColor.GREY_BLACK
 	},
 	center: {
-		safe: Color.GREEN_DARK,
-		battlefield: Color.GREY_WHITE
+		safe: CWColor.GREEN_DARK,
+		battlefield: CWColor.GREY_WHITE
 	},
 	generalWindow: {
 		padding: 20,
 		squareSize: 50,
 		buttonSize: 100,
-		windowOutline: Color.GREEN_BRIGHT,
-		windowInside: Color.GREY_WHITE,
-		boardOutline: Color.GREY_BLACK,
-		boardLight: Color.GREY_LIGHT,
-		boardDark: Color.GREY_DARK,
+		windowOutline: CWColor.GREEN_BRIGHT,
+		windowInside: CWColor.GREY_WHITE,
+		boardOutline: CWColor.GREY_BLACK,
+		boardLight: CWColor.GREY_LIGHT,
+		boardDark: CWColor.GREY_DARK,
 		teamColor: {
-			[TeamName.BLUE]: Color.BLUE_LIGHT,
-			[TeamName.RED]: Color.RED_STANDARD
+			[TeamName.BLUE]: CWColor.BLUE_LIGHT,
+			[TeamName.RED]: CWColor.RED_STANDARD
 		},
-		button: Color.YELLOW_STANDARD
+		button: CWColor.YELLOW_STANDARD
 	},
 	actionOption: {
 		outlineWidth: 3,
-		outlineColor: Color.GREY_BLACK,
-		backgroundColor: Color.GREY_LIGHT,
+		outlineColor: CWColor.GREY_BLACK,
+		backgroundColor: CWColor.GREY_LIGHT,
 		textFont: "24px Times New Roman",
-		textColor: Color.GREY_EXTRA_DARK
+		textColor: CWColor.GREY_EXTRA_DARK
 	},
 	currentRole: {
 		outlineWidth: 2,
-		outlineColor: Color.GREY_BLACK,
+		outlineColor: CWColor.GREY_BLACK,
 		teamColor: {
-			[TeamName.BLUE]: Color.BLUE_LIGHT,
-			[TeamName.RED]: Color.RED_STANDARD
+			[TeamName.BLUE]: CWColor.BLUE_LIGHT,
+			[TeamName.RED]: CWColor.RED_STANDARD
 		},
 		textFont: "18px Times New Roman",
-		textColor: Color.GREY_WHITE
+		textColor: CWColor.GREY_WHITE
 	},
 	victory: {
 		font: "bold 128px Times New Roman",
-		color: Color.GREY_BLACK,
+		color: CWColor.GREY_BLACK,
 		newGameFont: "32px Times New Roman",
-		newGameColor: Color.GREY_BLACK,
+		newGameColor: CWColor.GREY_BLACK,
 	},
 	stats: {
 		font: "12px Times New Roman",
-		color: Color.GREY_BLACK
+		color: CWColor.GREY_BLACK
 	}
 } as const;

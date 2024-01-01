@@ -1,3 +1,4 @@
+import { Triangle } from "../../../common/shapes/Triangle.ts";
 import fragmentShaderSource from "./generated/fragmentShader.ts";
 import vertexShaderSource from "./generated/vertexShader.ts";
 import { assignData, createProgram, createShader, getGl, makeBuffer, setData } from "./webglUtils.ts";
@@ -11,11 +12,6 @@ let positionAttributeLocation: number;
 let colorAttributeLocation: number;
 let positionBufferId: WebGLBuffer;
 let colorBufferId: WebGLBuffer;
-
-export interface CWTriangle {
-	coords: [[number, number], [number, number], [number, number]],
-	color: [number, number, number]
-};
 
 export function webglInit(canvasIn: HTMLCanvasElement) {
 	canvas = canvasIn;
@@ -38,7 +34,7 @@ export function webglInit(canvasIn: HTMLCanvasElement) {
 	colorBufferId = makeBuffer(gl);
 }
 
-export function drawTriangles(triangleData: CWTriangle[], camera: {x: number, y: number}) {
+export function drawTriangles(triangleData: Triangle[], camera: {x: number, y: number}) {
 	const width = canvas.width;
 	const height = canvas.height;
 
@@ -50,8 +46,8 @@ export function drawTriangles(triangleData: CWTriangle[], camera: {x: number, y:
 	gl.uniform2f(cameraUniformLocation, camera.x, camera.y);
 
 	// Some quick pre-processing to separate positions from colors
-	const trianglePositions = triangleData.map(tri => tri.coords).flat(2);
-	const triangleColors = triangleData.map(tri => Array(3).fill(tri.color)).flat(2);
+	const trianglePositions = triangleData.flatMap(tri => tri.vertices.asArray());
+	const triangleColors = triangleData.flatMap(tri => tri.color.asArray());
 
 	// Clear the canvas (not sure this is actually needed)
 	gl.clearColor(0, 0, 0, 0);
