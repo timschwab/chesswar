@@ -3,6 +3,9 @@ import { Rect } from "./Rect.ts";
 import { SerializedGeometry, Geometry } from "./Geometry.ts";
 import { GeometryName } from "./GeometryName.ts";
 import { TriangleVertices } from "./Triangle.ts";
+import { Vector } from "./Vector.ts";
+import { TAU } from "../Constants.ts";
+import { count } from "../math-utils.ts";
 
 export interface SerializedCircle extends SerializedGeometry {
 	type: GeometryName.CIRCLE,
@@ -75,8 +78,15 @@ export class Circle extends Geometry<Circle> {
 		throw "Can't get here";
 	}
 
-	toTriangleVertices(): TriangleVertices[] {
-		return [];
+	toTriangleVertices(segments?: number): TriangleVertices[] {
+		const realSegments = segments || 24;
+
+		const vectors = count(realSegments).map(seg => new Vector((seg*TAU)/realSegments, this.radius));
+		const points = vectors.map(vec => this.center.addVector(vec));
+		const pairs = points.map((_, i, arr) => [arr[i], arr[(i+1)%arr.length]]);
+		const vertices = pairs.map(pair => new TriangleVertices(this.center, pair[0], pair[1]));
+
+		return vertices;
 	}
 
 	add(operand: Point): Circle {

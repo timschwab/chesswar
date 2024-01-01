@@ -31,8 +31,39 @@ function getGrid(): Triangle[] {
 	return triangles;
 }
 
-function getLocations(): Triangle[] {
-	return [];
+function getFacilities(): Triangle[] {
+	const triangles: Triangle[] = [];
+
+	// Map external areas
+	triangles.push(...Shape.from(map.safeZone, rensets.center.safe).toTriangles());
+	
+	for (const bundle of map.facilities) {
+		triangles.push(...Shape.from(bundle.base, rensets.facilities.ally.base).toTriangles());
+	
+		for (const outpost of bundle.outposts) {
+			triangles.push(...Shape.from(outpost, rensets.facilities.ally.outpost).toTriangles());
+		}
+	}
+	
+	// Map internal areas
+	triangles.push(...Shape.from(map.battlefield, rensets.center.battlefield).toTriangles());
+	
+	for (const bundle of map.facilities) {
+		triangles.push(...Shape.from(bundle.command, rensets.facilities.ally.command).toTriangles());
+	
+		for (const briefing of bundle.briefings) {
+			triangles.push(...Shape.from(briefing, rensets.facilities.ally.pickup).toTriangles());
+		}
+	
+		triangles.push(...Shape.from(bundle.armory, rensets.facilities.ally.armory).toTriangles());
+		triangles.push(...Shape.from(bundle.scif, rensets.facilities.ally.scif).toTriangles());
+	}
+
+	return triangles;
+}
+
+function getMinefields(): Triangle[] {
+	return map.minefields.flatMap(mine => Shape.from(mine, rensets.minefield.color).toTriangles());
 }
 
 function getBorder(): Triangle[] {
@@ -62,6 +93,7 @@ function getBorder(): Triangle[] {
 export const mapTriangles = [
 	...getBackground(),
 	...getGrid(),
-	...getLocations(),
+	...getFacilities(),
+	...getMinefields(),
 	...getBorder()
 ];
