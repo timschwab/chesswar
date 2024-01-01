@@ -1,10 +1,10 @@
-import map from "../../common/map.ts";
 import { listenKey } from "./core/inputs.ts";
 import { socketListen } from "./core/socket.ts";
 import { handleKey } from "./game-logic/keys.ts";
 import { receiveMessage } from "./game-logic/messages.ts";
 import { beginPings } from "./game-logic/pingManager.ts";
 import { state } from "./game-logic/state.ts";
+import { mapTriangles } from "./mapTriangles.ts";
 import { drawTriangles, webglInit } from "./webgl/webglRender.ts";
 
 initGame();
@@ -24,14 +24,11 @@ export function initGame() {
 	requestAnimationFrame(gameLoop);
 }
 
-const triangles = map.shape.toTriangles();
-console.log(triangles);
-
 function gameLoop() {
 	requestAnimationFrame(gameLoop);
 
 	if (state.selfPlayer) {
-		drawTriangles(triangles, state.selfPlayer.position.center);
+		drawTriangles(mapTriangles, state.selfPlayer.position.center);
 	}
 }
 
