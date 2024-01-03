@@ -59,7 +59,7 @@ export function setData(gl: WebGLRenderingContext, bufferId: WebGLBuffer, buffer
 	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(bufferData), gl.STATIC_DRAW);
 }
 
-export function assignData(gl: WebGLRenderingContext, bufferId: WebGLBuffer, attributeLocation: number, size: number) {
+export function assignBuffer(gl: WebGLRenderingContext, bufferId: WebGLBuffer, attributeLocation: number, size: number) {
 	gl.bindBuffer(gl.ARRAY_BUFFER, bufferId);
 	gl.enableVertexAttribArray(attributeLocation);
 
