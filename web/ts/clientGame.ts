@@ -1,3 +1,5 @@
+import { rensets } from "../../common/settings.ts";
+import { Shape } from "../../common/shapes/Shape.ts";
 import { listenKey } from "./core/inputs.ts";
 import { socketListen } from "./core/socket.ts";
 import { handleKey } from "./game-logic/keys.ts";
@@ -26,6 +28,10 @@ export function initGame() {
 
 function gameLoop() {
 	requestAnimationFrame(gameLoop);
+
+	const playerShapes = state.players.map(pl => Shape.from(pl.position, rensets.players.teamColor[pl.team]));
+	const playerTriangles = playerShapes.flatMap(sh => sh.toTriangles());
+	const allTriangles = mapTriangles.concat(playerTriangles);
 
 	if (state.selfPlayer) {
 		drawTriangles(mapTriangles, state.selfPlayer.position.center);

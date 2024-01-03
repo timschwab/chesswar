@@ -53,6 +53,7 @@ function handleState(payload: StateMessagePayload) {
 	}
 
 	state.selfPlayer = selfPlayer;
+	state.players = deserialized;
 
 	/*handleSelfPosition(selfPlayer.position.center);
 	ui.teamRole.setTeam(selfPlayer.team);

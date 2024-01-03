@@ -6,6 +6,7 @@ import { ClientPlayer } from "./ClientPlayer.ts";
 interface UnsafeState {
 	selfId: ChesswarId | null,
 	selfPlayer: ClientPlayer | null,
+	players: ClientPlayer[],
 	general: {
 		selectedButton: BriefingName | null,
 		selectedFrom: ChessSquare | null
@@ -15,6 +16,7 @@ interface UnsafeState {
 export const state: UnsafeState = {
 	selfId: null,
 	selfPlayer: null,
+	players: [],
 	general: {
 		selectedButton: null,
 		selectedFrom: null
