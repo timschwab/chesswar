@@ -34,7 +34,7 @@ function gameLoop() {
 	const allTriangles = mapTriangles.concat(playerTriangles);
 
 	if (state.selfPlayer) {
-		drawTriangles(mapTriangles, state.selfPlayer.position.center);
+		drawTriangles(allTriangles, state.selfPlayer.position.center);
 	}
 }
 
