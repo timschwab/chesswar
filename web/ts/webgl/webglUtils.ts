@@ -11,7 +11,7 @@ export function getGl(canvas: HTMLCanvasElement): WebGLRenderingContext {
 export function createShader(gl: WebGLRenderingContext, type: ShaderType, source: string): WebGLShader {
 	const shader = gl.createShader(type);
 	if (shader == null) {
-		throw "What're you gonna do, am I right?";
+		throw "Couldn't create a shader";
 	}
 
 	gl.shaderSource(shader, source);
@@ -22,14 +22,14 @@ export function createShader(gl: WebGLRenderingContext, type: ShaderType, source
 	} else {
 		console.log(gl.getShaderInfoLog(shader));
 		gl.deleteShader(shader);
-		throw "This time you probably actually messed something up";
+		throw "Couldn't compile shader";
 	}
 }
 
 export function createProgram(gl: WebGLRenderingContext, vertexShader: WebGLShader, fragmentShader: WebGLShader): WebGLProgram {
 	const program = gl.createProgram();
 	if (program == null) {
-		throw "Enough already, sheesh";
+		throw "Couldn't create program";
 	}
 
 	gl.attachShader(program, vertexShader);
@@ -41,7 +41,7 @@ export function createProgram(gl: WebGLRenderingContext, vertexShader: WebGLShad
 	} else {
 		console.log(gl.getProgramInfoLog(program));
 		gl.deleteProgram(program);
-		throw "Yep def your fault this time";
+		throw "Couldn't link program";
 	}
 }
 
