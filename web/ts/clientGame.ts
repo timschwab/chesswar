@@ -1,5 +1,9 @@
+import { CWColor } from "../../common/Color.ts";
 import { rensets } from "../../common/settings.ts";
+import { Point } from "../../common/shapes/Point.ts";
+import { Rect } from "../../common/shapes/Rect.ts";
 import { Shape } from "../../common/shapes/Shape.ts";
+import { ZeroPoint } from "../../common/shapes/Zero.ts";
 import { listenKey } from "./core/inputs.ts";
 import { socketListen } from "./core/socket.ts";
 import { handleKey } from "./game-logic/keys.ts";
@@ -7,7 +11,9 @@ import { receiveMessage } from "./game-logic/messages.ts";
 import { beginPings } from "./game-logic/pingManager.ts";
 import { state } from "./game-logic/state.ts";
 import { mapTriangles } from "./mapTriangles.ts";
-import { drawTriangles, webglInit } from "./webgl/webglRender.ts";
+import { CWText, CWTextAlign } from "./text/CWText.ts";
+import { getUiTriangles } from "./ui.ts";
+import { drawStructures, webglInit } from "./webgl/webglRender.ts";
 
 initGame();
 
@@ -16,9 +22,6 @@ export function initGame() {
 
 	socketListen(receiveMessage);
 	beginPings();
-
-	//handleScreenChange(screenValue);
-	//screenChange(handleScreenChange);
 
 	listenKey(handleKey);
 	//listenClick(handleClick);
@@ -29,12 +32,17 @@ export function initGame() {
 function gameLoop() {
 	requestAnimationFrame(gameLoop);
 
-	const playerShapes = state.players.map(pl => Shape.from(pl.position, rensets.players.teamColor[pl.team]));
-	const playerTriangles = playerShapes.flatMap(sh => sh.toTriangles());
-	const allTriangles = mapTriangles.concat(playerTriangles);
+	//const playerShapes = state.players.map(pl => Shape.from(pl.position, rensets.players.teamColor[pl.team]));
+	//const playerTriangles = playerShapes.flatMap(sh => sh.toTriangles());
+	//const allTriangles = mapTriangles.concat(playerTriangles).concat(getUiTriangles());
 
 	if (state.selfPlayer) {
-		drawTriangles(allTriangles, state.selfPlayer.position.center);
+		//drawTriangles(allTriangles, state.selfPlayer.position.center);
+		const t = new CWText(
+			new Rect(ZeroPoint, new Point(500, 500)),
+			20, CWColor.GREY_WHITE, CWTextAlign.LEFT, "abcdefghijklmnopqrstuvwxyz 1234567890"
+		);
+		drawStructures([t.structure()], ZeroPoint);
 	}
 }
 

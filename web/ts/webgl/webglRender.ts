@@ -1,5 +1,6 @@
 import { Point } from "../../../common/shapes/Point.ts";
 import { Rect } from "../../../common/shapes/Rect.ts";
+import { Structure } from "../../../common/shapes/Structure.ts";
 import { Triangle } from "../../../common/shapes/Triangle.ts";
 import { screenChange, screenValue } from "../core/screen.ts";
 import { createHtmlCanvas } from "../dom.ts";
@@ -10,12 +11,15 @@ import { assignBuffer, createProgram, createShader, getGl, makeBuffer, setData }
 let canvas: HTMLCanvasElement;
 let gl: WebGLRenderingContext;
 
+let structureBufferId: WebGLBuffer;
+let vertexBufferId: WebGLBuffer;
+let colorBufferId: WebGLBuffer;
+
 let screenUniformLocation: WebGLUniformLocation | null;
 let cameraUniformLocation: WebGLUniformLocation | null;
-let positionAttributeLocation: number;
+let structureAttributeLocation: number;
+let vertextAttributeLocation: number;
 let colorAttributeLocation: number;
-let positionBufferId: WebGLBuffer;
-let colorBufferId: WebGLBuffer;
 
 screenChange(handleScreenChange);
 function handleScreenChange(rect: Rect) {
@@ -46,33 +50,39 @@ export function webglInit() {
 	// Grab locations
 	screenUniformLocation = gl.getUniformLocation(program, "u_screen");
 	cameraUniformLocation = gl.getUniformLocation(program, "u_camera_center");
-	positionAttributeLocation = gl.getAttribLocation(program, "a_position");
+
+	structureAttributeLocation = gl.getAttribLocation(program, "a_structure_center");
+	vertextAttributeLocation = gl.getAttribLocation(program, "a_vertex");
 	colorAttributeLocation = gl.getAttribLocation(program, "a_color");
 
 	// Create buffers
-	positionBufferId = makeBuffer(gl);
+	structureBufferId = makeBuffer(gl);
+	vertexBufferId = makeBuffer(gl);
 	colorBufferId = makeBuffer(gl);
 
 	// Set the attributes
-	assignBuffer(gl, positionBufferId, positionAttributeLocation, 2);
+	assignBuffer(gl, structureBufferId, structureAttributeLocation, 2);
+	assignBuffer(gl, vertexBufferId, vertextAttributeLocation, 2);
 	assignBuffer(gl, colorBufferId, colorAttributeLocation, 3);
 
 	// Set width/height
 	handleScreenChange(screenValue);
 }
 
-export function drawTriangles(triangleData: Triangle[], camera: Point) {
+export function drawStructures(structures: Structure[], camera: Point) {
 	// Set the uniform
 	gl.uniform2f(cameraUniformLocation, camera.x, camera.y);
 
-	// Some quick pre-processing to separate positions from colors
-	const trianglePositions = triangleData.flatMap(tri => tri.verticesArray());
-	const triangleColors = triangleData.flatMap(tri => tri.colorArray());
+	// Some quick pre-processing to separate attributes
+	const triangleStructures = structures.flatMap(struct => struct.structureArray());
+	const triangleVertices = structures.flatMap(struct => struct.verticesArray());
+	const triangleColors = structures.flatMap(tri => tri.colorArray());
 
 	// Load the data
-	setData(gl, positionBufferId, trianglePositions);
+	setData(gl, structureBufferId, triangleStructures);
+	setData(gl, vertexBufferId, triangleVertices);
 	setData(gl, colorBufferId, triangleColors);
 
 	// Draw the triangles
-	gl.drawArrays(gl.TRIANGLES, 0, triangleData.length*3);
+	gl.drawArrays(gl.TRIANGLES, 0, triangleVertices.length);
 }

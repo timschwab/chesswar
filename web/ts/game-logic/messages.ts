@@ -4,7 +4,6 @@ import { rensets } from "../../../common/settings.ts";
 import { Point } from "../../../common/shapes/Point.ts";
 import { Rect } from "../../../common/shapes/Rect.ts";
 import { Shape } from "../../../common/shapes/Shape.ts";
-import { Text, TextAlign } from "../../../common/shapes/Text.ts";
 import { assertNever } from "../../../common/typescript-utils.ts";
 import audioPlayer from "../audio/audioPlayer.ts";
 //import { playerLayer } from "../scene/scene.ts";

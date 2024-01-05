@@ -1,15 +1,19 @@
 uniform vec2 u_screen;
 uniform vec2 u_camera_center;
 
-attribute vec2 a_position;
+attribute vec2 a_structure_center;
+attribute vec2 a_vertex;
 attribute vec3 a_color;
 
 varying vec3 v_vertex_color;
 
 void main() {
+	// Find the structure-adjusted position
+	vec2 structureAdjusted = a_vertex + a_structure_center;
+
 	// Find the camera-adjusted position
 	vec2 cameraTopLeft = u_camera_center - (u_screen/2.0);
-	vec2 cameraAdjusted = a_position - cameraTopLeft;
+	vec2 cameraAdjusted = structureAdjusted - cameraTopLeft;
 
 	// Convert from 0->n to 0->1
 	vec2 zeroToOne = cameraAdjusted / u_screen;
