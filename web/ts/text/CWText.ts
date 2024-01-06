@@ -2,7 +2,7 @@ import { Color } from "../../../common/Color.ts";
 import { Point } from "../../../common/shapes/Point.ts";
 import { Rect } from "../../../common/shapes/Rect.ts";
 import { Structure } from "../../../common/shapes/Structure.ts";
-import { Triangle, TriangleVertices } from "../../../common/shapes/Triangle.ts";
+import { Triangle } from "../../../common/shapes/Triangle.ts";
 import { renderOneLetter } from "./renderOneLetter.ts";
 
 export enum CWTextAlign {
