@@ -74,6 +74,7 @@ export function webglInit() {
 	handleScreenChange(screenValue);
 }
 
+let thing = true;
 export function drawStructures(structures: Structure[], camera: Point) {
 	// Set the uniform
 	gl.uniform2f(cameraUniformLocation, camera.x, camera.y);
@@ -90,7 +91,10 @@ export function drawStructures(structures: Structure[], camera: Point) {
 	setData(gl, vertexBufferId, triangleVertices);
 	setData(gl, colorBufferId, triangleColors);
 
-	//console.log(triangleScales, triangleStructures, triangleVertices, triangleColors);
+	if (thing) {
+		console.log(triangleScales, triangleStructures, triangleVertices, triangleColors);
+		thing = false;
+	}
 
 	// Draw the triangles
 	gl.drawArrays(gl.TRIANGLES, 0, triangleScales.length);

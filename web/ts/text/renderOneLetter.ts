@@ -4,13 +4,14 @@ import { TriangleVertices, TriangleVerticesArray } from "../../../common/shapes/
 const letterMap = new Map<string, TriangleVertices[]>();
 const unknownMapping: TriangleVertices[] = [];
 
+[5, 7]
 const mappings: Record<string, TriangleVerticesArray[]> = {
 	"A": [
-		[0, 0, 1, 0, 0, 1]
+		[0.5, 0, 0, 1, 0.2, 1],
+		[0.5, 0, 1, 1, 0.8, 1],
+		[0.5, 0.4, 0.25, 0.5, 0.75, 0.5]
 	],
-	"B": [
-		[0, 0, 1, 0, 0, 1]
-	]
+	"B": []
 };
 
 const entries = Object.entries(mappings);
