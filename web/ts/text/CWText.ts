@@ -35,6 +35,6 @@ export class CWText {
 		const vertices = renderOneLetter(letter);
 		const triangles = vertices.map(v => new Triangle(v, this.color));
 		const offset = index*this.size;
-		return new Structure(triangles, new Point(offset, 0), this.size);
+		return new Structure(triangles, this.box.leftTop.add(new Point(offset, 0)), this.size);
 	}
 }

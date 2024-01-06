@@ -3,7 +3,6 @@ import { rensets } from "../../common/settings.ts";
 import { Point } from "../../common/shapes/Point.ts";
 import { Rect } from "../../common/shapes/Rect.ts";
 import { Shape } from "../../common/shapes/Shape.ts";
-import { ZeroPoint } from "../../common/shapes/Zero.ts";
 import { listenKey } from "./core/inputs.ts";
 import { socketListen } from "./core/socket.ts";
 import { handleKey } from "./game-logic/keys.ts";
@@ -38,11 +37,34 @@ function gameLoop() {
 
 	if (state.selfPlayer) {
 		//drawTriangles(allTriangles, state.selfPlayer.position.center);
-		const t = new CWText(
-			new Rect(ZeroPoint, new Point(5000, 100)),
+		const t10 = new CWText(
+			new Rect(new Point(0, 0), new Point(5000, 20)),
+			10, CWColor.GREY_WHITE, CWTextAlign.LEFT, "abcdefghijklm|nopqrstuvwxyz 1234567890"
+		);
+		const t25 = new CWText(
+			new Rect(new Point(0, 25), new Point(5000, 50)),
+			25, CWColor.GREY_WHITE, CWTextAlign.LEFT, "abcdefghijklm|nopqrstuvwxyz 1234567890"
+		);
+		const t50 = new CWText(
+			new Rect(new Point(0, 100), new Point(5000, 100)),
+			50, CWColor.GREY_WHITE, CWTextAlign.LEFT, "abcdefghijklm|nopqrstuvwxyz 1234567890"
+		);
+		const t100 = new CWText(
+			new Rect(new Point(0, 200), new Point(5000, 200)),
+			100, CWColor.GREY_WHITE, CWTextAlign.LEFT, "abcdefghijklm|nopqrstuvwxyz 1234567890"
+		);
+		const t200 = new CWText(
+			new Rect(new Point(0, 400), new Point(5000, 400)),
 			200, CWColor.GREY_WHITE, CWTextAlign.LEFT, "abcdefghijklm|nopqrstuvwxyz 1234567890"
 		);
-		drawStructures(t.toStructures(), new Point(700, 300));
+		const structs = [
+			t10.toStructures(),
+			t25.toStructures(),
+			t50.toStructures(),
+			t100.toStructures(),
+			t200.toStructures()
+		].flat();
+		drawStructures(structs, new Point(700, 300));
 	}
 }
 
