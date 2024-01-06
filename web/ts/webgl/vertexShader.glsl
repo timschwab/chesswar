@@ -1,6 +1,7 @@
 uniform vec2 u_screen;
 uniform vec2 u_camera_center;
 
+attribute float a_scale;
 attribute vec2 a_structure_center;
 attribute vec2 a_vertex;
 attribute vec3 a_color;
@@ -8,8 +9,11 @@ attribute vec3 a_color;
 varying vec3 v_vertex_color;
 
 void main() {
+	// Find the scale-adjusted position
+	vec2 scaleAdjusted = a_vertex * a_scale;
+
 	// Find the structure-adjusted position
-	vec2 structureAdjusted = a_vertex + a_structure_center;
+	vec2 structureAdjusted = scaleAdjusted + a_structure_center;
 
 	// Find the camera-adjusted position
 	vec2 cameraTopLeft = u_camera_center - (u_screen/2.0);

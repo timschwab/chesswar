@@ -39,10 +39,10 @@ function gameLoop() {
 	if (state.selfPlayer) {
 		//drawTriangles(allTriangles, state.selfPlayer.position.center);
 		const t = new CWText(
-			new Rect(ZeroPoint, new Point(500, 500)),
-			20, CWColor.GREY_WHITE, CWTextAlign.LEFT, "abcdefghijklmnopqrstuvwxyz 1234567890"
+			new Rect(ZeroPoint, new Point(5000, 100)),
+			50, CWColor.GREY_WHITE, CWTextAlign.LEFT, "abcdefghijklm|nopqrstuvwxyz 1234567890"
 		);
-		drawStructures([t.structure()], ZeroPoint);
+		drawStructures(t.toStructures(), new Point(700, 300));
 	}
 }
 

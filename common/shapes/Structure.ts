@@ -4,10 +4,17 @@ import { Triangle } from "./Triangle.ts";
 export class Structure {
 	readonly triangles: Triangle[];
 	readonly center: Point;
+	readonly scale: number;
 
-	constructor(triangles: Triangle[], center: Point) {
+	constructor(triangles: Triangle[], center: Point, scale?: number) {
 		this.triangles = triangles;
 		this.center = center;
+		this.scale = scale || 1;
+	}
+
+	scaleArray(): number[] {
+		const result = Array<number>(this.triangles.length*3).fill(this.scale);
+		return result;
 	}
 
 	structureArray(): number[] {

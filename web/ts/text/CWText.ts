@@ -1,7 +1,9 @@
 import { Color } from "../../../common/Color.ts";
+import { Point } from "../../../common/shapes/Point.ts";
 import { Rect } from "../../../common/shapes/Rect.ts";
 import { Structure } from "../../../common/shapes/Structure.ts";
-import { ZeroPoint } from "../../../common/shapes/Zero.ts";
+import { Triangle, TriangleVertices } from "../../../common/shapes/Triangle.ts";
+import { renderOneLetter } from "./renderOneLetter.ts";
 
 export enum CWTextAlign {
 	LEFT = "left",
@@ -20,12 +22,19 @@ export class CWText {
 		this.box = box;
 		this.size = size;
 		this.color = color;
-		this.message = message;
+		this.message = message.toUpperCase();
 		this.align = align;
 	}
 
-	structure(): Structure {
+	toStructures(): Structure[] {
 		const letters = Array.from(this.message);
-		return new Structure([], ZeroPoint);
+		return letters.map(this.renderOneLetter, this);
+	}
+
+	private renderOneLetter(letter: string, index: number): Structure {
+		const vertices = renderOneLetter(letter);
+		const triangles = vertices.map(v => new Triangle(v, this.color));
+		const offset = index*this.size;
+		return new Structure(triangles, new Point(offset, 0), this.size);
 	}
 }
