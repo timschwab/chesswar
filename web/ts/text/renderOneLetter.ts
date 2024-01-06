@@ -4,7 +4,6 @@ import { TriangleVertices, TriangleVerticesArray } from "../../../common/shapes/
 const letterMap = new Map<string, TriangleVertices[]>();
 const unknownMapping: TriangleVertices[] = [];
 
-[5, 7]
 const mappings: Record<string, TriangleVerticesArray[]> = {
 	"A": [
 		[0.5,   0, 0.1,   1, 0.25,   1],
@@ -12,11 +11,17 @@ const mappings: Record<string, TriangleVerticesArray[]> = {
 		[0.5, 0.4, 0.3, 0.5,  0.7, 0.5]
 	],
 	"B": [
-		[0.1,   0, 0.1,   1, 0.2, 0.5],
-		[0.1, 0.6, 0.5, 0.3, 0.5, 0.2],
-		[0.1,   0, 0.5, 0.3, 0.5, 0.2],
-		[0.1, 0.4, 0.5, 0.7, 0.5, 0.8],
-		[0.1,   1, 0.5, 0.7, 0.5, 0.8]
+		[0.3,   0, 0.3,   1, 0.4, 0.5],
+		[0.3, 0.6, 0.7, 0.3, 0.7, 0.2],
+		[0.3,   0, 0.7, 0.3, 0.7, 0.2],
+		[0.3, 0.4, 0.7, 0.7, 0.7, 0.8],
+		[0.3,   1, 0.7, 0.7, 0.7, 0.8]
+	],
+	"C": [
+		[0.3, 0, 0.8, 0.1, 0.8, 0.2],
+		[0.2, 0.6, 0.3, 0, 0.4, 0],
+		[0.2, 0.4, 0.3, 1, 0.4, 1],
+		[0.3, 1, 0.8, 0.9, 0.8, 0.8]
 	]
 };
 
