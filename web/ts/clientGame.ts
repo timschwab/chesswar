@@ -39,23 +39,23 @@ function gameLoop() {
 		//drawTriangles(allTriangles, state.selfPlayer.position.center);
 		const t10 = new CWText(
 			new Rect(new Point(0, 0), new Point(5000, 20)),
-			10, CWColor.GREY_WHITE, CWTextAlign.LEFT, "fghijklm|nopqrstuvwxyz 1234567890"
+			10, CWColor.GREY_WHITE, CWTextAlign.LEFT, "abcdefghijklm|nopqrstuvwxyz 1234567890"
 		);
 		const t25 = new CWText(
 			new Rect(new Point(0, 25), new Point(5000, 50)),
-			25, CWColor.GREY_WHITE, CWTextAlign.LEFT, "fghijklm|nopqrstuvwxyz 1234567890"
+			25, CWColor.GREY_WHITE, CWTextAlign.LEFT, "abcdefghijklm|nopqrstuvwxyz 1234567890"
 		);
 		const t50 = new CWText(
 			new Rect(new Point(0, 100), new Point(5000, 100)),
-			50, CWColor.GREY_WHITE, CWTextAlign.LEFT, "fghijklm|nopqrstuvwxyz 1234567890"
+			50, CWColor.GREY_WHITE, CWTextAlign.LEFT, "abcdefghijklm|nopqrstuvwxyz 1234567890"
 		);
 		const t100 = new CWText(
 			new Rect(new Point(0, 200), new Point(5000, 200)),
-			100, CWColor.GREY_WHITE, CWTextAlign.LEFT, "fghijklm|nopqrstuvwxyz 1234567890"
+			100, CWColor.GREY_WHITE, CWTextAlign.LEFT, "abcdefghijklm|nopqrstuvwxyz 1234567890"
 		);
 		const t200 = new CWText(
 			new Rect(new Point(0, 400), new Point(5000, 400)),
-			200, CWColor.GREY_WHITE, CWTextAlign.LEFT, "fghijklm|nopqrstuvwxyz 1234567890"
+			200, CWColor.GREY_WHITE, CWTextAlign.LEFT, "abcdefghijklm|nopqrstuvwxyz 1234567890"
 		);
 		const structs = [
 			t10.toStructures(),
