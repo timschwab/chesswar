@@ -28,44 +28,46 @@ export function initGame() {
 	requestAnimationFrame(gameLoop);
 }
 
+const t10 = new CWText(
+	new Rect(new Point(0, 0), new Point(5000, 20)),
+	10, CWColor.GREY_WHITE, CWTextAlign.LEFT, "abcdefghijklm|nopqrstuvwxyz 1234567890"
+);
+const t25 = new CWText(
+	new Rect(new Point(0, 25), new Point(5000, 50)),
+	25, CWColor.GREY_WHITE, CWTextAlign.LEFT, "abcdefghijklm|nopqrstuvwxyz 1234567890"
+);
+const t50 = new CWText(
+	new Rect(new Point(0, 100), new Point(5000, 100)),
+	50, CWColor.GREY_WHITE, CWTextAlign.LEFT, "abcdefghijklm|nopqrstuvwxyz 1234567890"
+);
+const t100 = new CWText(
+	new Rect(new Point(0, 200), new Point(5000, 200)),
+	100, CWColor.GREY_WHITE, CWTextAlign.LEFT, "abcdefghijklm|nopqrstuvwxyz 1234567890"
+);
+const t200 = new CWText(
+	new Rect(new Point(0, 400), new Point(5000, 400)),
+	200, CWColor.GREY_WHITE, CWTextAlign.LEFT, "abcdefghijklm|nopqrstuvwxyz 1234567890"
+);
+const structs = [
+	t10.toStructures(),
+	t25.toStructures(),
+	t50.toStructures(),
+	t100.toStructures(),
+	t200.toStructures()
+].flat();
+
 function gameLoop() {
 	requestAnimationFrame(gameLoop);
 
-	//const playerShapes = state.players.map(pl => Shape.from(pl.position, rensets.players.teamColor[pl.team]));
-	//const playerTriangles = playerShapes.flatMap(sh => sh.toTriangles());
-	//const allTriangles = mapTriangles.concat(playerTriangles).concat(getUiTriangles());
+	/*const playerShapes = state.players.map(pl => Shape.from(pl.position, rensets.players.teamColor[pl.team]));
+	const playerTriangles = playerShapes.flatMap(sh => sh.toTriangles());
+	const allTriangles = mapTriangles.concat(playerTriangles).concat(getUiTriangles());
 
 	if (state.selfPlayer) {
-		//drawTriangles(allTriangles, state.selfPlayer.position.center);
-		const t10 = new CWText(
-			new Rect(new Point(0, 0), new Point(5000, 20)),
-			10, CWColor.GREY_WHITE, CWTextAlign.LEFT, "abcdefghijklm|nopqrstuvwxyz 1234567890"
-		);
-		const t25 = new CWText(
-			new Rect(new Point(0, 25), new Point(5000, 50)),
-			25, CWColor.GREY_WHITE, CWTextAlign.LEFT, "abcdefghijklm|nopqrstuvwxyz 1234567890"
-		);
-		const t50 = new CWText(
-			new Rect(new Point(0, 100), new Point(5000, 100)),
-			50, CWColor.GREY_WHITE, CWTextAlign.LEFT, "abcdefghijklm|nopqrstuvwxyz 1234567890"
-		);
-		const t100 = new CWText(
-			new Rect(new Point(0, 200), new Point(5000, 200)),
-			100, CWColor.GREY_WHITE, CWTextAlign.LEFT, "abcdefghijklm|nopqrstuvwxyz 1234567890"
-		);
-		const t200 = new CWText(
-			new Rect(new Point(0, 400), new Point(5000, 400)),
-			200, CWColor.GREY_WHITE, CWTextAlign.LEFT, "abcdefghijklm|nopqrstuvwxyz 1234567890"
-		);
-		const structs = [
-			t10.toStructures(),
-			t25.toStructures(),
-			t50.toStructures(),
-			t100.toStructures(),
-			t200.toStructures()
-		].flat();
-		drawStructures(structs, new Point(700, 300));
-	}
+		drawTriangles(allTriangles, state.selfPlayer.position.center);
+	}*/
+
+	drawStructures(structs, new Point(700, 300));
 }
 
 /*let prevTimestamp = 0;
