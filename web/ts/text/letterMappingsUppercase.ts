@@ -1,6 +1,6 @@
 import { TriangleVerticesArray } from "../../../common/shapes/Triangle.ts";
 
-export const letterMappings: Record<string, TriangleVerticesArray[]> = {
+export const letterMappingsUppercase: Record<string, TriangleVerticesArray[]> = {
 	"A": [
 		[0.1, 1, 0.2, 1, 0.45, 0],
 		[        0.2, 1, 0.45, 0, 0.55, 0],

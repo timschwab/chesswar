@@ -22,7 +22,7 @@ export class CWText {
 		this.box = box;
 		this.size = size;
 		this.color = color;
-		this.message = message.toUpperCase();
+		this.message = message;
 		this.align = align;
 	}
 

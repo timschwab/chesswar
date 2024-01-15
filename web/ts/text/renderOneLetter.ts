@@ -1,12 +1,14 @@
 import { Point } from "../../../common/shapes/Point.ts";
 import { TriangleVertices, TriangleVerticesArray } from "../../../common/shapes/Triangle.ts";
-import { letterMappings } from "./letterMappings.ts";
+import { letterMappingsLowercase } from "./letterMappingsLowercase.ts";
+import { letterMappingsUppercase } from "./letterMappingsUppercase.ts";
 import { numberMappings } from "./numberMappings.ts";
 import { symbolMappings } from "./symbolMappings.ts";
 import { unknownMapping } from "./unknownMapping.ts";
 
 const letterMap = new Map<string, TriangleVertices[]>();
-loadMappings(letterMappings);
+loadMappings(letterMappingsLowercase);
+loadMappings(letterMappingsUppercase);
 loadMappings(numberMappings);
 loadMappings(symbolMappings);
 
