@@ -28,6 +28,10 @@ export function initGame() {
 	requestAnimationFrame(gameLoop);
 }
 
+const t6 = new CWText(
+	new Rect(new Point(0, -15), new Point(5000, 20)),
+	6, CWColor.GREY_WHITE, CWTextAlign.LEFT, "ABCDEFGHIJKLM|NOPQRSTUVWXYZ 1234567890"
+);
 const t10 = new CWText(
 	new Rect(new Point(0, 0), new Point(5000, 20)),
 	10, CWColor.GREY_WHITE, CWTextAlign.LEFT, "ABCDEFGHIJKLM|NOPQRSTUVWXYZ 1234567890"
@@ -42,13 +46,14 @@ const t50 = new CWText(
 );
 const t100 = new CWText(
 	new Rect(new Point(0, 200), new Point(5000, 200)),
-	100, CWColor.GREY_WHITE, CWTextAlign.LEFT, "ABCDEFGHIJKLM|NOPQRSTUVWXYZ 1234567890"
+	100, CWColor.GREY_WHITE, CWTextAlign.LEFT, "FGHIJKLM|NOPQRSTUVWXYZ 1234567890"
 );
 const t200 = new CWText(
 	new Rect(new Point(0, 400), new Point(5000, 400)),
-	200, CWColor.GREY_WHITE, CWTextAlign.LEFT, "FGHIJKLM|NOPQRSTUVWXYZ 1234567890"
+	200, CWColor.GREY_WHITE, CWTextAlign.LEFT, "HIJKLM|NOPQRSTUVWXYZ 1234567890"
 );
 const structs = [
+	t6.toStructures(),
 	t10.toStructures(),
 	t25.toStructures(),
 	t50.toStructures(),
