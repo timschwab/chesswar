@@ -46,7 +46,7 @@ const t100 = new CWText(
 );
 const t200 = new CWText(
 	new Rect(new Point(0, 400), new Point(5000, 400)),
-	200, CWColor.GREY_WHITE, CWTextAlign.LEFT, "ABCDEFGHIJKLM|NOPQRSTUVWXYZ 1234567890"
+	200, CWColor.GREY_WHITE, CWTextAlign.LEFT, "FGHIJKLM|NOPQRSTUVWXYZ 1234567890"
 );
 const structs = [
 	t10.toStructures(),
