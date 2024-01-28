@@ -46,11 +46,11 @@ const t50 = new CWText(
 );
 const t100 = new CWText(
 	new Rect(new Point(0, 200), new Point(5000, 200)),
-	100, CWColor.GREY_WHITE, CWTextAlign.LEFT, "FGHIJKLM|NOPQRSTUVWXYZ 1234567890"
+	100, CWColor.GREY_WHITE, CWTextAlign.LEFT, "LM|NOPQRSTUVWXYZ 1234567890"
 );
 const t200 = new CWText(
 	new Rect(new Point(0, 400), new Point(5000, 400)),
-	200, CWColor.GREY_WHITE, CWTextAlign.LEFT, "M|NOPQRSTUVWXYZ 1234567890"
+	200, CWColor.GREY_WHITE, CWTextAlign.LEFT, "PQRSTUVWXYZ 1234567890"
 );
 const structs = [
 	t6.toStructures(),
