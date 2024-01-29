@@ -30,15 +30,15 @@ export function initGame() {
 
 const t6 = new CWText(
 	new Rect(new Point(0, -15), new Point(5000, 20)),
-	6, CWColor.GREY_WHITE, CWTextAlign.LEFT, "ABCDEFGHIJKLM|NOPQRSTUVWXYZ 1234567890"
+	6, CWColor.GREY_WHITE, CWTextAlign.LEFT, "THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG."
 );
 const t10 = new CWText(
 	new Rect(new Point(0, 0), new Point(5000, 20)),
-	10, CWColor.GREY_WHITE, CWTextAlign.LEFT, "ABCDEFGHIJKLM|NOPQRSTUVWXYZ 1234567890"
+	10, CWColor.GREY_WHITE, CWTextAlign.LEFT, "THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG."
 );
-const t25 = new CWText(
+const t30 = new CWText(
 	new Rect(new Point(0, 25), new Point(5000, 50)),
-	25, CWColor.GREY_WHITE, CWTextAlign.LEFT, "ABCDEFGHIJKLM|NOPQRSTUVWXYZ 1234567890"
+	30, CWColor.GREY_WHITE, CWTextAlign.LEFT, "THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG."
 );
 const t50 = new CWText(
 	new Rect(new Point(0, 100), new Point(5000, 100)),
@@ -55,7 +55,7 @@ const t200 = new CWText(
 const structs = [
 	t6.toStructures(),
 	t10.toStructures(),
-	t25.toStructures(),
+	t30.toStructures(),
 	t50.toStructures(),
 	t100.toStructures(),
 	t200.toStructures()
