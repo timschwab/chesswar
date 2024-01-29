@@ -42,15 +42,15 @@ const t25 = new CWText(
 );
 const t50 = new CWText(
 	new Rect(new Point(0, 100), new Point(5000, 100)),
-	50, CWColor.GREY_WHITE, CWTextAlign.LEFT, "ABCDEFGHIJKLM|NOPQRSTUVWXYZ 1234567890"
+	50, CWColor.GREY_WHITE, CWTextAlign.LEFT, "ABCDEFGHIJKLM|NOPQRS5TUVWXYZ 1234567890"
 );
 const t100 = new CWText(
 	new Rect(new Point(0, 200), new Point(5000, 200)),
-	100, CWColor.GREY_WHITE, CWTextAlign.LEFT, "RSTUVWXYZ 1234567890"
+	100, CWColor.GREY_WHITE, CWTextAlign.LEFT, "RS5TUVWXYZ 1234567890"
 );
 const t200 = new CWText(
 	new Rect(new Point(0, 400), new Point(5000, 400)),
-	200, CWColor.GREY_WHITE, CWTextAlign.LEFT, "QRSTUV 1234567890"
+	200, CWColor.GREY_WHITE, CWTextAlign.LEFT, "QRS5TUV 1234567890"
 );
 const structs = [
 	t6.toStructures(),
