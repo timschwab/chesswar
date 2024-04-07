@@ -1,7 +1,7 @@
 {
 	"tasks": {
-		"api": "deno run --unstable --allow-net --allow-hrtime api/run.ts",
-		"web": "deno run --unstable --allow-net --allow-read web/serve.ts",
+		"api": "deno run --allow-net --allow-hrtime api/run.ts",
+		"web": "deno run --allow-net --allow-read web/serve.ts",
 		"build": "deno run --allow-read --allow-write --allow-env --allow-run web/build.ts",
 
 		"check": "deno task check-api && deno task check-web",
