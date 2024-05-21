@@ -30,27 +30,27 @@ export function initGame() {
 
 const t6 = new CWText(
 	new Rect(new Point(0, -15), new Point(5000, 20)),
-	6, CWColor.GREY_WHITE, CWTextAlign.LEFT, "THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG."
+	6, CWColor.GREY_WHITE, CWTextAlign.LEFT, "0123456789"
 );
 const t10 = new CWText(
 	new Rect(new Point(0, 0), new Point(5000, 20)),
-	10, CWColor.GREY_WHITE, CWTextAlign.LEFT, "THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG."
+	10, CWColor.GREY_WHITE, CWTextAlign.LEFT, "0123456789"
 );
 const t30 = new CWText(
 	new Rect(new Point(0, 25), new Point(5000, 50)),
-	30, CWColor.GREY_WHITE, CWTextAlign.LEFT, "THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG."
+	30, CWColor.GREY_WHITE, CWTextAlign.LEFT, "0123456789"
 );
 const t50 = new CWText(
 	new Rect(new Point(0, 100), new Point(5000, 100)),
-	50, CWColor.GREY_WHITE, CWTextAlign.LEFT, "ABCDEFGHIJKLM|NOPQRS5TUVWXYZ 1234567890"
+	50, CWColor.GREY_WHITE, CWTextAlign.LEFT, "0123456789"
 );
 const t100 = new CWText(
 	new Rect(new Point(0, 200), new Point(5000, 200)),
-	100, CWColor.GREY_WHITE, CWTextAlign.LEFT, "RS5TUVWXYZ 1234567890"
+	100, CWColor.GREY_WHITE, CWTextAlign.LEFT, "0123456789"
 );
 const t200 = new CWText(
 	new Rect(new Point(0, 400), new Point(5000, 400)),
-	200, CWColor.GREY_WHITE, CWTextAlign.LEFT, "QRS5TUV 1234567890"
+	200, CWColor.GREY_WHITE, CWTextAlign.LEFT, "0123456789"
 );
 const structs = [
 	t6.toStructures(),
