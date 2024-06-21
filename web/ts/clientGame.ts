@@ -30,23 +30,23 @@ export function initGame() {
 
 const t6 = new CWText(
 	new Rect(new Point(0, -15), new Point(5000, 20)),
-	6, CWColor.GREY_WHITE, CWTextAlign.LEFT, "0123456789"
+	6, CWColor.GREY_WHITE, CWTextAlign.LEFT, "ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789"
 );
 const t10 = new CWText(
 	new Rect(new Point(0, 0), new Point(5000, 20)),
-	10, CWColor.GREY_WHITE, CWTextAlign.LEFT, "0123456789"
+	10, CWColor.GREY_WHITE, CWTextAlign.LEFT, "ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789"
 );
 const t30 = new CWText(
 	new Rect(new Point(0, 25), new Point(5000, 50)),
-	30, CWColor.GREY_WHITE, CWTextAlign.LEFT, "0123456789"
+	30, CWColor.GREY_WHITE, CWTextAlign.LEFT, "NOPQRSTUVWXYZ 0123456789"
 );
 const t50 = new CWText(
 	new Rect(new Point(0, 100), new Point(5000, 100)),
-	50, CWColor.GREY_WHITE, CWTextAlign.LEFT, "0123456789"
+	50, CWColor.GREY_WHITE, CWTextAlign.LEFT, "NOPQRSTUVWXYZ 0123456789"
 );
 const t100 = new CWText(
 	new Rect(new Point(0, 200), new Point(5000, 200)),
-	100, CWColor.GREY_WHITE, CWTextAlign.LEFT, "0123456789"
+	100, CWColor.GREY_WHITE, CWTextAlign.LEFT, "WXYZ 0123456789"
 );
 const t200 = new CWText(
 	new Rect(new Point(0, 400), new Point(5000, 400)),

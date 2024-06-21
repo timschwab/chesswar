@@ -12,7 +12,6 @@ loadMappings(letterMappingsUppercase);
 loadMappings(numberMappings);
 loadMappings(symbolMappings);
 
-
 function loadMappings(mappings: Record<string, TriangleVerticesArray[]>) {
 	const entries = Object.entries(mappings);
 	const vertices = entries.map(entry => {
