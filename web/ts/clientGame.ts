@@ -1,9 +1,4 @@
-import { CWColor } from "../../common/Color.ts";
-import { Point } from "../../common/shapes/Point.ts";
-import { Rect } from "../../common/shapes/Rect.ts";
-import { getAttachedCanvas } from "./dom.ts";
-import { CWText, CWTextAlign } from "./text/CWText.ts";
-import { webglInit } from "./webgl/webglRender.ts";
+import { getAttachedCanvas, getCanvas } from "./core/dom.ts";
 
 initGame();
 
@@ -12,60 +7,61 @@ export function initGame() {
 	requestAnimationFrame(gameLoop);
 }
 
-const t6 = new CWText(
-	new Rect(new Point(0, -15), new Point(5000, 20)),
-	6, CWColor.GREY_WHITE, CWTextAlign.LEFT, "ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789"
-);
-const t10 = new CWText(
-	new Rect(new Point(0, 0), new Point(5000, 20)),
-	10, CWColor.GREY_WHITE, CWTextAlign.LEFT, "ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789"
-);
-const t30 = new CWText(
-	new Rect(new Point(0, 25), new Point(5000, 50)),
-	30, CWColor.GREY_WHITE, CWTextAlign.LEFT, "NOPQRSTUVWXYZ 0123456789"
-);
-const t50 = new CWText(
-	new Rect(new Point(0, 100), new Point(5000, 100)),
-	50, CWColor.GREY_WHITE, CWTextAlign.LEFT, "NOPQRSTUVWXYZ 0123456789"
-);
-const t100 = new CWText(
-	new Rect(new Point(0, 200), new Point(5000, 200)),
-	100, CWColor.GREY_WHITE, CWTextAlign.LEFT, "WXYZ 0123456789"
-);
-const t200 = new CWText(
-	new Rect(new Point(0, 400), new Point(5000, 400)),
-	200, CWColor.GREY_WHITE, CWTextAlign.LEFT, "0123456789"
-);
-const structs = [
-	t6.toStructures(),
-	t10.toStructures(),
-	t30.toStructures(),
-	t50.toStructures(),
-	t100.toStructures(),
-	t200.toStructures()
-].flat();
+function webglInit() {
+	//
+}
 
 function gameLoop() {
-	// draw text on the canvas
+	// requestAnimationFrame(gameLoop);
+
+	// Get the fake canvas
 	const canvas = getAttachedCanvas();
 	const context = canvas.getContext("2d");
 	if (context === null) {
 		return;
 	}
 
-	canvas.width = 1000;
-	canvas.height = 1000;
+	// Font settings
+	const fontFamily = "Courier New";
+	const fontHeight = "128px";
+	const font = `${fontHeight} ${fontFamily}`;
+
+	// Set initial values for the canvas
+	context.fillStyle = "white";
+	context.textAlign = "left";
+	context.textBaseline = "top";
+	context.font = font;
+
+	// Get metrics on this browser's implementation of the font
+	const metrics = context.measureText(".");
+	const letterHeight = Math.ceil(metrics.actualBoundingBoxDescent-metrics.actualBoundingBoxAscent);
+	const oneLetterWidth = Math.ceil(metrics.actualBoundingBoxRight-metrics.actualBoundingBoxLeft);
+
+	// Write the first letter
+	canvas.width = oneLetterWidth;
+	canvas.height = letterHeight;
 
 	context.fillStyle = "white";
-	context.font = "128px Courier New";
-	context.fillText("A", 100, 100);
+	context.textAlign = "left";
+	context.textBaseline = "top";
+	context.font = font;
 
-	const data = context.getImageData(0, 0, 1000, 1000);
-	canvas.width = 2000;
-	canvas.height = 2000;
-	context.putImageData(data, 0, 0);
+	context.fillText("A", oneLetterWidth*0, 0);
 
-	const dataUrl = canvas.toDataURL();
-	const image = new Image();
-	image.src = dataUrl;
+	// Expand the canvas to fit the second letter
+	const savedData = context.getImageData(0, 0, oneLetterWidth, letterHeight);
+	canvas.width = oneLetterWidth*2;
+	context.putImageData(savedData, 0, 0);
+
+	// Write the second letter
+	context.fillStyle = "white";
+	context.textAlign = "left";
+	context.textBaseline = "top";
+	context.font = font;
+
+	context.fillText("B", oneLetterWidth*1, 0);
+
+	//const dataUrl = canvas.toDataURL();
+	//const image = new Image();
+	//image.src = dataUrl;
 }
