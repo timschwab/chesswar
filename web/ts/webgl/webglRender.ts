@@ -1,8 +1,8 @@
 import { Point } from "../../../common/shapes/Point.ts";
 import { Rect } from "../../../common/shapes/Rect.ts";
 import { Structure } from "../../../common/shapes/Structure.ts";
-import { screenChange, screenValue } from "../core/screen.ts";
-import { createHtmlCanvas } from "../dom.ts";
+import { onScreenChange, screenValue } from "../core/screen.ts";
+import { getAttachedCanvas } from "../dom.ts";
 import fragmentShaderSource from "./generated/fragmentShader.ts";
 import vertexShaderSource from "./generated/vertexShader.ts";
 import { assignBuffer, createProgram, createShader, getGl, makeBuffer, setData } from "./webglUtils.ts";
@@ -23,10 +23,10 @@ let structureAttributeLocation: number;
 let vertextAttributeLocation: number;
 let colorAttributeLocation: number;
 
-screenChange(handleScreenChange);
+onScreenChange(handleScreenChange);
 function handleScreenChange(rect: Rect) {
-	const width = rect.right;
-	const height = rect.bottom;
+	const width = rect.width;
+	const height = rect.height;
 
 	// Set the canvas
 	canvas.width = width;
@@ -40,7 +40,7 @@ function handleScreenChange(rect: Rect) {
 }
 
 export function webglInit() {
-	canvas = createHtmlCanvas();
+	canvas = getAttachedCanvas();
 	gl = getGl(canvas);
 
 	// Build the 2 shaders and link them into a program

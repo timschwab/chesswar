@@ -4,7 +4,7 @@ import { Rect } from "../../../common/shapes/Rect.ts";
 import { ZeroPoint } from "../../../common/shapes/Zero.ts";
 
 const hook = createHook<Rect>();
-export const screenChange = hook.register;
+export const onScreenChange = hook.register;
 export let screenValue = getScreen();
 
 globalThis.addEventListener("resize", function() {
