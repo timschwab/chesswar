@@ -2,9 +2,11 @@
 // to pick one. mediump is a good default. It means "medium precision"
 precision mediump float;
 
-varying vec3 v_vertex_color;
+uniform sampler2D u_font;
+
+varying vec2 v_tex_coord;
  
 void main() {
-	// Set the final color to what was passed in
-	gl_FragColor = vec4(v_vertex_color, 1.0);
+	// Get the color from the font texture
+	gl_FragColor = texture2D(u_font, v_tex_coord);
 }

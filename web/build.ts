@@ -10,6 +10,13 @@ generateGlslFile("web/ts/webgl/fragmentShader.glsl", "web/ts/webgl/generated/fra
 console.log("Generating vertex shader TS");
 generateGlslFile("web/ts/webgl/vertexShader.glsl", "web/ts/webgl/generated/vertexShader.ts");
 
+// Generate TS files from the text GLSL files
+console.log("Generating text fragment shader TS");
+generateGlslFile("web/ts/text/webgl/textFragmentShader.glsl", "web/ts/text/webgl/generated/textFragmentShader.ts");
+
+console.log("Generating text vertex shader TS");
+generateGlslFile("web/ts/text/webgl/textVertexShader.glsl", "web/ts/text/webgl/generated/textVertexShader.ts");
+
 // Create a JS bundle from the TS code
 const options = {
 	entryPoints: ['web/ts/clientGame.ts'],

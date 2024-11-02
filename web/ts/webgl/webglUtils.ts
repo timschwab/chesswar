@@ -48,7 +48,7 @@ export function createProgram(gl: WebGLRenderingContext, vertexShader: WebGLShad
 export function makeBuffer(gl: WebGLRenderingContext): WebGLBuffer {
 	const bufferId = gl.createBuffer();
 	if (bufferId == null) {
-		throw "Coulnd't make a new buffer";
+		throw "Couldn't make a new buffer";
 	}
 	gl.bindBuffer(gl.ARRAY_BUFFER, bufferId);
 	return bufferId;

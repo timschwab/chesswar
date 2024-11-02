@@ -1,9 +1,10 @@
-attribute vec2 a_vertex;
+attribute vec2 a_screen_position;
+attribute vec2 a_tex_position;
 
-varying vec3 v_vertex_color;
+varying vec2 v_tex_coord;
 
 void main() {
 	// Outputs
-	gl_Position = vec4(a_vertex, 0, 1);
-	v_vertex_color = a_color;
+	v_tex_coord = a_tex_position;
+	gl_Position = vec4(a_screen_position, 0, 1);
 }
