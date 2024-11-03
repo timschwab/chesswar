@@ -8,7 +8,7 @@ const FONT_FAMILY = "Courier New";
 const FONT_HEIGHT = "128px";
 const FONT = `${FONT_HEIGHT} ${FONT_FAMILY}`;
 
-export class ExpandingTextCanvas {
+export class ExpandingTextTexture {
 	private readonly canvas = getCanvas();
 	private readonly context = this.getContext();
 	readonly letterBoundingBox = this.getLetterBoundingBox();
@@ -24,6 +24,7 @@ export class ExpandingTextCanvas {
 		const context = this.canvas.getContext("2d", {
 			willReadFrequently: true // Optimization flagged to me by Chrome
 		});
+
 		if (context === null) {
 			throw "Could not get canvas context";
 		} else {
