@@ -11,7 +11,7 @@ const FONT = `${FONT_HEIGHT} ${FONT_FAMILY}`;
 export class ExpandingTextCanvas {
 	private readonly canvas = getCanvas();
 	private readonly context = this.getContext();
-	private readonly letterBoundingBox = this.getLetterBoundingBox();
+	readonly letterBoundingBox = this.getLetterBoundingBox();
 	private letterCount = 0;
 
 	constructor() {
@@ -77,9 +77,12 @@ export class ExpandingTextCanvas {
 		return this.letterCount++;
 	}
 
-	getTexture(): HTMLImageElement {
+	getTexture(): Promise<HTMLImageElement> {
 		const image = new Image();
 		image.src = this.canvas.toDataURL();
-		return image;
+
+		return new Promise<HTMLImageElement>((resolve, _reject) => {
+			image.onload = () => resolve(image);
+		});
 	}
 }
