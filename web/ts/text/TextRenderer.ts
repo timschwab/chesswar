@@ -41,7 +41,7 @@ export class TextRenderer {
 		this.screenPositionBufferId = makeBuffer(this.gl);
 		this.texIndexBufferId = makeBuffer(this.gl);
 
-		// Set the screen size uniform
+		// Bind the screen size uniform
 		bindToScreen(screenValue => this.gl.uniform2f(
 			screenUniformLocation, screenValue.width, screenValue.height));
 
@@ -65,8 +65,8 @@ export class TextRenderer {
 		const graphemes = text.split("");
 
 		// Find all graphemes we have never rendered before and update the texture if needed
-		const newGraphemes = graphemes.filter(grapheme => !this.graphemeToGlyphMap.has(grapheme));
-		if (newGraphemes.length > 0) {
+		const newGraphemes = new Set(graphemes.filter(grapheme => !this.graphemeToGlyphMap.has(grapheme)));
+		if (newGraphemes.size > 0) {
 			// Add them all to the glyph texture and map
 			for (const grapheme of newGraphemes) {
 				const index = this.expandingTexture.addGrapheme(grapheme);
@@ -120,6 +120,12 @@ export class TextRenderer {
 			];
 		});
 		setData(this.gl, this.texIndexBufferId, textureVertices);
+
+		console.log(
+			this.graphemeToGlyphMap.size,
+			screenVertices,
+			textureVertices
+		);
 
 		// Draw the triangles!
 		this.gl.drawArrays(this.gl.TRIANGLES, 0, graphemes.length*6);

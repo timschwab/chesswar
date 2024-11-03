@@ -7,7 +7,6 @@ export async function initGame() {
 	requestAnimationFrame(gameLoop);
 }
 
-
 async function webglInit() {
 	//
 }
@@ -15,5 +14,5 @@ async function webglInit() {
 function gameLoop() {
 	// requestAnimationFrame(gameLoop);
 	const renderer = new TextRenderer();
-	renderer.renderText("A");
+	renderer.renderText("ABC 123 $%^ | . ?");
 }
