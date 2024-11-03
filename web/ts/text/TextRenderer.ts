@@ -7,8 +7,9 @@ import { bindCanvasToScreen, bindToScreen } from "../core/screen.ts";
 
 export class TextRenderer {
 	private readonly gl: WebGLRenderingContext;
+	private readonly texLengthUniformLocation: WebGLUniformLocation | null;
 	private readonly screenPositionBufferId: WebGLBuffer;
-	private readonly texPositionBufferId: WebGLBuffer;
+	private readonly texIndexBufferId: WebGLBuffer;
 
 	private readonly expandingTexture: ExpandingGlyphTexture;
 	private readonly graphemeToGlyphMap: Map<string, number>;
@@ -31,13 +32,14 @@ export class TextRenderer {
 
 		// Grab locations
 		const screenUniformLocation = this.gl.getUniformLocation(program, "u_screen");
+		this.texLengthUniformLocation = this.gl.getUniformLocation(program, "u_tex_length");
 
 		const screenPositionAttributeLocation = this.gl.getAttribLocation(program, "a_screen_position");
-		const texPositionAttributeLocation = this.gl.getAttribLocation(program, "a_tex_position");
+		const texIndexAttributeLocation = this.gl.getAttribLocation(program, "a_tex_index");
 
 		// Create buffers
 		this.screenPositionBufferId = makeBuffer(this.gl);
-		this.texPositionBufferId = makeBuffer(this.gl);
+		this.texIndexBufferId = makeBuffer(this.gl);
 
 		// Set the screen size uniform
 		bindToScreen(screenValue => this.gl.uniform2f(
@@ -45,7 +47,7 @@ export class TextRenderer {
 
 		// Set the attributes
 		assignBuffer(this.gl, this.screenPositionBufferId, screenPositionAttributeLocation, 2);
-		assignBuffer(this.gl, this.texPositionBufferId, texPositionAttributeLocation, 2);
+		assignBuffer(this.gl, this.texIndexBufferId, texIndexAttributeLocation, 2);
 
 		// Create texture buffer
 		const texture = this.gl.createTexture();
@@ -59,51 +61,67 @@ export class TextRenderer {
 	}
 
 	async renderText(text: string) {
-		// Load the attributes
+		// Split text into graphemes
+		const graphemes = text.split("");
+
+		// Find all graphemes we have never rendered before and update the texture if needed
+		const newGraphemes = graphemes.filter(grapheme => !this.graphemeToGlyphMap.has(grapheme));
+		if (newGraphemes.length > 0) {
+			// Add them all to the glyph texture and map
+			for (const grapheme of newGraphemes) {
+				const index = this.expandingTexture.addGrapheme(grapheme);
+				this.graphemeToGlyphMap.set(grapheme, index);
+			}
+
+			// Upload the new texture
+			const texture = await this.expandingTexture.getTexture();
+			this.gl.texImage2D(
+				this.gl.TEXTURE_2D, 0, this.gl.RGBA, this.gl.RGBA, this.gl.UNSIGNED_BYTE, texture);
+
+			// Set the texture size uniform
+			this.gl.uniform1f(this.texLengthUniformLocation, this.graphemeToGlyphMap.size);
+		}
+
+		// Set the vertex position attribute
 		const w = this.expandingTexture.glyphBoundingBox.width;
 		const h = this.expandingTexture.glyphBoundingBox.height;
-		setData(this.gl, this.screenPositionBufferId, [
-			w*0, 0,
-			w*1, 0,
-			w*0, h,
-			w*0, h,
-			w*1, 0,
-			w*1, h,
+		const screenVertices = graphemes.flatMap((_grapheme, index) => {
+			const x0 = w*index;
+			const x1 = w*(index+1);
 
-			w*1, 0,
-			w*2, 0,
-			w*1, h,
-			w*1, h,
-			w*2, 0,
-			w*2, h,
-		]);
+			return [
+				x0, 0,
+				x1, 0,
+				x0, h,
+				x0, h,
+				x1, 0,
+				x1, h
+			];
+		});
+		setData(this.gl, this.screenPositionBufferId, screenVertices);
 
-		setData(this.gl, this.texPositionBufferId, [
-			0.0, 0.0,
-			0.5, 0.0,
-			0.0, 1.0,
-			0.0, 1.0,
-			0.5, 0.0,
-			0.5, 1.0,
+		// Set the texture position attribute
+		const textureVertices = graphemes.flatMap(grapheme => {
+			const index = this.graphemeToGlyphMap.get(grapheme);
+			if (index === undefined) {
+				throw "Could not find grapheme in graphemeToGlyphMap: " + grapheme;
+			}
 
-			0.5, 0.0,
-			1.0, 0.0,
-			0.5, 1.0,
-			0.5, 1.0,
-			1.0, 0.0,
-			1.0, 1.0
-		]);
+			const x0 = index;
+			const x1 = index+1;
 
-		// Upload the image into the texture.
-		this.gl.texImage2D(
-			this.gl.TEXTURE_2D,
-			0,
-			this.gl.RGBA,
-			this.gl.RGBA,
-			this.gl.UNSIGNED_BYTE,
-			await this.expandingTexture.getTexture());
+			return [
+				x0, 0,
+				x1, 0,
+				x0, 1,
+				x0, 1,
+				x1, 0,
+				x1, 1
+			];
+		});
+		setData(this.gl, this.texIndexBufferId, textureVertices);
 
-		// Draw the triangles
-		this.gl.drawArrays(this.gl.TRIANGLES, 0, 12);
+		// Draw the triangles!
+		this.gl.drawArrays(this.gl.TRIANGLES, 0, graphemes.length*6);
 	}
 }

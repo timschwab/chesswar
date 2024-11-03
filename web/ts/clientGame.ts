@@ -15,5 +15,5 @@ async function webglInit() {
 function gameLoop() {
 	// requestAnimationFrame(gameLoop);
 	const renderer = new TextRenderer();
-	renderer.renderText("");
+	renderer.renderText("A");
 }
