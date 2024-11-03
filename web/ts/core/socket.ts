@@ -1,10 +1,10 @@
-import { createHook } from "../../../common/hooks.ts";
+import { Hook } from "../../../common/Hook.ts";
 import { ClientMessage } from "../../../common/message-types/client.ts";
 import { ServerMessage } from "../../../common/message-types/server.ts";
 import { localApiServerOrigin, remoteApiServerOrigin } from "../../../common/settings.ts";
 import env, { Environment } from "./environment.ts";
 
-const messageHook = createHook<ServerMessage>();
+const messageHook = new Hook<ServerMessage>();
 
 const origin = env == Environment.REMOTE ? remoteApiServerOrigin : localApiServerOrigin;
 const sock = new WebSocket(origin);

@@ -1,4 +1,4 @@
-import { createHook } from "../../../common/hooks.ts";
+import { Hook } from "../../../common/Hook.ts";
 import { Point } from "../../../common/shapes/Point.ts";
 
 export enum CWKey {
@@ -38,8 +38,8 @@ function isTranslatable(code: string): code is keyof typeof KeyCodeTranslation {
 	}
 }
 
-const keyHook = createHook<CWKeyEvent>();
-const clickHook = createHook<Point>();
+const keyHook = new Hook<CWKeyEvent>();
+const clickHook = new Hook<Point>();
 
 document.addEventListener("keydown", handleKeydown);
 document.addEventListener("keyup", handleKeyup);

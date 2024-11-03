@@ -3,22 +3,24 @@ import { ExpandingGlyphTexture } from "./ExpandingGlyphTexture.ts";
 import { assignBuffer, createProgram, createShader, getGl, makeBuffer, setData } from "../webgl/webglUtils.ts";
 import textVertexShaderSource from "./webgl/generated/textVertexShader.ts";
 import textFragmentShaderSource from "./webgl/generated/textFragmentShader.ts";
-import { screenValue } from "../core/screen.ts";
+import { bindCanvasToScreen, bindToScreen } from "../core/screen.ts";
 
 export class TextRenderer {
 	private readonly gl: WebGLRenderingContext;
+	private readonly screenPositionBufferId: WebGLBuffer;
+	private readonly texPositionBufferId: WebGLBuffer;
+
 	private readonly expandingTexture: ExpandingGlyphTexture;
+	private readonly graphemeToGlyphMap: Map<string, number>;
 
 	constructor() {
-		// Get the text texture and letter map
+		// Get the glyph texture and grapheme map
 		this.expandingTexture = new ExpandingGlyphTexture();
-		this.expandingTexture.addGrapheme("A");
-		this.expandingTexture.addGrapheme("B");
+		this.graphemeToGlyphMap = new Map();
 
-		// Get the real canvas we will use WebGL on
+		// Get the canvas we will render to
 		const canvas = getAttachedCanvas();
-		canvas.width = screenValue.width;
-		canvas.height = screenValue.height;
+		bindCanvasToScreen(canvas);
 		this.gl = getGl(canvas);
 
 		// Build the 2 shaders and link them into a program
@@ -34,20 +36,33 @@ export class TextRenderer {
 		const texPositionAttributeLocation = this.gl.getAttribLocation(program, "a_tex_position");
 
 		// Create buffers
-		const screenPositionBufferId = makeBuffer(this.gl);
-		const texPositionBufferId = makeBuffer(this.gl);
+		this.screenPositionBufferId = makeBuffer(this.gl);
+		this.texPositionBufferId = makeBuffer(this.gl);
 
-		// Set the uniform
-		this.gl.uniform2f(screenUniformLocation, screenValue.width, screenValue.height);
+		// Set the screen size uniform
+		bindToScreen(screenValue => this.gl.uniform2f(
+			screenUniformLocation, screenValue.width, screenValue.height));
 
 		// Set the attributes
-		assignBuffer(this.gl, screenPositionBufferId, screenPositionAttributeLocation, 2);
-		assignBuffer(this.gl, texPositionBufferId, texPositionAttributeLocation, 2);
+		assignBuffer(this.gl, this.screenPositionBufferId, screenPositionAttributeLocation, 2);
+		assignBuffer(this.gl, this.texPositionBufferId, texPositionAttributeLocation, 2);
 
+		// Create texture buffer
+		const texture = this.gl.createTexture();
+		this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
+
+		// Set the parameters so we can render any size image.
+		this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_S, this.gl.CLAMP_TO_EDGE);
+		this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_T, this.gl.CLAMP_TO_EDGE);
+		this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.NEAREST);
+		this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.NEAREST);
+	}
+
+	async renderText(text: string) {
 		// Load the attributes
 		const w = this.expandingTexture.glyphBoundingBox.width;
 		const h = this.expandingTexture.glyphBoundingBox.height;
-		setData(this.gl, screenPositionBufferId, [
+		setData(this.gl, this.screenPositionBufferId, [
 			w*0, 0,
 			w*1, 0,
 			w*0, h,
@@ -63,7 +78,7 @@ export class TextRenderer {
 			w*2, h,
 		]);
 
-		setData(this.gl, texPositionBufferId, [
+		setData(this.gl, this.texPositionBufferId, [
 			0.0, 0.0,
 			0.5, 0.0,
 			0.0, 1.0,
@@ -79,18 +94,6 @@ export class TextRenderer {
 			1.0, 1.0
 		]);
 
-		// Create texture buffer
-		const texture = this.gl.createTexture();
-		this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
-
-		// Set the parameters so we can render any size image.
-		this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_S, this.gl.CLAMP_TO_EDGE);
-		this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_T, this.gl.CLAMP_TO_EDGE);
-		this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.NEAREST);
-		this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.NEAREST);
-	}
-
-	async renderText(_text: string) {
 		// Upload the image into the texture.
 		this.gl.texImage2D(
 			this.gl.TEXTURE_2D,
