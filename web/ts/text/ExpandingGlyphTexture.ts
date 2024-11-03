@@ -3,21 +3,30 @@ import { Rect } from "../../../common/shapes/Rect.ts";
 import { ZeroPoint } from "../../../common/shapes/Zero.ts";
 import { getCanvas } from "../core/dom.ts";
 
+// https://stackoverflow.com/a/27331885/1455074
+// A code point is the atomic unit of data in Unicode. Could be a character/letter or a diacritic.
+// A grapheme is what is displayed as a single graphical unit
+// A glyph is an image containing the rendering of a grapheme
+
 // Font settings
 const FONT_FAMILY = "Courier New";
 const FONT_HEIGHT = "128px";
 const FONT = `${FONT_HEIGHT} ${FONT_FAMILY}`;
 
-export class ExpandingTextTexture {
-	private readonly canvas = getCanvas();
-	private readonly context = this.getContext();
-	readonly letterBoundingBox = this.getLetterBoundingBox();
-	private letterCount = 0;
+export class ExpandingGlyphTexture {
+	private readonly canvas;
+	private readonly context;
+	readonly glyphBoundingBox;
+	private glyphCount = 0;
 
 	constructor() {
+		this.canvas = getCanvas();
+		this.context = this.getContext();
+		this.glyphBoundingBox = this.getGlyphBoundingBox()
+
 		// Set initial values and flags
 		this.canvas.width = 0;
-		this.canvas.height = this.letterBoundingBox.height;
+		this.canvas.height = this.glyphBoundingBox.height;
 	}
 
 	private getContext(): CanvasRenderingContext2D {
@@ -32,16 +41,16 @@ export class ExpandingTextTexture {
 		}
 	}
 
-	private getLetterBoundingBox(): Rect {
+	private getGlyphBoundingBox(): Rect {
 		// Set initial values for the canvas
 		this.setStyleValues();
 	
 		// Get metrics on this browser's implementation of the font
 		const metrics = this.context.measureText(".");
-		const oneLetterWidth = Math.ceil(metrics.actualBoundingBoxRight-metrics.actualBoundingBoxLeft);
-		const oneLetterHeight = Math.ceil(metrics.actualBoundingBoxDescent-metrics.actualBoundingBoxAscent);
+		const oneGlyphWidth = Math.ceil(metrics.actualBoundingBoxRight-metrics.actualBoundingBoxLeft);
+		const oneGlyphHeight = Math.ceil(metrics.actualBoundingBoxDescent-metrics.actualBoundingBoxAscent);
 	
-		return new Rect(ZeroPoint, new Point(oneLetterWidth, oneLetterHeight));
+		return new Rect(ZeroPoint, new Point(oneGlyphWidth, oneGlyphHeight));
 	}
 
 	private setStyleValues(): void {
@@ -51,18 +60,18 @@ export class ExpandingTextTexture {
 		this.context.font = FONT;
 	}
 
-	addLetter(letter: string): number {
-		// Validate it is only one letter
-		if (letter.length !== 1) {
-			throw "Expected exactly one letter but found " + letter.length + " instead.";
+	addGrapheme(grapheme: string): number {
+		// Validate it is only one grapheme
+		if (grapheme.length !== 1) {
+			throw "Expected exactly one grapheme but found " + grapheme.length + " instead.";
 		}
 
 		// Compute vars
 		const previousWidth = this.canvas.width;
-		const newWidth = previousWidth + this.letterBoundingBox.width;
+		const newWidth = previousWidth + this.glyphBoundingBox.width;
 
-		// Expand canvas to fit the new letters
-		if (this.letterCount > 0) {
+		// Expand canvas to fit the new glyph
+		if (this.glyphCount > 0) {
 			const savedData = this.context.getImageData(0, 0, previousWidth, this.canvas.height);
 			this.canvas.width = newWidth;
 			this.context.putImageData(savedData, 0, 0);
@@ -70,12 +79,12 @@ export class ExpandingTextTexture {
 			this.canvas.width = newWidth;
 		}
 
-		// Write the new letter
+		// Convert the new grapheme to a glyph (by rendering it)
 		this.setStyleValues();
-		this.context.fillText(letter, previousWidth, 0);
+		this.context.fillText(grapheme, previousWidth, 0);
 
 		// Return the new index
-		return this.letterCount++;
+		return this.glyphCount++;
 	}
 
 	getTexture(): Promise<HTMLImageElement> {

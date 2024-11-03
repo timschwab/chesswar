@@ -1,5 +1,5 @@
 import { getAttachedCanvas } from "../core/dom.ts";
-import { ExpandingTextTexture } from "./ExpandingTextTexture.ts";
+import { ExpandingGlyphTexture } from "./ExpandingGlyphTexture.ts";
 import { assignBuffer, createProgram, createShader, getGl, makeBuffer, setData } from "../webgl/webglUtils.ts";
 import textVertexShaderSource from "./webgl/generated/textVertexShader.ts";
 import textFragmentShaderSource from "./webgl/generated/textFragmentShader.ts";
@@ -7,13 +7,13 @@ import { screenValue } from "../core/screen.ts";
 
 export class TextRenderer {
 	private readonly gl: WebGLRenderingContext;
-	private readonly expandingTexture: ExpandingTextTexture;
+	private readonly expandingTexture: ExpandingGlyphTexture;
 
 	constructor() {
-		// Get the text texture
-		this.expandingTexture = new ExpandingTextTexture();
-		this.expandingTexture.addLetter("A");
-		this.expandingTexture.addLetter("B");
+		// Get the text texture and letter map
+		this.expandingTexture = new ExpandingGlyphTexture();
+		this.expandingTexture.addGrapheme("A");
+		this.expandingTexture.addGrapheme("B");
 
 		// Get the real canvas we will use WebGL on
 		const canvas = getAttachedCanvas();
@@ -45,8 +45,8 @@ export class TextRenderer {
 		assignBuffer(this.gl, texPositionBufferId, texPositionAttributeLocation, 2);
 
 		// Load the attributes
-		const w = this.expandingTexture.letterBoundingBox.width;
-		const h = this.expandingTexture.letterBoundingBox.height;
+		const w = this.expandingTexture.glyphBoundingBox.width;
+		const h = this.expandingTexture.glyphBoundingBox.height;
 		setData(this.gl, screenPositionBufferId, [
 			w*0, 0,
 			w*1, 0,
