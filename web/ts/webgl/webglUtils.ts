@@ -50,7 +50,6 @@ export function makeBuffer(gl: WebGLRenderingContext): WebGLBuffer {
 	if (bufferId == null) {
 		throw "Couldn't make a new buffer";
 	}
-	gl.bindBuffer(gl.ARRAY_BUFFER, bufferId);
 	return bufferId;
 }
 
