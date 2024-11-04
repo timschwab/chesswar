@@ -2,6 +2,7 @@ uniform vec2 u_glyph_bounding_box;
 uniform vec2 u_screen;
 uniform float u_tex_length;
 
+attribute float a_scale;
 attribute vec2 a_text_top_left;
 attribute float a_glyph_index;
 attribute vec2 a_glyph_vertex;
@@ -11,11 +12,14 @@ varying vec2 v_tex_coord;
 
 void main() {
 	/***** Get screen coords *****/
+	// Adjust the size of the glyph bounding box
+	vec2 adjustedGlyphBoundingBox = u_glyph_bounding_box * a_scale;
+
 	// Find the scaled glyph vertex
-	vec2 scaledVertex = a_glyph_vertex*u_glyph_bounding_box;
+	vec2 scaledVertex = a_glyph_vertex * adjustedGlyphBoundingBox;
 
 	// Offset by glyph index
-	float glyphLeftOffset = u_glyph_bounding_box.x * a_glyph_index;
+	float glyphLeftOffset = adjustedGlyphBoundingBox.x * a_glyph_index;
 	vec2 indexOffsetVertex = vec2(scaledVertex.x+glyphLeftOffset, scaledVertex.y);
 
 	// Offset by text top left

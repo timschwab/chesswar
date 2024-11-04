@@ -18,8 +18,8 @@ function gameLoop() {
 	// requestAnimationFrame(gameLoop);
 
 	const message = "ABC 123 $%^ | . ?";
-	const topLeft = new Point(0, 0);
-	const scale = 1;
+	const topLeft = new Point(50, 50);
+	const scale = 0.5;
 	const color = CWColor.GREY_WHITE;
 	const renderer = new TextRenderer();
 	renderer.renderText(new CWText(message, topLeft, scale, color));

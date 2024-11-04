@@ -10,6 +10,7 @@ export class TextRenderer {
 	private readonly gl: WebGLRenderingContext;
 	private readonly texLengthUniformLocation: WebGLUniformLocation | null;
 
+	private readonly scaleBufferId: WebGLBuffer;
 	private readonly textLeftTopBufferId: WebGLBuffer;
 	private readonly glyphIndexBufferId: WebGLBuffer;
 	private readonly glyphVertexBufferId: WebGLBuffer;
@@ -39,12 +40,14 @@ export class TextRenderer {
 		const screenUniformLocation = this.gl.getUniformLocation(program, "u_screen");
 		this.texLengthUniformLocation = this.gl.getUniformLocation(program, "u_tex_length");
 
+		const scaleAttributeLocation = this.gl.getAttribLocation(program, "a_scale");
 		const textTopLeftAttributeLocation = this.gl.getAttribLocation(program, "a_text_top_left");
 		const glyphIndexAttributeLocation = this.gl.getAttribLocation(program, "a_glyph_index");
 		const glyphVertexAttributeLocation = this.gl.getAttribLocation(program, "a_glyph_vertex");
 		const texIndexAttributeLocation = this.gl.getAttribLocation(program, "a_tex_index");
 
 		// Create buffers
+		this.scaleBufferId = makeBuffer(this.gl);
 		this.textLeftTopBufferId = makeBuffer(this.gl);
 		this.glyphIndexBufferId = makeBuffer(this.gl);
 		this.glyphVertexBufferId = makeBuffer(this.gl);
@@ -59,6 +62,7 @@ export class TextRenderer {
 			screenUniformLocation, screenValue.width, screenValue.height));
 
 		// Set the attributes
+		assignBuffer(this.gl, this.scaleBufferId, scaleAttributeLocation, 1);
 		assignBuffer(this.gl, this.textLeftTopBufferId, textTopLeftAttributeLocation, 2);
 		assignBuffer(this.gl, this.glyphIndexBufferId, glyphIndexAttributeLocation, 1);
 		assignBuffer(this.gl, this.glyphVertexBufferId, glyphVertexAttributeLocation, 2);
@@ -96,6 +100,19 @@ export class TextRenderer {
 			// Set the texture size uniform
 			this.gl.uniform1f(this.texLengthUniformLocation, this.graphemeToGlyphMap.size);
 		}
+
+		// Set the scale attribute
+		const scales = graphemes.flatMap(() => {
+			return [
+				text.scale,
+				text.scale,
+				text.scale,
+				text.scale,
+				text.scale,
+				text.scale
+			];
+		});
+		setData(this.gl, this.scaleBufferId, scales);
 
 		// Set the text left top attribute
 		const textLeftTops = graphemes.flatMap(() => {
