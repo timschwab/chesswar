@@ -9,7 +9,10 @@ import type { CWText } from "./CWText.ts";
 export class TextRenderer {
 	private readonly gl: WebGLRenderingContext;
 	private readonly texLengthUniformLocation: WebGLUniformLocation | null;
-	private readonly screenPositionBufferId: WebGLBuffer;
+
+	private readonly textLeftTopBufferId: WebGLBuffer;
+	private readonly glyphIndexBufferId: WebGLBuffer;
+	private readonly glyphVertexBufferId: WebGLBuffer;
 	private readonly texIndexBufferId: WebGLBuffer;
 
 	private readonly expandingTexture: ExpandingGlyphTexture;
@@ -32,22 +35,33 @@ export class TextRenderer {
 		this.gl.useProgram(program);
 
 		// Grab locations
+		const glyphBoundingBoxLocation = this.gl.getUniformLocation(program, "u_glyph_bounding_box");
 		const screenUniformLocation = this.gl.getUniformLocation(program, "u_screen");
 		this.texLengthUniformLocation = this.gl.getUniformLocation(program, "u_tex_length");
 
-		const screenPositionAttributeLocation = this.gl.getAttribLocation(program, "a_screen_position");
+		const textTopLeftAttributeLocation = this.gl.getAttribLocation(program, "a_text_top_left");
+		const glyphIndexAttributeLocation = this.gl.getAttribLocation(program, "a_glyph_index");
+		const glyphVertexAttributeLocation = this.gl.getAttribLocation(program, "a_glyph_vertex");
 		const texIndexAttributeLocation = this.gl.getAttribLocation(program, "a_tex_index");
 
 		// Create buffers
-		this.screenPositionBufferId = makeBuffer(this.gl);
+		this.textLeftTopBufferId = makeBuffer(this.gl);
+		this.glyphIndexBufferId = makeBuffer(this.gl);
+		this.glyphVertexBufferId = makeBuffer(this.gl);
 		this.texIndexBufferId = makeBuffer(this.gl);
 
-		// Bind the screen size uniform
+		// Set/bind the uniforms
+		this.gl.uniform2f(
+			glyphBoundingBoxLocation,
+			this.expandingTexture.glyphBoundingBox.right,
+			this.expandingTexture.glyphBoundingBox.bottom);
 		bindToScreen(screenValue => this.gl.uniform2f(
 			screenUniformLocation, screenValue.width, screenValue.height));
 
 		// Set the attributes
-		assignBuffer(this.gl, this.screenPositionBufferId, screenPositionAttributeLocation, 2);
+		assignBuffer(this.gl, this.textLeftTopBufferId, textTopLeftAttributeLocation, 2);
+		assignBuffer(this.gl, this.glyphIndexBufferId, glyphIndexAttributeLocation, 1);
+		assignBuffer(this.gl, this.glyphVertexBufferId, glyphVertexAttributeLocation, 2);
 		assignBuffer(this.gl, this.texIndexBufferId, texIndexAttributeLocation, 2);
 
 		// Create texture buffer
@@ -83,50 +97,67 @@ export class TextRenderer {
 			this.gl.uniform1f(this.texLengthUniformLocation, this.graphemeToGlyphMap.size);
 		}
 
-		// Set the vertex position attribute
-		const w = this.expandingTexture.glyphBoundingBox.width;
-		const h = this.expandingTexture.glyphBoundingBox.height;
-		const screenVertices = graphemes.flatMap((_grapheme, index) => {
-			const x0 = w*index;
-			const x1 = w*(index+1);
-
+		// Set the text left top attribute
+		const textLeftTops = graphemes.flatMap(() => {
+			const x = text.leftTop.x;
+			const y = text.leftTop.y;
 			return [
-				x0, 0,
-				x1, 0,
-				x0, h,
-				x0, h,
-				x1, 0,
-				x1, h
+				x, y,
+				x, y,
+				x, y,
+				x, y,
+				x, y,
+				x, y
 			];
 		});
-		setData(this.gl, this.screenPositionBufferId, screenVertices);
+		setData(this.gl, this.textLeftTopBufferId, textLeftTops);
 
-		// Set the texture position attribute
-		const textureVertices = graphemes.flatMap(grapheme => {
+		// Set the glyph index attribute
+		const glyphIndices = graphemes.flatMap((_grapheme, index) => {
+			return [
+				index,
+				index,
+				index,
+				index,
+				index,
+				index
+			];
+		});
+		setData(this.gl, this.glyphIndexBufferId, glyphIndices);
+
+		// Set the glyph vertex attribute
+		const glyphVertices = graphemes.flatMap(() => {
+			return [
+				0, 0,
+				1, 0,
+				0, 1,
+				0, 1,
+				1, 0,
+				1, 1
+			];
+		});
+		setData(this.gl, this.glyphVertexBufferId, glyphVertices);
+
+		// Set the texture index attribute
+		const textureIndices = graphemes.flatMap(grapheme => {
 			const index = this.graphemeToGlyphMap.get(grapheme);
 			if (index === undefined) {
 				throw "Could not find grapheme in graphemeToGlyphMap: " + grapheme;
 			}
 
-			const x0 = index;
-			const x1 = index+1;
+			const xLeft = index;
+			const xRght = index+1;
 
 			return [
-				x0, 0,
-				x1, 0,
-				x0, 1,
-				x0, 1,
-				x1, 0,
-				x1, 1
+				xLeft, 0,
+				xRght, 0,
+				xLeft, 1,
+				xLeft, 1,
+				xRght, 0,
+				xRght, 1
 			];
 		});
-		setData(this.gl, this.texIndexBufferId, textureVertices);
-
-		console.log(
-			this.graphemeToGlyphMap.size,
-			screenVertices,
-			textureVertices
-		);
+		setData(this.gl, this.texIndexBufferId, textureIndices);
 
 		// Draw the triangles!
 		this.gl.drawArrays(this.gl.TRIANGLES, 0, graphemes.length*6);
