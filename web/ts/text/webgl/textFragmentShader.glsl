@@ -5,8 +5,15 @@ precision mediump float;
 uniform sampler2D u_font;
 
 varying vec2 v_tex_coord;
+varying vec3 v_color;
  
 void main() {
 	// Get the color from the font texture
-	gl_FragColor = texture2D(u_font, v_tex_coord);
+	vec4 glyphColor = texture2D(u_font, v_tex_coord);
+
+	// Combine the alpha and the given color
+	vec4 pointColor = glyphColor * vec4(v_color, 1.0);
+
+	// Output
+	gl_FragColor = pointColor;
 }

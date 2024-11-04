@@ -15,6 +15,7 @@ attribute vec2 a_glyph_vertex;
 attribute vec2 a_tex_index;
 
 varying vec2 v_tex_coord;
+varying vec3 v_color;
 
 void main() {
 	/***** Get screen coords *****/
@@ -49,6 +50,7 @@ void main() {
 
 	// Outputs
 	v_tex_coord = texPosition;
+	v_color = vec3(0, 0.5, 0);
 	gl_Position = vec4(clipSpaceReal, 0, 1);
 }
 `;
