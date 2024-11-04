@@ -4,6 +4,7 @@ import { assignBuffer, createProgram, createShader, getGl, makeBuffer, setData }
 import textVertexShaderSource from "./webgl/generated/textVertexShader.ts";
 import textFragmentShaderSource from "./webgl/generated/textFragmentShader.ts";
 import { bindCanvasToScreen, bindToScreen } from "../core/screen.ts";
+import type { CWText } from "./CWText.ts";
 
 export class TextRenderer {
 	private readonly gl: WebGLRenderingContext;
@@ -60,9 +61,9 @@ export class TextRenderer {
 		this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.NEAREST);
 	}
 
-	async renderText(text: string) {
+	async renderText(text: CWText) {
 		// Split text into graphemes
-		const graphemes = text.split("");
+		const graphemes = text.message.split("");
 
 		// Find all graphemes we have never rendered before and update the texture if needed
 		const newGraphemes = new Set(graphemes.filter(grapheme => !this.graphemeToGlyphMap.has(grapheme)));

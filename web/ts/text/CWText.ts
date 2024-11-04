@@ -1,32 +1,16 @@
 import { Color } from "../../../common/Color.ts";
 import { Point } from "../../../common/shapes/Point.ts";
-import { Rect } from "../../../common/shapes/Rect.ts";
-import { Structure } from "../../../common/shapes/Structure.ts";
-import { Triangle } from "../../../common/shapes/Triangle.ts";
-import { renderOneLetter } from "./renderOneLetter.ts";
 
 export class CWText {
-	readonly box: Rect;
-	readonly size: number;
-	readonly color: Color;
 	readonly message: string;
+	readonly topLeft: Point;
+	readonly scale: number;
+	readonly color: Color;
 
-	constructor(box: Rect, size: number, color: Color, message: string) {
-		this.box = box;
-		this.size = size;
-		this.color = color;
+	constructor(message: string, topLeft: Point, scale: number, color: Color) {
 		this.message = message;
-	}
-
-	toStructures(): Structure[] {
-		const letters = Array.from(this.message);
-		return letters.map(this.renderOneLetter, this);
-	}
-
-	private renderOneLetter(letter: string, index: number): Structure {
-		const vertices = renderOneLetter(letter);
-		const triangles = vertices.map(v => new Triangle(v, this.color));
-		const offset = index*this.size;
-		return new Structure(triangles, this.box.leftTop.add(new Point(offset, 0)), this.size);
+		this.topLeft = topLeft;
+		this.scale = scale;
+		this.color = color;
 	}
 }

@@ -1,3 +1,6 @@
+import { CWColor } from "../../common/Color.ts";
+import { Point } from "../../common/shapes/Point.ts";
+import { CWText } from "./text/CWText.ts";
 import { TextRenderer } from "./text/TextRenderer.ts";
 
 initGame();
@@ -13,6 +16,11 @@ async function webglInit() {
 
 function gameLoop() {
 	// requestAnimationFrame(gameLoop);
+
+	const message = "ABC 123 $%^ | . ?";
+	const topLeft = new Point(0, 0);
+	const scale = 1;
+	const color = CWColor.GREY_WHITE;
 	const renderer = new TextRenderer();
-	renderer.renderText("ABC 123 $%^ | . ?");
+	renderer.renderText(new CWText(message, topLeft, scale, color));
 }
