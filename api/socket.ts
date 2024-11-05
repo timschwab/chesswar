@@ -90,9 +90,9 @@ function safeSend(conn: WebSocket, message: string) {
 export default {
 	newConnection,
 	listen: {
-		add: addHook.register.bind(addHook),
-		remove: removeHook.register.bind(removeHook),
-		message: messageHook.register.bind(messageHook)
+		add: addHook.register,
+		remove: removeHook.register,
+		message: messageHook.register
 	},
 	sendOne,
 	sendBulk,

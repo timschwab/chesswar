@@ -5,6 +5,8 @@ export class Hook<T> {
 
 	constructor() {
 		this.hooks = [];
+
+		this.register = this.register.bind(this);
 	}
 
 	register(callback: HookFunc<T>): void {
