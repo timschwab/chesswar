@@ -1,5 +1,4 @@
 import { ExpandingGlyphTexture } from "./ExpandingGlyphTexture.ts";
-import { assignBuffer, setData } from "../webglUtils.ts";
 import textVertexShaderSource from "./glsl-generated/textVertexShader.ts";
 import textFragmentShaderSource from "./glsl-generated/textFragmentShader.ts";
 import { bindToScreen } from "../../core/screen.ts";
@@ -9,7 +8,7 @@ import { WebglRenderer } from "../WebglRenderer.ts";
 export class TextRenderer {
 	private readonly webgl: WebglRenderer;
 
-	private readonly texLengthUniformLocation: WebGLUniformLocation | null;
+	private readonly texLengthUniformLocation: WebGLUniformLocation;
 
 	private readonly scaleBufferId: WebGLBuffer;
 	private readonly textLeftTopBufferId: WebGLBuffer;
@@ -28,47 +27,39 @@ export class TextRenderer {
 		// Create the WebglRenderer
 		this.webgl = new WebglRenderer(textVertexShaderSource, textFragmentShaderSource);
 
-		// Grab locations
+		// Grab uniform locations
 		const glyphBoundingBoxLocation = this.webgl.uniformLocation("u_glyph_bounding_box");
 		const screenUniformLocation = this.webgl.uniformLocation("u_screen");
 		this.texLengthUniformLocation = this.webgl.uniformLocation("u_tex_length");
 
-		const scaleAttributeLocation = this.webgl.attributeLocation("a_scale");
-		const textTopLeftAttributeLocation = this.webgl.attributeLocation("a_text_top_left");
-		const glyphIndexAttributeLocation = this.webgl.attributeLocation("a_glyph_index");
-		const glyphVertexAttributeLocation = this.webgl.attributeLocation("a_glyph_vertex");
-		const texIndexAttributeLocation = this.webgl.attributeLocation("a_tex_index");
-
-		// Create buffers
-		this.scaleBufferId = this.webgl.newBuffer();
-		this.textLeftTopBufferId = this.webgl.newBuffer();
-		this.glyphIndexBufferId = this.webgl.newBuffer();
-		this.glyphVertexBufferId = this.webgl.newBuffer();
-		this.texIndexBufferId = this.webgl.newBuffer();
-
 		// Set/bind the uniforms
-		this.gl.uniform2f(
-			glyphBoundingBoxLocation,
+		this.webgl.setUniform2f(glyphBoundingBoxLocation, [
 			this.expandingTexture.glyphBoundingBox.right,
-			this.expandingTexture.glyphBoundingBox.bottom);
-		bindToScreen(screenValue => this.gl.uniform2f(
-			screenUniformLocation, screenValue.width, screenValue.height));
+			this.expandingTexture.glyphBoundingBox.bottom
+		]);
+		bindToScreen(screenValue => this.webgl.setUniform2f(
+			screenUniformLocation, [screenValue.width, screenValue.height]));
 
-		// Set the attributes
-		assignBuffer(this.gl, this.scaleBufferId, scaleAttributeLocation, 1);
-		assignBuffer(this.gl, this.textLeftTopBufferId, textTopLeftAttributeLocation, 2);
-		assignBuffer(this.gl, this.glyphIndexBufferId, glyphIndexAttributeLocation, 1);
-		assignBuffer(this.gl, this.glyphVertexBufferId, glyphVertexAttributeLocation, 2);
-		assignBuffer(this.gl, this.texIndexBufferId, texIndexAttributeLocation, 2);
+		// Get attribute buffers
+		this.scaleBufferId = this.webgl.attributeBuffer("a_scale", 1);
+		this.textLeftTopBufferId = this.webgl.attributeBuffer("a_text_top_left", 2);
+		this.glyphIndexBufferId = this.webgl.attributeBuffer("a_glyph_index", 1);
+		this.glyphVertexBufferId = this.webgl.attributeBuffer("a_glyph_vertex", 2);
+		this.texIndexBufferId = this.webgl.attributeBuffer("a_tex_index", 2);
 
-		// Create texture buffer
-		const texture = this.gl.createTexture();
-		this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
+		// Create texture buffer. Note we don't actually need the buffer ID.
+		this.webgl.textureBuffer();
 
-		// Set parameters so we can render correctly
-		this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_S, this.gl.CLAMP_TO_EDGE);
-		this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_T, this.gl.CLAMP_TO_EDGE);
-		this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.LINEAR);
+		// Set parameters so we can render correctly. Would be nice to pull out the webgl
+		// constants into their own class.
+		this.webgl.textureParameter(
+			this.webgl.gl().TEXTURE_2D, this.webgl.gl().TEXTURE_WRAP_S, this.webgl.gl().CLAMP_TO_EDGE);
+
+		this.webgl.textureParameter(
+			this.webgl.gl().TEXTURE_2D, this.webgl.gl().TEXTURE_WRAP_T, this.webgl.gl().CLAMP_TO_EDGE);
+
+		this.webgl.textureParameter(
+			this.webgl.gl().TEXTURE_2D, this.webgl.gl().TEXTURE_MIN_FILTER, this.webgl.gl().LINEAR);
 	}
 
 	async renderText(text: CWText) {
@@ -86,11 +77,10 @@ export class TextRenderer {
 
 			// Upload the new texture
 			const texture = await this.expandingTexture.getTexture();
-			this.gl.texImage2D(
-				this.gl.TEXTURE_2D, 0, this.gl.RGBA, this.gl.RGBA, this.gl.UNSIGNED_BYTE, texture);
+			this.webgl.setTextureData(texture);
 
 			// Set the texture size uniform
-			this.gl.uniform1f(this.texLengthUniformLocation, this.graphemeToGlyphMap.size);
+			this.webgl.setUniform1f(this.texLengthUniformLocation, this.graphemeToGlyphMap.size);
 		}
 
 		// Set the scale attribute
@@ -104,7 +94,7 @@ export class TextRenderer {
 				text.scale
 			];
 		});
-		setData(this.gl, this.scaleBufferId, scales);
+		this.webgl.setAttributeData(this.scaleBufferId, scales);
 
 		// Set the text left top attribute
 		const textLeftTops = graphemes.flatMap(() => {
@@ -119,7 +109,7 @@ export class TextRenderer {
 				x, y
 			];
 		});
-		setData(this.gl, this.textLeftTopBufferId, textLeftTops);
+		this.webgl.setAttributeData(this.textLeftTopBufferId, textLeftTops);
 
 		// Set the glyph index attribute
 		const glyphIndices = graphemes.flatMap((_grapheme, index) => {
@@ -132,7 +122,7 @@ export class TextRenderer {
 				index
 			];
 		});
-		setData(this.gl, this.glyphIndexBufferId, glyphIndices);
+		this.webgl.setAttributeData(this.glyphIndexBufferId, glyphIndices);
 
 		// Set the glyph vertex attribute
 		const glyphVertices = graphemes.flatMap(() => {
@@ -145,7 +135,7 @@ export class TextRenderer {
 				1, 1
 			];
 		});
-		setData(this.gl, this.glyphVertexBufferId, glyphVertices);
+		this.webgl.setAttributeData(this.glyphVertexBufferId, glyphVertices);
 
 		// Set the texture index attribute
 		const textureIndices = graphemes.flatMap(grapheme => {
@@ -166,9 +156,9 @@ export class TextRenderer {
 				xRght, 1
 			];
 		});
-		setData(this.gl, this.texIndexBufferId, textureIndices);
+		this.webgl.setAttributeData(this.texIndexBufferId, textureIndices);
 
 		// Draw the triangles!
-		this.gl.drawArrays(this.gl.TRIANGLES, 0, graphemes.length*6);
+		this.webgl.draw(graphemes.length*6);
 	}
 }

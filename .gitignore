@@ -1,4 +1,4 @@
 web/bundle/*
-web/ts/webgl/generated/*
+web/ts/webgl/**/glsl-generated/*
 .DS_STORE
 
