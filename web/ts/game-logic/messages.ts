@@ -42,7 +42,7 @@ function handlePlayerInit(payload: PlayerInitMessagePayload) {
 function handleState(payload: StateMessagePayload) {
 	const deserialized = payload.players.map(deserializeClientPlayer);
 
-	const selfPlayer = deserialized.find(player => player.id == state.selfId);
+	const selfPlayer = deserialized.find(player => player.id === state.selfId);
 	if (!selfPlayer) {
 		console.warn("Could not find self player", {
 			players: deserialized,

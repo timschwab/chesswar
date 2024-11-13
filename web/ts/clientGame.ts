@@ -1,37 +1,45 @@
-import { CWColor } from "../../common/Color.ts";
-import { Point } from "../../common/shapes/Point.ts";
 import { Structure } from "../../common/shapes/Structure.ts";
 import { ZeroPoint } from "../../common/shapes/Zero.ts";
+import { listenKey } from "./core/inputs.ts";
+import { socketListen } from "./core/socket.ts";
+import { handleKey } from "./game-logic/keys.ts";
+import { receiveMessage } from "./game-logic/messages.ts";
+import { isSafeState, SafeState, state } from "./game-logic/state.ts";
 import { mapTriangles } from "./mapTriangles.ts";
 import { StructureRenderer } from "./webgl/structure/StructureRenderer.ts";
-import { CWText } from "./webgl/text/CWText.ts";
-import { TextRenderer } from "./webgl/text/TextRenderer.ts";
 
+// Create the renderers from back to front
 const mapRenderer = new StructureRenderer();
-const textRenderer = new TextRenderer();
+// const playerTextRender = new TextRenderer();
+// const playerRenderer = new StructureRenderer();
+// const uiRenderer = new StructureRenderer();
+// const uiTextRenderer = new TextRenderer();
 
-let camera = ZeroPoint;
 const map = new Structure(mapTriangles, ZeroPoint, 1);
 mapRenderer.setStructures([map]);
 
-const message = "ABC 123 $%^ | . ?";
-const topLeft = new Point(50, 50);
-const textScale = 0.5;
-const color = CWColor.GREY_BLACK;
-const text = new CWText(message, topLeft, textScale, color);
-
 initGame();
 
-export async function initGame() {
-	requestAnimationFrame(gameLoop);
+function initGame() {
+	// Receive server messages
+	socketListen(receiveMessage);
+
+	// Send client messages
+	listenKey(handleKey);
+
+	// Start rendering
+	requestAnimationFrame(gameLoopUnsafe);
 }
 
-function gameLoop() {
-	requestAnimationFrame(gameLoop);
+function gameLoopUnsafe(): void {
+	requestAnimationFrame(gameLoopUnsafe);
 
-	camera = camera.add(new Point(1, 1));
+	if (isSafeState(state)) {
+		gameLoopSafe(state);
+	}
+}
 
-	mapRenderer.setCamera(camera);
+function gameLoopSafe(state: SafeState): void {
+	mapRenderer.setCamera(state.selfPlayer.position.center);
 	mapRenderer.render();
-	textRenderer.renderText(text);
 }

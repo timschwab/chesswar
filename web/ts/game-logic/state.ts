@@ -13,6 +13,28 @@ interface UnsafeState {
 	}
 }
 
+export interface SafeState {
+	selfId: ChesswarId,
+	selfPlayer: ClientPlayer,
+	players: ClientPlayer[],
+	general: {
+		selectedButton: BriefingName | null,
+		selectedFrom: ChessSquare | null
+	}
+}
+
+export function isSafeState(state: UnsafeState): state is SafeState {
+	if (state.selfId === null) {
+		return false;
+	}
+
+	if (state.selfPlayer === null) {
+		return false;
+	}
+
+	return true;
+}
+
 export const state: UnsafeState = {
 	selfId: null,
 	selfPlayer: null,
