@@ -6,24 +6,28 @@ console.log("Starting build");
 // Generate TS files from the shape GLSL files
 console.log("Generating shape fragment shader TS");
 generateGlslFile(
-	"web/ts/webgl/shape/glsl-source/shapeFragmentShader.glsl",
-	"web/ts/webgl/shape/glsl-generated/shapeFragmentShader.ts");
+	"shapeFragmentShader",
+	"web/ts/webgl/shape/glsl-source",
+	"web/ts/webgl/shape/glsl-generated");
 
 console.log("Generating shape vertex shader TS");
 generateGlslFile(
-	"web/ts/webgl/shape/glsl-source/shapeVertexShader.glsl",
-	"web/ts/webgl/shape/glsl-generated/shapeVertexShader.ts");
+	"shapeVertexShader",
+	"web/ts/webgl/shape/glsl-source",
+	"web/ts/webgl/shape/glsl-generated");
 
 // Generate TS files from the text GLSL files
 console.log("Generating text fragment shader TS");
 generateGlslFile(
-	"web/ts/webgl/text/glsl-source/textFragmentShader.glsl",
-	"web/ts/webgl/text/glsl-generated/textFragmentShader.ts");
+	"textFragmentShader",
+	"web/ts/webgl/text/glsl-source",
+	"web/ts/webgl/text/glsl-generated");
 
 console.log("Generating text vertex shader TS");
 generateGlslFile(
-	"web/ts/webgl/text/glsl-source/textVertexShader.glsl",
-	"web/ts/webgl/text/glsl-generated/textVertexShader.ts");
+	"textVertexShader",
+	"web/ts/webgl/text/glsl-source",
+	"web/ts/webgl/text/glsl-generated");
 
 // Create a JS bundle from the TS code
 const options = {
@@ -45,7 +49,10 @@ console.log("Finished build");
 
 
 // Helper function
-function generateGlslFile(sourcePath: string, destPath: string) {
+function generateGlslFile(filename: string, sourceDir: string, destDir: string) {
+	const sourcePath = sourceDir + "/" + filename + ".glsl";
+	const destPath = destDir + "/" + filename + ".ts";
+
 	const contents = Deno.readTextFileSync(sourcePath);
 	const escapedContents = contents.replaceAll("`", "\\`");
 	const wrappedContents = `/*
@@ -59,5 +66,8 @@ const contents = \`${escapedContents}\`;
 export default contents;
 `;
 
+	Deno.mkdirSync(destDir, {
+		recursive: true
+	});
 	Deno.writeTextFileSync(destPath, wrappedContents);
 }
