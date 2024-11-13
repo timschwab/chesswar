@@ -1,4 +1,4 @@
-import { Hook } from "../../../common/Hook.ts";
+import { Hook } from "../../../common/data-structures/Hook.ts";
 import { Point } from "../../../common/shapes/Point.ts";
 
 export enum CWKey {

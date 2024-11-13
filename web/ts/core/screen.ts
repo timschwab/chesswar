@@ -1,4 +1,4 @@
-import { Hook } from "../../../common/Hook.ts";
+import { Hook } from "../../../common/data-structures/Hook.ts";
 import { Point } from "../../../common/shapes/Point.ts";
 import { Rect } from "../../../common/shapes/Rect.ts";
 import { ZeroPoint } from "../../../common/shapes/Zero.ts";

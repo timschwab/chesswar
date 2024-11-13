@@ -1,4 +1,4 @@
-import { Hook } from "../../../common/Hook.ts";
+import { Hook } from "../../../common/data-structures/Hook.ts";
 import { ClientMessage } from "../../../common/message-types/client.ts";
 import { ServerMessage } from "../../../common/message-types/server.ts";
 import { localApiServerOrigin, remoteApiServerOrigin } from "../../../common/settings.ts";

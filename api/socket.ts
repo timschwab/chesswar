@@ -1,5 +1,5 @@
 import slim from "../common/slim-id.ts";
-import { Hook } from "../common/Hook.ts";
+import { Hook } from "../common/data-structures/Hook.ts";
 import { ClientMessage, ClientMessageWithId } from "../common/message-types/client.ts";
 import { ServerMessage } from "../common/message-types/server.ts";
 import { ChesswarId } from "../common/data-types/base.ts";
