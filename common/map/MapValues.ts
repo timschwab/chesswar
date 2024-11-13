@@ -1,52 +1,56 @@
 import { TeamName } from "../data-types/base.ts";
-import rawMap, { ChessWarMap, ChessWarMapTeamValue } from "./ChessWarMap.ts";
+import { Structure } from "../shapes/Structure.ts";
+import { ChessWarMap, ChessWarMapTeamBundle, rawMap } from "./ChessWarMap.ts";
 
-function transformMap<V1, V2>(map: ChessWarMap<V1>, transformer: (value: V1) => V2): ChessWarMap<V2> {
+function getMapGeometry(map: ChessWarMap) {
 	return {
-		boundary: transformer(map.boundary),
-		teamValues: {
-			[TeamName.BLUE]: transformTeamValue(map.teamValues[TeamName.BLUE], transformer),
-			[TeamName.RED]: transformTeamValue(map.teamValues[TeamName.RED], transformer)
+		boundary: map.boundary.geo,
+		teamBundles: {
+			[TeamName.BLUE]: getTeamBundleGeometry(map.teamBundles[TeamName.BLUE]),
+			[TeamName.RED]: getTeamBundleGeometry(map.teamBundles[TeamName.RED])
 		},
-		minefields: map.minefields.map(transformer),
-		dmz: transformer(map.dmz),
-		battlefield: transformer(map.battlefield)
-	}
-}
-
-function transformTeamValue<V1, V2>(teamValue: ChessWarMapTeamValue<V1>, transformer: (value: V1) => V2): ChessWarMapTeamValue<V2> {
-	return {
-		starts: teamValue.starts,
-		command: transformer(teamValue.command),
-		base: transformer(teamValue.base),
-		briefings: teamValue.briefings.map(transformer),
-		outposts: teamValue.outposts.map(transformer),
-		armory: transformer(teamValue.base),
-		scif: transformer(teamValue.base)
+		minefields: map.minefields.map(minefield => minefield.geo),
+		dmz: map.dmz.geo,
+		battlefield: map.battlefield.geo
 	};
 }
 
+function getTeamBundleGeometry(teamBundle: ChessWarMapTeamBundle) {
+	return {
+		starts: teamBundle.starts,
+		command: teamBundle.command.geo,
+		base: teamBundle.base.geo,
+		briefings: teamBundle.briefings.map(briefing => briefing.geo),
+		outposts: teamBundle.outposts.map(outpost => outpost.geo),
+		armory: teamBundle.base.geo,
+		scif: teamBundle.base.geo
+	};
+}
+
+function getMapStructures(map: ChessWarMap): Structure[] {
+	return [
+		map.boundary.toStructure(),
+		getTeamBundleStructures(map.teamBundles[TeamName.BLUE]),
+		getTeamBundleStructures(map.teamBundles[TeamName.RED]),
+		map.minefields.map(minefield => minefield.toStructure()),
+		map.dmz.toStructure(),
+		map.battlefield.toStructure()
+	].flat();
+}
+
+function getTeamBundleStructures(teamBundle: ChessWarMapTeamBundle): Structure[] {
+	return [
+		teamBundle.command.toStructure(),
+		teamBundle.base.toStructure(),
+		teamBundle.briefings.map(briefing => briefing.toStructure()),
+		teamBundle.outposts.map(outpost => outpost.toStructure()),
+		teamBundle.base.toStructure(),
+		teamBundle.base.toStructure()
+	].flat();
+}
+
 // For ticking on the server
-export const mapGeometry = transformMap(rawMap, value => value.geo);
+export const mapGeometry = getMapGeometry(rawMap);
 
 // For rendering on the client
-const mapStructures = transformMap(rawMap, value => value.toStructure());
-export const mapStructuresList = [
-	mapStructures.boundary,
-
-	mapStructures.teamValues[TeamName.BLUE].command,
-	mapStructures.teamValues[TeamName.BLUE].briefings,
-	mapStructures.teamValues[TeamName.BLUE].outposts,
-	mapStructures.teamValues[TeamName.BLUE].armory,
-	mapStructures.teamValues[TeamName.BLUE].scif,
-
-	mapStructures.teamValues[TeamName.RED].command,
-	mapStructures.teamValues[TeamName.RED].briefings,
-	mapStructures.teamValues[TeamName.RED].outposts,
-	mapStructures.teamValues[TeamName.RED].armory,
-	mapStructures.teamValues[TeamName.RED].scif,
-
-	mapStructures.minefields,
-	mapStructures.dmz,
-	mapStructures.battlefield
-].flat();
+const mapStructures = getMapStructures(rawMap);

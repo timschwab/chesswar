@@ -1,5 +1,4 @@
 import { Comparable } from "../Comparable.ts";
-import { Circle } from "./Circle.ts";
 import { GeometryName } from "./GeometryName.ts";
 import { Point } from "./Point.ts";
 import { Rect } from "./Rect.ts";
@@ -16,5 +15,3 @@ export abstract class Geometry<T = void> extends Comparable<Geometry<T>> {
 	abstract clampInside(rect: Rect): T;
 	abstract toTriangles(): Triangle[];
 }
-
-export type UnknownGeometry = Geometry<Point | Circle | Rect>;

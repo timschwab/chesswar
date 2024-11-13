@@ -1,7 +1,7 @@
 import { ChesswarId, PlayerAction, PlayerRole, TeamName } from "../common/data-types/base.ts";
 import { CarryLoad, CarryLoadType } from "../common/data-types/carryLoad.ts";
 import { BriefingName } from "../common/data-types/facility.ts";
-import map from "../common/map/ChessWarMap.ts";
+import { mapGeometry } from "../common/map/MapValues.ts";
 import { ClientMessageTypes, ClientMessageWithId, GeneralOrdersMessagePayload, MoveMessagePayload } from "../common/message-types/client.ts";
 import { ServerMessageTypes } from "../common/message-types/server.ts";
 import { gameEngine } from "../common/settings.ts";
@@ -207,16 +207,14 @@ function playerAction(player: ServerPlayer): void {
 
 function whichBriefing(player: ServerPlayer): null | BriefingName {
 	const pos = player.physics.position;
-	const facilityBundles = map.facilities.filter(fac => fac.team == player.team);
+	const teamBundle = mapGeometry.teamBundles[player.team];
 
-	for (const bundle of facilityBundles) {
-		if (pos.inside(bundle.briefings[0])) {
-			return BriefingName.ONE;
-		} else if (pos.inside(bundle.briefings[1])) {
-			return BriefingName.TWO;
-		} else if (pos.inside(bundle.briefings[2])) {
-			return BriefingName.THREE;
-		}
+	if (pos.inside(teamBundle.briefings[0])) {
+		return BriefingName.ONE;
+	} else if (pos.inside(teamBundle.briefings[1])) {
+		return BriefingName.TWO;
+	} else if (pos.inside(teamBundle.briefings[2])) {
+		return BriefingName.THREE;
 	}
 
 	return null;

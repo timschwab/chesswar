@@ -1,5 +1,4 @@
 import { DeathCause, PlayerAction, PlayerRole, TeamName } from "../common/data-types/base.ts";
-import map from "../common/map/ChessWarMap.ts";
 import { gameEngine } from "../common/settings.ts";
 import { spawnPlayer } from "./spawn.ts";
 import { ServerPlayer, getState } from "./state.ts";
@@ -12,6 +11,7 @@ import { Vector } from "../common/shapes/Vector.ts";
 import { TAU_HALF } from "../common/Constants.ts";
 import { Circle } from "../common/shapes/Circle.ts";
 import { ZeroVector } from "../common/shapes/Zero.ts";
+import { mapGeometry } from "../common/map/MapValues.ts";
 
 export function tickPlayers() {
 	const state = getState();
@@ -78,8 +78,8 @@ function movePlayer(player: ServerPlayer): void {
 		const bounceX = 0 - (bouncePosition.x - 0);
 		bouncePosition = new Point(bounceX, bouncePosition.y);
 		bounceSpeed = new Point(-1*bounceSpeed.x, bounceSpeed.y);
-	} else if (bouncePosition.x > map.width) {
-		const bounceX = map.width - (bouncePosition.x - map.width);
+	} else if (bouncePosition.x > mapGeometry.boundary.width) {
+		const bounceX = mapGeometry.boundary.width - (bouncePosition.x - mapGeometry.boundary.width);
 		bouncePosition = new Point(bounceX, bouncePosition.y);
 		bounceSpeed = new Point(-1*bounceSpeed.x, bounceSpeed.y);
 	}
@@ -89,8 +89,8 @@ function movePlayer(player: ServerPlayer): void {
 		bouncePosition = new Point(bouncePosition.x, bounceY);
 		bounceSpeed = new Point(bounceSpeed.x, -1*bounceSpeed.y);
 
-	} else if (bouncePosition.y > map.height) {
-		const bounceY = map.height - (bouncePosition.y - map.height);
+	} else if (bouncePosition.y > mapGeometry.boundary.height) {
+		const bounceY = mapGeometry.boundary.height - (bouncePosition.y - mapGeometry.boundary.height);
 		bouncePosition = new Point(bouncePosition.x, bounceY);
 		bounceSpeed = new Point(bounceSpeed.x, -1*bounceSpeed.y);
 	}
@@ -101,7 +101,7 @@ function movePlayer(player: ServerPlayer): void {
 }
 
 function checkMinefields(player: ServerPlayer): void {
-	for (const minefield of map.minefields) {
+	for (const minefield of mapGeometry.minefields) {
 		if (player.physics.position.touches(minefield)) {
 			spawnPlayer(player);
 			socket.sendOne(player.id, {
@@ -115,7 +115,7 @@ function checkMinefields(player: ServerPlayer): void {
 function checkTankSafezones(player: ServerPlayer): void {
 	if (player.role == PlayerRole.TANK) {
 		const pos = player.physics.position;
-		if (pos.touches(map.safeZone)) {
+		if (pos.touches(mapGeometry.dmz)) {
 			spawnPlayer(player);
 			socket.sendOne(player.id, {
 				type: ServerMessageTypes.DEATH,
@@ -124,7 +124,7 @@ function checkTankSafezones(player: ServerPlayer): void {
 			return;
 		}
 
-		const enemyBundles = map.facilities.filter(fac => fac.team != player.team);
+		const enemyBundles = enemyFacilities(player.team);
 		for (const bundle of enemyBundles) {
 			if (pos.touches(bundle.base)) {
 				spawnPlayer(player);
@@ -159,46 +159,49 @@ function actionOption(player: ServerPlayer): PlayerAction {
 	}
 
 	const pos = player.physics.position;
-	for (const bundle of map.facilities) {
-		if (bundle.team == player.team) {
-			if (pos.inside(bundle.command)) {
-				return PlayerAction.BECOME_GENERAL;
-			} else if (pos.inside(bundle.armory)) {
-				if (player.role == PlayerRole.TANK) {
-					// Do nothing
-				} else {
-					return PlayerAction.BECOME_TANK;
-				}
-			} else if (pos.inside(bundle.scif)) {
-				if (player.role == PlayerRole.OPERATIVE) {
-					if (player.carrying.type == CarryLoadType.ESPIONAGE) {
-						return PlayerAction.REPORT_ESPIONAGE;
-					} else if (player.carrying.type == CarryLoadType.INTEL) {
-						return PlayerAction.REPORT_INTEL;
-					}
-				} else {
-					return PlayerAction.BECOME_OPERATIVE;
-				}
-			} else if (pos.inside(map.battlefield)) {
-				if (player.role == PlayerRole.SOLDIER && player.carrying.type == CarryLoadType.ORDERS) {
-					return PlayerAction.COMPLETE_ORDERS;
-				} else if (player.role == PlayerRole.OPERATIVE) {
-					return PlayerAction.GATHER_INTEL;
-				}
-			} else {
-				for (const brief of bundle.briefings) {
-					if (pos.inside(brief)) {
-						return PlayerAction.GRAB_ORDERS;
-					}
-				}
+
+	// Check our facilities
+	const bundle = mapGeometry.teamBundles[player.team];
+	if (pos.inside(bundle.command)) {
+		return PlayerAction.BECOME_GENERAL;
+	} else if (pos.inside(bundle.armory)) {
+		if (player.role == PlayerRole.TANK) {
+			// Do nothing
+		} else {
+			return PlayerAction.BECOME_TANK;
+		}
+	} else if (pos.inside(bundle.scif)) {
+		if (player.role == PlayerRole.OPERATIVE) {
+			if (player.carrying.type == CarryLoadType.ESPIONAGE) {
+				return PlayerAction.REPORT_ESPIONAGE;
+			} else if (player.carrying.type == CarryLoadType.INTEL) {
+				return PlayerAction.REPORT_INTEL;
 			}
 		} else {
-			if (player.role == PlayerRole.OPERATIVE && pos.inside(bundle.command)) {
-				return PlayerAction.CONDUCT_ESPIONAGE;
+			return PlayerAction.BECOME_OPERATIVE;
+		}
+	} else if (pos.inside(mapGeometry.battlefield)) {
+		if (player.role == PlayerRole.SOLDIER && player.carrying.type == CarryLoadType.ORDERS) {
+			return PlayerAction.COMPLETE_ORDERS;
+		} else if (player.role == PlayerRole.OPERATIVE) {
+			return PlayerAction.GATHER_INTEL;
+		}
+	} else {
+		for (const brief of bundle.briefings) {
+			if (pos.inside(brief)) {
+				return PlayerAction.GRAB_ORDERS;
 			}
 		}
 	}
 
+	// Check enemy facilities
+	for (const bundle of enemyFacilities(player.team)) {
+		if (player.role == PlayerRole.OPERATIVE && pos.inside(bundle.command)) {
+			return PlayerAction.CONDUCT_ESPIONAGE;
+		}
+	}
+
+	// Nothing to do
 	return PlayerAction.NONE;
 }
 
@@ -320,4 +323,10 @@ export function tickNewGame(): void {
 	}
 
 	state.newGameCounter--;
+}
+
+function enemyFacilities(teamName: TeamName) {
+	return Object.entries(mapGeometry.teamBundles)
+		.filter(entry => entry[0] != teamName)
+		.map(entry => entry[1]);
 }

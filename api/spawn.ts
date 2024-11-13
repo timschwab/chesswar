@@ -1,6 +1,6 @@
 import { TeamName } from "../common/data-types/base.ts";
 import { CarryLoad, CarryLoadType } from "../common/data-types/carryLoad.ts";
-import map from "../common/map/ChessWarMap.ts";
+import { mapGeometry } from "../common/map/MapValues.ts";
 import { ServerMessageTypes } from "../common/message-types/server.ts";
 import { randomChoose, randomPointClump } from "../common/random.ts";
 import { gameEngine } from "../common/settings.ts";
@@ -29,7 +29,7 @@ export function spawnPlayer(player: ServerPlayer): void {
 }
 
 function getStartPoint(team: TeamName): Point {
-	const startChoices = map.starts[team];
+	const startChoices = mapGeometry.teamBundles[team].starts;
 	const start = randomChoose(startChoices);
 
 	const clumpingPoint = randomPointClump(start, gameEngine.startingClump);

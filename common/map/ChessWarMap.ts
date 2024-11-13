@@ -1,32 +1,34 @@
 import { TeamName } from "../data-types/base.ts";
+import { Circle } from "../shapes/Circle.ts";
 import { Point } from "../shapes/Point.ts";
-import { UnknownShape } from "../shapes/Shape.ts";
+import { Rect } from "../shapes/Rect.ts";
+import { Shape } from "../shapes/Shape.ts";
 import { mapSettings } from "./MapSettings.ts";
 
-export interface ChessWarMapTeamValue<T> {
+export interface ChessWarMapTeamBundle {
 	starts: Point[],
-	command: T,
-	base: T,
-	briefings: T[],
-	outposts: T[],
-	armory: T,
-	scif: T
+	command: Shape<Rect>,
+	base: Shape<Rect>,
+	briefings: Shape<Rect>[],
+	outposts: Shape<Rect>[],
+	armory: Shape<Rect>,
+	scif: Shape<Rect>
 }
 
-export interface ChessWarMap<T> {
-	boundary: T,
-	teamValues: {
-		[TeamName.BLUE]: ChessWarMapTeamValue<T>,
-		[TeamName.RED]: ChessWarMapTeamValue<T>
+export interface ChessWarMap {
+	boundary: Shape<Rect>,
+	teamBundles: {
+		[TeamName.BLUE]: ChessWarMapTeamBundle,
+		[TeamName.RED]: ChessWarMapTeamBundle
 	},
-	minefields: T[],
-	dmz: T,
-	battlefield: T
+	minefields: Shape<Rect | Circle>[],
+	dmz: Shape<Circle>,
+	battlefield: Shape<Circle>
 }
 
-const rawMap: ChessWarMap<UnknownShape> = {
+export const rawMap: ChessWarMap = {
 	boundary: mapSettings.mapShape,
-	teamValues: {
+	teamBundles: {
 		[TeamName.BLUE]: {
 			starts: [mapSettings.blueStart1, mapSettings.blueStart2, mapSettings.blueStart3],
 			command: mapSettings.blueCommandShape,
@@ -50,5 +52,3 @@ const rawMap: ChessWarMap<UnknownShape> = {
 	dmz: mapSettings.dmzShape,
 	battlefield: mapSettings.battlefieldShape
 };
-
-export default rawMap;

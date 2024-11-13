@@ -1,5 +1,5 @@
 import { Color } from "../Color.ts";
-import { Geometry, UnknownGeometry } from "./Geometry.ts";
+import { Geometry } from "./Geometry.ts";
 import { Point } from "./Point.ts";
 import { Rect } from "./Rect.ts";
 import { Structure } from "./Structure.ts";
@@ -43,5 +43,3 @@ export class Shape<T extends Geometry<T>> {
 		return new Structure(this.geo.toTriangles(), this.settings.color);
 	}
 }
-
-export type UnknownShape = Shape<UnknownGeometry>;
