@@ -1,13 +1,14 @@
-import { getAttachedCanvas } from "../../core/dom.ts";
 import { ExpandingGlyphTexture } from "./ExpandingGlyphTexture.ts";
-import { assignBuffer, createProgram, createShader, getGl, makeBuffer, setData } from "../webglUtils.ts";
+import { assignBuffer, setData } from "../webglUtils.ts";
 import textVertexShaderSource from "./glsl-generated/textVertexShader.ts";
 import textFragmentShaderSource from "./glsl-generated/textFragmentShader.ts";
-import { bindCanvasToScreen, bindToScreen } from "../../core/screen.ts";
+import { bindToScreen } from "../../core/screen.ts";
 import type { CWText } from "./CWText.ts";
+import { WebglRenderer } from "../WebglRenderer.ts";
 
 export class TextRenderer {
-	private readonly gl: WebGLRenderingContext;
+	private readonly webgl: WebglRenderer;
+
 	private readonly texLengthUniformLocation: WebGLUniformLocation | null;
 
 	private readonly scaleBufferId: WebGLBuffer;
@@ -24,34 +25,26 @@ export class TextRenderer {
 		this.expandingTexture = new ExpandingGlyphTexture();
 		this.graphemeToGlyphMap = new Map();
 
-		// Get the canvas we will render to
-		const canvas = getAttachedCanvas();
-		bindCanvasToScreen(canvas);
-		this.gl = getGl(canvas);
-
-		// Build the 2 shaders and link them into a program
-		const vertexShader = createShader(this.gl, this.gl.VERTEX_SHADER, textVertexShaderSource);
-		const fragmentShader = createShader(this.gl, this.gl.FRAGMENT_SHADER, textFragmentShaderSource);
-		const program = createProgram(this.gl, vertexShader, fragmentShader);
-		this.gl.useProgram(program);
+		// Create the WebglRenderer
+		this.webgl = new WebglRenderer(textVertexShaderSource, textFragmentShaderSource);
 
 		// Grab locations
-		const glyphBoundingBoxLocation = this.gl.getUniformLocation(program, "u_glyph_bounding_box");
-		const screenUniformLocation = this.gl.getUniformLocation(program, "u_screen");
-		this.texLengthUniformLocation = this.gl.getUniformLocation(program, "u_tex_length");
+		const glyphBoundingBoxLocation = this.webgl.uniformLocation("u_glyph_bounding_box");
+		const screenUniformLocation = this.webgl.uniformLocation("u_screen");
+		this.texLengthUniformLocation = this.webgl.uniformLocation("u_tex_length");
 
-		const scaleAttributeLocation = this.gl.getAttribLocation(program, "a_scale");
-		const textTopLeftAttributeLocation = this.gl.getAttribLocation(program, "a_text_top_left");
-		const glyphIndexAttributeLocation = this.gl.getAttribLocation(program, "a_glyph_index");
-		const glyphVertexAttributeLocation = this.gl.getAttribLocation(program, "a_glyph_vertex");
-		const texIndexAttributeLocation = this.gl.getAttribLocation(program, "a_tex_index");
+		const scaleAttributeLocation = this.webgl.attributeLocation("a_scale");
+		const textTopLeftAttributeLocation = this.webgl.attributeLocation("a_text_top_left");
+		const glyphIndexAttributeLocation = this.webgl.attributeLocation("a_glyph_index");
+		const glyphVertexAttributeLocation = this.webgl.attributeLocation("a_glyph_vertex");
+		const texIndexAttributeLocation = this.webgl.attributeLocation("a_tex_index");
 
 		// Create buffers
-		this.scaleBufferId = makeBuffer(this.gl);
-		this.textLeftTopBufferId = makeBuffer(this.gl);
-		this.glyphIndexBufferId = makeBuffer(this.gl);
-		this.glyphVertexBufferId = makeBuffer(this.gl);
-		this.texIndexBufferId = makeBuffer(this.gl);
+		this.scaleBufferId = this.webgl.newBuffer();
+		this.textLeftTopBufferId = this.webgl.newBuffer();
+		this.glyphIndexBufferId = this.webgl.newBuffer();
+		this.glyphVertexBufferId = this.webgl.newBuffer();
+		this.texIndexBufferId = this.webgl.newBuffer();
 
 		// Set/bind the uniforms
 		this.gl.uniform2f(
