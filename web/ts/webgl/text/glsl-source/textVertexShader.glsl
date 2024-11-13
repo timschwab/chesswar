@@ -7,6 +7,7 @@ attribute vec2 a_text_top_left;
 attribute float a_glyph_index;
 attribute vec2 a_glyph_vertex;
 attribute vec2 a_tex_index;
+attribute vec3 a_color;
 
 varying vec2 v_tex_coord;
 varying vec3 v_color;
@@ -44,6 +45,6 @@ void main() {
 
 	// Outputs
 	v_tex_coord = texPosition;
-	v_color = vec3(0, 0.5, 0);
+	v_color = a_color;
 	gl_Position = vec4(clipSpaceReal, 0, 1);
 }

@@ -6,6 +6,8 @@ import type { CWText } from "./CWText.ts";
 import { WebglRenderer } from "../WebglRenderer.ts";
 
 export class TextRenderer {
+	private readonly expandingTexture: ExpandingGlyphTexture;
+	private readonly graphemeToGlyphMap: Map<string, number>;
 	private readonly webgl: WebglRenderer;
 
 	private readonly texLengthUniformLocation: WebGLUniformLocation;
@@ -15,9 +17,7 @@ export class TextRenderer {
 	private readonly glyphIndexBufferId: WebGLBuffer;
 	private readonly glyphVertexBufferId: WebGLBuffer;
 	private readonly texIndexBufferId: WebGLBuffer;
-
-	private readonly expandingTexture: ExpandingGlyphTexture;
-	private readonly graphemeToGlyphMap: Map<string, number>;
+	private readonly colorBufferId: WebGLBuffer;
 
 	constructor() {
 		// Get the glyph texture and grapheme map
@@ -46,6 +46,7 @@ export class TextRenderer {
 		this.glyphIndexBufferId = this.webgl.attributeBuffer("a_glyph_index", 1);
 		this.glyphVertexBufferId = this.webgl.attributeBuffer("a_glyph_vertex", 2);
 		this.texIndexBufferId = this.webgl.attributeBuffer("a_tex_index", 2);
+		this.colorBufferId = this.webgl.attributeBuffer("a_color", 3);
 
 		// Create texture buffer. Note we don't actually need the buffer ID.
 		this.webgl.textureBuffer();
@@ -54,10 +55,8 @@ export class TextRenderer {
 		// constants into their own class.
 		this.webgl.textureParameter(
 			this.webgl.gl().TEXTURE_2D, this.webgl.gl().TEXTURE_WRAP_S, this.webgl.gl().CLAMP_TO_EDGE);
-
 		this.webgl.textureParameter(
 			this.webgl.gl().TEXTURE_2D, this.webgl.gl().TEXTURE_WRAP_T, this.webgl.gl().CLAMP_TO_EDGE);
-
 		this.webgl.textureParameter(
 			this.webgl.gl().TEXTURE_2D, this.webgl.gl().TEXTURE_MIN_FILTER, this.webgl.gl().LINEAR);
 	}
@@ -136,6 +135,20 @@ export class TextRenderer {
 			];
 		});
 		this.webgl.setAttributeData(this.glyphVertexBufferId, glyphVertices);
+
+		// Set the color attribute
+		const colors = graphemes.flatMap(() => {
+			const colorArray = text.color.asArray();
+			return [
+				...colorArray,
+				...colorArray,
+				...colorArray,
+				...colorArray,
+				...colorArray,
+				...colorArray
+			];
+		});
+		this.webgl.setAttributeData(this.colorBufferId, colors);
 
 		// Set the texture index attribute
 		const textureIndices = graphemes.flatMap(grapheme => {

@@ -20,7 +20,7 @@ function gameLoop() {
 	const message = "ABC 123 $%^ | . ?";
 	const topLeft = new Point(50, 50);
 	const scale = 1;
-	const color = CWColor.GREY_WHITE;
+	const color = CWColor.GREY_BLACK;
 	const renderer = new TextRenderer();
 	renderer.renderText(new CWText(message, topLeft, scale, color));
 }
