@@ -142,6 +142,14 @@ export class Rect extends Geometry<Rect> {
 		return this.expand(-1*amount);
 	}
 
+	reflectAcrossVertical(x: number): Rect {
+		// Note that we are flipping left and right to keep the assumption that left < right
+		return new Rect(
+			new Point((x-this.right)+x, this.top),
+			new Point((x-this.left)+x, this.bottom)
+		);
+	}
+
 	// A kinda dumb algo but it works
 	overlap(other: Rect) {
 		const bothLeft = Math.max(this.left, other.left);

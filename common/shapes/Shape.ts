@@ -1,7 +1,8 @@
 import { Color } from "../Color.ts";
-import { Geometry } from "./Geometry.ts";
+import { Geometry, UnknownGeometry } from "./Geometry.ts";
 import { Point } from "./Point.ts";
 import { Rect } from "./Rect.ts";
+import { Structure } from "./Structure.ts";
 import { Triangle } from "./Triangle.ts";
 
 interface RenderSettings {
@@ -31,6 +32,10 @@ export class Shape<T extends Geometry<T>> {
 		return new Shape<T>(this.geo.subtract(operand), this.settings);
 	}
 
+	reflectAcrossVertical(x: number): Shape<T> {
+		return new Shape<T>(this.geo.reflectAcrossVertical(x), this.settings);
+	}
+
 	clampInside(rect: Rect): Shape<T> {
 		return new Shape<T>(this.geo.clampInside(rect), this.settings);
 	}
@@ -39,3 +44,5 @@ export class Shape<T extends Geometry<T>> {
 		return this.geo.toTriangleVertices().map(tri => new Triangle(tri, this.settings.color));
 	}
 }
+
+export type UnknownShape = Shape<UnknownGeometry>;

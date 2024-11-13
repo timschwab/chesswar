@@ -77,7 +77,6 @@ export const rensets = {
 	fps,
 	mspf: 1000/fps,
 	fpsMsMargin: 0.1,
-	background: CWColor.GREY_DARK,
 	grid: {
 		background: CWColor.GREY_STANDARD,
 		color: CWColor.GREY_EXTRA_DARK,
@@ -102,31 +101,6 @@ export const rensets = {
 			font: "12px Times New Roman",
 			color: CWColor.GREY_BLACK
 		}
-	},
-	facilities: {
-		ally: {
-			base: CWColor.GREY_WHITE,
-			command: CWColor.GREY_LIGHT,
-			pickup: CWColor.YELLOW_STANDARD,
-			outpost: CWColor.GREY_WHITE,
-			armory: CWColor.PINK_STANDARD,
-			scif: CWColor.CYAN_STANDARD
-		},
-		enemy: {
-			base: CWColor.GREY_EXTRA_DARK,
-			command: CWColor.GREY_BLACK,
-			pickup: CWColor.YELLOW_DARK,
-			outpost: CWColor.GREY_EXTRA_DARK,
-			armory: CWColor.PINK_DARK,
-			scif: CWColor.CYAN_DARK
-		}
-	},
-	minefield: {
-		color: CWColor.GREY_BLACK
-	},
-	center: {
-		safe: CWColor.GREEN_DARK,
-		battlefield: CWColor.GREY_WHITE
 	},
 	generalWindow: {
 		padding: 20,

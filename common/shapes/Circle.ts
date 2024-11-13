@@ -97,6 +97,10 @@ export class Circle extends Geometry<Circle> {
 		return new Circle(this.center.subtract(operand), this.radius);
 	}
 
+	reflectAcrossVertical(x: number): Circle {
+		return new Circle(this.center.reflectAcrossVertical(x), this.radius);
+	}
+
 	floor(): Circle {
 		return new Circle(this.center.floor(), this.radius);
 	}

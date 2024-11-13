@@ -1,7 +1,7 @@
 import { ChesswarId, PlayerAction, PlayerRole, TeamName } from "../common/data-types/base.ts";
 import { CarryLoad, CarryLoadType } from "../common/data-types/carryLoad.ts";
 import { BriefingName } from "../common/data-types/facility.ts";
-import map from "../common/map.ts";
+import map from "../common/map/ChessWarMap.ts";
 import { ClientMessageTypes, ClientMessageWithId, GeneralOrdersMessagePayload, MoveMessagePayload } from "../common/message-types/client.ts";
 import { ServerMessageTypes } from "../common/message-types/server.ts";
 import { gameEngine } from "../common/settings.ts";

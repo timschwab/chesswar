@@ -82,6 +82,10 @@ export class Point extends Geometry<Point> {
 		return new Point(this.x - operand.x, this.y - operand.y);
 	}
 
+	reflectAcrossVertical(x: number): Point {
+		return new Point((x-this.x)+x, this.y);
+	}
+
 	floor(): Point {
 		return new Point(Math.floor(this.x), Math.floor(this.y));
 	}

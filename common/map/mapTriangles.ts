@@ -1,9 +1,9 @@
-import map from "../../common/map.ts";
-import { rensets } from "../../common/settings.ts";
-import { Point } from "../../common/shapes/Point.ts";
-import { Rect } from "../../common/shapes/Rect.ts";
-import { Shape } from "../../common/shapes/Shape.ts";
-import { Triangle } from "../../common/shapes/Triangle.ts";
+import map from "./ChessWarMap.ts";
+import { rensets } from "../settings.ts";
+import { Point } from "../shapes/Point.ts";
+import { Rect } from "../shapes/Rect.ts";
+import { Shape } from "../shapes/Shape.ts";
+import { Triangle } from "../shapes/Triangle.ts";
 
 function getBackground(): Triangle[] {
 	return map.shape.toTriangles();

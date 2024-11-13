@@ -1,6 +1,6 @@
 import { TeamName } from "../common/data-types/base.ts";
 import { CarryLoad, CarryLoadType } from "../common/data-types/carryLoad.ts";
-import map from "../common/map.ts";
+import map from "../common/map/ChessWarMap.ts";
 import { ServerMessageTypes } from "../common/message-types/server.ts";
 import { randomChoose, randomPointClump } from "../common/random.ts";
 import { gameEngine } from "../common/settings.ts";

@@ -1,5 +1,5 @@
 import { DeathCause, PlayerAction, PlayerRole, TeamName } from "../common/data-types/base.ts";
-import map from "../common/map.ts";
+import map from "../common/map/ChessWarMap.ts";
 import { gameEngine } from "../common/settings.ts";
 import { spawnPlayer } from "./spawn.ts";
 import { ServerPlayer, getState } from "./state.ts";
