@@ -27,8 +27,3 @@ export function arrayFill<T, U extends T>(arr: T[], val: U): U[] {
 	const res = arr.fill(val) as U[];
 	return res;
 }
-
-export function assertNever(obj: never) {
-	console.error(obj);
-	throw new Error("Should not have gotten here");
-}

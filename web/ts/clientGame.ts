@@ -1,4 +1,6 @@
+import { rensets } from "../../common/settings.ts";
 import { Structure } from "../../common/shapes/Structure.ts";
+import { Triangle } from "../../common/shapes/Triangle.ts";
 import { ZeroPoint } from "../../common/shapes/Zero.ts";
 import { listenKey } from "./core/inputs.ts";
 import { socketListen } from "./core/socket.ts";
@@ -11,7 +13,7 @@ import { StructureRenderer } from "./webgl/structure/StructureRenderer.ts";
 // Create the renderers from back to front
 const mapRenderer = new StructureRenderer();
 // const playerTextRender = new TextRenderer();
-// const playerRenderer = new StructureRenderer();
+const playerRenderer = new StructureRenderer();
 // const uiRenderer = new StructureRenderer();
 // const uiTextRenderer = new TextRenderer();
 
@@ -41,5 +43,14 @@ function gameLoopUnsafe(): void {
 
 function gameLoopSafe(state: SafeState): void {
 	mapRenderer.setCamera(state.selfPlayer.position.center);
+	playerRenderer.setCamera(state.selfPlayer.position.center);
+
+	playerRenderer.setStructures(state.players.map(player => {
+		const triangles = player.position.toTriangleVertices().map(
+			verts => new Triangle(verts, rensets.players.teamColor[player.team]));
+		return new Structure(triangles, ZeroPoint, 1);
+	}));
+
 	mapRenderer.render();
+	playerRenderer.render();
 }

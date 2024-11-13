@@ -1,15 +1,21 @@
 import { ChesswarId } from "../../../common/data-types/base.ts";
+import { EMPTY_CARRY_LOAD } from "../../../common/data-types/carryLoad.ts";
 import { ChessSquare } from "../../../common/data-types/chess.ts";
 import { BriefingName } from "../../../common/data-types/facility.ts";
+import { CarryingMessagePayload, TeamMessagePayload } from "../../../common/message-types/server.ts";
 import { ClientPlayer } from "./ClientPlayer.ts";
 
 interface UnsafeState {
 	selfId: ChesswarId | null,
 	selfPlayer: ClientPlayer | null,
 	players: ClientPlayer[],
-	general: {
-		selectedButton: BriefingName | null,
-		selectedFrom: ChessSquare | null
+	team: TeamMessagePayload | null,
+	ui: {
+		carrying: CarryingMessagePayload,
+		general: {
+			selectedButton: BriefingName | null,
+			selectedFrom: ChessSquare | null
+		}
 	}
 }
 
@@ -17,9 +23,13 @@ export interface SafeState {
 	selfId: ChesswarId,
 	selfPlayer: ClientPlayer,
 	players: ClientPlayer[],
-	general: {
-		selectedButton: BriefingName | null,
-		selectedFrom: ChessSquare | null
+	team: TeamMessagePayload,
+	ui: {
+		carrying: CarryingMessagePayload,
+		general: {
+			selectedButton: BriefingName | null,
+			selectedFrom: ChessSquare | null
+		}
 	}
 }
 
@@ -32,6 +42,10 @@ export function isSafeState(state: UnsafeState): state is SafeState {
 		return false;
 	}
 
+	if (state.team === null) {
+		return false;
+	}
+
 	return true;
 }
 
@@ -39,8 +53,12 @@ export const state: UnsafeState = {
 	selfId: null,
 	selfPlayer: null,
 	players: [],
-	general: {
-		selectedButton: null,
-		selectedFrom: null
+	team: null,
+	ui: {
+		carrying: EMPTY_CARRY_LOAD,
+		general: {
+			selectedButton: null,
+			selectedFrom: null
+		}
 	}
 };
