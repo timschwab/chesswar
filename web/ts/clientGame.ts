@@ -7,18 +7,15 @@ import { socketListen } from "./core/socket.ts";
 import { handleKey } from "./game-logic/keys.ts";
 import { receiveMessage } from "./game-logic/messages.ts";
 import { isSafeState, SafeState, state } from "./game-logic/state.ts";
-import { mapTriangles } from "./mapTriangles.ts";
+import { MapRenderer } from "./render/MapRenderer.ts";
 import { StructureRenderer } from "./webgl/structure/StructureRenderer.ts";
 
 // Create the renderers from back to front
-const mapRenderer = new StructureRenderer();
+const mapRenderer = new MapRenderer();
 // const playerTextRender = new TextRenderer();
 const playerRenderer = new StructureRenderer();
 // const uiRenderer = new StructureRenderer();
 // const uiTextRenderer = new TextRenderer();
-
-const map = new Structure(mapTriangles, ZeroPoint, 1);
-mapRenderer.setStructures([map]);
 
 initGame();
 

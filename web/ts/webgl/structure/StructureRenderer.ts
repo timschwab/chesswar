@@ -36,6 +36,11 @@ export class StructureRenderer {
 		this.colorBufferId = this.webgl.attributeBuffer("a_color", 3);
 	}
 
+	setCamera(camera: Point): void {
+		// Set the camera uniform
+		this.webgl.setUniformPoint(this.cameraUniformLocation, camera);
+	}
+
 	setStructures(structures: Structure[]): void {
 		// Some quick pre-processing to separate attributes
 		const triangleScales = structures.flatMap(struct => struct.scaleArray());
@@ -51,11 +56,6 @@ export class StructureRenderer {
 
 		// Store the vertex count
 		this.vertexCount = triangleScales.length;
-	}
-
-	setCamera(camera: Point): void {
-		// Set the camera uniform
-		this.webgl.setUniformPoint(this.cameraUniformLocation, camera);
 	}
 
 	render(): void {
