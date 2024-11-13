@@ -1,3 +1,4 @@
+import { Point } from "../../../common/shapes/Point.ts";
 import { getAttachedCanvas } from "../core/dom.ts";
 import { bindCanvasToScreen } from "../core/screen.ts";
 
@@ -127,12 +128,12 @@ export class WebglRenderer {
 	}
 
 	// Rendering methods
-	setUniform1f(location: WebGLUniformLocation, value: number) {
+	setUniformValue(location: WebGLUniformLocation, value: number) {
 		this.webgl.uniform1f(location, value);
 	}
 
-	setUniform2f(location: WebGLUniformLocation, values: [number, number]) {
-		this.webgl.uniform2f(location, values[0], values[1]);
+	setUniformPoint(location: WebGLUniformLocation, value: Point) {
+		this.webgl.uniform2f(location, value.x, value.y);
 	}
 
 	setAttributeData(buffer: WebGLBuffer, data: number[]) {

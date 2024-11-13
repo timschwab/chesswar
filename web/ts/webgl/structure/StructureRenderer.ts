@@ -3,16 +3,54 @@ import structureFragmentShaderSource from "./glsl-generated/structureFragmentSha
 import { WebglRenderer } from "../WebglRenderer.ts";
 import { Structure } from "../../../../common/shapes/Structure.ts";
 import { Point } from "../../../../common/shapes/Point.ts";
+import { bindToScreen } from "../../core/screen.ts";
 
 export class StructureRenderer {
 	private readonly webgl: WebglRenderer;
 
+	private readonly cameraUniformLocation: WebGLUniformLocation;
+
+	private readonly scaleBufferId: WebGLBuffer;
+	private readonly structureCenterBufferId: WebGLBuffer;
+	private readonly vertexBufferId: WebGLBuffer;
+	private readonly colorBufferId: WebGLBuffer;
+
 	constructor() {
 		// Create the WebglRenderer
 		this.webgl = new WebglRenderer(structureVertexShaderSource, structureFragmentShaderSource);
+
+		// Grab uniform locations
+		const screenUniformLocation = this.webgl.uniformLocation("u_screen");
+		this.cameraUniformLocation = this.webgl.uniformLocation("u_camera_center");
+
+		// Set/bind the uniforms
+		bindToScreen(screenValue => this.webgl.setUniformPoint(
+			screenUniformLocation, screenValue.rightBottom));
+
+		// Get attribute buffers
+		this.scaleBufferId = this.webgl.attributeBuffer("a_scale", 1);
+		this.structureCenterBufferId = this.webgl.attributeBuffer("a_structure_center", 2);
+		this.vertexBufferId = this.webgl.attributeBuffer("a_vertex", 2);
+		this.colorBufferId = this.webgl.attributeBuffer("a_color", 3);
 	}
 
 	renderStructures(structures: Structure[], camera: Point) {
-		//
+		// Set the camera uniform
+		this.webgl.setUniformPoint(this.cameraUniformLocation, camera);
+
+		// Some quick pre-processing to separate attributes
+		const triangleScales = structures.flatMap(struct => struct.scaleArray());
+		const triangleStructures = structures.flatMap(struct => struct.structureArray());
+		const triangleVertices = structures.flatMap(struct => struct.verticesArray());
+		const triangleColors = structures.flatMap(tri => tri.colorArray());
+
+		// Load the data
+		this.webgl.setAttributeData(this.scaleBufferId, triangleScales);
+		this.webgl.setAttributeData(this.structureCenterBufferId, triangleStructures);
+		this.webgl.setAttributeData(this.vertexBufferId, triangleVertices);
+		this.webgl.setAttributeData(this.colorBufferId, triangleColors);
+
+		// Draw the triangles
+		this.webgl.draw(triangleScales.length);
 	}
 }

@@ -33,12 +33,10 @@ export class TextRenderer {
 		this.texLengthUniformLocation = this.webgl.uniformLocation("u_tex_length");
 
 		// Set/bind the uniforms
-		this.webgl.setUniform2f(glyphBoundingBoxLocation, [
-			this.expandingTexture.glyphBoundingBox.right,
-			this.expandingTexture.glyphBoundingBox.bottom
-		]);
-		bindToScreen(screenValue => this.webgl.setUniform2f(
-			screenUniformLocation, [screenValue.width, screenValue.height]));
+		this.webgl.setUniformPoint(
+			glyphBoundingBoxLocation, this.expandingTexture.glyphBoundingBox.rightBottom);
+		bindToScreen(screenValue => this.webgl.setUniformPoint(
+			screenUniformLocation, screenValue.rightBottom));
 
 		// Get attribute buffers
 		this.scaleBufferId = this.webgl.attributeBuffer("a_scale", 1);
@@ -80,7 +78,7 @@ export class TextRenderer {
 			this.webgl.setTextureData(texture);
 
 			// Set the texture size uniform
-			this.webgl.setUniform1f(this.texLengthUniformLocation, this.graphemeToGlyphMap.size);
+			this.webgl.setUniformValue(this.texLengthUniformLocation, this.graphemeToGlyphMap.size);
 		}
 
 		// Set the scale attribute
