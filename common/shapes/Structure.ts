@@ -1,34 +1,12 @@
-import { Point } from "./Point.ts";
+import { Color } from "../Color.ts";
 import { Triangle } from "./Triangle.ts";
 
 export class Structure {
 	readonly triangles: Triangle[];
-	readonly center: Point;
-	readonly scale: number;
+	readonly color: Color;
 
-	constructor(triangles: Triangle[], center: Point, scale?: number) {
+	constructor(triangles: Triangle[], color: Color) {
 		this.triangles = triangles;
-		this.center = center;
-		this.scale = scale || 1;
-	}
-
-	scaleArray(): number[] {
-		const result = Array<number>(this.triangles.length*3).fill(this.scale);
-		return result;
-	}
-
-	structureArray(): number[] {
-		const result = Array<number[]>(this.triangles.length*3).fill([this.center.x, this.center.y]).flat();
-		return result;
-	}
-
-	verticesArray(): number[] {
-		const result = this.triangles.flatMap(tri => tri.verticesArray());
-		return result;
-	}
-
-	colorArray(): number[] {
-		const result = this.triangles.flatMap(tri => tri.colorArray());
-		return result;
+		this.color = color;
 	}
 }

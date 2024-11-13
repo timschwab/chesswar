@@ -4,7 +4,7 @@ import { Circle } from "./Circle.ts";
 import { Rect } from "./Rect.ts";
 import { Geometry, SerializedGeometry } from "./Geometry.ts";
 import { GeometryName } from "./GeometryName.ts";
-import { TriangleVertices } from "./Triangle.ts";
+import { Triangle } from "./Triangle.ts";
 
 export interface SerializedPoint extends SerializedGeometry {
 	type: GeometryName.POINT,
@@ -66,7 +66,7 @@ export class Point extends Geometry<Point> {
 		throw "Can't get here";
 	}
 
-	toTriangleVertices(): TriangleVertices[] {
+	toTriangles(): Triangle[] {
 		return [];
 	}
 

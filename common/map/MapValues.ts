@@ -26,5 +26,27 @@ function transformTeamValue<V1, V2>(teamValue: ChessWarMapTeamValue<V1>, transfo
 	};
 }
 
+// For ticking on the server
 export const mapGeometry = transformMap(rawMap, value => value.geo);
-export const mapTriangles = transformMap(rawMap, value => value.toTriangles());
+
+// For rendering on the client
+const mapStructures = transformMap(rawMap, value => value.toStructure());
+export const mapStructuresList = [
+	mapStructures.boundary,
+
+	mapStructures.teamValues[TeamName.BLUE].command,
+	mapStructures.teamValues[TeamName.BLUE].briefings,
+	mapStructures.teamValues[TeamName.BLUE].outposts,
+	mapStructures.teamValues[TeamName.BLUE].armory,
+	mapStructures.teamValues[TeamName.BLUE].scif,
+
+	mapStructures.teamValues[TeamName.RED].command,
+	mapStructures.teamValues[TeamName.RED].briefings,
+	mapStructures.teamValues[TeamName.RED].outposts,
+	mapStructures.teamValues[TeamName.RED].armory,
+	mapStructures.teamValues[TeamName.RED].scif,
+
+	mapStructures.minefields,
+	mapStructures.dmz,
+	mapStructures.battlefield
+].flat();

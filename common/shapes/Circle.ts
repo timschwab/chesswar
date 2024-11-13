@@ -2,7 +2,7 @@ import { Point, SerializedPoint } from "./Point.ts";
 import { Rect } from "./Rect.ts";
 import { SerializedGeometry, Geometry } from "./Geometry.ts";
 import { GeometryName } from "./GeometryName.ts";
-import { TriangleVertices } from "./Triangle.ts";
+import { Triangle } from "./Triangle.ts";
 import { Vector } from "./Vector.ts";
 import { TAU } from "../Constants.ts";
 import { count } from "../math-utils.ts";
@@ -21,6 +21,8 @@ export class Circle extends Geometry<Circle> {
 	readonly right: number;
 	readonly top: number;
 	readonly bottom: number;
+
+	private static vertexTripletCache = new Map<number, [Point, Point, Point][]>();
 
 	static isSerializedCircle(maybeSerializedCircle: SerializedGeometry): maybeSerializedCircle is SerializedCircle {
 		return maybeSerializedCircle.type == GeometryName.CIRCLE;
@@ -78,15 +80,23 @@ export class Circle extends Geometry<Circle> {
 		throw "Can't get here";
 	}
 
-	toTriangleVertices(segments?: number): TriangleVertices[] {
-		const realSegments = segments || 24;
+	toTriangles(maybeSegments?: number): Triangle[] {
+		const segments = maybeSegments || 48;
 
-		const vectors = count(realSegments).map(seg => new Vector((seg*TAU)/realSegments, this.radius));
-		const points = vectors.map(vec => this.center.addVector(vec));
-		const pairs = points.map((_, i, arr) => [arr[i], arr[(i+1)%arr.length]]);
-		const vertices = pairs.map(pair => new TriangleVertices(this.center, pair[0], pair[1]));
+		let vertexTriplets = Circle.vertexTripletCache.get(segments);
+		if (vertexTriplets === undefined) {
+			// Compute and store
+			const points = count(segments).map(seg => new Vector((seg*TAU)/segments, 1).toPoint());
+			const pairs = points.map((_, i, arr) => [arr[i], arr[(i+1)%arr.length]] as const);
+			vertexTriplets = pairs.map(pair => [this.center, pair[0], pair[1]] as const);
+			Circle.vertexTripletCache.set(segments, vertexTriplets);
+		}
 
-		return vertices;
+		return vertexTriplets.map(vertexTriplet => new Triangle(
+			vertexTriplet[0], vertexTriplet[1], vertexTriplet[2],
+			this.radius,
+			this.center
+		));
 	}
 
 	add(operand: Point): Circle {

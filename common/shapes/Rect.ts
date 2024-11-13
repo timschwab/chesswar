@@ -2,7 +2,8 @@ import { Circle } from "./Circle.ts";
 import { Point, SerializedPoint } from "./Point.ts";
 import { SerializedGeometry, Geometry } from "./Geometry.ts";
 import { GeometryName } from "./GeometryName.ts";
-import { TriangleVertices } from "./Triangle.ts";
+import { Triangle } from "./Triangle.ts";
+import { ZeroPoint } from "./Zero.ts";
 
 interface SerializedRect extends SerializedGeometry {
 	type: GeometryName.RECT,
@@ -97,9 +98,11 @@ export class Rect extends Geometry<Rect> {
 		throw "Can't get here";
 	}
 
-	toTriangleVertices(): TriangleVertices[] {
-		const leftTop = new TriangleVertices(this.leftTop, this.rightTop, this.leftBottom);
-		const rightBottom = new TriangleVertices(this.rightBottom, this.rightTop, this.leftBottom);
+	// If we wanted to go crazy, we could change Rect to store center, width, height,
+	// and maybe even scale. But seems dumb.
+	toTriangles(): Triangle[] {
+		const leftTop = new Triangle(this.leftTop, this.rightTop, this.leftBottom, 1, ZeroPoint);
+		const rightBottom = new Triangle(this.rightBottom, this.rightTop, this.leftBottom, 1, ZeroPoint);
 		return [leftTop, rightBottom];
 	}
 
