@@ -1,6 +1,6 @@
 import { Point } from "../../../common/shapes/Point.ts";
 import { getAttachedCanvas } from "../core/dom.ts";
-import { bindCanvasToScreen } from "../core/screen.ts";
+import { bindCanvasToScreen, bindToScreen } from "../core/screen.ts";
 
 
 type ShaderType = WebGLRenderingContext["VERTEX_SHADER"] | WebGLRenderingContext["FRAGMENT_SHADER"];
@@ -15,6 +15,7 @@ export class WebglRenderer {
 		const canvas = getAttachedCanvas();
 		bindCanvasToScreen(canvas);
 		this.webgl = this.getWebgl(canvas);
+		bindToScreen(screenValue => this.webgl.viewport(0, 0, screenValue.width, screenValue.height));
 
 		// Build the 2 shaders and link them into a program
 		const vertexShader = this.createShader(this.webgl.VERTEX_SHADER, vertexShaderSource);
