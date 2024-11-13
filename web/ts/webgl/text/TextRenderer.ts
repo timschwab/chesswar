@@ -52,7 +52,8 @@ export class TextRenderer {
 		this.webgl.textureBuffer();
 
 		// Set parameters so we can render correctly. Would be nice to pull out the webgl
-		// constants into their own class.
+		// constants into their own class. Also I think these need more thought in order to
+		// render the text nicely.
 		this.webgl.textureParameter(
 			this.webgl.gl().TEXTURE_2D, this.webgl.gl().TEXTURE_WRAP_S, this.webgl.gl().CLAMP_TO_EDGE);
 		this.webgl.textureParameter(

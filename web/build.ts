@@ -3,18 +3,18 @@ import { esbuild } from '../deps.ts'
 
 console.log("Starting build");
 
-// Generate TS files from the shape GLSL files
-console.log("Generating shape fragment shader TS");
+// Generate TS files from the structure GLSL files
+console.log("Generating structure fragment shader TS");
 generateGlslFile(
-	"shapeFragmentShader",
-	"web/ts/webgl/shape/glsl-source",
-	"web/ts/webgl/shape/glsl-generated");
+	"structureFragmentShader",
+	"web/ts/webgl/structure/glsl-source",
+	"web/ts/webgl/structure/glsl-generated");
 
-console.log("Generating shape vertex shader TS");
+console.log("Generating structure vertex shader TS");
 generateGlslFile(
-	"shapeVertexShader",
-	"web/ts/webgl/shape/glsl-source",
-	"web/ts/webgl/shape/glsl-generated");
+	"structureVertexShader",
+	"web/ts/webgl/structure/glsl-source",
+	"web/ts/webgl/structure/glsl-generated");
 
 // Generate TS files from the text GLSL files
 console.log("Generating text fragment shader TS");
