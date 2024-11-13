@@ -3,19 +3,27 @@ import { esbuild } from '../deps.ts'
 
 console.log("Starting build");
 
-// Generate TS files from the GLSL files
-console.log("Generating fragment shader TS");
-generateGlslFile("web/ts/webgl/fragmentShader.glsl", "web/ts/webgl/generated/fragmentShader.ts");
+// Generate TS files from the shape GLSL files
+console.log("Generating shape fragment shader TS");
+generateGlslFile(
+	"web/ts/webgl/shape/glsl-source/shapeFragmentShader.glsl",
+	"web/ts/webgl/shape/glsl-generated/shapeFragmentShader.ts");
 
-console.log("Generating vertex shader TS");
-generateGlslFile("web/ts/webgl/vertexShader.glsl", "web/ts/webgl/generated/vertexShader.ts");
+console.log("Generating shape vertex shader TS");
+generateGlslFile(
+	"web/ts/webgl/shape/glsl-source/shapeVertexShader.glsl",
+	"web/ts/webgl/shape/glsl-generated/shapeVertexShader.ts");
 
 // Generate TS files from the text GLSL files
 console.log("Generating text fragment shader TS");
-generateGlslFile("web/ts/text/webgl/textFragmentShader.glsl", "web/ts/text/webgl/generated/textFragmentShader.ts");
+generateGlslFile(
+	"web/ts/webgl/text/glsl-source/textFragmentShader.glsl",
+	"web/ts/webgl/text/glsl-generated/textFragmentShader.ts");
 
 console.log("Generating text vertex shader TS");
-generateGlslFile("web/ts/text/webgl/textVertexShader.glsl", "web/ts/text/webgl/generated/textVertexShader.ts");
+generateGlslFile(
+	"web/ts/webgl/text/glsl-source/textVertexShader.glsl",
+	"web/ts/webgl/text/glsl-generated/textVertexShader.ts");
 
 // Create a JS bundle from the TS code
 const options = {

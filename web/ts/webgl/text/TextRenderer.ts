@@ -1,9 +1,9 @@
-import { getAttachedCanvas } from "../core/dom.ts";
+import { getAttachedCanvas } from "../../core/dom.ts";
 import { ExpandingGlyphTexture } from "./ExpandingGlyphTexture.ts";
-import { assignBuffer, createProgram, createShader, getGl, makeBuffer, setData } from "../webgl/webglUtils.ts";
-import textVertexShaderSource from "./webgl/generated/textVertexShader.ts";
-import textFragmentShaderSource from "./webgl/generated/textFragmentShader.ts";
-import { bindCanvasToScreen, bindToScreen } from "../core/screen.ts";
+import { assignBuffer, createProgram, createShader, getGl, makeBuffer, setData } from "../webglUtils.ts";
+import textVertexShaderSource from "./glsl-generated/textVertexShader.ts";
+import textFragmentShaderSource from "./glsl-generated/textFragmentShader.ts";
+import { bindCanvasToScreen, bindToScreen } from "../../core/screen.ts";
 import type { CWText } from "./CWText.ts";
 
 export class TextRenderer {

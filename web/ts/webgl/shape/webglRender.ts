@@ -1,11 +1,11 @@
-import { Point } from "../../../common/shapes/Point.ts";
-import { Rect } from "../../../common/shapes/Rect.ts";
-import { Structure } from "../../../common/shapes/Structure.ts";
-import { onScreenChange, screenValue } from "../core/screen.ts";
-import { getAttachedCanvas } from "../core/dom.ts";
-import fragmentShaderSource from "./generated/fragmentShader.ts";
-import vertexShaderSource from "./generated/vertexShader.ts";
-import { assignBuffer, createProgram, createShader, getGl, makeBuffer, setData } from "./webglUtils.ts";
+import { Point } from "../../../../common/shapes/Point.ts";
+import { Rect } from "../../../../common/shapes/Rect.ts";
+import { Structure } from "../../../../common/shapes/Structure.ts";
+import { onScreenChange, screenValue } from "../../core/screen.ts";
+import { getAttachedCanvas } from "../../core/dom.ts";
+import fragmentShaderSource from "./glsl-generated/fragmentShader.ts";
+import vertexShaderSource from "./glsl-generated/vertexShader.ts";
+import { assignBuffer, createProgram, createShader, getGl, makeBuffer, setData } from "../webglUtils.ts";
 
 let canvas: HTMLCanvasElement;
 let gl: WebGLRenderingContext;

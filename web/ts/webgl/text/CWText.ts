@@ -1,5 +1,5 @@
-import { Color } from "../../../common/Color.ts";
-import { Point } from "../../../common/shapes/Point.ts";
+import { Color } from "../../../../common/Color.ts";
+import { Point } from "../../../../common/shapes/Point.ts";
 
 export class CWText {
 	readonly message: string;
