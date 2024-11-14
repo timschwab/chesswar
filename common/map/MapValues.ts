@@ -53,4 +53,4 @@ function getTeamBundleStructures(teamBundle: ChessWarMapTeamBundle): Structure[]
 export const mapGeometry = getMapGeometry(rawMap);
 
 // For rendering on the client
-const mapStructures = getMapStructures(rawMap);
+export const mapStructures = getMapStructures(rawMap);

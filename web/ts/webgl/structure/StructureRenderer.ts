@@ -43,14 +43,33 @@ export class StructureRenderer {
 
 	setStructures(structures: Structure[]): void {
 		// Some quick pre-processing to separate attributes
-		const triangleScales = structures.flatMap(struct => struct.scaleArray());
-		const triangleStructures = structures.flatMap(struct => struct.structureArray());
-		const triangleVertices = structures.flatMap(struct => struct.verticesArray());
-		const triangleColors = structures.flatMap(tri => tri.colorArray());
+		const triangleScales = structures.flatMap(struct => struct.triangles.flatMap(triangle => [
+			triangle.scale,
+			triangle.scale,
+			triangle.scale,
+		]));
+
+		const triangleStructureCenters = structures.flatMap(struct => struct.triangles.flatMap(triangle => [
+			triangle.reference.x, triangle.reference.y,
+			triangle.reference.x, triangle.reference.y,
+			triangle.reference.x, triangle.reference.y
+		]));
+
+		const triangleVertices = structures.flatMap(struct => struct.triangles.flatMap(triangle => [
+			triangle.v1.x, triangle.v1.y,
+			triangle.v2.x, triangle.v2.y,
+			triangle.v3.x, triangle.v3.y
+		]));
+
+		const triangleColors = structures.flatMap(struct => [
+			struct.color.r, struct.color.g, struct.color.b,
+			struct.color.r, struct.color.g, struct.color.b,
+			struct.color.r, struct.color.g, struct.color.b
+		]);
 
 		// Load the data
 		this.webgl.setAttributeData(this.scaleBufferId, triangleScales);
-		this.webgl.setAttributeData(this.structureCenterBufferId, triangleStructures);
+		this.webgl.setAttributeData(this.structureCenterBufferId, triangleStructureCenters);
 		this.webgl.setAttributeData(this.vertexBufferId, triangleVertices);
 		this.webgl.setAttributeData(this.colorBufferId, triangleColors);
 

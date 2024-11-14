@@ -1,7 +1,5 @@
 import { rensets } from "../../common/settings.ts";
 import { Structure } from "../../common/shapes/Structure.ts";
-import { Triangle } from "../../common/shapes/Triangle.ts";
-import { ZeroPoint } from "../../common/shapes/Zero.ts";
 import { listenKey } from "./core/inputs.ts";
 import { socketListen } from "./core/socket.ts";
 import { handleKey } from "./game-logic/keys.ts";
@@ -42,11 +40,9 @@ function gameLoopSafe(state: SafeState): void {
 	mapRenderer.setCamera(state.selfPlayer.position.center);
 	playerRenderer.setCamera(state.selfPlayer.position.center);
 
-	playerRenderer.setStructures(state.players.map(player => {
-		const triangles = player.position.toTriangleVertices().map(
-			verts => new Triangle(verts, rensets.players.teamColor[player.team]));
-		return new Structure(triangles, ZeroPoint, 1);
-	}));
+	playerRenderer.setStructures(state.players.map(player => 
+		new Structure(player.position.toTriangles(), rensets.players.teamColor[player.team])
+	));
 
 	mapRenderer.render();
 	playerRenderer.render();
