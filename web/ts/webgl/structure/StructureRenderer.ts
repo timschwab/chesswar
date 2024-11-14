@@ -61,11 +61,11 @@ export class StructureRenderer {
 			triangle.v3.x, triangle.v3.y
 		]));
 
-		const triangleColors = structures.flatMap(struct => [
+		const triangleColors = structures.flatMap(struct => struct.triangles.flatMap(() => [
 			struct.color.r, struct.color.g, struct.color.b,
 			struct.color.r, struct.color.g, struct.color.b,
 			struct.color.r, struct.color.g, struct.color.b
-		]);
+		]));
 
 		// Load the data
 		this.webgl.setAttributeData(this.scaleBufferId, triangleScales);
