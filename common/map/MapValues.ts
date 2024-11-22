@@ -4,7 +4,7 @@ import { ChessWarMap, ChessWarMapTeamBundle, rawMap } from "./ChessWarMap.ts";
 
 function getMapGeometry(map: ChessWarMap) {
 	return {
-		boundary: map.boundary.geo,
+		rect: map.rect.geo,
 		teamBundles: {
 			[TeamName.BLUE]: getTeamBundleGeometry(map.teamBundles[TeamName.BLUE]),
 			[TeamName.RED]: getTeamBundleGeometry(map.teamBundles[TeamName.RED])
@@ -28,13 +28,15 @@ function getTeamBundleGeometry(teamBundle: ChessWarMapTeamBundle) {
 }
 
 function getMapStructures(map: ChessWarMap): Structure[] {
+	// Note that order matters because it determins draw order
 	return [
-		map.boundary.toStructure(),
+		map.rect.toStructure(),
 		getTeamBundleStructures(map.teamBundles[TeamName.BLUE]),
 		getTeamBundleStructures(map.teamBundles[TeamName.RED]),
+		map.boundaries.map(boundary => boundary.toStructure()),
 		map.minefields.map(minefield => minefield.toStructure()),
 		map.dmz.toStructure(),
-		map.battlefield.toStructure()
+		map.battlefield.toStructure(),
 	].flat();
 }
 

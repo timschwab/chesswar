@@ -78,8 +78,8 @@ function movePlayer(player: ServerPlayer): void {
 		const bounceX = 0 - (bouncePosition.x - 0);
 		bouncePosition = new Point(bounceX, bouncePosition.y);
 		bounceSpeed = new Point(-1*bounceSpeed.x, bounceSpeed.y);
-	} else if (bouncePosition.x > mapGeometry.boundary.width) {
-		const bounceX = mapGeometry.boundary.width - (bouncePosition.x - mapGeometry.boundary.width);
+	} else if (bouncePosition.x > mapGeometry.rect.width) {
+		const bounceX = mapGeometry.rect.width - (bouncePosition.x - mapGeometry.rect.width);
 		bouncePosition = new Point(bounceX, bouncePosition.y);
 		bounceSpeed = new Point(-1*bounceSpeed.x, bounceSpeed.y);
 	}
@@ -89,8 +89,8 @@ function movePlayer(player: ServerPlayer): void {
 		bouncePosition = new Point(bouncePosition.x, bounceY);
 		bounceSpeed = new Point(bounceSpeed.x, -1*bounceSpeed.y);
 
-	} else if (bouncePosition.y > mapGeometry.boundary.height) {
-		const bounceY = mapGeometry.boundary.height - (bouncePosition.y - mapGeometry.boundary.height);
+	} else if (bouncePosition.y > mapGeometry.rect.height) {
+		const bounceY = mapGeometry.rect.height - (bouncePosition.y - mapGeometry.rect.height);
 		bouncePosition = new Point(bouncePosition.x, bounceY);
 		bounceSpeed = new Point(bounceSpeed.x, -1*bounceSpeed.y);
 	}

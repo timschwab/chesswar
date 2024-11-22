@@ -10,7 +10,11 @@ import { ZeroPoint } from "../shapes/Zero.ts";
 // Map rectangle
 const width = 6000;
 const height = 3000;
-const backgroundColor = CWColor.GREY_DARK;
+const backgroundColor = CWColor.GREY_STANDARD;
+
+// Map texture
+const boundaryHalfWidth = 2;
+const boundaryColor = CWColor.GREEN_BRIGHT;
 
 // Facilities
 const baseHalfHeight = 300;
@@ -66,6 +70,29 @@ const mapShape = Shape.from(mapRect, backgroundColor);
 const middleX = width/2;
 const middleY = height/2;
 const middle = new Point(middleX, middleY);
+
+// Map texture
+const topBoundary = new Rect(
+	new Point(0-boundaryHalfWidth,     0-boundaryHalfWidth),
+	new Point(width+boundaryHalfWidth, 0+boundaryHalfWidth)
+);
+const bottomBoundary = new Rect(
+	new Point(0-boundaryHalfWidth,     height-boundaryHalfWidth),
+	new Point(width+boundaryHalfWidth, height+boundaryHalfWidth)
+);
+const leftBoundary = new Rect(
+	new Point(0-boundaryHalfWidth, 0-boundaryHalfWidth),
+	new Point(0+boundaryHalfWidth, height+boundaryHalfWidth)
+);
+const rightBoundary = new Rect(
+	new Point(width-boundaryHalfWidth, 0-boundaryHalfWidth),
+	new Point(width+boundaryHalfWidth, height+boundaryHalfWidth)
+);
+
+const topBoundaryShape = Shape.from(topBoundary, boundaryColor);
+const bottomBoundaryShape = Shape.from(bottomBoundary, boundaryColor);
+const leftBoundaryShape = Shape.from(leftBoundary, boundaryColor);
+const rightBoundaryShape = Shape.from(rightBoundary, boundaryColor);
 
 // Blue facilities
 const blueBase = new Rect(
@@ -198,5 +225,10 @@ export const mapSettings = {
 
 	minefieldShapes,
 	dmzShape,
-	battlefieldShape
+	battlefieldShape,
+
+	topBoundaryShape,
+	bottomBoundaryShape,
+	leftBoundaryShape,
+	rightBoundaryShape
 };

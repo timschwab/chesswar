@@ -16,18 +16,25 @@ export interface ChessWarMapTeamBundle {
 }
 
 export interface ChessWarMap {
-	boundary: Shape<Rect>,
+	rect: Shape<Rect>,
 	teamBundles: {
 		[TeamName.BLUE]: ChessWarMapTeamBundle,
 		[TeamName.RED]: ChessWarMapTeamBundle
 	},
 	minefields: Shape<Rect | Circle>[],
 	dmz: Shape<Circle>,
-	battlefield: Shape<Circle>
+	battlefield: Shape<Circle>,
+	boundaries: Shape<Rect>[]
 }
 
 export const rawMap: ChessWarMap = {
-	boundary: mapSettings.mapShape,
+	rect: mapSettings.mapShape,
+	boundaries: [
+		mapSettings.topBoundaryShape,
+		mapSettings.bottomBoundaryShape,
+		mapSettings.leftBoundaryShape,
+		mapSettings.rightBoundaryShape
+	],
 	teamBundles: {
 		[TeamName.BLUE]: {
 			starts: [mapSettings.blueStart1, mapSettings.blueStart2, mapSettings.blueStart3],
