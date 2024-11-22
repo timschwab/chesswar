@@ -88,7 +88,7 @@ export class Circle extends Geometry<Circle> {
 			// Compute and store
 			const points = count(segments).map(seg => new Vector((seg*TAU)/segments, 1).toPoint());
 			const pairs = points.map((_, i, arr) => [arr[i], arr[(i+1)%arr.length]] as const);
-			vertexTriplets = pairs.map(pair => [this.center, pair[0], pair[1]] as const);
+			vertexTriplets = pairs.map(pair => [new Point(0, 0), pair[0], pair[1]] as const);
 			Circle.vertexTripletCache.set(segments, vertexTriplets);
 		}
 
