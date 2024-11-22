@@ -79,18 +79,18 @@ const blueCommand = new Rect(
 const blueCommandShape = Shape.from(blueCommand, commandColor);
 
 const blueBriefing1 = new Rect(
-	new Point(blueCommand.center.x-(briefingSize/2), blueCommand.top+sideBriefingOffset),
-	new Point(blueCommand.center.x+(briefingSize/2), blueCommand.top+sideBriefingOffset+briefingSize)
+	new Point(blueBase.center.x-(briefingSize/2), blueBase.top+sideBriefingOffset),
+	new Point(blueBase.center.x+(briefingSize/2), blueBase.top+sideBriefingOffset+briefingSize)
 );
 
 const blueBriefing2 = new Rect(
-	new Point(blueCommand.right-briefingSize-middleBriefingOffset, blueCommand.center.y-(briefingSize/2)),
-	new Point(blueCommand.right-briefingSize,                      blueCommand.center.y+(briefingSize/2))
+	new Point(blueBase.right-middleBriefingOffset-briefingSize, blueBase.center.y-(briefingSize/2)),
+	new Point(blueBase.right-middleBriefingOffset,              blueBase.center.y+(briefingSize/2))
 );
 
 const blueBriefing3 = new Rect(
-	new Point(blueCommand.center.x-(briefingSize/2), blueCommand.bottom-sideBriefingOffset-briefingSize),
-	new Point(blueCommand.center.x+(briefingSize/2), blueCommand.bottom-sideBriefingOffset)
+	new Point(blueBase.center.x-(briefingSize/2), blueBase.bottom-sideBriefingOffset-briefingSize),
+	new Point(blueBase.center.x+(briefingSize/2), blueBase.bottom-sideBriefingOffset)
 );
 
 const blueBriefing1Shape = Shape.from(blueBriefing1, briefingColor);

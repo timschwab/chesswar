@@ -40,12 +40,12 @@ function getMapStructures(map: ChessWarMap): Structure[] {
 
 function getTeamBundleStructures(teamBundle: ChessWarMapTeamBundle): Structure[] {
 	return [
-		teamBundle.command.toStructure(),
 		teamBundle.base.toStructure(),
+		teamBundle.command.toStructure(),
 		teamBundle.briefings.map(briefing => briefing.toStructure()),
 		teamBundle.outposts.map(outpost => outpost.toStructure()),
-		teamBundle.base.toStructure(),
-		teamBundle.base.toStructure()
+		teamBundle.armory.toStructure(),
+		teamBundle.scif.toStructure()
 	].flat();
 }
 
