@@ -32,4 +32,4 @@ deno task web
 
 ## Opening the game
 
-When the api server and the web server are running, go to http://localhost:8537/
+When the api server and the web server are running, go to http://localhost:8357/
