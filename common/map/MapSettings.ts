@@ -16,6 +16,10 @@ const backgroundColor = CWColor.GREY_STANDARD;
 const boundaryHalfWidth = 2;
 const boundaryColor = CWColor.GREEN_BRIGHT;
 
+const gridSpacing = 100;
+const gridHalfWidth = 1;
+const gridColor = CWColor.GREY_EXTRA_DARK;
+
 // Facilities
 const baseHalfHeight = 300;
 const baseWidth = 400;
@@ -93,6 +97,26 @@ const topBoundaryShape = Shape.from(topBoundary, boundaryColor);
 const bottomBoundaryShape = Shape.from(bottomBoundary, boundaryColor);
 const leftBoundaryShape = Shape.from(leftBoundary, boundaryColor);
 const rightBoundaryShape = Shape.from(rightBoundary, boundaryColor);
+
+const gridLines: Rect[] = [];
+
+for (let x = 0 ; x <= width ; x += gridSpacing) {
+	const gridRect = new Rect(
+		new Point(x-gridHalfWidth, 0),
+		new Point(x+gridHalfWidth, height)
+	);
+	gridLines.push(gridRect);
+}
+
+for (let y = 0 ; y <= height ; y += gridSpacing) {
+	const gridRect = new Rect(
+		new Point(0,     y-gridHalfWidth),
+		new Point(width, y+gridHalfWidth)
+	);
+	gridLines.push(gridRect);
+}
+
+const gridShapes = gridLines.map(line => Shape.from(line, gridColor));
 
 // Blue facilities
 const blueBase = new Rect(
@@ -197,6 +221,12 @@ const battlefieldShape = Shape.from(battlefield, battlefieldColor);
 export const mapSettings = {
 	mapShape,
 
+	topBoundaryShape,
+	bottomBoundaryShape,
+	leftBoundaryShape,
+	rightBoundaryShape,
+	gridShapes,
+
 	blueBaseShape,
 	blueCommandShape,
 	blueBriefing1Shape,
@@ -225,10 +255,5 @@ export const mapSettings = {
 
 	minefieldShapes,
 	dmzShape,
-	battlefieldShape,
-
-	topBoundaryShape,
-	bottomBoundaryShape,
-	leftBoundaryShape,
-	rightBoundaryShape
+	battlefieldShape
 };

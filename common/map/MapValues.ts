@@ -31,6 +31,7 @@ function getMapStructures(map: ChessWarMap): Structure[] {
 	// Note that order matters because it determins draw order
 	return [
 		map.rect.toStructure(),
+		map.grid.map(line => line.toStructure()),
 		getTeamBundleStructures(map.teamBundles[TeamName.BLUE]),
 		getTeamBundleStructures(map.teamBundles[TeamName.RED]),
 		map.boundaries.map(boundary => boundary.toStructure()),

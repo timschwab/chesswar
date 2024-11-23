@@ -83,10 +83,6 @@ export const rensets = {
 		width: 1,
 		spacing: 100
 	},
-	mapBorder: {
-		color: CWColor.GREEN_BRIGHT,
-		width: 4
-	},
 	players: {
 		self: CWColor.GREEN_BRIGHT,
 		teamColor: {
