@@ -77,14 +77,7 @@ export const rensets = {
 	fps,
 	mspf: 1000/fps,
 	fpsMsMargin: 0.1,
-	grid: {
-		background: CWColor.GREY_STANDARD,
-		color: CWColor.GREY_EXTRA_DARK,
-		width: 1,
-		spacing: 100
-	},
 	players: {
-		self: CWColor.GREEN_BRIGHT,
 		teamColor: {
 			[TeamName.BLUE]: CWColor.BLUE_LIGHT,
 			[TeamName.RED]: CWColor.RED_STANDARD

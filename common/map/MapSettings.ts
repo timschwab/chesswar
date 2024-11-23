@@ -17,7 +17,7 @@ const boundaryHalfWidth = 2;
 const boundaryColor = CWColor.GREEN_BRIGHT;
 
 const gridSpacing = 100;
-const gridHalfWidth = 1;
+const gridHalfWidth = 0.5;
 const gridColor = CWColor.GREY_EXTRA_DARK;
 
 // Facilities
