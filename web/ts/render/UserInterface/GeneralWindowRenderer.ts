@@ -62,8 +62,17 @@ export class GeneralWindowRenderer implements UiComponentRenderer {
 			button1, button2, button3
 		];
 
-		if (briefingSelection !== null) {
-			this.allStructures.push(briefingSelection);
+		if (briefingSelection === null) {
+			this.allStructures = [
+				outerWindow, innerWindow,
+				button1, button2, button3
+			];
+		} else {
+			this.allStructures = [
+				outerWindow, innerWindow,
+				briefingSelection,
+				button1, button2, button3
+			];
 		}
 
 		const teamMoves = [briefings[BriefingName.ONE], briefings[BriefingName.TWO], briefings[BriefingName.THREE]];

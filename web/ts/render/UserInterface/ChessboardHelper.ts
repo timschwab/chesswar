@@ -71,7 +71,7 @@ export function renderBoard(boardRect: Rect, boardData: ChessBoard, moves: Chess
 
 	// Render all the moves
 	for (const move of moves) {
-		//allStructures.push(...renderMove(boardRect, squareSize, move, perspective));
+		allStructures.push(...renderMove(boardRect, squareSize, move, perspective));
 	}
 
 	return allStructures;
@@ -311,6 +311,8 @@ function renderPawn(topLeft: Point, width: number): Triangle[] {
 }
 
 function renderMove(boardRect: Rect, squareSize: number, move: ChessMove, perspective: ChessPerspective): Structure[] {
+	return [];
+
 	const color = rensets.generalWindow.teamColor[move.team];
 
 	const displayFrom = rotateSquare(move.from, perspective);
