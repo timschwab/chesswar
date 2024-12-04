@@ -7,6 +7,7 @@ import { Point } from "../../../../common/shapes/Point.ts";
 import { Rect } from "../../../../common/shapes/Rect.ts";
 import { Shape } from "../../../../common/shapes/Shape.ts";
 import { Structure } from "../../../../common/shapes/Structure.ts";
+import { Triangle } from "../../../../common/shapes/Triangle.ts";
 
 export function teamPerspective(team: TeamName): ChessPerspective {
 	if (team == TeamName.BLUE) {
@@ -77,30 +78,23 @@ export function renderBoard(boardRect: Rect, boardData: ChessBoard, moves: Chess
 }
 
 function renderSquare(board: ChessBoard, leftTop: Point, squareSize: number, position: ChessSquare, perspective: ChessPerspective): Structure[] {
-	const {row, col} = position;
 	const displayPosition = rotateSquare(position, perspective);
 	const {squareRect, color} = getSquareValues(leftTop, squareSize, displayPosition);
 
 	const squareStructure = Shape.from(squareRect, color).toStructure();
 
-	const cell = board[row][col];
-	if (cell) {
-		if (cell.piece == ChessPiece.KING) {
-			//renderKing(cwCanvas, squareRect.leftTop, squareSize, cell.team);
-		} else if (cell.piece == ChessPiece.QUEEN) {
-			//renderQueen(cwCanvas, squareRect.leftTop, squareSize, cell.team);
-		} else if (cell.piece == ChessPiece.ROOK) {
-			//renderRook(cwCanvas, squareRect.leftTop, squareSize, cell.team);
-		} else if (cell.piece == ChessPiece.BISHOP) {
-			//renderBishop(cwCanvas, squareRect.leftTop, squareSize, cell.team);
-		} else if (cell.piece == ChessPiece.KNIGHT) {
-			//renderKnight(cwCanvas, squareRect.leftTop, squareSize, cell.team);
-		} else if (cell.piece == ChessPiece.PAWN) {
-			//renderPawn(cwCanvas, squareRect.leftTop, squareSize, cell.team);
-		}
+	let pieceStructure: Structure | null = null;
+	const cell = board[position.row][position.col];
+	if (cell !== null) {
+		const pieceTriangles = renderChessPiece(cell.piece, squareRect.leftTop, squareSize);
+		pieceStructure = new Structure(pieceTriangles, rensets.generalWindow.teamColor[cell.team]);
 	}
 
-	return [squareStructure];
+	if (pieceStructure === null) {
+		return [squareStructure];
+	} else {
+		return [squareStructure, pieceStructure];
+	}
 }
 
 function getSquareValues(leftTop: Point, squareSize: number, position: ChessSquare) {
@@ -119,8 +113,33 @@ function getSquareValues(leftTop: Point, squareSize: number, position: ChessSqua
 	};
 }
 
-function renderKing(cwCanvas: CWCanvas, leftTop: Point, width: number, team: TeamName) {
-	const color = rensets.generalWindow.teamColor[team];
+function renderChessPiece(piece: ChessPiece, leftTop: Point, squareSize: number): Triangle[] {
+	switch (piece) {
+		case ChessPiece.KING:
+			return renderKing(leftTop, squareSize);
+		case ChessPiece.QUEEN:
+			return [];
+			return renderQueen(leftTop, squareSize);
+		case ChessPiece.ROOK:
+			return [];
+			return renderRook(leftTop, squareSize);
+		case ChessPiece.BISHOP:
+			return [];
+			return renderBishop(leftTop, squareSize);
+		case ChessPiece.KNIGHT:
+			return [];
+			return renderKnight(leftTop, squareSize);
+		case ChessPiece.PAWN:
+			return [];
+			return renderPawn(leftTop, squareSize);
+		default:
+			assertNever(piece);
+	}
+
+	throw "Can't get here";
+}
+
+function renderKing(leftTop: Point, width: number): Triangle[] {
 	const leftTopX = leftTop.x;
 	const leftTopY = leftTop.y;
 
@@ -129,18 +148,24 @@ function renderKing(cwCanvas: CWCanvas, leftTop: Point, width: number, team: Tea
 
 	const baseTopLeft = new Point(middleX-(width*3/8), middleY);
 	const baseBottomRight = new Point(middleX+(width*3/8), middleY+(width*3/8));
-	cwCanvas.fillRect(Shape.from(new Rect(baseTopLeft, baseBottomRight), color));
+	const base = new Rect(baseTopLeft, baseBottomRight);
 
 	const crossVerticalTopLeft = new Point(middleX-(width/16), middleY-(width*3/8));
 	const crossVerticalBottomRight = new Point(middleX+(width/16), middleY+(width/8));
-	cwCanvas.fillRect(Shape.from(new Rect(crossVerticalTopLeft, crossVerticalBottomRight), color));
+	const crossVertical = new Rect(crossVerticalTopLeft, crossVerticalBottomRight);
 
 	const crossHorizontalTopLeft = new Point(middleX-(width*3/16), middleY-(width*2/8));
 	const crossHorizontalBottomRight = new Point(middleX+(width*3/16), middleY-(width*1/8));
-	cwCanvas.fillRect(Shape.from(new Rect(crossHorizontalTopLeft, crossHorizontalBottomRight), color));
+	const crossHorizontal = new Rect(crossHorizontalTopLeft, crossHorizontalBottomRight);
+
+	return [
+		base.toTriangles(),
+		crossVertical.toTriangles(),
+		crossHorizontal.toTriangles()
+	].flat();
 }
 
-function renderQueen(cwCanvas: CWCanvas, topLeft: Point, width: number, team: TeamName) {
+function renderQueen(topLeft: Point, width: number): Triangle[] {
 	const color = rensets.generalWindow.teamColor[team];
 	const topLeftX = topLeft.x;
 	const topLeftY = topLeft.y;
@@ -174,7 +199,7 @@ function renderQueen(cwCanvas: CWCanvas, topLeft: Point, width: number, team: Te
 	cwCanvas.fillCircle(Shape.from(jewelRight, color));
 }
 
-function renderRook(cwCanvas: CWCanvas, topLeft: Point, width: number, team: TeamName) {
+function renderRook(topLeft: Point, width: number): Triangle[] {
 	const color = rensets.generalWindow.teamColor[team];
 	const topLeftX = topLeft.x;
 	const topLeftY = topLeft.y;
@@ -199,7 +224,7 @@ function renderRook(cwCanvas: CWCanvas, topLeft: Point, width: number, team: Tea
 	cwCanvas.fillRect(Shape.from(new Rect(rightTopLeft, rightBottomRight), color));
 }
 
-function renderBishop(cwCanvas: CWCanvas, topLeft: Point, width: number, team: TeamName) {
+function renderBishop(topLeft: Point, width: number): Triangle[] {
 	const color = rensets.generalWindow.teamColor[team];
 	const topLeftX = topLeft.x;
 	const topLeftY = topLeft.y;
@@ -218,7 +243,7 @@ function renderBishop(cwCanvas: CWCanvas, topLeft: Point, width: number, team: T
 	cwCanvas.fillRect(Shape.from(new Rect(baseTopLeft, baseBottomRight), color));
 }
 
-function renderKnight(cwCanvas: CWCanvas, topLeft: Point, width: number, team: TeamName) {
+function renderKnight(topLeft: Point, width: number): Triangle[] {
 	const color = rensets.generalWindow.teamColor[team];
 	const topLeftX = topLeft.x;
 	const topLeftY = topLeft.y;
@@ -246,7 +271,7 @@ function renderKnight(cwCanvas: CWCanvas, topLeft: Point, width: number, team: T
 	cwCanvas.fillCircle(Shape.from(ear, color));
 }
 
-function renderPawn(cwCanvas: CWCanvas, topLeft: Point, width: number, team: TeamName) {
+function renderPawn(topLeft: Point, width: number): Triangle[] {
 	const color = rensets.generalWindow.teamColor[team];
 	const topLeftX = topLeft.x;
 	const topLeftY = topLeft.y;
