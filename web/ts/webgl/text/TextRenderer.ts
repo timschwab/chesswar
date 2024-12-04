@@ -19,6 +19,8 @@ export class TextRenderer {
 	private readonly texIndexBufferId: WebGLBuffer;
 	private readonly colorBufferId: WebGLBuffer;
 
+	private vertexCount: number = 0;
+
 	constructor() {
 		// Get the glyph texture and grapheme map
 		this.expandingTexture = new ExpandingGlyphTexture();
@@ -51,7 +53,7 @@ export class TextRenderer {
 
 		// Set parameters so we can render correctly. Would be nice to pull out the webgl
 		// constants into their own class. Also I think these need more thought in order to
-		// render the text nicely.
+		// actually render the text nicely.
 		this.webgl.textureParameter(
 			this.webgl.gl().TEXTURE_2D, this.webgl.gl().TEXTURE_WRAP_S, this.webgl.gl().CLAMP_TO_EDGE);
 		this.webgl.textureParameter(
@@ -60,12 +62,12 @@ export class TextRenderer {
 			this.webgl.gl().TEXTURE_2D, this.webgl.gl().TEXTURE_MIN_FILTER, this.webgl.gl().LINEAR);
 	}
 
-	async renderText(text: CWText) {
+	async setTextData(textData: CWText[]) {
 		// Split text into graphemes
-		const graphemes = text.message.split("");
+		const allGraphemes = textData.flatMap(text => text.graphemes);
 
 		// Find all graphemes we have never rendered before and update the texture if needed
-		const newGraphemes = new Set(graphemes.filter(grapheme => !this.graphemeToGlyphMap.has(grapheme)));
+		const newGraphemes = new Set(allGraphemes.filter(grapheme => !this.graphemeToGlyphMap.has(grapheme)));
 		if (newGraphemes.size > 0) {
 			// Add them all to the glyph texture and map
 			for (const grapheme of newGraphemes) {
@@ -82,95 +84,112 @@ export class TextRenderer {
 		}
 
 		// Set the scale attribute
-		const scales = graphemes.flatMap(() => {
-			return [
-				text.scale,
-				text.scale,
-				text.scale,
-				text.scale,
-				text.scale,
-				text.scale
-			];
-		});
+		const scales = textData.flatMap(text =>
+			text.graphemes.flatMap(() => {
+				return [
+					text.scale,
+					text.scale,
+					text.scale,
+					text.scale,
+					text.scale,
+					text.scale
+				];
+			})
+		);
 		this.webgl.setAttributeData(this.scaleBufferId, scales);
 
 		// Set the text left top attribute
-		const textLeftTops = graphemes.flatMap(() => {
-			const x = text.leftTop.x;
-			const y = text.leftTop.y;
-			return [
-				x, y,
-				x, y,
-				x, y,
-				x, y,
-				x, y,
-				x, y
-			];
-		});
+		const textLeftTops = textData.flatMap(text =>
+			text.graphemes.flatMap(() => {
+				const x = text.leftTop.x;
+				const y = text.leftTop.y;
+				return [
+					x, y,
+					x, y,
+					x, y,
+					x, y,
+					x, y,
+					x, y
+				];
+			})
+		);
 		this.webgl.setAttributeData(this.textLeftTopBufferId, textLeftTops);
 
 		// Set the glyph index attribute
-		const glyphIndices = graphemes.flatMap((_grapheme, index) => {
-			return [
-				index,
-				index,
-				index,
-				index,
-				index,
-				index
-			];
-		});
+		const glyphIndices = textData.flatMap(text =>
+			text.graphemes.flatMap((_grapheme, index) => {
+				return [
+					index,
+					index,
+					index,
+					index,
+					index,
+					index
+				];
+			})
+		);
 		this.webgl.setAttributeData(this.glyphIndexBufferId, glyphIndices);
 
 		// Set the glyph vertex attribute
-		const glyphVertices = graphemes.flatMap(() => {
-			return [
-				0, 0,
-				1, 0,
-				0, 1,
-				0, 1,
-				1, 0,
-				1, 1
-			];
-		});
+		const glyphVertices = textData.flatMap(text =>
+			text.graphemes.flatMap(() => {
+				return [
+					0, 0,
+					1, 0,
+					0, 1,
+					0, 1,
+					1, 0,
+					1, 1
+				];
+			})
+		);
 		this.webgl.setAttributeData(this.glyphVertexBufferId, glyphVertices);
 
 		// Set the color attribute
-		const colors = graphemes.flatMap(() => {
-			const colorArray = text.color.asArray();
-			return [
-				...colorArray,
-				...colorArray,
-				...colorArray,
-				...colorArray,
-				...colorArray,
-				...colorArray
-			];
-		});
+		const colors = textData.flatMap(text =>
+			text.graphemes.flatMap(() => {
+				const colorArray = text.color.asArray();
+				return [
+					...colorArray,
+					...colorArray,
+					...colorArray,
+					...colorArray,
+					...colorArray,
+					...colorArray
+				];
+			})
+		);
 		this.webgl.setAttributeData(this.colorBufferId, colors);
 
 		// Set the texture index attribute
-		const textureIndices = graphemes.flatMap(grapheme => {
-			const index = this.graphemeToGlyphMap.get(grapheme);
-			if (index === undefined) {
-				throw "Could not find grapheme in graphemeToGlyphMap: " + grapheme;
-			}
+		const textureIndices = textData.flatMap(text =>
+			text.graphemes.flatMap(grapheme => {
+				const index = this.graphemeToGlyphMap.get(grapheme);
+				if (index === undefined) {
+					throw "Could not find grapheme in graphemeToGlyphMap: " + grapheme;
+				}
 
-			const xLeft = index;
-			const xRght = index+1;
+				const xLeft = index;
+				const xRght = index+1;
 
-			return [
-				xLeft, 0,
-				xRght, 0,
-				xLeft, 1,
-				xLeft, 1,
-				xRght, 0,
-				xRght, 1
-			];
-		});
+				return [
+					xLeft, 0,
+					xRght, 0,
+					xLeft, 1,
+					xLeft, 1,
+					xRght, 0,
+					xRght, 1
+				];
+			})
+		);
 		this.webgl.setAttributeData(this.texIndexBufferId, textureIndices);
 
+		// Store the vertex count
+		this.vertexCount = allGraphemes.length*6;
+	}
+
+	render() {
 		// Draw the triangles!
-		this.webgl.draw(graphemes.length*6);
+		this.webgl.draw(this.vertexCount);
 	}
 }

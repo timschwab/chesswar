@@ -42,7 +42,7 @@ export class StructureRenderer {
 	}
 
 	setStructures(structures: Structure[]): void {
-		// Some quick pre-processing to separate attributes
+		// Extract the attribute data
 		const triangleScales = structures.flatMap(struct => struct.triangles.flatMap(triangle => [
 			triangle.scale,
 			triangle.scale,
