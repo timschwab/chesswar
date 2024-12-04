@@ -3,6 +3,7 @@ import { socketListen } from "./core/socket.ts";
 import { handleKey } from "./game-logic/keys.ts";
 import { receiveMessage } from "./game-logic/messages.ts";
 import { isSafeState, SafeState, state } from "./game-logic/state.ts";
+import { recordAnimationTime, recordJsRenderTime } from "./game-logic/statsManager.ts";
 import { MapRenderer } from "./render/MapRenderer.ts";
 import { PlayerRenderer } from "./render/PlayerRenderer.ts";
 import { UserInterfaceRenderer } from "./render/UserInterfaceRenderer.ts";
@@ -25,7 +26,12 @@ function initGame() {
 	requestAnimationFrame(gameLoopUnsafe);
 }
 
+let previousAnimationStart = performance.now();
 function gameLoopUnsafe(): void {
+	const currentAnimationStart = performance.now();
+	recordAnimationTime(currentAnimationStart - previousAnimationStart);
+	previousAnimationStart = currentAnimationStart;
+
 	requestAnimationFrame(gameLoopUnsafe);
 
 	if (isSafeState(state)) {
@@ -34,6 +40,14 @@ function gameLoopUnsafe(): void {
 }
 
 function gameLoopSafe(state: SafeState): void {
+	const start = performance.now();
+	render(state);
+	const finish = performance.now();
+
+	recordJsRenderTime(finish-start);
+}
+
+function render(state: SafeState) {
 	// Set camera everywhere
 	mapRenderer.setCamera(state.selfPlayer.position.center);
 	playerRenderer.setCamera(state.selfPlayer.position.center);

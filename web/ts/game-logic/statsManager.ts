@@ -1,45 +1,35 @@
 import { LowPassFilter } from "../../../common/data-structures/LowPassFilter.ts";
 import { ServerStats } from "../../../common/data-types/server.ts";
 import { gameEngine, rensets } from "../../../common/settings.ts";
-//import { ui } from "../ui/ui.ts";
-import { GameStats } from "./GameStats.ts";
+import { state } from "./state.ts";
 
 const animationTimeFilter = new LowPassFilter(rensets.fps, rensets.mspf);
 const jsRenderTimeFilter = new LowPassFilter(rensets.fps, rensets.mspf);
 const serverTickFilter = new LowPassFilter(gameEngine.tps, gameEngine.mspt);
 const pingTimeFilter = new LowPassFilter(2, 0);
 
-let stats = GameStats.Zero;
+const stats = state.ui.stats;
 
 export function recordPlayersOnline(playersOnline: number) {
-	stats = stats.playersOnline(playersOnline);
-	setStats();
+	stats.data = stats.data.playersOnline(playersOnline);
 }
 
 export function recordAnimationTime(timeTaken: number) {
 	animationTimeFilter.set(timeTaken);
-	stats = stats.animationTime(animationTimeFilter.read());
-	setStats();
+	stats.data = stats.data.animationTime(animationTimeFilter.read());
 }
 
 export function recordJsRenderTime(timeTaken: number) {
 	jsRenderTimeFilter.set(timeTaken);
-	stats = stats.jsRenderTime(jsRenderTimeFilter.read());
-	setStats();
+	stats.data = stats.data.jsRenderTime(jsRenderTimeFilter.read());
 }
 
 export function recordServerStats(serverStats: ServerStats) {
 	serverTickFilter.set(serverStats.tickMs);
-	stats = stats.serverTickTime(serverTickFilter.read());
-	setStats();
+	stats.data = stats.data.serverTickTime(serverTickFilter.read());
 }
 
 export function recordPingTime(timeTaken: number) {
 	pingTimeFilter.set(timeTaken);
-	stats = stats.pingTime(pingTimeFilter.read());
-	setStats();
-}
-
-function setStats() {
-	//ui.stats.setStats(stats);
+	stats.data = stats.data.pingTime(pingTimeFilter.read());
 }

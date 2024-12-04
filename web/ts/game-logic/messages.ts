@@ -11,7 +11,9 @@ import {
 import { assertNever } from "../../../common/Preconditions.ts";
 import audioPlayer from "../audio/audioPlayer.ts";
 import { ClientPlayer, deserializeClientPlayer } from "./ClientPlayer.ts";
+import { reportPong } from "./pingManager.ts";
 import { state } from "./state.ts";
+import { recordPlayersOnline, recordServerStats } from "./statsManager.ts";
 
 export function receiveMessage(message: ServerMessage): void {
 	if (message.type == ServerMessageTypes.PLAYER_INIT) {
@@ -53,6 +55,8 @@ function handleState(payload: StateMessagePayload) {
 
 	state.selfPlayer = selfPlayer;
 	state.players = deserialized;
+
+	recordPlayersOnline(payload.players.length);
 }
 
 function shouldClamp(selfPlayer: ClientPlayer, otherPlayer: ClientPlayer): boolean {
@@ -103,9 +107,9 @@ function handleDeath(payload: DeathCause) {
 }
 
 function handlePong(_payload: null) {
-	/*reportPong();*/
+	reportPong();
 }
 
 function handleServerStats(payload: StatsMessagePayload) {
-	/*recordServerStats(payload);*/
+	recordServerStats(payload);
 }
