@@ -4,6 +4,7 @@ import { Point } from "../../../../common/shapes/Point.ts";
 import { Rect } from "../../../../common/shapes/Rect.ts";
 import { Shape } from "../../../../common/shapes/Shape.ts";
 import { Structure } from "../../../../common/shapes/Structure.ts";
+import { ZeroRect } from "../../../../common/shapes/Zero.ts";
 import { bindToScreen } from "../../core/screen.ts";
 import { SafeState } from "../../game-logic/state.ts";
 import { CWText } from "../../webgl/text/CWText.ts";
@@ -11,7 +12,7 @@ import { UiComponentRenderer } from "./UiComponentRenderer.ts";
 
 export class ActionOptionRenderer implements UiComponentRenderer {
 	private readonly glyphBoundingBox;
-	private screen: Rect | null = null;
+	private screen: Rect = ZeroRect;
 
 	private outerRect: Structure | null = null;
 	private innerRect: Structure | null = null;
@@ -25,10 +26,6 @@ export class ActionOptionRenderer implements UiComponentRenderer {
 	}
 
 	setState(state: SafeState): void {
-		if (this.screen === null) {
-			return;
-		}
-
 		const option = state.selfPlayer.actionOption;
 
 		// I hate all of this. I need to make it easy to align text vertically and horizontally.

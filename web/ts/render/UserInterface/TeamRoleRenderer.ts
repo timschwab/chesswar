@@ -8,6 +8,8 @@ import { SafeState } from "../../game-logic/state.ts";
 import { CWText } from "../../webgl/text/CWText.ts";
 import { UiComponentRenderer } from "./UiComponentRenderer.ts";
 
+const FONT_SIZE = 0.125;
+
 export class TeamRoleRenderer implements UiComponentRenderer {
 	private readonly glyphBoundingBox;
 
@@ -24,7 +26,7 @@ export class TeamRoleRenderer implements UiComponentRenderer {
 		const team = state.selfPlayer.team;
 		const role = state.selfPlayer.role;
 
-		this.roleText = new CWText("You are a: " + role, new Point(10, 10), 0.125, CWColor.GREY_BLACK);
+		this.roleText = new CWText("You are a: " + role, new Point(10, 10), FONT_SIZE, CWColor.GREY_BLACK);
 		const textRect = this.roleText.getRect(this.glyphBoundingBox).expand(2);
 
 		const teamColor = rensets.players.teamColor[team];

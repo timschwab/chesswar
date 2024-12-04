@@ -1,6 +1,7 @@
 import { ClientMessageTypes, MoveMessagePayload } from "../../../common/message-types/client.ts";
 import { CWKey, CWKeyEvent } from "../core/inputs.ts";
 import { socketSend } from "../core/socket.ts";
+import { state } from "./state.ts";
 
 const movement: MoveMessagePayload = {
 	left: false,
@@ -23,7 +24,7 @@ export function handleKey(event: CWKeyEvent) {
 			break;
 		case CWKey.STATS:
 			if (event.pressed) {
-				// ui.stats.toggleVisible();
+				state.ui.stats.showing = !state.ui.stats.showing;
 			}
 			break;
 		case CWKey.UP:
