@@ -52,7 +52,7 @@ export class StatsRenderer implements UiComponentRenderer {
 		const statsTop = this.screen.bottom - (lineHeight*(statStrings.length+1));
 
 		const statTextData = statStrings.map((statString, index) => {
-			const leftTop = new Point(10, statsTop - (lineHeight*index));
+			const leftTop = new Point(10, statsTop + (lineHeight*index));
 			return new CWText(statString, leftTop, FONT_SIZE, rensets.stats.color);
 		});
 
