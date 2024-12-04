@@ -5,12 +5,12 @@ import { receiveMessage } from "./game-logic/messages.ts";
 import { isSafeState, SafeState, state } from "./game-logic/state.ts";
 import { MapRenderer } from "./render/MapRenderer.ts";
 import { PlayerRenderer } from "./render/PlayerRenderer.ts";
+import { UserInterfaceRenderer } from "./render/UserInterfaceRenderer.ts";
 
 // Create the renderers from back to front
 const mapRenderer = new MapRenderer();
 const playerRenderer = new PlayerRenderer();
-// const uiRenderer = new StructureRenderer();
-// const uiTextRenderer = new TextRenderer();
+const uiRenderer = new UserInterfaceRenderer();
 
 initGame();
 
@@ -40,8 +40,10 @@ function gameLoopSafe(state: SafeState): void {
 
 	// Set state data
 	playerRenderer.setPlayers(state.players);
+	uiRenderer.setState(state.selfPlayer.team, state.selfPlayer.role);
 
 	// Render
 	mapRenderer.render();
 	playerRenderer.render();
+	uiRenderer.render();
 }
