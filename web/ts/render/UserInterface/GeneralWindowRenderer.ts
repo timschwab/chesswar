@@ -8,6 +8,7 @@ import { ZeroRect } from "../../../../common/shapes/Zero.ts";
 import { bindToScreen } from "../../core/screen.ts";
 import { SafeState } from "../../game-logic/state.ts";
 import { CWText } from "../../webgl/text/CWText.ts";
+import { renderBoard, teamPerspective } from "./ChessboardHelper.ts";
 import { getImportantValues } from "./GeneralWindowHelper.ts";
 import { UiComponentRenderer } from "./UiComponentRenderer.ts";
 
@@ -33,6 +34,9 @@ export class GeneralWindowRenderer implements UiComponentRenderer {
 		const genwin = rensets.generalWindow;
 		const importantValues = getImportantValues(this.screen);
 		const team = state.selfPlayer.team;
+		const briefings = state.team.briefings;
+		const enemyBriefings = state.team.enemyBriefings;
+		const teamBoard = state.team.board;
 
 		// Draw window
 		const innerWindow = Shape.from(importantValues.windowRect, genwin.windowInside).toStructure();
@@ -61,6 +65,16 @@ export class GeneralWindowRenderer implements UiComponentRenderer {
 		if (briefingSelection !== null) {
 			this.allStructures.push(briefingSelection);
 		}
+
+		const teamMoves = [briefings[BriefingName.ONE], briefings[BriefingName.TWO], briefings[BriefingName.THREE]];
+		teamMoves.push(state.ui.general.selectedFrom ? {from: state.ui.general.selectedFrom, to: state.ui.general.selectedFrom, team: team} : null);
+
+		const enemyMoves = [enemyBriefings[BriefingName.ONE], enemyBriefings[BriefingName.TWO], enemyBriefings[BriefingName.THREE]];
+
+		const moves = enemyMoves.concat(teamMoves).filter(move => move !== null);
+
+		const perspective = teamPerspective(team);
+		this.allStructures.push(...renderBoard(importantValues.boardRect, teamBoard, moves, perspective));
 	}
 
 	getStructures(): Structure[] {

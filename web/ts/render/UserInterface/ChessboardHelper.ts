@@ -1,17 +1,20 @@
-import { TeamName } from "../../../common/data-types/base.ts";
-import { ChessBoard, ChessMove, ChessPerspective, ChessPiece, ChessSquare } from "../../../common/data-types/chess.ts";
-import { rensets } from "../../../common/settings.ts";
-import { Circle } from "../../../common/shapes/Circle.ts";
-import { Point } from "../../../common/shapes/Point.ts";
-import { Rect } from "../../../common/shapes/Rect.ts";
-import { Shape } from "../../../common/shapes/Shape.ts";
-import { CWCanvas } from "../canvas/CWCanvas.ts";
+import { TeamName } from "../../../../common/data-types/base.ts";
+import { ChessPerspective, ChessSquare, ChessBoard, ChessMove, ChessPiece } from "../../../../common/data-types/chess.ts";
+import { assertNever } from "../../../../common/Preconditions.ts";
+import { rensets } from "../../../../common/settings.ts";
+import { Circle } from "../../../../common/shapes/Circle.ts";
+import { Point } from "../../../../common/shapes/Point.ts";
+import { Rect } from "../../../../common/shapes/Rect.ts";
+import { Shape } from "../../../../common/shapes/Shape.ts";
+import { Structure } from "../../../../common/shapes/Structure.ts";
 
 export function teamPerspective(team: TeamName): ChessPerspective {
 	if (team == TeamName.BLUE) {
 		return ChessPerspective.SOUTH;
 	} else if (team == TeamName.RED) {
 		return ChessPerspective.NORTH
+	} else {
+		assertNever(team);
 	}
 
 	throw "Can never get here";
@@ -50,62 +53,54 @@ export function unrotateSquare(square: ChessSquare, perspective: ChessPerspectiv
 	return rotateSquare(square, opposite);
 }
 
-export function renderBoard(cwCanvas: CWCanvas, boardRect: Rect, board: ChessBoard, moves: ChessMove[], perspective: ChessPerspective) {
+export function renderBoard(boardRect: Rect, boardData: ChessBoard, moves: ChessMove[], perspective: ChessPerspective): Structure[] {
 	const squareSize = boardRect.width/8;
+	const allStructures: Structure[] = [];
+
+	// Outline the board
+	allStructures.push(Shape.from(boardRect.expand(2), rensets.generalWindow.boardOutline).toStructure());
 
 	// Render all the squares
 	for (let row = 0 ; row < 8 ; row++) {
 		for (let col = 0 ; col < 8 ; col++) {
 			const position = {row, col};
-			renderSquare(cwCanvas, board, boardRect.leftTop, squareSize, position, perspective);
+			allStructures.push(...renderSquare(boardData, boardRect.leftTop, squareSize, position, perspective));
 		}
 	}
 
+	// Render all the moves
 	for (const move of moves) {
-		renderMove(cwCanvas, boardRect, squareSize, move, perspective);
+		//allStructures.push(...renderMove(boardRect, squareSize, move, perspective));
 	}
 
-	// Outline them
-	cwCanvas.outlineRect(Shape.from(boardRect, rensets.generalWindow.boardOutline), 2);
+	return allStructures;
 }
 
-function renderMove(cwCanvas: CWCanvas, boardRect: Rect, squareSize: number, move: ChessMove, perspective: ChessPerspective) {
-	const color = rensets.generalWindow.teamColor[move.team];
-
-	const displayFrom = rotateSquare(move.from, perspective);
-	const displayTo = rotateSquare(move.to, perspective);
-
-	const fromRect = getSquareValues(boardRect.leftTop, squareSize, displayFrom).squareRect;
-	const toRect = getSquareValues(boardRect.leftTop, squareSize, displayTo).squareRect;
-
-	cwCanvas.outlineRect(Shape.from(fromRect, color), 2);
-	cwCanvas.outlineRect(Shape.from(toRect, color), 2);
-	cwCanvas.arrow(fromRect.center, toRect.center, color, 2);
-}
-
-function renderSquare(cwCanvas: CWCanvas, board: ChessBoard, leftTop: Point, squareSize: number, position: ChessSquare, perspective: ChessPerspective) {
+function renderSquare(board: ChessBoard, leftTop: Point, squareSize: number, position: ChessSquare, perspective: ChessPerspective): Structure[] {
 	const {row, col} = position;
 	const displayPosition = rotateSquare(position, perspective);
 	const {squareRect, color} = getSquareValues(leftTop, squareSize, displayPosition);
 
-	cwCanvas.fillRect(Shape.from(squareRect, color));
+	const squareStructure = Shape.from(squareRect, color).toStructure();
 
 	const cell = board[row][col];
 	if (cell) {
 		if (cell.piece == ChessPiece.KING) {
-			renderKing(cwCanvas, squareRect.leftTop, squareSize, cell.team);
+			//renderKing(cwCanvas, squareRect.leftTop, squareSize, cell.team);
 		} else if (cell.piece == ChessPiece.QUEEN) {
-			renderQueen(cwCanvas, squareRect.leftTop, squareSize, cell.team);
+			//renderQueen(cwCanvas, squareRect.leftTop, squareSize, cell.team);
 		} else if (cell.piece == ChessPiece.ROOK) {
-			renderRook(cwCanvas, squareRect.leftTop, squareSize, cell.team);
+			//renderRook(cwCanvas, squareRect.leftTop, squareSize, cell.team);
 		} else if (cell.piece == ChessPiece.BISHOP) {
-			renderBishop(cwCanvas, squareRect.leftTop, squareSize, cell.team);
+			//renderBishop(cwCanvas, squareRect.leftTop, squareSize, cell.team);
 		} else if (cell.piece == ChessPiece.KNIGHT) {
-			renderKnight(cwCanvas, squareRect.leftTop, squareSize, cell.team);
+			//renderKnight(cwCanvas, squareRect.leftTop, squareSize, cell.team);
 		} else if (cell.piece == ChessPiece.PAWN) {
-			renderPawn(cwCanvas, squareRect.leftTop, squareSize, cell.team);
+			//renderPawn(cwCanvas, squareRect.leftTop, squareSize, cell.team);
 		}
 	}
+
+	return [squareStructure];
 }
 
 function getSquareValues(leftTop: Point, squareSize: number, position: ChessSquare) {
@@ -269,4 +264,18 @@ function renderPawn(cwCanvas: CWCanvas, topLeft: Point, width: number, team: Tea
 	const baseTopLeft = new Point(middleX-(width/3), middleY+(width/8));
 	const baseBottomRight = new Point(middleX+(width/3), middleY+(width/3));
 	cwCanvas.fillRect(Shape.from(new Rect(baseTopLeft, baseBottomRight), color));
+}
+
+function renderMove(boardRect: Rect, squareSize: number, move: ChessMove, perspective: ChessPerspective): Structure[] {
+	const color = rensets.generalWindow.teamColor[move.team];
+
+	const displayFrom = rotateSquare(move.from, perspective);
+	const displayTo = rotateSquare(move.to, perspective);
+
+	const fromRect = getSquareValues(boardRect.leftTop, squareSize, displayFrom).squareRect;
+	const toRect = getSquareValues(boardRect.leftTop, squareSize, displayTo).squareRect;
+
+	cwCanvas.outlineRect(Shape.from(fromRect, color), 2);
+	cwCanvas.outlineRect(Shape.from(toRect, color), 2);
+	cwCanvas.arrow(fromRect.center, toRect.center, color, 2);
 }
