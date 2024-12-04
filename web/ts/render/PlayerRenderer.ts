@@ -41,7 +41,7 @@ export class PlayerRenderer {
 		const playerNames = players.map(player =>
 			new CWText(
 				player.id.slice(0, NAME_LENGTH),
-				player.position.center.add(this.nameOffset),
+				new Point(player.position.center.x, player.position.bottom).add(this.nameOffset),
 				FONT_SIZE,
 				CWColor.GREY_BLACK)
 		);
