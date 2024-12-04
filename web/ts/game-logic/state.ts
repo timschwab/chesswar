@@ -1,4 +1,4 @@
-import { ChesswarId } from "../../../common/data-types/base.ts";
+import { ChesswarId, Victory } from "../../../common/data-types/base.ts";
 import { EMPTY_CARRY_LOAD } from "../../../common/data-types/carryLoad.ts";
 import { ChessSquare } from "../../../common/data-types/chess.ts";
 import { BriefingName } from "../../../common/data-types/facility.ts";
@@ -21,7 +21,9 @@ interface UnsafeState {
 			showing: boolean,
 			data: GameStats
 		}
-	}
+	},
+	victory: Victory,
+	newGameCounter: number
 }
 
 export interface SafeState {
@@ -39,7 +41,9 @@ export interface SafeState {
 			showing: boolean,
 			data: GameStats
 		}
-	}
+	},
+	victory: Victory,
+	newGameCounter: number
 }
 
 export function isSafeState(state: UnsafeState): state is SafeState {
@@ -73,5 +77,7 @@ export const state: UnsafeState = {
 			showing: false,
 			data: GameStats.Zero
 		}
-	}
+	},
+	victory: null,
+	newGameCounter: Infinity
 };

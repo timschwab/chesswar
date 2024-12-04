@@ -33,11 +33,11 @@ export class ActionOptionRenderer implements UiComponentRenderer {
 		const firstText = new CWText(textMessage, new Point(0, 0), 0.25, CWColor.GREY_BLACK);
 		const textBoundingBox = firstText.getRect(this.glyphBoundingBox);
 
-		const textTopLeft = new Point(this.screen.center.x-(textBoundingBox.width/2), 10);
-		const textBotRght = new Point(this.screen.center.x+(textBoundingBox.width/2), 10+textBoundingBox.height);
+		const textLeftTop = new Point(this.screen.center.x-(textBoundingBox.width/2), 10);
+		const textRghtBot = new Point(this.screen.center.x+(textBoundingBox.width/2), 10+textBoundingBox.height);
 
-		const textRect = new Rect(textTopLeft, textBotRght);
-		this.actionText = new CWText(textMessage, textTopLeft, 0.25, CWColor.GREY_BLACK);
+		const textRect = new Rect(textLeftTop, textRghtBot);
+		this.actionText = new CWText(textMessage, textLeftTop, 0.25, CWColor.GREY_BLACK);
 
 		this.outerRect = Shape.from(textRect.expand(rensets.actionOption.outlineWidth), rensets.actionOption.outlineColor).toStructure();
 		this.innerRect = Shape.from(textRect, rensets.actionOption.backgroundColor).toStructure();

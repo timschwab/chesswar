@@ -46,7 +46,7 @@ function handleState(payload: StateMessagePayload) {
 
 	const selfPlayer = deserialized.find(player => player.id === state.selfId);
 	if (!selfPlayer) {
-		console.warn("Could not find self player", {
+		console.error("Could not find self player", {
 			players: deserialized,
 			selfId: state.selfId
 		});
@@ -55,6 +55,8 @@ function handleState(payload: StateMessagePayload) {
 
 	state.selfPlayer = selfPlayer;
 	state.players = deserialized;
+	state.victory = payload.victory;
+	state.newGameCounter = payload.newGameCounter;
 
 	recordPlayersOnline(payload.players.length);
 }
