@@ -29,8 +29,9 @@ function initGame() {
 let previousAnimationStart = performance.now();
 function gameLoopUnsafe(): void {
 	const currentAnimationStart = performance.now();
-	recordAnimationTime(currentAnimationStart - previousAnimationStart);
+	const animationStartDiff = currentAnimationStart - previousAnimationStart;
 	previousAnimationStart = currentAnimationStart;
+	recordAnimationTime(animationStartDiff);
 
 	requestAnimationFrame(gameLoopUnsafe);
 
@@ -40,15 +41,15 @@ function gameLoopUnsafe(): void {
 }
 
 function gameLoopSafe(state: SafeState): void {
-	const start = performance.now();
+	const jsRenderStart = performance.now();
 	render(state);
-	const finish = performance.now();
+	const jsRenderFinish = performance.now();
 
-	recordJsRenderTime(finish-start);
+	recordJsRenderTime(jsRenderFinish - jsRenderStart);
 }
 
 function render(state: SafeState) {
-	// Set camera everywhere
+	// Set camera
 	mapRenderer.setCamera(state.selfPlayer.position.center);
 	playerRenderer.setCamera(state.selfPlayer.position.center);
 

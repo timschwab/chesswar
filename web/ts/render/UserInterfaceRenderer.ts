@@ -3,6 +3,7 @@ import { SafeState } from "../game-logic/state.ts";
 import { StructureRenderer } from "../webgl/structure/StructureRenderer.ts";
 import { TextRenderer } from "../webgl/text/TextRenderer.ts";
 import { ActionOptionRenderer } from "./UserInterface/ActionOptionRenderer.ts";
+import { GeneralWindowRenderer } from "./UserInterface/GeneralWindowRenderer.ts";
 import { StatsRenderer } from "./UserInterface/StatsRenderer.ts";
 import { TeamRoleRenderer } from "./UserInterface/TeamRoleRenderer.ts";
 import { VictoryRenderer } from "./UserInterface/VictoryRenderer.ts";
@@ -28,6 +29,7 @@ export class UserInterfaceRenderer {
 		this.renderHelpers = [
 			new TeamRoleRenderer(this.textRenderer.glyphBoundingBox),
 			new ActionOptionRenderer(this.textRenderer.glyphBoundingBox),
+			new GeneralWindowRenderer(this.textRenderer.glyphBoundingBox),
 			new StatsRenderer(this.textRenderer.glyphBoundingBox),
 			new VictoryRenderer(this.textRenderer.glyphBoundingBox)
 		];
