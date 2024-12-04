@@ -40,7 +40,7 @@ function gameLoopSafe(state: SafeState): void {
 
 	// Set state data
 	playerRenderer.setPlayers(state.players);
-	uiRenderer.setState(state.selfPlayer.team, state.selfPlayer.role);
+	uiRenderer.setState(state);
 
 	// Render
 	mapRenderer.render();

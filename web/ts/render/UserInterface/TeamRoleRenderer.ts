@@ -1,13 +1,14 @@
 import { CWColor } from "../../../../common/Color.ts";
-import { TeamName, PlayerRole } from "../../../../common/data-types/base.ts";
 import { rensets } from "../../../../common/settings.ts";
 import { Point } from "../../../../common/shapes/Point.ts";
 import { Rect } from "../../../../common/shapes/Rect.ts";
 import { Shape } from "../../../../common/shapes/Shape.ts";
 import { Structure } from "../../../../common/shapes/Structure.ts";
+import { SafeState } from "../../game-logic/state.ts";
 import { CWText } from "../../webgl/text/CWText.ts";
+import { UiComponentRenderer } from "./UiComponentRenderer.ts";
 
-export class TeamRoleRenderer {
+export class TeamRoleRenderer implements UiComponentRenderer {
 	private readonly glyphBoundingBox;
 
 	private outerRect: Structure | null = null;
@@ -19,8 +20,11 @@ export class TeamRoleRenderer {
 		this.glyphBoundingBox = glyphBoundingBox;
 	}
 
-	setData(role: PlayerRole, team: TeamName) {
-		this.roleText = new CWText("You are a: " + role, new Point(10,10), 0.125, CWColor.GREY_BLACK);
+	setState(state: SafeState): void {
+		const team = state.selfPlayer.team;
+		const role = state.selfPlayer.role;
+
+		this.roleText = new CWText("You are a: " + role, new Point(10, 10), 0.125, CWColor.GREY_BLACK);
 		const textRect = this.roleText.getRect(this.glyphBoundingBox).expand(2);
 
 		const teamColor = rensets.players.teamColor[team];
