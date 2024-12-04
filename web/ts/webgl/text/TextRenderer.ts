@@ -5,8 +5,11 @@ import { bindToScreen } from "../../core/screen.ts";
 import type { CWText } from "./CWText.ts";
 import { WebglRenderer } from "../WebglRenderer.ts";
 import { Point } from "../../../../common/shapes/Point.ts";
+import { Rect } from "../../../../common/shapes/Rect.ts";
 
 export class TextRenderer {
+	readonly glyphBoundingBox: Rect;
+
 	private readonly expandingTexture: ExpandingGlyphTexture;
 	private readonly graphemeToGlyphMap: Map<string, number>;
 	private readonly webgl: WebglRenderer;
@@ -26,6 +29,7 @@ export class TextRenderer {
 	constructor() {
 		// Get the glyph texture and grapheme map
 		this.expandingTexture = new ExpandingGlyphTexture();
+		this.glyphBoundingBox = this.expandingTexture.glyphBoundingBox;
 		this.graphemeToGlyphMap = new Map();
 
 		// Create the WebglRenderer

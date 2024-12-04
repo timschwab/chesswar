@@ -9,9 +9,10 @@ import { getCanvas } from "../../core/dom.ts";
 // A glyph is an image containing the rendering of a grapheme
 
 // Font settings
+const FONT_WEIGHT = "bold";
 const FONT_FAMILY = "Courier New";
 const FONT_HEIGHT = "128px";
-const FONT = `${FONT_HEIGHT} ${FONT_FAMILY}`;
+const FONT = `${FONT_WEIGHT} ${FONT_HEIGHT} ${FONT_FAMILY}`;
 
 export class ExpandingGlyphTexture {
 	private readonly canvas;

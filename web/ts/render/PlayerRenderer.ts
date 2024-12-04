@@ -7,14 +7,22 @@ import { StructureRenderer } from "../webgl/structure/StructureRenderer.ts";
 import { CWText } from "../webgl/text/CWText.ts";
 import { TextRenderer } from "../webgl/text/TextRenderer.ts";
 
+const NAME_LENGTH = 8;
+const FONT_SIZE = 0.1;
+
 export class PlayerRenderer {
 	private readonly textRenderer;
 	private readonly structureRenderer;
+	private readonly nameOffset;
 
 	constructor() {
 		// Create from back to front
 		this.textRenderer = new TextRenderer();
 		this.structureRenderer = new StructureRenderer();
+
+		this.nameOffset = new Point(
+			this.textRenderer.glyphBoundingBox.right * (NAME_LENGTH/2) * FONT_SIZE * -1,
+			this.textRenderer.glyphBoundingBox.bottom * FONT_SIZE);
 	}
 
 	setCamera(camera: Point): void {
@@ -31,7 +39,11 @@ export class PlayerRenderer {
 
 		// Extract out the player names and set them
 		const playerNames = players.map(player =>
-			new CWText(player.id, player.position.center, 0.1, CWColor.GREY_BLACK)
+			new CWText(
+				player.id.slice(0, NAME_LENGTH),
+				player.position.center.add(this.nameOffset),
+				FONT_SIZE,
+				CWColor.GREY_BLACK)
 		);
 		this.textRenderer.setTextData(playerNames);
 	}
