@@ -22,8 +22,8 @@ function getTeamBundleGeometry(teamBundle: ChessWarMapTeamBundle) {
 		base: teamBundle.base.geo,
 		briefings: teamBundle.briefings.map(briefing => briefing.geo),
 		outposts: teamBundle.outposts.map(outpost => outpost.geo),
-		armory: teamBundle.base.geo,
-		scif: teamBundle.base.geo
+		armory: teamBundle.armory.geo,
+		scif: teamBundle.scif.geo
 	};
 }
 

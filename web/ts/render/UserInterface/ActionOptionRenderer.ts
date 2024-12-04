@@ -42,8 +42,8 @@ export class ActionOptionRenderer implements UiComponentRenderer {
 		const textRect = new Rect(textTopLeft, textBotRght);
 		this.actionText = new CWText(textMessage, textTopLeft, 0.25, CWColor.GREY_BLACK);
 
-		this.outerRect = Shape.from(textRect, rensets.actionOption.backgroundColor).toStructure();
-		this.innerRect = Shape.from(textRect.expand(rensets.actionOption.outlineWidth), rensets.actionOption.outlineColor).toStructure();
+		this.outerRect = Shape.from(textRect.expand(rensets.actionOption.outlineWidth), rensets.actionOption.outlineColor).toStructure();
+		this.innerRect = Shape.from(textRect, rensets.actionOption.backgroundColor).toStructure();
 	}
 
 	getStructures(): Structure[] {
