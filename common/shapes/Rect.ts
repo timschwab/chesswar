@@ -134,9 +134,9 @@ export class Rect extends Geometry<Rect> {
 	// Move all four walls in a certain amount
 	expand(amount: number) {
 		const shrinkPoint = new Point(amount, amount);
-		const shrunkenTopLeft = this.leftTop.subtract(shrinkPoint);
-		const shrunkenBottomRight = this.rightBottom.add(shrinkPoint);
-		return new Rect(shrunkenTopLeft, shrunkenBottomRight);
+		const expandedLeftTop = this.leftTop.subtract(shrinkPoint);
+		const expandedRightBottom = this.rightBottom.add(shrinkPoint);
+		return new Rect(expandedLeftTop, expandedRightBottom);
 	}
 
 	// Opposite of expand

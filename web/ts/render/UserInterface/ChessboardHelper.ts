@@ -8,6 +8,7 @@ import { Rect } from "../../../../common/shapes/Rect.ts";
 import { Shape } from "../../../../common/shapes/Shape.ts";
 import { Structure } from "../../../../common/shapes/Structure.ts";
 import { Triangle } from "../../../../common/shapes/Triangle.ts";
+import { ZeroPoint } from "../../../../common/shapes/Zero.ts";
 
 export function teamPerspective(team: TeamName): ChessPerspective {
 	if (team == TeamName.BLUE) {
@@ -311,8 +312,6 @@ function renderPawn(topLeft: Point, width: number): Triangle[] {
 }
 
 function renderMove(boardRect: Rect, squareSize: number, move: ChessMove, perspective: ChessPerspective): Structure[] {
-	return [];
-
 	const color = rensets.generalWindow.teamColor[move.team];
 
 	const displayFrom = rotateSquare(move.from, perspective);
@@ -321,7 +320,42 @@ function renderMove(boardRect: Rect, squareSize: number, move: ChessMove, perspe
 	const fromRect = getSquareValues(boardRect.leftTop, squareSize, displayFrom).squareRect;
 	const toRect = getSquareValues(boardRect.leftTop, squareSize, displayTo).squareRect;
 
-	cwCanvas.outlineRect(Shape.from(fromRect, color), 2);
-	cwCanvas.outlineRect(Shape.from(toRect, color), 2);
-	cwCanvas.arrow(fromRect.center, toRect.center, color, 2);
+	const fromOutlineRects = [
+		new Rect(fromRect.leftTop, fromRect.rightTop).expand(1),
+		new Rect(fromRect.leftTop, fromRect.leftBottom).expand(1),
+		new Rect(fromRect.leftBottom, fromRect.rightBottom).expand(1),
+		new Rect(fromRect.rightTop, fromRect.rightBottom).expand(1)
+	];
+
+	const toOutlineRects = [
+		new Rect(toRect.leftTop, toRect.rightTop).expand(1),
+		new Rect(toRect.leftTop, toRect.leftBottom).expand(1),
+		new Rect(toRect.leftBottom, toRect.rightBottom).expand(1),
+		new Rect(toRect.rightTop, toRect.rightBottom).expand(1)
+	];
+
+	const fromStructures = fromOutlineRects.map(rect => Shape.from(rect, color).toStructure());
+	const   toStructures =   toOutlineRects.map(rect => Shape.from(rect, color).toStructure());
+
+	const innerFrom = fromRect.shrink(squareSize/4);
+	const arrowStructure = new Structure(
+		[
+			new Triangle(
+				toRect.center,
+				innerFrom.leftTop,
+				innerFrom.rightBottom,
+				1,
+				ZeroPoint
+			),
+			new Triangle(
+				toRect.center,
+				innerFrom.rightTop,
+				innerFrom.leftBottom,
+				1,
+				ZeroPoint
+			)
+		], color
+	);
+
+	return [fromStructures, toStructures, arrowStructure].flat();
 }
