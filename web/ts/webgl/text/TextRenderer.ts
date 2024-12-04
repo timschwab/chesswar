@@ -4,6 +4,7 @@ import textFragmentShaderSource from "./glsl-generated/textFragmentShader.ts";
 import { bindToScreen } from "../../core/screen.ts";
 import type { CWText } from "./CWText.ts";
 import { WebglRenderer } from "../WebglRenderer.ts";
+import { Point } from "../../../../common/shapes/Point.ts";
 
 export class TextRenderer {
 	private readonly expandingTexture: ExpandingGlyphTexture;
@@ -11,6 +12,7 @@ export class TextRenderer {
 	private readonly webgl: WebglRenderer;
 
 	private readonly texLengthUniformLocation: WebGLUniformLocation;
+	private readonly cameraUniformLocation: WebGLUniformLocation;
 
 	private readonly scaleBufferId: WebGLBuffer;
 	private readonly textLeftTopBufferId: WebGLBuffer;
@@ -33,6 +35,7 @@ export class TextRenderer {
 		const glyphBoundingBoxLocation = this.webgl.uniformLocation("u_glyph_bounding_box");
 		const screenUniformLocation = this.webgl.uniformLocation("u_screen");
 		this.texLengthUniformLocation = this.webgl.uniformLocation("u_tex_length");
+		this.cameraUniformLocation = this.webgl.uniformLocation("u_camera_center");
 
 		// Set/bind the uniforms
 		this.webgl.setUniformPoint(
@@ -54,12 +57,15 @@ export class TextRenderer {
 		// Set parameters so we can render correctly. Would be nice to pull out the webgl
 		// constants into their own class. Also I think these need more thought in order to
 		// actually render the text nicely.
-		this.webgl.textureParameter(
-			this.webgl.gl().TEXTURE_2D, this.webgl.gl().TEXTURE_WRAP_S, this.webgl.gl().CLAMP_TO_EDGE);
-		this.webgl.textureParameter(
-			this.webgl.gl().TEXTURE_2D, this.webgl.gl().TEXTURE_WRAP_T, this.webgl.gl().CLAMP_TO_EDGE);
-		this.webgl.textureParameter(
-			this.webgl.gl().TEXTURE_2D, this.webgl.gl().TEXTURE_MIN_FILTER, this.webgl.gl().LINEAR);
+		const GL = WebGL2RenderingContext;
+		this.webgl.textureParameter(GL.TEXTURE_2D, GL.TEXTURE_WRAP_S, GL.CLAMP_TO_EDGE);
+		this.webgl.textureParameter(GL.TEXTURE_2D, GL.TEXTURE_WRAP_T, GL.CLAMP_TO_EDGE);
+		this.webgl.textureParameter(GL.TEXTURE_2D, GL.TEXTURE_MIN_FILTER, GL.LINEAR);
+	}
+
+	setCamera(camera: Point): void {
+		// Set the camera uniform
+		this.webgl.setUniformPoint(this.cameraUniformLocation, camera);
 	}
 
 	async setTextData(textData: CWText[]) {

@@ -1,6 +1,7 @@
 uniform vec2 u_glyph_bounding_box;
 uniform vec2 u_screen;
 uniform float u_tex_length;
+uniform vec2 u_camera_center;
 
 attribute float a_scale;
 attribute vec2 a_text_top_left;
@@ -27,8 +28,12 @@ void main() {
 	// Offset by text top left
 	vec2 leftTopOffsetVertex = indexOffsetVertex + a_text_top_left;
 
+	// Find the camera-adjusted position
+	vec2 cameraTopLeft = u_camera_center - (u_screen/2.0);
+	vec2 cameraAdjusted = leftTopOffsetVertex - cameraTopLeft;
+
 	// Convert from 0->n to 0->1
-	vec2 zeroToOne = leftTopOffsetVertex / u_screen;
+	vec2 zeroToOne = cameraAdjusted / u_screen;
 
 	// Convert from 0->1 to 0->2
 	vec2 zeroToTwo = zeroToOne * 2.0;

@@ -19,6 +19,7 @@ export class PlayerRenderer {
 
 	setCamera(camera: Point): void {
 		this.structureRenderer.setCamera(camera);
+		this.textRenderer.setCamera(camera);
 	}
 
 	setPlayers(players: ClientPlayer[]): void {
