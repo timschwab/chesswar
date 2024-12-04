@@ -1,15 +1,6 @@
-import { PlayerRole } from "../../../common/data-types/base.ts";
-import { ChessSquare } from "../../../common/data-types/chess.ts";
-import { BriefingName } from "../../../common/data-types/facility.ts";
-import { ClientMessageTypes } from "../../../common/message-types/client.ts";
-import { rensets } from "../../../common/settings.ts";
-import { Point } from "../../../common/shapes/Point.ts";
-import { Rect } from "../../../common/shapes/Rect.ts";
-import { screenValue } from "../core/screen.ts";
-import { socketSend } from "../core/socket.ts";
-import { ClientPlayer } from "../game-logic/ClientPlayer.ts";
-import { state } from "../game-logic/state.ts";
-import { teamPerspective, unrotateSquare } from "./ChessboardHelper.ts";
+import { rensets } from "../../../../common/settings.ts";
+import { Point } from "../../../../common/shapes/Point.ts";
+import { Rect } from "../../../../common/shapes/Rect.ts";
 
 interface ImportantValuesBundle {
 	windowRect: Rect,
@@ -17,49 +8,6 @@ interface ImportantValuesBundle {
 	button1Rect: Rect,
 	button2Rect: Rect,
 	button3Rect: Rect
-}
-
-export function handleClick(location: Point) {
-	if (state.selfPlayer == null) {
-		return;
-	}
-
-	const role = state.selfPlayer.role;
-	if (role != PlayerRole.GENERAL) {
-		return;
-	}
-
-	const importantValues = getImportantValues(screenValue);
-	const button = clickedButton(importantValues, location);
-	const square = clickedSquare(state.selfPlayer, importantValues, location);
-
-	if (button != null) {
-		state.general.selectedButton = button;
-		state.general.selectedFrom = null;
-	} else if (state.general.selectedButton != null && square != null) {
-		if (state.general.selectedFrom) {
-			// Send orders
-			const payload = {
-				briefing: state.general.selectedButton,
-				move: {
-					team: state.selfPlayer.team,
-					from: state.general.selectedFrom,
-					to: square
-				}
-			};
-
-			socketSend({
-				type: ClientMessageTypes.GENERAL_ORDERS,
-				payload
-			});
-
-			// Clear state
-			state.general.selectedButton = null;
-			state.general.selectedFrom = null;
-		} else {
-			state.general.selectedFrom = square;
-		}
-	}
 }
 
 export function getImportantValues(screen: Rect): ImportantValuesBundle {
@@ -106,6 +54,51 @@ export function getImportantValues(screen: Rect): ImportantValuesBundle {
 	}
 }
 
+/*
+export function handleClick(location: Point) {
+	if (state.selfPlayer == null) {
+		return;
+	}
+
+	const role = state.selfPlayer.role;
+	if (role != PlayerRole.GENERAL) {
+		return;
+	}
+
+	const importantValues = getImportantValues(screenValue);
+	const button = clickedButton(importantValues, location);
+	const square = clickedSquare(state.selfPlayer, importantValues, location);
+
+	if (button != null) {
+		state.general.selectedButton = button;
+		state.general.selectedFrom = null;
+	} else if (state.general.selectedButton != null && square != null) {
+		if (state.general.selectedFrom) {
+			// Send orders
+			const payload = {
+				briefing: state.general.selectedButton,
+				move: {
+					team: state.selfPlayer.team,
+					from: state.general.selectedFrom,
+					to: square
+				}
+			};
+
+			socketSend({
+				type: ClientMessageTypes.GENERAL_ORDERS,
+				payload
+			});
+
+			// Clear state
+			state.general.selectedButton = null;
+			state.general.selectedFrom = null;
+		} else {
+			state.general.selectedFrom = square;
+		}
+	}
+}
+
+
 function clickedButton(importantValues: ImportantValuesBundle, location: Point): BriefingName | null {
 	if (location.inside(importantValues.button1Rect)) {
 		return BriefingName.ONE;
@@ -136,3 +129,4 @@ function clickedSquare(selfPlayer: ClientPlayer, importantValues: ImportantValue
 
 	return unrotateSquare(displayClicked, perspective);
 }
+*/
