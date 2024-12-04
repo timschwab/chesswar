@@ -4,6 +4,7 @@ import { StructureRenderer } from "../webgl/structure/StructureRenderer.ts";
 import { TextRenderer } from "../webgl/text/TextRenderer.ts";
 import { ActionOptionRenderer } from "./UserInterface/ActionOptionRenderer.ts";
 import { GeneralWindowRenderer } from "./UserInterface/GeneralWindowRenderer.ts";
+import { MiniChessboardRenderer } from "./UserInterface/MiniChessboardRenderer.ts";
 import { StatsRenderer } from "./UserInterface/StatsRenderer.ts";
 import { TeamRoleRenderer } from "./UserInterface/TeamRoleRenderer.ts";
 import { VictoryRenderer } from "./UserInterface/VictoryRenderer.ts";
@@ -29,7 +30,8 @@ export class UserInterfaceRenderer {
 		this.renderHelpers = [
 			new TeamRoleRenderer(this.textRenderer.glyphBoundingBox),
 			new ActionOptionRenderer(this.textRenderer.glyphBoundingBox),
-			new GeneralWindowRenderer(this.textRenderer.glyphBoundingBox),
+			new GeneralWindowRenderer(),
+			new MiniChessboardRenderer(),
 			new StatsRenderer(this.textRenderer.glyphBoundingBox),
 			new VictoryRenderer(this.textRenderer.glyphBoundingBox)
 		];

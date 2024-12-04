@@ -13,14 +13,11 @@ import { getImportantValues } from "./GeneralWindowHelper.ts";
 import { UiComponentRenderer } from "./UiComponentRenderer.ts";
 
 export class GeneralWindowRenderer implements UiComponentRenderer {
-	private readonly glyphBoundingBox;
 	private screen: Rect = ZeroRect;
 
 	private allStructures: Structure[] = [];
 
-	constructor(glyphBoundingBox: Rect) {
-		this.glyphBoundingBox = glyphBoundingBox;
-
+	constructor() {
 		bindToScreen(screenValue => { this.screen = screenValue });
 	}
 
