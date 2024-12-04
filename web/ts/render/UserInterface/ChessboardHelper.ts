@@ -118,19 +118,14 @@ function renderChessPiece(piece: ChessPiece, leftTop: Point, squareSize: number)
 		case ChessPiece.KING:
 			return renderKing(leftTop, squareSize);
 		case ChessPiece.QUEEN:
-			return [];
 			return renderQueen(leftTop, squareSize);
 		case ChessPiece.ROOK:
-			return [];
 			return renderRook(leftTop, squareSize);
 		case ChessPiece.BISHOP:
-			return [];
 			return renderBishop(leftTop, squareSize);
 		case ChessPiece.KNIGHT:
-			return [];
 			return renderKnight(leftTop, squareSize);
 		case ChessPiece.PAWN:
-			return [];
 			return renderPawn(leftTop, squareSize);
 		default:
 			assertNever(piece);
@@ -138,6 +133,8 @@ function renderChessPiece(piece: ChessPiece, leftTop: Point, squareSize: number)
 
 	throw "Can't get here";
 }
+
+// These should be completely redone with just triangles
 
 function renderKing(leftTop: Point, width: number): Triangle[] {
 	const leftTopX = leftTop.x;
@@ -166,7 +163,6 @@ function renderKing(leftTop: Point, width: number): Triangle[] {
 }
 
 function renderQueen(topLeft: Point, width: number): Triangle[] {
-	const color = rensets.generalWindow.teamColor[team];
 	const topLeftX = topLeft.x;
 	const topLeftY = topLeft.y;
 
@@ -175,32 +171,36 @@ function renderQueen(topLeft: Point, width: number): Triangle[] {
 
 	const baseTopLeft = new Point(middleX-(width*3/8), middleY+(width/12));
 	const baseBottomRight = new Point(middleX+(width*3/8), middleY+(width*3/8));
-	cwCanvas.fillRect(Shape.from(new Rect(baseTopLeft, baseBottomRight), color));
+	const base = new Rect(baseTopLeft, baseBottomRight);
 
 	const leftTopLeft = new Point(middleX-(width*3/8), middleY-(width*3/16));
 	const leftBottomRight = new Point(middleX-(width/4), middleY+(width*3/8));
-	cwCanvas.fillRect(Shape.from(new Rect(leftTopLeft, leftBottomRight), color));
+	const left = new Rect(leftTopLeft, leftBottomRight);
 	
 	const centerTopLeft = new Point(middleX-(width/16), middleY-(width*3/16));
 	const centerBottomRight = new Point(middleX+(width/16), middleY+(width*3/8));
-	cwCanvas.fillRect(Shape.from(new Rect(centerTopLeft, centerBottomRight), color));
+	const center = new Rect(centerTopLeft, centerBottomRight);
 
 	const rightTopLeft = new Point(middleX+(width/4), middleY-(width*3/16));
 	const rightBottomRight = new Point(middleX+(width*3/8), middleY+(width*3/8));
-	cwCanvas.fillRect(Shape.from(new Rect(rightTopLeft, rightBottomRight), color));
+	const right = new Rect(rightTopLeft, rightBottomRight);
 
 	const jewelLeft = new Circle(new Point(middleX-(width*5/16), middleY-(width/3)), width/16);
-	cwCanvas.fillCircle(Shape.from(jewelLeft, color));
-
 	const jewelCenter = new Circle(new Point(middleX, middleY-(width/3)), width/16);
-	cwCanvas.fillCircle(Shape.from(jewelCenter, color));
-
 	const jewelRight = new Circle(new Point(middleX+(width*5/16), middleY-(width/3)), width/16);
-	cwCanvas.fillCircle(Shape.from(jewelRight, color));
+
+	return [
+		base.toTriangles(),
+		left.toTriangles(),
+		center.toTriangles(),
+		right.toTriangles(),
+		jewelLeft.toTriangles(),
+		jewelCenter.toTriangles(),
+		jewelRight.toTriangles()
+	].flat();
 }
 
 function renderRook(topLeft: Point, width: number): Triangle[] {
-	const color = rensets.generalWindow.teamColor[team];
 	const topLeftX = topLeft.x;
 	const topLeftY = topLeft.y;
 
@@ -209,23 +209,29 @@ function renderRook(topLeft: Point, width: number): Triangle[] {
 
 	const baseTopLeft = new Point(middleX-(width/3), middleY-(width/4));
 	const baseBottomRight = new Point(middleX+(width/3), middleY+(width/3));
-	cwCanvas.fillRect(Shape.from(new Rect(baseTopLeft, baseBottomRight), color));
+	const base = new Rect(baseTopLeft, baseBottomRight);
 	
 	const leftTopLeft = new Point(middleX-(width/3), middleY-(width*3/8));
 	const leftBottomRight = new Point(middleX-(width/6), middleY-(width/12));
-	cwCanvas.fillRect(Shape.from(new Rect(leftTopLeft, leftBottomRight), color));
+	const left = new Rect(leftTopLeft, leftBottomRight);
 	
 	const centerTopLeft = new Point(middleX-(width/12), middleY-(width*3/8));
 	const centerBottomRight = new Point(middleX+(width/12), middleY-(width/12));
-	cwCanvas.fillRect(Shape.from(new Rect(centerTopLeft, centerBottomRight), color));
+	const center = new Rect(centerTopLeft, centerBottomRight);
 
 	const rightTopLeft = new Point(middleX+(width/6), middleY-(width*3/8));
 	const rightBottomRight = new Point(middleX+(width/3), middleY-(width/12));
-	cwCanvas.fillRect(Shape.from(new Rect(rightTopLeft, rightBottomRight), color));
+	const right = new Rect(rightTopLeft, rightBottomRight);
+
+	return [
+		base.toTriangles(),
+		left.toTriangles(),
+		center.toTriangles(),
+		right.toTriangles()
+	].flat();
 }
 
 function renderBishop(topLeft: Point, width: number): Triangle[] {
-	const color = rensets.generalWindow.teamColor[team];
 	const topLeftX = topLeft.x;
 	const topLeftY = topLeft.y;
 
@@ -233,18 +239,20 @@ function renderBishop(topLeft: Point, width: number): Triangle[] {
 	const middleY = topLeftY+(width/2);
 
 	const body = new Circle(new Point(middleX, middleY), width*(3/16));
-	cwCanvas.fillCircle(Shape.from(body, color));
-
 	const hat = new Circle(new Point(middleX, middleY - (width/4)), width/16);
-	cwCanvas.fillCircle(Shape.from(hat, color));
 
 	const baseTopLeft = new Point(middleX-(width/3), middleY+(width/8));
 	const baseBottomRight = new Point(middleX+(width/3), middleY+(width/3));
-	cwCanvas.fillRect(Shape.from(new Rect(baseTopLeft, baseBottomRight), color));
+	const base = new Rect(baseTopLeft, baseBottomRight);
+
+	return [
+		body.toTriangles(),
+		hat.toTriangles(),
+		base.toTriangles()
+	].flat();
 }
 
 function renderKnight(topLeft: Point, width: number): Triangle[] {
-	const color = rensets.generalWindow.teamColor[team];
 	const topLeftX = topLeft.x;
 	const topLeftY = topLeft.y;
 
@@ -253,26 +261,32 @@ function renderKnight(topLeft: Point, width: number): Triangle[] {
 	
 	const baseTopLeft = new Point(middleX-(width/3), middleY+(width/8));
 	const baseBottomRight = new Point(middleX+(width/3), middleY+(width/3));
-	cwCanvas.fillRect(Shape.from(new Rect(baseTopLeft, baseBottomRight), color));
+	const base = new Rect(baseTopLeft, baseBottomRight);
 
 	const bodyTopLeft = new Point(middleX-(width/3), middleY-(width/3));
 	const bodyBottomRight = new Point(middleX-(width/8), middleY+(width/3));
-	cwCanvas.fillRect(Shape.from(new Rect(bodyTopLeft, bodyBottomRight), color));
+	const body = new Rect(bodyTopLeft, bodyBottomRight);
 
 	const neckTopLeft = new Point(middleX-(width/3), middleY-(width/3));
 	const neckBottomRight = new Point(middleX+(width/3), middleY-(width/8));
-	cwCanvas.fillRect(Shape.from(new Rect(neckTopLeft, neckBottomRight), color));
+	const neck = new Rect(neckTopLeft, neckBottomRight);
 
 	const noseTopLeft = new Point(middleX+(width/8), middleY-(width/3));
 	const noseBottomRight = new Point(middleX+(width/3), middleY);
-	cwCanvas.fillRect(Shape.from(new Rect(noseTopLeft, noseBottomRight), color));
+	const nose = new Rect(noseTopLeft, noseBottomRight);
 
 	const ear = new Circle(new Point(middleX-(width/12), middleY-(width/3)), width/12);
-	cwCanvas.fillCircle(Shape.from(ear, color));
+
+	return [
+		base.toTriangles(),
+		body.toTriangles(),
+		neck.toTriangles(),
+		nose.toTriangles(),
+		ear.toTriangles()
+	].flat();
 }
 
 function renderPawn(topLeft: Point, width: number): Triangle[] {
-	const color = rensets.generalWindow.teamColor[team];
 	const topLeftX = topLeft.x;
 	const topLeftY = topLeft.y;
 
@@ -280,15 +294,20 @@ function renderPawn(topLeft: Point, width: number): Triangle[] {
 	const middleY = topLeftY+(width/2);
 
 	const topCircle = new Circle(new Point(middleX, middleY - (width/6)), width/8);
-	cwCanvas.fillCircle(Shape.from(topCircle, color));
 
 	const stemTopLeft = new Point(middleX-(width/16), middleY - (width/6));
 	const stemBottomRight = new Point(middleX+(width/16), middleY + (width/4));
-	cwCanvas.fillRect(Shape.from(new Rect(stemTopLeft, stemBottomRight), color));
+	const stem = new Rect(stemTopLeft, stemBottomRight);
 
 	const baseTopLeft = new Point(middleX-(width/3), middleY+(width/8));
 	const baseBottomRight = new Point(middleX+(width/3), middleY+(width/3));
-	cwCanvas.fillRect(Shape.from(new Rect(baseTopLeft, baseBottomRight), color));
+	const base = new Rect(baseTopLeft, baseBottomRight);
+
+	return [
+		topCircle.toTriangles(),
+		stem.toTriangles(),
+		base.toTriangles()
+	].flat();
 }
 
 function renderMove(boardRect: Rect, squareSize: number, move: ChessMove, perspective: ChessPerspective): Structure[] {
