@@ -49,7 +49,7 @@ export class ExpandingGlyphTexture {
 		// Get metrics on this browser's implementation of the font
 		const metrics = this.context.measureText(".");
 		const oneGlyphWidth = Math.ceil(metrics.actualBoundingBoxRight-metrics.actualBoundingBoxLeft);
-		const oneGlyphHeight = Math.ceil(metrics.actualBoundingBoxDescent-metrics.actualBoundingBoxAscent);
+		const oneGlyphHeight = Math.ceil(metrics.fontBoundingBoxDescent-metrics.fontBoundingBoxAscent);
 	
 		return new Rect(ZeroPoint, new Point(oneGlyphWidth, oneGlyphHeight));
 	}
