@@ -27,38 +27,38 @@ function initGame() {
 }
 
 let previousAnimationStart = performance.now();
-function gameLoopUnsafe(): void {
+async function gameLoopUnsafe() {
 	const currentAnimationStart = performance.now();
 	const animationStartDiff = currentAnimationStart - previousAnimationStart;
 	previousAnimationStart = currentAnimationStart;
 	recordAnimationTime(animationStartDiff);
 
-	requestAnimationFrame(gameLoopUnsafe);
-
 	if (isSafeState(state)) {
-		gameLoopSafe(state);
+		await gameLoopSafe(state);
 	}
+
+	requestAnimationFrame(gameLoopUnsafe);
 }
 
-function gameLoopSafe(state: SafeState): void {
+async function gameLoopSafe(state: SafeState) {
 	const jsRenderStart = performance.now();
-	render(state);
+	await render(state);
 	const jsRenderFinish = performance.now();
 
 	recordJsRenderTime(jsRenderFinish - jsRenderStart);
 }
 
-function render(state: SafeState) {
+async function render(state: SafeState) {
 	// Set camera
 	mapRenderer.setCamera(state.selfPlayer.position.center);
 	playerRenderer.setCamera(state.selfPlayer.position.center);
 
 	// Set state data
-	playerRenderer.setPlayers(state.players);
-	uiRenderer.setState(state);
+	await playerRenderer.setPlayers(state.players);
+	await uiRenderer.setState(state);
 
 	// Render
 	mapRenderer.render();
-	playerRenderer.render();
+	//playerRenderer.render();
 	uiRenderer.render();
 }

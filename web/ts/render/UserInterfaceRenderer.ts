@@ -28,27 +28,27 @@ export class UserInterfaceRenderer {
 
 		// Get the component renderers
 		this.renderHelpers = [
-			new TeamRoleRenderer(this.textRenderer.glyphBoundingBox),
-			new ActionOptionRenderer(this.textRenderer.glyphBoundingBox),
-			new GeneralWindowRenderer(),
-			new MiniChessboardRenderer(),
+			//new TeamRoleRenderer(this.textRenderer.glyphBoundingBox),
+			//new ActionOptionRenderer(this.textRenderer.glyphBoundingBox),
+			//new GeneralWindowRenderer(),
+			//new MiniChessboardRenderer(),
 			new StatsRenderer(this.textRenderer.glyphBoundingBox),
-			new VictoryRenderer(this.textRenderer.glyphBoundingBox)
+			//new VictoryRenderer(this.textRenderer.glyphBoundingBox)
 		];
 	}
 
-	setState(state: SafeState): void {
+	async setState(state: SafeState) {
 		this.renderHelpers.forEach(helper => helper.setState(state));
 
 		const structures = this.renderHelpers.flatMap(helper=> helper.getStructures());
 		const textData = this.renderHelpers.flatMap(helper=> helper.getTextData());
 
 		this.structureRenderer.setStructures(structures);
-		this.textRenderer.setTextData(textData);
+		await this.textRenderer.setTextData(textData);
 	}
 
 	render(): void {
-		this.structureRenderer.render();
+		//this.structureRenderer.render();
 		this.textRenderer.render();
 	}
 }

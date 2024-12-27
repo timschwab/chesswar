@@ -39,10 +39,10 @@ export class StatsRenderer implements UiComponentRenderer {
 		const jsRenderTimeMs = stats.jsRenderTimeValue.toFixed(1);
 
 		const statStrings = [
-			`playersOnline: ${playersOnline}`,
-			`pingTimeMs: ${pingTimeMs}`,
-			`serverTickMs: ${serverTickMs}`,
-			`serverTicksPerSec: ${serverTicksPerSec}`,
+			//`playersOnline: ${playersOnline}`,
+			//`pingTimeMs: ${pingTimeMs}`,
+			//`serverTickMs: ${serverTickMs}`,
+			//`serverTicksPerSec: ${serverTicksPerSec}`,
 			`animationMs: ${animationMs}`,
 			`animationPerSec: ${animationPerSec}`,
 			`jsRenderTimeMs: ${jsRenderTimeMs}`,

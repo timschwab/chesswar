@@ -30,7 +30,7 @@ export class PlayerRenderer {
 		this.textRenderer.setCamera(camera);
 	}
 
-	setPlayers(players: ClientPlayer[]): void {
+	async setPlayers(players: ClientPlayer[]) {
 		// Extract out the structures and set them
 		const playerStructures = players.map(player =>
 			new Structure(player.position.toTriangles(), rensets.players.teamColor[player.team])
@@ -45,7 +45,7 @@ export class PlayerRenderer {
 				FONT_SIZE,
 				CWColor.GREY_BLACK)
 		);
-		this.textRenderer.setTextData(playerNames);
+		await this.textRenderer.setTextData(playerNames);
 	}
 
 	render(): void {
