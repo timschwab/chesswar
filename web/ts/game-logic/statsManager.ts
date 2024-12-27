@@ -4,6 +4,7 @@ import { gameEngine, rensets } from "../../../common/settings.ts";
 import { state } from "./state.ts";
 
 const animationTimeFilter = new LowPassFilter(rensets.fps, rensets.mspf);
+const renderTimeFilter = new LowPassFilter(rensets.fps, rensets.mspf);
 const jsRenderTimeFilter = new LowPassFilter(rensets.fps, rensets.mspf);
 const serverTickFilter = new LowPassFilter(gameEngine.tps, gameEngine.mspt);
 const pingTimeFilter = new LowPassFilter(2, 0);
@@ -14,9 +15,14 @@ export function recordPlayersOnline(playersOnline: number) {
 	stats.data = stats.data.playersOnline(playersOnline);
 }
 
-export function recordAnimationTime(timeTaken: number) {
+export function recordTimeBetweenAnimations(timeTaken: number) {
 	animationTimeFilter.set(timeTaken);
 	stats.data = stats.data.animationTime(animationTimeFilter.read());
+}
+
+export function recordRenderTime(timeTaken: number) {
+	renderTimeFilter.set(timeTaken);
+	stats.data = stats.data.renderTime(renderTimeFilter.read());
 }
 
 export function recordJsRenderTime(timeTaken: number) {

@@ -3,7 +3,7 @@ import { socketListen } from "./core/socket.ts";
 import { handleKey } from "./game-logic/keys.ts";
 import { receiveMessage } from "./game-logic/messages.ts";
 import { isSafeState, SafeState, state } from "./game-logic/state.ts";
-import { recordAnimationTime, recordJsRenderTime } from "./game-logic/statsManager.ts";
+import { recordJsRenderTime, recordRenderTime, recordTimeBetweenAnimations } from "./game-logic/statsManager.ts";
 import { MapRenderer } from "./render/MapRenderer.ts";
 import { PlayerRenderer } from "./render/PlayerRenderer.ts";
 import { UserInterfaceRenderer } from "./render/UserInterfaceRenderer.ts";
@@ -26,12 +26,13 @@ function initGame() {
 	requestAnimationFrame(gameLoopUnsafe);
 }
 
-let previousAnimationStart = performance.now();
+let previousRenderStart = performance.now();
 async function gameLoopUnsafe() {
-	const currentAnimationStart = performance.now();
-	const animationStartDiff = currentAnimationStart - previousAnimationStart;
-	previousAnimationStart = currentAnimationStart;
-	recordAnimationTime(animationStartDiff);
+	const currentRenderStart = performance.now();
+	const timeBetweenAnimationFrames = currentRenderStart - previousRenderStart;
+	previousRenderStart = currentRenderStart;
+
+	recordTimeBetweenAnimations(timeBetweenAnimationFrames);
 
 	if (isSafeState(state)) {
 		await gameLoopSafe(state);
@@ -51,14 +52,14 @@ async function gameLoopSafe(state: SafeState) {
 async function render(state: SafeState) {
 	// Set camera
 	mapRenderer.setCamera(state.selfPlayer.position.center);
-	playerRenderer.setCamera(state.selfPlayer.position.center);
+	//playerRenderer.setCamera(state.selfPlayer.position.center);
 
 	// Set state data
-	await playerRenderer.setPlayers(state.players);
-	await uiRenderer.setState(state);
+	//await playerRenderer.setPlayers(state.players);
+	//await uiRenderer.setState(state);
 
 	// Render
 	mapRenderer.render();
 	//playerRenderer.render();
-	uiRenderer.render();
+	//uiRenderer.render();
 }

@@ -79,6 +79,8 @@ export class TextRenderer {
 		// Find all graphemes we have never rendered before and update the texture if needed
 		const newGraphemes = new Set(allGraphemes.filter(grapheme => !this.graphemeToGlyphMap.has(grapheme)));
 		if (newGraphemes.size > 0) {
+			console.log("Updating glyph texture");
+
 			// Add them all to the glyph texture and map
 			for (const grapheme of newGraphemes) {
 				const index = this.expandingTexture.addGrapheme(grapheme);

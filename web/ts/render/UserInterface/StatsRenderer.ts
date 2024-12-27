@@ -34,8 +34,9 @@ export class StatsRenderer implements UiComponentRenderer {
 		const pingTimeMs = stats.pingTimeValue.toFixed(0);
 		const serverTickMs = stats.serverTickTimeValue.toFixed(3);
 		const serverTicksPerSec = (1000 / stats.serverTickTimeValue).toFixed(0);
-		const animationMs = stats.animationTimeValue.toFixed(1);
-		const animationPerSec = (1000 / stats.animationTimeValue).toFixed(1);
+		const timeBetweenAnimationsMs = stats.timeBetweenAnimationsValue.toFixed(1);
+		const animationPerSec = (1000 / stats.timeBetweenAnimationsValue).toFixed(1);
+		const renderTimeMs = stats.renderTimeValue.toFixed(1);
 		const jsRenderTimeMs = stats.jsRenderTimeValue.toFixed(1);
 
 		const statStrings = [
@@ -43,8 +44,9 @@ export class StatsRenderer implements UiComponentRenderer {
 			//`pingTimeMs: ${pingTimeMs}`,
 			//`serverTickMs: ${serverTickMs}`,
 			//`serverTicksPerSec: ${serverTicksPerSec}`,
-			`animationMs: ${animationMs}`,
+			`timeBetweenAnimationsMs: ${timeBetweenAnimationsMs}`,
 			`animationPerSec: ${animationPerSec}`,
+			`renderTimeMs: ${renderTimeMs}`,
 			`jsRenderTimeMs: ${jsRenderTimeMs}`,
 		];
 

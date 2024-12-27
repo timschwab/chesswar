@@ -139,7 +139,7 @@ export class WebglRenderer {
 
 	setAttributeData(buffer: WebGLBuffer, data: number[]) {
 		this.webgl.bindBuffer(this.webgl.ARRAY_BUFFER, buffer);
-		this.webgl.bufferData(this.webgl.ARRAY_BUFFER, new Float32Array(data), this.webgl.STATIC_DRAW);
+		this.webgl.bufferData(this.webgl.ARRAY_BUFFER, new Float32Array(data), this.webgl.DYNAMIC_DRAW);
 	}
 
 	setTextureData(texture: TexImageSource) {
