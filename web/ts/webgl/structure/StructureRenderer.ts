@@ -1,6 +1,6 @@
 import structureVertexShaderSource from "./glsl-generated/structureVertexShader.ts";
 import structureFragmentShaderSource from "./glsl-generated/structureFragmentShader.ts";
-import { WebglRenderer } from "../WebglRenderer.ts";
+import { WebglRenderer } from "../WebglRendererOld.ts";
 import { Structure } from "../../../../common/shapes/Structure.ts";
 import { Point } from "../../../../common/shapes/Point.ts";
 import { bindToScreen } from "../../core/screen.ts";

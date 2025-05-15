@@ -3,7 +3,7 @@ import textVertexShaderSource from "./glsl-generated/textVertexShader.ts";
 import textFragmentShaderSource from "./glsl-generated/textFragmentShader.ts";
 import { bindToScreen } from "../../core/screen.ts";
 import type { CWText } from "./CWText.ts";
-import { WebglRenderer } from "../WebglRenderer.ts";
+import { WebglRenderer } from "../WebglRendererOld.ts";
 import { Point } from "../../../../common/shapes/Point.ts";
 import { Rect } from "../../../../common/shapes/Rect.ts";
 

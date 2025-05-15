@@ -16,6 +16,19 @@ generateGlslFile(
 	"web/ts/webgl/structure/glsl-source",
 	"web/ts/webgl/structure/glsl-generated");
 
+// Generate TS files from the player GLSL files
+console.log("Generating player fragment shader TS");
+generateGlslFile(
+	"playerFragmentShader",
+	"web/ts/webgl/player/glsl-source",
+	"web/ts/webgl/player/glsl-generated");
+
+console.log("Generating player vertex shader TS");
+generateGlslFile(
+	"playerVertexShader",
+	"web/ts/webgl/player/glsl-source",
+	"web/ts/webgl/player/glsl-generated");
+
 // Generate TS files from the text GLSL files
 console.log("Generating text fragment shader TS");
 generateGlslFile(

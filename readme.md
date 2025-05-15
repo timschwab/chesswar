@@ -33,3 +33,11 @@ deno task web
 ## Opening the game
 
 When the api server and the web server are running, go to http://localhost:8357/
+
+## Major things left to implement
+
+* Finish up the WebGL frontend
+* Make a short tutorial somewhere
+* Switch to chess960
+* Visually tie orders to briefing rooms
+* [Optional] very simple bots, one for each role
