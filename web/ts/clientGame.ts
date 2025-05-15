@@ -5,8 +5,8 @@ import { receiveMessage } from "./game-logic/messages.ts";
 import { isSafeState, SafeState, state } from "./game-logic/state.ts";
 import { recordJsRenderTime, recordRenderTime, recordTimeBetweenAnimations } from "./game-logic/statsManager.ts";
 import { MapRenderer } from "./render/MapRenderer.ts";
-import { PlayerRenderer } from "./render/PlayerRenderer.ts";
 import { UserInterfaceRenderer } from "./render/UserInterfaceRenderer.ts";
+import { PlayerRenderer } from "./webgl/player/PlayerRenderer.ts";
 
 // Create the renderers from back to front
 const mapRenderer = new MapRenderer();
@@ -52,14 +52,12 @@ async function gameLoopSafe(state: SafeState) {
 async function render(state: SafeState) {
 	// Set camera
 	mapRenderer.setCamera(state.selfPlayer.position.center);
-	//playerRenderer.setCamera(state.selfPlayer.position.center);
 
 	// Set state data
-	//await playerRenderer.setPlayers(state.players);
 	//await uiRenderer.setState(state);
 
 	// Render
 	mapRenderer.render();
-	//playerRenderer.render();
+	playerRenderer.render(state.selfPlayer.position.center, state.players);
 	//uiRenderer.render();
 }

@@ -1,9 +1,8 @@
+uniform float u_scale;
 uniform vec2 u_screen;
 uniform vec2 u_camera_center;
-
-uniform vec3 a_color;
-uniform float a_scale;
-uniform vec2 a_structure_center;
+uniform vec2 u_structure_center;
+uniform vec3 u_color;
 
 attribute vec2 a_vertex;
 
@@ -11,10 +10,10 @@ varying vec3 v_vertex_color;
 
 void main() {
 	// Find the scale-adjusted position
-	vec2 scaleAdjusted = a_vertex * a_scale;
+	vec2 scaleAdjusted = a_vertex * u_scale;
 
 	// Find the structure-adjusted position
-	vec2 structureAdjusted = scaleAdjusted + a_structure_center;
+	vec2 structureAdjusted = scaleAdjusted + u_structure_center;
 
 	// Find the camera-adjusted position
 	vec2 cameraTopLeft = u_camera_center - (u_screen/2.0);
@@ -34,5 +33,5 @@ void main() {
 
 	// Outputs
 	gl_Position = vec4(clipSpaceReal, 0, 1);
-	v_vertex_color = a_color;
+	v_vertex_color = u_color;
 }
