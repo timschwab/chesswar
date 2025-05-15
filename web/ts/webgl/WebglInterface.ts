@@ -1,3 +1,4 @@
+import { Color } from "../../../common/Color.ts";
 import { Point } from "../../../common/shapes/Point.ts";
 import { getAttachedCanvas } from "../core/dom.ts";
 import { bindCanvasToScreen, bindToScreen } from "../core/screen.ts";
@@ -140,8 +141,12 @@ export class WebglInterface {
 		this.webgl.uniform1f(location, value);
 	}
 
-	setUniformPoint(location: WebGLUniformLocation, value: Point): void {
-		this.webgl.uniform2f(location, value.x, value.y);
+	setUniformPoint(location: WebGLUniformLocation, point: Point): void {
+		this.webgl.uniform2f(location, point.x, point.y);
+	}
+
+	setUniformColor(location: WebGLUniformLocation, color: Color): void {
+		this.webgl.uniform3f(location, color.r, color.g, color.b);
 	}
 
 	/***** The draw function *****/
