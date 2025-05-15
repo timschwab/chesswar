@@ -48,7 +48,7 @@ export class WebglRenderer {
 		this.webgl.compileShader(vertexShader);
 
 		const fragmentShader = this.webgl.createShader(WEBGL_CONSTANTS.FRAGMENT_SHADER);
-		this.webgl.shaderSource(vertexShader, fragmentShaderSource);
+		this.webgl.shaderSource(fragmentShader, fragmentShaderSource);
 		this.webgl.compileShader(fragmentShader);
 
 		const program = this.webgl.createProgram();
@@ -62,7 +62,7 @@ export class WebglRenderer {
 
 	// Map the uniform names to locations
 	private mapUniformLocations(program: WebGLProgram, names: string[]): Map<string, WebGLUniformLocation> {
-		return new Map(names.map(name => [name, this.webgl.getAttribLocation(program, name)]));
+		return new Map(names.map(name => [name, this.webgl.getUniformLocation(program, name)]));
 	}
 
 	// Get the attribute location, bind a new buffer, and set the data

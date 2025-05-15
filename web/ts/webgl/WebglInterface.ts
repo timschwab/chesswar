@@ -97,7 +97,7 @@ export class WebglInterface {
 
 	getAttribLocation(program: WebGLProgram, name: string): GLint {
 		const location = this.webgl.getAttribLocation(program, name);
-		if (location === null) {
+		if (location === -1) {
 			throw "Could not find attribute location: " + name;
 		}
 		return location;
