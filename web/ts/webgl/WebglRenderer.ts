@@ -1,4 +1,5 @@
 import { Color } from "../../../common/Color.ts";
+import { Optional } from "../../../common/data-structures/Optional.ts";
 import { Point } from "../../../common/shapes/Point.ts";
 import { WEBGL_CONSTANTS, WebglInterface } from "./WebglInterface.ts";
 
@@ -39,24 +40,41 @@ export class WebglRenderer {
 		const valueCount = this.getAttributeMapCount(attributeValueData);
 		const pointCount = this.getAttributeMapCount(attributePointData);
 		const colorCount = this.getAttributeMapCount(attributeColorData);
-		if (valueCount === pointCount && pointCount === colorCount) {
-			return valueCount;
+
+		const consolidatedCount = [valueCount, pointCount, colorCount].reduce((prev, cur) => {
+			if (prev.isEmpty()) {
+				return cur;
+			} else if (cur.isEmpty()) {
+				return prev;
+			} else if (prev.get() === cur.get()) {
+				return cur;
+			} else {
+				throw "Not all attribute data maps had the same size";
+			}
+		}, new Optional<number>(null));
+
+		if (consolidatedCount.isPresent()) {
+			return consolidatedCount.get();
 		} else {
-			throw "Not all attribute data has the same vertex count";
+			throw "No attribute data was given";
 		}
 	}
 
-	private getAttributeMapCount(attributeData: Map<string, unknown[]>): number {
-		return attributeData
-			.entries()
-			.map(entry => entry[1].length)
-			.reduce((prev, cur) => {
-				if (prev === cur) {
-					return cur;
-				} else {
-					throw "Not all attribute data is the same length";
-				}
-		});
+	private getAttributeMapCount(attributeData: Map<string, unknown[]>): Optional<number> {
+		if (attributeData.size === 0) {
+			return new Optional<number>(null);
+		} else {
+			return new Optional(attributeData
+				.entries()
+				.map(entry => entry[1].length)
+				.reduce((prev, cur) => {
+					if (prev === cur) {
+						return cur;
+					} else {
+						throw "Not all attribute data is the same length";
+					}
+			}));
+		}
 	}
 
 	// Build the 2 shaders and link them into a program
