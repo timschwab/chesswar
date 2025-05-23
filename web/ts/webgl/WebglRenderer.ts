@@ -14,29 +14,47 @@ export class WebglRenderer {
 	constructor(
 		vertexShaderSource: string, fragmentShaderSource: string,
 		uniformValueNames: string[], uniformPointNames: string[], uniformColorNames: string[],
-		attributeValueData: Map<string, Point[]>, attributePointData: Map<string, Point[]>, attributeColorData: Map<string, Point[]>
+		attributeValueData: Map<string, number[]>, attributePointData: Map<string, Point[]>, attributeColorData: Map<string, Color[]>
 	) {
-		this.vertexCount = this.getVertexCount(attributePointData);
+		// Get and check the attribute vertex count
+		this.vertexCount = this.getVertexCount(attributeValueData, attributePointData, attributeColorData);
 
+		// Start up webgl
 		this.webgl = new WebglInterface();
 		const program = this.compileProgram(vertexShaderSource, fragmentShaderSource);
 
+		// Get the uniform locations
 		this.uniformValueLocations = this.mapUniformLocations(program, uniformValueNames);
 		this.uniformPointLocations = this.mapUniformLocations(program, uniformPointNames);
 		this.uniformColorLocations = this.mapUniformLocations(program, uniformColorNames);
 
+		// Set the attribute data
+		this.setAttributeValueData(program, attributeValueData);
 		this.setAttributePointData(program, attributePointData);
+		this.setAttributeColorData(program, attributeColorData);
 	}
 
-	private getVertexCount(attributePointData: Map<string, Point[]>): number {
-		return attributePointData
+	// Get and check the attribute vertex count
+	private getVertexCount(attributeValueData: Map<string, number[]>, attributePointData: Map<string, Point[]>, attributeColorData: Map<string, Color[]>): number {
+		const valueCount = this.getAttributeMapCount(attributeValueData);
+		const pointCount = this.getAttributeMapCount(attributePointData);
+		const colorCount = this.getAttributeMapCount(attributeColorData);
+		if (valueCount === pointCount && pointCount === colorCount) {
+			return valueCount;
+		} else {
+			throw "Not all attribute data has the same vertex count";
+		}
+	}
+
+	private getAttributeMapCount(attributeData: Map<string, unknown[]>): number {
+		return attributeData
 			.entries()
 			.map(entry => entry[1].length)
 			.reduce((prev, cur) => {
 				if (prev === cur) {
 					return cur;
 				} else {
-					throw "Not all attribute point data is the same length";
+					throw "Not all attribute data is the same length";
 				}
 		});
 	}
@@ -65,15 +83,22 @@ export class WebglRenderer {
 		return new Map(names.map(name => [name, this.webgl.getUniformLocation(program, name)]));
 	}
 
-	// Get the attribute location, bind a new buffer, and set the data
+	// Setting attribute data
+	private setAttributeValueData(program: WebGLProgram, attributePointData: Map<string, number[]>): void {
+		for (const [attributeName, attributeData] of attributePointData.entries()) {
+			// Prepare the buffer
+			this.prepBuffer(program, attributeName, 1);
+
+			// Set the data in the buffer
+			const floatArray = new Float32Array(attributeData);
+			this.webgl.bufferData(floatArray);
+		}
+	}
+
 	private setAttributePointData(program: WebGLProgram, attributePointData: Map<string, Point[]>): void {
 		for (const [attributeName, attributeData] of attributePointData.entries()) {
 			// Prepare the buffer
-			const location = this.webgl.getAttribLocation(program, attributeName);
-			const bufferId = this.webgl.createBuffer();
-			this.webgl.bindBuffer(bufferId);
-			this.webgl.enableVertexAttribArray(location);
-			this.webgl.vertexAttribPointer(location, 2);
+			this.prepBuffer(program, attributeName, 2);
 
 			// Set the data in the buffer
 			const listOfNums = attributeData.flatMap(point => [point.x, point.y]);
@@ -82,7 +107,27 @@ export class WebglRenderer {
 		}
 	}
 
-	// For actual use
+	private setAttributeColorData(program: WebGLProgram, attributePointData: Map<string, Color[]>): void {
+		for (const [attributeName, attributeData] of attributePointData.entries()) {
+			// Prepare the buffer
+			this.prepBuffer(program, attributeName, 3);
+
+			// Set the data in the buffer
+			const listOfNums = attributeData.flatMap(color => [color.r, color.g, color.b]);
+			const floatArray = new Float32Array(listOfNums);
+			this.webgl.bufferData(floatArray);
+		}
+	}
+
+	private prepBuffer(program: WebGLProgram, attributeName: string, dataSize: number) {
+		const location = this.webgl.getAttribLocation(program, attributeName);
+		const bufferId = this.webgl.createBuffer();
+		this.webgl.bindBuffer(bufferId);
+		this.webgl.enableVertexAttribArray(location);
+		this.webgl.vertexAttribPointer(location, dataSize);
+	}
+
+	// User facing methods
 	setUniformValue(name: string, value: number) {
 		const location = this.uniformValueLocations.get(name);
 		if (location === undefined) {
