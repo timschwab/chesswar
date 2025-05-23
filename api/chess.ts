@@ -269,7 +269,5 @@ export function newBoard(): ChessBoard {
 	row8[king]    = {team: TeamName.RED, piece: ChessPiece.KING};
 	row8[rook2]   = {team: TeamName.RED, piece: ChessPiece.ROOK};
 
-	console.log(row1);
-
 	return [row1, row2, row3, row4, row5, row6, row7, row8];
 }

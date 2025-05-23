@@ -4,21 +4,21 @@ import { handleKey } from "./keys.ts";
 import { receiveMessage } from "./messages.ts";
 import { isSafeState, SafeState, state } from "./state.ts";
 import { recordJsRenderTime, recordTimeBetweenAnimations } from "./statsManager.ts";
-//import { UserInterfaceRenderer } from "../render/UserInterfaceRenderer.ts";
+import { UserInterfaceRenderer } from "../render/UserInterfaceRenderer.ts";
 import { MapRenderer } from "../webgl/map/MapRenderer.ts";
 import { PlayerRenderer } from "../webgl/player/PlayerRenderer.ts";
 
 export class ClientGame {
 	private readonly mapRenderer: MapRenderer;
 	private readonly playerRenderer: PlayerRenderer;
-//	private readonly uiRenderer: UserInterfaceRenderer;
+	private readonly uiRenderer: UserInterfaceRenderer;
 	private previousRenderStart = performance.now();
 
 	constructor() {
 		// Create the renderers from back to front
 		this.mapRenderer = new MapRenderer();
 		this.playerRenderer = new PlayerRenderer();
-//		this.uiRenderer = new UserInterfaceRenderer();
+		this.uiRenderer = new UserInterfaceRenderer();
 	}
 
 	start() {
@@ -29,10 +29,10 @@ export class ClientGame {
 		listenKey(handleKey);
 
 		// Start rendering
-		requestAnimationFrame(this.gameLoopUnsafe);
+		requestAnimationFrame(this.gameLoopUnsafe.bind(this));
 	}
 
-	gameLoopUnsafe() {
+	async gameLoopUnsafe() {
 		// Detect frame rate
 		const currentRenderStart = performance.now();
 		const timeBetweenAnimationFrames = currentRenderStart - this.previousRenderStart;
@@ -41,28 +41,28 @@ export class ClientGame {
 	
 		// Actually run the gameloop (pretty much just rendering)
 		if (isSafeState(state)) {
-			this.gameLoopSafe(state);
+			await this.gameLoopSafe(state);
 		}
 	
 		// Get the next animation frame
-		requestAnimationFrame(this.gameLoopUnsafe);
+		requestAnimationFrame(this.gameLoopUnsafe.bind(this));
 	}
 
-	gameLoopSafe(state: SafeState) {
+	async gameLoopSafe(state: SafeState) {
 		// Wrap the rendering in a time calculation
 		const jsRenderStart = performance.now();
-		this.render(state);
+		await this.render(state);
 		const jsRenderFinish = performance.now();
 		recordJsRenderTime(jsRenderFinish - jsRenderStart);
 	}
 
-	render(state: SafeState) {
+	async render(state: SafeState) {
 		// Set state data
-//		await uiRenderer.setState(state);
+		await this.uiRenderer.setState(state);
 	
 		// Render
 		this.mapRenderer.render(state.selfPlayer.position.center);
 		this.playerRenderer.render(state.selfPlayer.position.center, state.players);
-//		uiRenderer.render();
+		this.uiRenderer.render();
 	}
 }

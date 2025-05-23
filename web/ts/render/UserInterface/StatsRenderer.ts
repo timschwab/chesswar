@@ -36,17 +36,15 @@ export class StatsRenderer implements UiComponentRenderer {
 		const serverTicksPerSec = (1000 / stats.serverTickTimeValue).toFixed(0);
 		const timeBetweenAnimationsMs = stats.timeBetweenAnimationsValue.toFixed(1);
 		const animationPerSec = (1000 / stats.timeBetweenAnimationsValue).toFixed(1);
-		const renderTimeMs = stats.renderTimeValue.toFixed(1);
 		const jsRenderTimeMs = stats.jsRenderTimeValue.toFixed(1);
 
 		const statStrings = [
-			//`playersOnline: ${playersOnline}`,
-			//`pingTimeMs: ${pingTimeMs}`,
-			//`serverTickMs: ${serverTickMs}`,
-			//`serverTicksPerSec: ${serverTicksPerSec}`,
+			`playersOnline: ${playersOnline}`,
+			`pingTimeMs: ${pingTimeMs}`,
+			`serverTickMs: ${serverTickMs}`,
+			`serverTicksPerSec: ${serverTicksPerSec}`,
 			`timeBetweenAnimationsMs: ${timeBetweenAnimationsMs}`,
 			`animationPerSec: ${animationPerSec}`,
-			`renderTimeMs: ${renderTimeMs}`,
 			`jsRenderTimeMs: ${jsRenderTimeMs}`,
 		];
 

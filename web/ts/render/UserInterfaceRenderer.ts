@@ -28,12 +28,12 @@ export class UserInterfaceRenderer {
 
 		// Get the component renderers
 		this.renderHelpers = [
-			//new TeamRoleRenderer(this.textRenderer.glyphBoundingBox),
-			//new ActionOptionRenderer(this.textRenderer.glyphBoundingBox),
-			//new GeneralWindowRenderer(),
-			//new MiniChessboardRenderer(),
+			new TeamRoleRenderer(this.textRenderer.glyphBoundingBox),
+			new ActionOptionRenderer(this.textRenderer.glyphBoundingBox),
+			new GeneralWindowRenderer(),
+			new MiniChessboardRenderer(),
 			new StatsRenderer(this.textRenderer.glyphBoundingBox),
-			//new VictoryRenderer(this.textRenderer.glyphBoundingBox)
+			new VictoryRenderer(this.textRenderer.glyphBoundingBox)
 		];
 	}
 
@@ -48,7 +48,7 @@ export class UserInterfaceRenderer {
 	}
 
 	render(): void {
-		//this.structureRenderer.render();
+		this.structureRenderer.render();
 		this.textRenderer.render();
 	}
 }
