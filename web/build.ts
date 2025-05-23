@@ -44,7 +44,7 @@ generateGlslFile(
 
 // Create a JS bundle from the TS code
 const options = {
-	entryPoints: ['web/ts/clientGame.ts'],
+	entryPoints: ['web/ts/entrypoint.ts'],
 	outdir: buildSettings.bundleDir,
 	target: 'esnext',
 	bundle: true,
