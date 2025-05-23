@@ -3,6 +3,7 @@ import mapFragmentShader from "./glsl-generated/mapFragmentShader.ts";
 import { Point } from "../../../../common/shapes/Point.ts";
 import { bindToScreen } from "../../core/screen.ts";
 import { WebglRenderer } from "../WebglRenderer.ts";
+import { mapStructures } from "../../../../common/map/MapValues.ts";
 
 const SCREEN = "u_screen";
 const CAMERA_CENTER = "u_camera_center";
@@ -17,17 +18,26 @@ export class MapRenderer {
 
 	constructor() {
 		// Prepare the map rendering data
+		const scaleValues = mapStructures.flatMap(struct => struct.triangles.flatMap(
+			tri => [tri.scale, tri.scale, tri.scale]));
+		const vertexPoints = mapStructures.flatMap(struct => struct.triangles.flatMap(
+			tri => [tri.v1, tri.v2, tri.v3]));
+		const centerPoints = mapStructures.flatMap(struct => struct.triangles.flatMap(
+			tri => [tri.reference, tri.reference, tri.reference]));
+		const colors = mapStructures.flatMap(struct => struct.triangles.flatMap(
+			_tri => [struct.color, struct.color, struct.color]));
+
 		const attributeValueData = new Map([
-			[SCALE, []]
+			[SCALE, scaleValues]
 		]);
 
 		const attributePointData = new Map([
-			[VERTEX, []],
-			[STRUCTURE_CENTER, []]
+			[VERTEX, vertexPoints],
+			[STRUCTURE_CENTER, centerPoints]
 		]);
 
 		const attributeColorData = new Map([
-			[COLOR, []]
+			[COLOR, colors]
 		]);
 
 		// Create the renderer

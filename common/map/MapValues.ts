@@ -28,7 +28,7 @@ function getTeamBundleGeometry(teamBundle: ChessWarMapTeamBundle) {
 }
 
 function getMapStructures(map: ChessWarMap): Structure[] {
-	// Note that order matters because it determins draw order
+	// Note that order matters because it determines draw order
 	return [
 		map.rect.toStructure(),
 		map.grid.map(line => line.toStructure()),
