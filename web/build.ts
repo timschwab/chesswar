@@ -3,19 +3,6 @@ import { esbuild } from '../deps.ts'
 
 console.log("Starting build");
 
-// Generate TS files from the structure GLSL files
-console.log("Generating structure fragment shader TS");
-generateGlslFile(
-	"structureFragmentShader",
-	"web/ts/webgl/structure/glsl-source",
-	"web/ts/webgl/structure/glsl-generated");
-
-console.log("Generating structure vertex shader TS");
-generateGlslFile(
-	"structureVertexShader",
-	"web/ts/webgl/structure/glsl-source",
-	"web/ts/webgl/structure/glsl-generated");
-
 // Generate TS files from the player GLSL files
 console.log("Generating player fragment shader TS");
 generateGlslFile(
