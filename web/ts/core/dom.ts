@@ -9,6 +9,6 @@ export function getAttachedCanvas(zIndex?: number): HTMLCanvasElement {
 	return htmlCanvas;
 }
 
-export function getCanvas() {
+export function getCanvas(): HTMLCanvasElement {
 	return document.createElement("canvas");
 }

@@ -4,6 +4,6 @@ export enum Environment {
 }
 
 const hostname = globalThis.location.hostname;
-const env: Environment = hostname == "localhost" ? Environment.LOCAL : Environment.REMOTE;
+const env = (hostname === "localhost" ? Environment.LOCAL : Environment.REMOTE);
 
 export default env;

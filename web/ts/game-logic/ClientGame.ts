@@ -32,7 +32,7 @@ export class ClientGame {
 		requestAnimationFrame(this.gameLoopUnsafe);
 	}
 
-	async gameLoopUnsafe() {
+	gameLoopUnsafe() {
 		// Detect frame rate
 		const currentRenderStart = performance.now();
 		const timeBetweenAnimationFrames = currentRenderStart - this.previousRenderStart;
@@ -41,22 +41,22 @@ export class ClientGame {
 	
 		// Actually run the gameloop (pretty much just rendering)
 		if (isSafeState(state)) {
-			await this.gameLoopSafe(state);
+			this.gameLoopSafe(state);
 		}
 	
 		// Get the next animation frame
 		requestAnimationFrame(this.gameLoopUnsafe);
 	}
 
-	async gameLoopSafe(state: SafeState) {
+	gameLoopSafe(state: SafeState) {
 		// Wrap the rendering in a time calculation
 		const jsRenderStart = performance.now();
-		await this.render(state);
+		this.render(state);
 		const jsRenderFinish = performance.now();
 		recordJsRenderTime(jsRenderFinish - jsRenderStart);
 	}
 
-	async render(state: SafeState) {
+	render(state: SafeState) {
 		// Set state data
 //		await uiRenderer.setState(state);
 	
