@@ -215,6 +215,7 @@ export function newBoard(): ChessBoard {
 	const knight2 = randomPop(remainingPositions);
 
 	// Place rook, king, rook
+	remainingPositions.sort();
 	const rook1 = remainingPositions[0];
 	const king = remainingPositions[1];
 	const rook2 = remainingPositions[2];
@@ -267,6 +268,8 @@ export function newBoard(): ChessBoard {
 	row8[rook1]   = {team: TeamName.RED, piece: ChessPiece.ROOK};
 	row8[king]    = {team: TeamName.RED, piece: ChessPiece.KING};
 	row8[rook2]   = {team: TeamName.RED, piece: ChessPiece.ROOK};
+
+	console.log(row1);
 
 	return [row1, row2, row3, row4, row5, row6, row7, row8];
 }
