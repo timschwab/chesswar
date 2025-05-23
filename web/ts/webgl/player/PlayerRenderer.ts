@@ -15,6 +15,7 @@ const CAMERA_CENTER = "u_camera_center";
 const COLOR = "u_color";
 const SCALE = "u_scale";
 const STRUCTURE_CENTER = "u_structure_center";
+const VERTEX = "a_vertex";
 
 // A class for rendering players
 export class PlayerRenderer {
@@ -25,7 +26,7 @@ export class PlayerRenderer {
 		const circleData = new Circle(ZeroPoint, 1)
 			.toTriangles()
 			.flatMap(triangle => [triangle.v1, triangle.v2, triangle.v3]);
-		const attributeDataMap = new Map([["a_vertex", circleData]]);
+		const attributeDataMap = new Map([[VERTEX, circleData]]);
 
 		// Create the renderer
 		this.renderer = new WebglRenderer(

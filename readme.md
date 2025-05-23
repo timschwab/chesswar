@@ -37,7 +37,7 @@ When the api server and the web server are running, go to http://localhost:8357/
 ## Major things left to implement
 
 * Finish up the WebGL frontend
-* Make a short tutorial somewhere
-* Switch to chess960
+* Switch to chess960 (place bishops, then knights, then queen, then rook+king+rook)
 * Visually tie orders to briefing rooms
+* Make a short tutorial somewhere
 * [Optional] very simple bots, one for each role
