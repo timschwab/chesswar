@@ -15,6 +15,7 @@ const CAMERA_CENTER = "u_camera_center";
 const COLOR = "u_color";
 const SCALE = "u_scale";
 const STRUCTURE_CENTER = "u_structure_center";
+
 const VERTEX = "a_vertex";
 
 // A class for rendering players
@@ -32,7 +33,7 @@ export class PlayerRenderer {
 		this.renderer = new WebglRenderer(
 			playerVertexShader, playerFragmentShader,
 			[SCALE], [SCREEN, CAMERA_CENTER, STRUCTURE_CENTER], [COLOR],
-			attributeDataMap
+			new Map(), attributeDataMap, new Map()
 		);
 
 		// Bind the screen size to the screen uniform

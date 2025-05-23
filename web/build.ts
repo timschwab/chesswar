@@ -29,6 +29,19 @@ generateGlslFile(
 	"web/ts/webgl/player/glsl-source",
 	"web/ts/webgl/player/glsl-generated");
 
+// Generate TS files from the map GLSL files
+console.log("Generating map fragment shader TS");
+generateGlslFile(
+	"mapFragmentShader",
+	"web/ts/webgl/map/glsl-source",
+	"web/ts/webgl/map/glsl-generated");
+
+console.log("Generating map vertex shader TS");
+generateGlslFile(
+	"mapVertexShader",
+	"web/ts/webgl/map/glsl-source",
+	"web/ts/webgl/map/glsl-generated");
+
 // Generate TS files from the text GLSL files
 console.log("Generating text fragment shader TS");
 generateGlslFile(

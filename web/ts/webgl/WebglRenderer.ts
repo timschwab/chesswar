@@ -14,7 +14,7 @@ export class WebglRenderer {
 	constructor(
 		vertexShaderSource: string, fragmentShaderSource: string,
 		uniformValueNames: string[], uniformPointNames: string[], uniformColorNames: string[],
-		attributePointData: Map<string, Point[]>
+		attributeValueData: Map<string, Point[]>, attributePointData: Map<string, Point[]>, attributeColorData: Map<string, Point[]>
 	) {
 		this.vertexCount = this.getVertexCount(attributePointData);
 
