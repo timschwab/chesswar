@@ -1,6 +1,7 @@
 import { TeamName } from "../common/data-types/base.ts";
 import { ChessBoard, ChessMove, ChessPiece, ChessRow, ChessSquare, ChessSquareState } from "../common/data-types/chess.ts";
 import { kingsKillKings } from "../common/options.ts";
+import { randomPop } from "../common/random.ts";
 
 export function makeMove(board: ChessBoard, move: ChessMove): void {
 	if (validMove(board, move)) {
@@ -102,7 +103,7 @@ function validPawnMove(board: ChessBoard, move: ChessMove): boolean {
 		}
 	}
 
-	// For Chesswar, we don't check for en passant
+	// For ChessWar, we don't check for en passant or castling
 
 	return false;
 }
@@ -183,6 +184,8 @@ function validKingMove(board: ChessBoard, move: ChessMove): boolean {
 	const rowChange = Math.abs(move.from.row - move.to.row);
 	const colChange = Math.abs(move.from.col - move.to.col);
 
+	// For ChessWar, we don't check for en passant or castling
+
 	if (rowChange <= 1 && colChange <= 1) {
 		return true;
 	} else {
@@ -198,16 +201,34 @@ function pawnToQueen(board: ChessBoard, square: ChessSquare) {
 }
 
 export function newBoard(): ChessBoard {
-	const row1: ChessRow = [
-		{team: TeamName.BLUE, piece: ChessPiece.ROOK},
-		{team: TeamName.BLUE, piece: ChessPiece.KNIGHT},
-		{team: TeamName.BLUE, piece: ChessPiece.BISHOP},
-		{team: TeamName.BLUE, piece: ChessPiece.QUEEN},
-		{team: TeamName.BLUE, piece: ChessPiece.KING},
-		{team: TeamName.BLUE, piece: ChessPiece.BISHOP},
-		{team: TeamName.BLUE, piece: ChessPiece.KNIGHT},
-		{team: TeamName.BLUE, piece: ChessPiece.ROOK}
-	];
+	// Compute the back rows for Chess960
+	// Place bishops
+	const evenPositions = [0, 2, 4, 6];
+	const oddPositions = [1, 3, 5, 7];
+	const bishop1 = randomPop(evenPositions);
+	const bishop2 = randomPop(oddPositions);
+
+	// Place queen + knights
+	const remainingPositions = evenPositions.concat(oddPositions);
+	const queen = randomPop(remainingPositions);
+	const knight1 = randomPop(remainingPositions);
+	const knight2 = randomPop(remainingPositions);
+
+	// Place rook, king, rook
+	const rook1 = remainingPositions[0];
+	const king = remainingPositions[1];
+	const rook2 = remainingPositions[2];
+
+	// Create the rows
+	const row1: ChessRow = [null, null, null, null, null, null, null, null];
+	row1[bishop1] = {team: TeamName.BLUE, piece: ChessPiece.BISHOP};
+	row1[bishop2] = {team: TeamName.BLUE, piece: ChessPiece.BISHOP};
+	row1[queen]   = {team: TeamName.BLUE, piece: ChessPiece.QUEEN};
+	row1[knight1] = {team: TeamName.BLUE, piece: ChessPiece.KNIGHT};
+	row1[knight2] = {team: TeamName.BLUE, piece: ChessPiece.KNIGHT};
+	row1[rook1]   = {team: TeamName.BLUE, piece: ChessPiece.ROOK};
+	row1[king]    = {team: TeamName.BLUE, piece: ChessPiece.KING};
+	row1[rook2]   = {team: TeamName.BLUE, piece: ChessPiece.ROOK};
 
 	const row2: ChessRow = [
 		{team: TeamName.BLUE, piece: ChessPiece.PAWN},
@@ -236,16 +257,16 @@ export function newBoard(): ChessBoard {
 		{team: TeamName.RED, piece: ChessPiece.PAWN}
 	];
 
-	const row8: ChessRow = [
-		{team: TeamName.RED, piece: ChessPiece.ROOK},
-		{team: TeamName.RED, piece: ChessPiece.KNIGHT},
-		{team: TeamName.RED, piece: ChessPiece.BISHOP},
-		{team: TeamName.RED, piece: ChessPiece.QUEEN},
-		{team: TeamName.RED, piece: ChessPiece.KING},
-		{team: TeamName.RED, piece: ChessPiece.BISHOP},
-		{team: TeamName.RED, piece: ChessPiece.KNIGHT},
-		{team: TeamName.RED, piece: ChessPiece.ROOK}
-	];
+	// Can't find an elegant typescript way of mapping from row1 sadly
+	const row8: ChessRow = [null, null, null, null, null, null, null, null];
+	row8[bishop1] = {team: TeamName.RED, piece: ChessPiece.BISHOP};
+	row8[bishop2] = {team: TeamName.RED, piece: ChessPiece.BISHOP};
+	row8[queen]   = {team: TeamName.RED, piece: ChessPiece.QUEEN};
+	row8[knight1] = {team: TeamName.RED, piece: ChessPiece.KNIGHT};
+	row8[knight2] = {team: TeamName.RED, piece: ChessPiece.KNIGHT};
+	row8[rook1]   = {team: TeamName.RED, piece: ChessPiece.ROOK};
+	row8[king]    = {team: TeamName.RED, piece: ChessPiece.KING};
+	row8[rook2]   = {team: TeamName.RED, piece: ChessPiece.ROOK};
 
 	return [row1, row2, row3, row4, row5, row6, row7, row8];
 }
