@@ -133,7 +133,7 @@ export class WebglInterface {
 
 	// Warning: this is an expensive call
 	bufferData(data: Float32Array): void {
-		this.webgl.bufferData(this.webgl.ARRAY_BUFFER, data, this.webgl.DYNAMIC_DRAW);
+		this.webgl.bufferData(this.webgl.ARRAY_BUFFER, data, this.webgl.STATIC_DRAW);
 	}
 
 	/***** Functions for working with uniforms *****/

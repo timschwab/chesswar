@@ -7,10 +7,13 @@ import { recordJsRenderTime, recordTimeBetweenAnimations } from "./statsManager.
 import { UserInterfaceRenderer } from "../render/UserInterfaceRenderer.ts";
 import { MapRenderer } from "../webgl/map/MapRenderer.ts";
 import { PlayerRenderer } from "../webgl/player/PlayerRenderer.ts";
+import { ChessboardRenderer } from "../webgl/chessboard/ChessboardRenderer.ts";
+import { Point } from "../../../common/shapes/Point.ts";
 
 export class ClientGame {
 	private readonly mapRenderer: MapRenderer;
 	private readonly playerRenderer: PlayerRenderer;
+	private readonly chessboardRenderer: ChessboardRenderer;
 	private readonly uiRenderer: UserInterfaceRenderer;
 	private previousRenderStart = performance.now();
 
@@ -18,6 +21,7 @@ export class ClientGame {
 		// Create the renderers from back to front
 		this.mapRenderer = new MapRenderer();
 		this.playerRenderer = new PlayerRenderer();
+		this.chessboardRenderer = new ChessboardRenderer();
 		this.uiRenderer = new UserInterfaceRenderer();
 	}
 
@@ -63,6 +67,7 @@ export class ClientGame {
 		// Render
 		this.mapRenderer.render(state.selfPlayer.position.center);
 		this.playerRenderer.render(state.selfPlayer.position.center, state.players);
-		this.uiRenderer.render();
+		this.chessboardRenderer.render(new Point(10, 40), 20);
+//		this.uiRenderer.render();
 	}
 }
