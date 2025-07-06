@@ -6,6 +6,7 @@ console.log("Starting build");
 // Generate TS files from the player GLSL files
 generateGlslFiles("player");
 generateGlslFiles("map");
+generateGlslFiles("rectangle");
 generateGlslFiles("chessboard");
 
 generateGlslFiles("structure");

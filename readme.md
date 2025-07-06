@@ -38,5 +38,5 @@ When the api server and the web server are running, go to http://localhost:8357/
 
 * Finish up the WebGL frontend
 * Visually tie orders to briefing rooms
-* Make a short tutorial somewhere
+* [Optional] Make a short tutorial somewhere
 * [Optional] very simple bots, one for each role
