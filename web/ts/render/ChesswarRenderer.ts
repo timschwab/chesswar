@@ -1,0 +1,38 @@
+import { SafeState } from "../game-logic/state.ts";
+import { recordJsRenderTime, recordTimeBetweenAnimations } from "../game-logic/statsManager.ts";
+import { ChessboardRenderer } from "../webgl/chessboard/ChessboardRenderer.ts";
+import { MapRenderer } from "../webgl/map/MapRenderer.ts";
+import { PlayerRenderer } from "../webgl/player/PlayerRenderer.ts";
+
+export class ChesswarRenderer {
+	private readonly mapRenderer: MapRenderer;
+	private readonly playerRenderer: PlayerRenderer;
+	//private readonly chessboardRenderer: ChessboardRenderer;
+	private previousRenderStart = performance.now();
+
+	constructor() {
+		// Create the renderers from back to front
+		this.mapRenderer = new MapRenderer();
+		this.playerRenderer = new PlayerRenderer();
+		//this.chessboardRenderer = new ChessboardRenderer();
+	}
+
+	async render(state: SafeState) {
+		// Detect frame rate
+		const currentRenderStart = performance.now();
+		const timeBetweenAnimationFrames = currentRenderStart - this.previousRenderStart;
+		this.previousRenderStart = currentRenderStart;
+		recordTimeBetweenAnimations(timeBetweenAnimationFrames);
+
+		// Wrap the rendering in a time calculation
+		const jsRenderStart = performance.now();
+		await this.internalRender(state);
+		const jsRenderFinish = performance.now();
+		recordJsRenderTime(jsRenderFinish - jsRenderStart);
+	}
+
+	private async internalRender(state: SafeState) {
+		this.mapRenderer.render(state.selfPlayer.position.center);
+		this.playerRenderer.render(state.selfPlayer.position.center, state.players);
+	}
+}

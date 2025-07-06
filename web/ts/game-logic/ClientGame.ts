@@ -3,25 +3,13 @@ import { socketListen } from "../core/socket.ts";
 import { handleKey } from "./keys.ts";
 import { receiveMessage } from "./messages.ts";
 import { isSafeState, SafeState, state } from "./state.ts";
-import { recordJsRenderTime, recordTimeBetweenAnimations } from "./statsManager.ts";
-import { UserInterfaceRenderer } from "../render/UserInterfaceRenderer.ts";
-import { MapRenderer } from "../webgl/map/MapRenderer.ts";
-import { PlayerRenderer } from "../webgl/player/PlayerRenderer.ts";
-import { ChessboardRenderer } from "../webgl/chessboard/ChessboardRenderer.ts";
+import { ChesswarRenderer } from "../render/ChesswarRenderer.ts";
 
 export class ClientGame {
-	private readonly mapRenderer: MapRenderer;
-	private readonly playerRenderer: PlayerRenderer;
-	private readonly chessboardRenderer: ChessboardRenderer;
-	private readonly uiRenderer: UserInterfaceRenderer;
-	private previousRenderStart = performance.now();
+	private readonly chesswarRenderer: ChesswarRenderer;
 
 	constructor() {
-		// Create the renderers from back to front
-		this.mapRenderer = new MapRenderer();
-		this.playerRenderer = new PlayerRenderer();
-		this.chessboardRenderer = new ChessboardRenderer();
-		this.uiRenderer = new UserInterfaceRenderer();
+		this.chesswarRenderer = new ChesswarRenderer();
 	}
 
 	start() {
@@ -36,13 +24,7 @@ export class ClientGame {
 	}
 
 	async gameLoopUnsafe() {
-		// Detect frame rate
-		const currentRenderStart = performance.now();
-		const timeBetweenAnimationFrames = currentRenderStart - this.previousRenderStart;
-		this.previousRenderStart = currentRenderStart;
-		recordTimeBetweenAnimations(timeBetweenAnimationFrames);
-	
-		// Actually run the gameloop (pretty much just rendering)
+		// Run the game loop when we have all the info needed
 		if (isSafeState(state)) {
 			await this.gameLoopSafe(state);
 		}
@@ -52,21 +34,7 @@ export class ClientGame {
 	}
 
 	async gameLoopSafe(state: SafeState) {
-		// Wrap the rendering in a time calculation
-		const jsRenderStart = performance.now();
-		await this.render(state);
-		const jsRenderFinish = performance.now();
-		recordJsRenderTime(jsRenderFinish - jsRenderStart);
-	}
-
-	async render(state: SafeState) {
-		// Set state data
-		await this.uiRenderer.setState(state);
-	
-		// Render
-		this.mapRenderer.render(state.selfPlayer.position.center);
-		this.playerRenderer.render(state.selfPlayer.position.center, state.players);
-		// this.chessboardRenderer.render(new Point(10, 40), 20);
-//		this.uiRenderer.render();
+		// So far the game loop just renders the UI
+		await this.chesswarRenderer.render(state);
 	}
 }
