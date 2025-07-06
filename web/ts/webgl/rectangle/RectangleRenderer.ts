@@ -4,6 +4,8 @@ import rectangleFragmentShader from "./glsl-generated/rectangleFragmentShader.ts
 import { Point } from "../../../../common/shapes/Point.ts";
 import { WebglRenderer } from "../WebglRenderer.ts";
 import { bindToScreen } from "../../core/screen.ts";
+import { Rect } from "../../../../common/shapes/Rect.ts";
+import { Shape } from "../../../../common/shapes/Shape.ts";
 
 const SCREEN = "u_screen";
 const CAMERA_CENTER = "u_camera_center";
@@ -31,5 +33,20 @@ export class RectangleRenderer {
 
 		// Bind the screen size to the screen uniform
 		bindToScreen(screenValue => this.renderer.setUniformPoint(SCREEN, screenValue.rightBottom));
+	}
+
+	render(camera: Point, rectangles: Shape<Rect>[]) {
+		// Set the camera once per render
+		this.renderer.setUniformPoint(CAMERA_CENTER, camera);
+
+		rectangles.forEach(rectangle => {
+			// Set each rectangle left top, right bottom, and color
+			this.renderer.setUniformPoint(LEFT_TOP, rectangle.geo.leftTop);
+			this.renderer.setUniformPoint(RIGHT_BOT, rectangle.geo.rightBottom);
+			this.renderer.setUniformColor(LEFT_TOP, rectangle.settings.color);
+
+			// Draw
+			this.renderer.draw();
+		});
 	}
 }
