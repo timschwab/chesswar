@@ -1,7 +1,6 @@
 import chessboardVertexShader from "./glsl-generated/chessboardVertexShader.ts";
 import chessboardFragmentShader from "./glsl-generated/chessboardFragmentShader.ts";
 import { Point } from "../../../../common/shapes/Point.ts";
-import { bindToScreen } from "../../core/screen.ts";
 import { WebglRenderer } from "../WebglRenderer.ts";
 import { rensets } from "../../../../common/settings.ts";
 
@@ -45,12 +44,10 @@ export class ChessboardRenderer {
 		// Create the renderer
 		this.renderer = new WebglRenderer(
 			chessboardVertexShader, chessboardFragmentShader,
-			[SCALE], [SCREEN, LEFT_TOP], [],
-			attributeValueData, attributePointData, attributeColorData
+			[SCALE], [LEFT_TOP], [],
+			attributeValueData, attributePointData, attributeColorData,
+			SCREEN
 		);
-
-		// Bind the screen size to the screen uniform
-		bindToScreen(screenValue => this.renderer.setUniformPoint(SCREEN, screenValue.rightBottom));
 	}
 
 	render(leftTop: Point, size: number): void {

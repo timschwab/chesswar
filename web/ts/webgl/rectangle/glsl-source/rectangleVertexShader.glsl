@@ -1,5 +1,4 @@
 uniform vec2 u_screen;
-uniform vec2 u_camera_center;
 uniform vec2 u_left_top;
 uniform vec2 u_right_bot;
 uniform vec3 u_color;
@@ -14,12 +13,8 @@ void main() {
 	vec2 computedLeftTop = (vec2(1, 1) - a_vertex) * u_left_top // if (0, 0) then u_left_top, if (1, 1) then (0, 0)
 	vec2 computedPosition = computedLeftTop + computedRightBot; // if (0, 0) then u_left_top, if (1, 1) then u_right_bot
 
-	// Find the camera-adjusted position
-	vec2 cameraTopLeft = u_camera_center - (u_screen/2.0);
-	vec2 cameraAdjusted = computedPosition - cameraTopLeft;
-
 	// Convert from 0->n to 0->1
-	vec2 zeroToOne = cameraAdjusted / u_screen;
+	vec2 zeroToOne = computedPosition / u_screen;
 
 	// Convert from 0->1 to 0->2
 	vec2 zeroToTwo = zeroToOne * 2.0;

@@ -5,7 +5,6 @@ import { ZeroPoint } from "../../../../common/shapes/Zero.ts";
 import { WebglRenderer } from "../WebglRenderer.ts";
 import { Point } from "../../../../common/shapes/Point.ts";
 import { ClientPlayer } from "../../game-logic/ClientPlayer.ts";
-import { bindToScreen } from "../../core/screen.ts";
 import { TeamName } from "../../../../common/data-types/base.ts";
 import { rensets } from "../../../../common/settings.ts";
 
@@ -32,12 +31,10 @@ export class PlayerRenderer {
 		// Create the renderer
 		this.renderer = new WebglRenderer(
 			playerVertexShader, playerFragmentShader,
-			[SCALE], [SCREEN, CAMERA_CENTER, STRUCTURE_CENTER], [COLOR],
-			new Map(), attributeDataMap, new Map()
+			[SCALE], [CAMERA_CENTER, STRUCTURE_CENTER], [COLOR],
+			new Map(), attributeDataMap, new Map(),
+			SCREEN
 		);
-
-		// Bind the screen size to the screen uniform
-		bindToScreen(screenValue => this.renderer.setUniformPoint(SCREEN, screenValue.rightBottom));
 	}
 
 	render(camera: Point, players: ClientPlayer[]) {

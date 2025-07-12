@@ -19,11 +19,11 @@ export class ClientGame {
 		// Send client messages
 		listenKey(handleKey);
 
-		// Start rendering
+		// Start the game loop
 		requestAnimationFrame(this.gameLoopUnsafe.bind(this));
 	}
 
-	async gameLoopUnsafe() {
+	private async gameLoopUnsafe() {
 		// Run the game loop when we have all the info needed
 		if (isSafeState(state)) {
 			await this.gameLoopSafe(state);
@@ -33,7 +33,7 @@ export class ClientGame {
 		requestAnimationFrame(this.gameLoopUnsafe.bind(this));
 	}
 
-	async gameLoopSafe(state: SafeState) {
+	private async gameLoopSafe(state: SafeState) {
 		// So far the game loop just renders the UI
 		await this.chesswarRenderer.render(state);
 	}

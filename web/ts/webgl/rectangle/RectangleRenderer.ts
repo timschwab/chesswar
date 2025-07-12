@@ -3,12 +3,10 @@ import rectangleFragmentShader from "./glsl-generated/rectangleFragmentShader.ts
 
 import { Point } from "../../../../common/shapes/Point.ts";
 import { WebglRenderer } from "../WebglRenderer.ts";
-import { bindToScreen } from "../../core/screen.ts";
 import { Rect } from "../../../../common/shapes/Rect.ts";
 import { Shape } from "../../../../common/shapes/Shape.ts";
 
 const SCREEN = "u_screen";
-const CAMERA_CENTER = "u_camera_center";
 const LEFT_TOP = "u_left_top";
 const RIGHT_BOT = "u_right_bot";
 const COLOR = "u_color";
@@ -27,23 +25,18 @@ export class RectangleRenderer {
 		// Create the renderer
 		this.renderer = new WebglRenderer(
 			rectangleVertexShader, rectangleFragmentShader,
-			[], [SCREEN, CAMERA_CENTER, LEFT_TOP, RIGHT_BOT], [COLOR],
-			new Map(), attributeDataMap, new Map()
+			[], [LEFT_TOP, RIGHT_BOT], [COLOR],
+			new Map(), attributeDataMap, new Map(),
+			SCREEN
 		);
-
-		// Bind the screen size to the screen uniform
-		bindToScreen(screenValue => this.renderer.setUniformPoint(SCREEN, screenValue.rightBottom));
 	}
 
-	render(camera: Point, rectangles: Shape<Rect>[]) {
-		// Set the camera once per render
-		this.renderer.setUniformPoint(CAMERA_CENTER, camera);
-
+	render(rectangles: Shape<Rect>[]) {
 		rectangles.forEach(rectangle => {
 			// Set each rectangle left top, right bottom, and color
 			this.renderer.setUniformPoint(LEFT_TOP, rectangle.geo.leftTop);
 			this.renderer.setUniformPoint(RIGHT_BOT, rectangle.geo.rightBottom);
-			this.renderer.setUniformColor(LEFT_TOP, rectangle.settings.color);
+			this.renderer.setUniformColor(COLOR, rectangle.settings.color);
 
 			// Draw
 			this.renderer.draw();

@@ -1,7 +1,6 @@
 import mapVertexShader from "./glsl-generated/mapVertexShader.ts";
 import mapFragmentShader from "./glsl-generated/mapFragmentShader.ts";
 import { Point } from "../../../../common/shapes/Point.ts";
-import { bindToScreen } from "../../core/screen.ts";
 import { WebglRenderer } from "../WebglRenderer.ts";
 import { mapStructures } from "../../../../common/map/MapValues.ts";
 
@@ -43,12 +42,10 @@ export class MapRenderer {
 		// Create the renderer
 		this.renderer = new WebglRenderer(
 			mapVertexShader, mapFragmentShader,
-			[], [SCREEN, CAMERA_CENTER], [],
-			attributeValueData, attributePointData, attributeColorData
+			[], [CAMERA_CENTER], [],
+			attributeValueData, attributePointData, attributeColorData,
+			SCREEN
 		);
-
-		// Bind the screen size to the screen uniform
-		bindToScreen(screenValue => this.renderer.setUniformPoint(SCREEN, screenValue.rightBottom));
 	}
 
 	render(camera: Point): void {

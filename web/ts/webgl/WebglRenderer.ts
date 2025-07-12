@@ -1,6 +1,7 @@
 import { Color } from "../../../common/Color.ts";
 import { Optional } from "../../../common/data-structures/Optional.ts";
 import { Point } from "../../../common/shapes/Point.ts";
+import { bindToScreen } from "../core/screen.ts";
 import { WEBGL_CONSTANTS, WebglInterface } from "./WebglInterface.ts";
 
 
@@ -15,7 +16,8 @@ export class WebglRenderer {
 	constructor(
 		vertexShaderSource: string, fragmentShaderSource: string,
 		uniformValueNames: string[], uniformPointNames: string[], uniformColorNames: string[],
-		attributeValueData: Map<string, number[]>, attributePointData: Map<string, Point[]>, attributeColorData: Map<string, Color[]>
+		attributeValueData: Map<string, number[]>, attributePointData: Map<string, Point[]>, attributeColorData: Map<string, Color[]>,
+		screenUniformName?: string
 	) {
 		// Get and check the attribute vertex count
 		this.vertexCount = this.getVertexCount(attributeValueData, attributePointData, attributeColorData);
@@ -33,6 +35,12 @@ export class WebglRenderer {
 		this.setAttributeValueData(program, attributeValueData);
 		this.setAttributePointData(program, attributePointData);
 		this.setAttributeColorData(program, attributeColorData);
+
+		// If given a screen uniform, automatically set it when the screen size changes
+		if (screenUniformName !== undefined) {
+			const screenUniformLocation = this.webgl.getUniformLocation(program, screenUniformName);
+			bindToScreen(screenValue => this.webgl.setUniformPoint(screenUniformLocation, screenValue.rightBottom));
+		}
 	}
 
 	// Get and check the attribute vertex count
