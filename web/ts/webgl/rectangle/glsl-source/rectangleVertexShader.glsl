@@ -10,7 +10,7 @@ varying vec3 v_vertex_color;
 void main() {
 	// Compute the position
 	vec2 computedRightBot = a_vertex * u_right_bot; // if (0, 0) then (0, 0), if (1, 1) then u_right_bot
-	vec2 computedLeftTop = (vec2(1, 1) - a_vertex) * u_left_top // if (0, 0) then u_left_top, if (1, 1) then (0, 0)
+	vec2 computedLeftTop = (vec2(1, 1) - a_vertex) * u_left_top; // if (0, 0) then u_left_top, if (1, 1) then (0, 0)
 	vec2 computedPosition = computedLeftTop + computedRightBot; // if (0, 0) then u_left_top, if (1, 1) then u_right_bot
 
 	// Convert from 0->n to 0->1
