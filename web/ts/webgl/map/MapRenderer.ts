@@ -40,12 +40,21 @@ export class MapRenderer {
 		]);
 
 		// Create the renderer
-		this.renderer = new WebglRenderer(
-			mapVertexShader, mapFragmentShader,
-			[], [CAMERA_CENTER], [],
-			attributeValueData, attributePointData, attributeColorData,
-			SCREEN
-		);
+		this.renderer = new WebglRenderer({
+			shaderSource: {
+				vertex: mapVertexShader,
+				fragment: mapFragmentShader
+			},
+			uniformNames: {
+				screen: SCREEN,
+				points: [CAMERA_CENTER]
+			},
+			attributeData: {
+				values: attributeValueData,
+				points: attributePointData,
+				colors: attributeColorData
+			}
+		});
 	}
 
 	render(camera: Point): void {

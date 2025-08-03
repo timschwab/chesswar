@@ -26,15 +26,24 @@ export class PlayerRenderer {
 		const circleData = new Circle(ZeroPoint, 1)
 			.toTriangles()
 			.flatMap(triangle => [triangle.v1, triangle.v2, triangle.v3]);
-		const attributeDataMap = new Map([[VERTEX, circleData]]);
+		const attributePointData = new Map([[VERTEX, circleData]]);
 
 		// Create the renderer
-		this.renderer = new WebglRenderer(
-			playerVertexShader, playerFragmentShader,
-			[SCALE], [CAMERA_CENTER, STRUCTURE_CENTER], [COLOR],
-			new Map(), attributeDataMap, new Map(),
-			SCREEN
-		);
+		this.renderer = new WebglRenderer({
+			shaderSource: {
+				vertex: playerVertexShader,
+				fragment: playerFragmentShader
+			},
+			uniformNames: {
+				screen: SCREEN,
+				values: [SCALE],
+				points: [CAMERA_CENTER, STRUCTURE_CENTER],
+				colors: [COLOR]
+			},
+			attributeData: {
+				points: attributePointData
+			}
+		});
 	}
 
 	render(camera: Point, players: ClientPlayer[]) {

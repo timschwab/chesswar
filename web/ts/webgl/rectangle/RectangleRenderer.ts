@@ -23,15 +23,23 @@ export class RectangleRenderer {
 			new Point(0, 0), new Point(0, 1), new Point(1, 0),
 			                 new Point(0, 1), new Point(1, 0), new Point(1, 1)
 		];
-		const attributeDataMap = new Map([[VERTEX, rectangleData]]);
+		const attributePointData = new Map([[VERTEX, rectangleData]]);
 
 		// Create the renderer
-		this.renderer = new WebglRenderer(
-			rectangleVertexShader, rectangleFragmentShader,
-			[], [LEFT_TOP, RIGHT_BOT], [COLOR],
-			new Map(), attributeDataMap, new Map(),
-			SCREEN
-		);
+		this.renderer = new WebglRenderer({
+			shaderSource: {
+				vertex: rectangleVertexShader,
+				fragment: rectangleFragmentShader
+			},
+			uniformNames: {
+				screen: SCREEN,
+				points: [LEFT_TOP, RIGHT_BOT],
+				colors: [COLOR]
+			},
+			attributeData: {
+				points: attributePointData
+			}
+		});
 	}
 
 	render(rectangles: Shape<Rect>[]) {

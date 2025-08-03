@@ -3,6 +3,7 @@ import { Optional } from "../../../common/data-structures/Optional.ts";
 import { Point } from "../../../common/shapes/Point.ts";
 import { bindToScreen } from "../core/screen.ts";
 import { WEBGL_CONSTANTS, WebglInterface } from "./WebglInterface.ts";
+import { makeStrict, WebGlRendererSettings } from "./WebglRendererSettings.ts";
 
 
 // A class for working with a specific program
@@ -13,32 +14,29 @@ export class WebglRenderer {
 	private readonly uniformColorLocations: Map<string, WebGLUniformLocation>;
 	private readonly vertexCount: number;
 
-	constructor(
-		vertexShaderSource: string, fragmentShaderSource: string,
-		uniformValueNames: string[], uniformPointNames: string[], uniformColorNames: string[],
-		attributeValueData: Map<string, number[]>, attributePointData: Map<string, Point[]>, attributeColorData: Map<string, Color[]>,
-		screenUniformName?: string
-	) {
+	constructor(rawSettings: WebGlRendererSettings) {
+		const settings = makeStrict(rawSettings);
+
 		// Get and check the attribute vertex count
-		this.vertexCount = this.getVertexCount(attributeValueData, attributePointData, attributeColorData);
+		this.vertexCount = this.getVertexCount(settings.attributeData.values, settings.attributeData.points, settings.attributeData.colors);
 
 		// Start up webgl
 		this.webgl = new WebglInterface();
-		const program = this.compileProgram(vertexShaderSource, fragmentShaderSource);
+		const program = this.compileProgram(settings.shaderSource.vertex, settings.shaderSource.fragment);
 
 		// Get the uniform locations
-		this.uniformValueLocations = this.mapUniformLocations(program, uniformValueNames);
-		this.uniformPointLocations = this.mapUniformLocations(program, uniformPointNames);
-		this.uniformColorLocations = this.mapUniformLocations(program, uniformColorNames);
+		this.uniformValueLocations = this.mapUniformLocations(program, settings.uniformNames.values);
+		this.uniformPointLocations = this.mapUniformLocations(program, settings.uniformNames.points);
+		this.uniformColorLocations = this.mapUniformLocations(program, settings.uniformNames.colors);
 
 		// Set the attribute data
-		this.setAttributeValueData(program, attributeValueData);
-		this.setAttributePointData(program, attributePointData);
-		this.setAttributeColorData(program, attributeColorData);
+		this.setAttributeValueData(program, settings.attributeData.values);
+		this.setAttributePointData(program, settings.attributeData.points);
+		this.setAttributeColorData(program, settings.attributeData.colors);
 
 		// If given a screen uniform, automatically set it when the screen size changes
-		if (screenUniformName !== undefined) {
-			const screenUniformLocation = this.webgl.getUniformLocation(program, screenUniformName);
+		if (settings.uniformNames.screen !== null) {
+			const screenUniformLocation = this.webgl.getUniformLocation(program, settings.uniformNames.screen);
 			bindToScreen(screenValue => this.webgl.setUniformPoint(screenUniformLocation, screenValue.rightBottom));
 		}
 	}

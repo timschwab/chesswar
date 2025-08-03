@@ -31,8 +31,6 @@ export class ChessboardRenderer {
 			return unitSquare.map(_point => isLight ? rensets.generalWindow.boardLight : rensets.generalWindow.boardDark);
 		});
 
-		const attributeValueData = new Map<string, number[]>();
-
 		const attributePointData = new Map([
 			[VERTEX, vertexPoints]
 		]);
@@ -42,12 +40,21 @@ export class ChessboardRenderer {
 		]);
 
 		// Create the renderer
-		this.renderer = new WebglRenderer(
-			chessboardVertexShader, chessboardFragmentShader,
-			[SCALE], [LEFT_TOP], [],
-			attributeValueData, attributePointData, attributeColorData,
-			SCREEN
-		);
+		this.renderer = new WebglRenderer({
+			shaderSource: {
+				vertex: chessboardVertexShader,
+				fragment: chessboardFragmentShader
+			},
+			uniformNames: {
+				screen: SCREEN,
+				values: [SCALE],
+				points: [LEFT_TOP]
+			},
+			attributeData: {
+				points: attributePointData,
+				colors: attributeColorData
+			}
+		});
 	}
 
 	render(leftTop: Point, size: number): void {
