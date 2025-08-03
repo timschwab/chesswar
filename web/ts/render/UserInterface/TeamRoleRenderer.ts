@@ -23,5 +23,7 @@ export class TeamRoleRenderer {
 			Shape.from(innerRect, teamColor)
 		];
 		this.rectangleRenderer.render(shapes);
+
+		// TODO: Render the text as well
 	}
 }
