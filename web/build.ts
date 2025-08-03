@@ -1,38 +1,35 @@
 import { buildSettings } from "../common/settings.ts";
 import { esbuild } from '../deps.ts'
 
-console.log("Starting build");
-
-// Generate TS files from the player GLSL files
-generateGlslFiles("player");
-generateGlslFiles("map");
-generateGlslFiles("rectangle");
-generateGlslFiles("chessboard");
-
-generateGlslFiles("structure");
-generateGlslFiles("text");
-
-// Create a JS bundle from the TS code
-const options = {
-	entryPoints: ['web/ts/entrypoint.ts'],
-	outdir: buildSettings.bundleDir,
-	target: 'esnext',
-	bundle: true,
-	minify: true,
-	sourcemap: true,
-	plugins: []
-};
-
-console.log("Creating JS bundle");
-await esbuild.build(options);
-esbuild.stop();
-
-console.log("Finished build");
+await build();
 
 
 
-// Helper functions
-function generateGlslFiles(name: string) {
+async function build() {
+	console.log("Starting build");
+
+	// Generate TS files from the GLSL files. One day Deno/TS should support loading GLSL natively.
+	generateAllGlslFiles([
+		"player",
+		"map",
+		"rectangle",
+		"text",
+		"chessboard"
+	]);
+
+	// Create a JS bundle from the TS code
+	await generateJsBundle("web/ts/entrypoint.ts");
+
+	console.log("Finished build");
+}
+
+function generateAllGlslFiles(names: string[]) {
+	for (const name of names) {
+		generateOneGlslFileSet(name);
+	}
+}
+
+function generateOneGlslFileSet(name: string) {
 	console.log(`Generating ${name} GLSL files`);
 	wrapGlslFileContents(
 		`${name}VertexShader`,
@@ -66,4 +63,22 @@ export default contents;
 		recursive: true
 	});
 	Deno.writeTextFileSync(destPath, wrappedContents);
+}
+
+async function generateJsBundle(entrypoint: string) {
+	// Create a JS bundle from the TS code
+	console.log("Creating JS bundle");
+
+	const options = {
+		entryPoints: [entrypoint],
+		outdir: buildSettings.bundleDir,
+		target: "esnext",
+		bundle: true,
+		minify: true,
+		sourcemap: true,
+		plugins: []
+	};
+
+	await esbuild.build(options);
+	esbuild.stop();
 }
