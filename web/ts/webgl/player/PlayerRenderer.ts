@@ -13,7 +13,7 @@ const SCREEN = "u_screen";
 const CAMERA_CENTER = "u_camera_center";
 const COLOR = "u_color";
 const SCALE = "u_scale";
-const STRUCTURE_CENTER = "u_structure_center";
+const PLAYER_CENTER = "u_player_center";
 
 const VERTEX = "a_vertex";
 
@@ -37,7 +37,7 @@ export class PlayerRenderer {
 			uniformNames: {
 				screen: SCREEN,
 				values: [SCALE],
-				points: [CAMERA_CENTER, STRUCTURE_CENTER],
+				points: [CAMERA_CENTER, PLAYER_CENTER],
 				colors: [COLOR]
 			},
 			attributeData: {
@@ -76,7 +76,7 @@ export class PlayerRenderer {
 				this.renderer.setUniformValue(SCALE, playerSize);
 				playerList.forEach(center => {
 					// Set the center for every player
-					this.renderer.setUniformPoint(STRUCTURE_CENTER, center);
+					this.renderer.setUniformPoint(PLAYER_CENTER, center);
 					// Draw
 					this.renderer.draw();
 				});

@@ -1,7 +1,7 @@
 uniform float u_scale;
 uniform vec2 u_screen;
 uniform vec2 u_camera_center;
-uniform vec2 u_structure_center;
+uniform vec2 u_player_center;
 uniform vec3 u_color;
 
 attribute vec2 a_vertex;
@@ -12,12 +12,12 @@ void main() {
 	// Find the scale-adjusted position
 	vec2 scaleAdjusted = a_vertex * u_scale;
 
-	// Find the structure-adjusted position
-	vec2 structureAdjusted = scaleAdjusted + u_structure_center;
+	// Find the player-adjusted position
+	vec2 playerAdjusted = scaleAdjusted + u_player_center;
 
 	// Find the camera-adjusted position
 	vec2 cameraTopLeft = u_camera_center - (u_screen/2.0);
-	vec2 cameraAdjusted = structureAdjusted - cameraTopLeft;
+	vec2 cameraAdjusted = playerAdjusted - cameraTopLeft;
 
 	// Convert from 0->n to 0->1
 	vec2 zeroToOne = cameraAdjusted / u_screen;
