@@ -5,8 +5,8 @@ import { getCanvas } from "../../core/dom.ts";
 
 // https://stackoverflow.com/a/27331885/1455074
 // A code point is the atomic unit of data in Unicode. Could be a character/letter or a diacritic.
-// A grapheme is what is displayed as a single graphical unit
-// A glyph is an image containing the rendering of a grapheme
+// A grapheme is what is displayed as a single graphical unit.
+// A glyph is an image containing the rendering of a grapheme.
 
 // Font settings
 const FONT_WEIGHT = "bold";
@@ -26,7 +26,7 @@ export class ExpandingGlyphTexture {
 		this.glyphBoundingBox = this.getGlyphBoundingBox()
 
 		// Set initial values and flags
-		this.canvas.width = 0;
+		this.canvas.width = this.glyphBoundingBox.width;
 		this.canvas.height = this.glyphBoundingBox.height;
 	}
 
@@ -69,7 +69,7 @@ export class ExpandingGlyphTexture {
 
 		// Compute vars
 		const previousWidth = this.canvas.width;
-		const newWidth = previousWidth + this.glyphBoundingBox.width;
+		const newWidth = previousWidth * 2; // Exponential growth so that the average time to write is O(log n)
 
 		// Expand canvas to fit the new glyph
 		if (this.glyphCount > 0) {
