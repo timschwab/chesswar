@@ -3,15 +3,15 @@ uniform vec2 u_left_top;
 uniform vec2 u_right_bot;
 uniform vec3 u_color;
 
-attribute vec2 a_vertex; // [(0, 0), (1, 1)]
+attribute vec2 a_vertex; // [(0, 0), (0, 1), (1, 0), (1, 1)]
 
 varying vec3 v_vertex_color;
 
 void main() {
 	// Compute the position
-	vec2 computedRightBot = a_vertex * u_right_bot; // if (0, 0) then (0, 0), if (1, 1) then u_right_bot
-	vec2 computedLeftTop = (vec2(1, 1) - a_vertex) * u_left_top; // if (0, 0) then u_left_top, if (1, 1) then (0, 0)
-	vec2 computedPosition = computedLeftTop + computedRightBot; // if (0, 0) then u_left_top, if (1, 1) then u_right_bot
+	vec2 computedRightBot = u_right_bot * a_vertex; // if 0 then 0, if 1 then u_right_bot
+	vec2 computedLeftTop =  u_left_top * (1.0 - a_vertex); // if 0 then u_left_top, if 1 then 0
+	vec2 computedPosition = computedLeftTop + computedRightBot; // if 0 then u_left_top, if 1 then u_right_bot
 
 	// Convert from 0->n to 0->1
 	vec2 zeroToOne = computedPosition / u_screen;

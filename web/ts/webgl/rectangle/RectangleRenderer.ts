@@ -18,8 +18,11 @@ export class RectangleRenderer {
 	private readonly renderer: WebglRenderer;
 
 	constructor() {
-		// Prepare the player rendering data
-		const rectangleData = [new Point(0, 0), new Point(1, 1)];
+		// Prepare the rectangle rendering data
+		const rectangleData = [
+			new Point(0, 0), new Point(0, 1), new Point(1, 0),
+			                 new Point(0, 1), new Point(1, 0), new Point(1, 1)
+		];
 		const attributeDataMap = new Map([[VERTEX, rectangleData]]);
 
 		// Create the renderer

@@ -40,8 +40,8 @@ export class ChesswarRenderer {
 	}
 
 	private async internalRender(state: SafeState) {
-		this.mapRenderer.render(state.selfPlayer.position.center);
-		this.playerRenderer.render(state.selfPlayer.position.center, state.players);
+		//this.mapRenderer.render(state.selfPlayer.position.center);
+		//this.playerRenderer.render(state.selfPlayer.position.center, state.players);
 
 		// Just start figuring out the rectangles here for now
 
