@@ -6,9 +6,19 @@ import { bindCanvasToScreen, bindToScreen } from "../core/screen.ts";
 
 type ShaderType = WebGLRenderingContext["VERTEX_SHADER"] | WebGLRenderingContext["FRAGMENT_SHADER"];
 
+const GL = WebGLRenderingContext;
 export const WEBGL_CONSTANTS = {
-	VERTEX_SHADER: WebGLRenderingContext["VERTEX_SHADER"],
-	FRAGMENT_SHADER: WebGLRenderingContext["FRAGMENT_SHADER"]
+	// Shader type
+	VERTEX_SHADER: GL.VERTEX_SHADER,
+	FRAGMENT_SHADER: GL.FRAGMENT_SHADER,
+
+	// Texture parameters
+	TEXTURE_2D: GL.TEXTURE_2D,
+	TEXTURE_WRAP_S: GL.TEXTURE_WRAP_S,
+	TEXTURE_WRAP_T: GL.TEXTURE_WRAP_T,
+	CLAMP_TO_EDGE: GL.CLAMP_TO_EDGE,
+	TEXTURE_MIN_FILTER: GL.TEXTURE_MIN_FILTER,
+	LINEAR: GL.LINEAR
 };
 
 // A class that makes it easier to work with webgl. Does very little other than wrapping the calls and
@@ -150,6 +160,22 @@ export class WebglInterface {
 	}
 
 	/***** Functions for working with textures *****/
+	createTexture(): WebGLTexture {
+		const texture = this.webgl.createTexture();
+		if (texture === null) {
+			throw "Could not create new texture";
+		}
+		return texture;
+	}
+
+	bindTexture(texture: WebGLTexture) {
+		this.webgl.bindTexture(this.webgl.TEXTURE_2D, texture);
+	}
+
+	textureParameter(target: GLenum, pname: GLenum, param: GLint): void {
+		this.webgl.texParameteri(target, pname, param);
+	}
+
 	setTextureData(texture: TexImageSource) {
 		this.webgl.texImage2D(
 			this.webgl.TEXTURE_2D,

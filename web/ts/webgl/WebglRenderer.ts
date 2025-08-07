@@ -84,7 +84,7 @@ export class WebglRenderer {
 	}
 
 	// Build the 2 shaders and link them into a program
-	private compileProgram(vertexShaderSource: string, fragmentShaderSource: string) {
+	private compileProgram(vertexShaderSource: string, fragmentShaderSource: string): WebGLProgram {
 		const vertexShader = this.webgl.createShader(WEBGL_CONSTANTS.VERTEX_SHADER);
 		this.webgl.shaderSource(vertexShader, vertexShaderSource);
 		this.webgl.compileShader(vertexShader);
@@ -143,7 +143,7 @@ export class WebglRenderer {
 		}
 	}
 
-	private prepBuffer(program: WebGLProgram, attributeName: string, dataSize: number) {
+	private prepBuffer(program: WebGLProgram, attributeName: string, dataSize: number): void {
 		const location = this.webgl.getAttribLocation(program, attributeName);
 		const bufferId = this.webgl.createBuffer();
 		this.webgl.bindBuffer(bufferId);
@@ -152,7 +152,7 @@ export class WebglRenderer {
 	}
 
 	// User facing methods
-	setUniformValue(name: string, value: number) {
+	setUniformValue(name: string, value: number): void {
 		const location = this.uniformValueLocations.get(name);
 		if (location === undefined) {
 			throw "Location could not be found: " + name
@@ -160,7 +160,7 @@ export class WebglRenderer {
 		this.webgl.setUniformValue(location, value);
 	}
 
-	setUniformPoint(name: string, point: Point) {
+	setUniformPoint(name: string, point: Point): void {
 		const location = this.uniformPointLocations.get(name);
 		if (location === undefined) {
 			throw "Location could not be found: " + name
@@ -168,7 +168,7 @@ export class WebglRenderer {
 		this.webgl.setUniformPoint(location, point);
 	}
 
-	setUniformColor(name: string, color: Color) {
+	setUniformColor(name: string, color: Color): void {
 		const location = this.uniformColorLocations.get(name);
 		if (location === undefined) {
 			throw "Location could not be found: " + name
@@ -176,8 +176,18 @@ export class WebglRenderer {
 		this.webgl.setUniformColor(location, color);
 	}
 
+	createTexture(): void {
+		const texture = this.webgl.createTexture();
+		this.webgl.bindTexture(texture);
+
+		// Currently just used by the text renderer
+		this.webgl.textureParameter(WEBGL_CONSTANTS.TEXTURE_2D, WEBGL_CONSTANTS.TEXTURE_WRAP_S, WEBGL_CONSTANTS.CLAMP_TO_EDGE);
+		this.webgl.textureParameter(WEBGL_CONSTANTS.TEXTURE_2D, WEBGL_CONSTANTS.TEXTURE_WRAP_T, WEBGL_CONSTANTS.CLAMP_TO_EDGE);
+		this.webgl.textureParameter(WEBGL_CONSTANTS.TEXTURE_2D, WEBGL_CONSTANTS.TEXTURE_MIN_FILTER, WEBGL_CONSTANTS.LINEAR);
+	}
+
 	// This is an expensive call
-	setTextureData(texture: TexImageSource) {
+	setTextureData(texture: TexImageSource): void {
 		this.webgl.setTextureData(texture);
 	}
 

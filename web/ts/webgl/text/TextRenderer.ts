@@ -49,16 +49,31 @@ export class TextRenderer {
 				points: attributePointData
 			}
 		});
+
+		// Setup the renderer
+		this.renderer.setUniformPoint(GLYPH_BOUNDING_BOX, this.glyphTexture.glyphBoundingBox.rightBottom);
+		this.renderer.createTexture();
 	}
 
 	async render(textData: CWText[]) {
-		// Add any new graphemes to the texture
-		await this.ensureGraphemesAdded(textData);
+		// Add any new glyphs to the texture
+		await this.ensureGlyphsAdded(textData);
 
-		// Draw all the graphemes
+		// Draw all the glyphs
+		for (const text of textData) {
+			this.renderer.setUniformPoint(LEFT_TOP, text.leftTop);
+			this.renderer.setUniformValue(SCALE, text.scale);
+			this.renderer.setUniformColor(COLOR, text.color);
+			for (const grapheme of text.graphemes) {
+				const index = this.graphemeToGlyphMap.get(grapheme);
+				if (index !== undefined) {
+					this.renderer.setUniformValue(GLYPH_INDEX, index);
+				}
+			}
+		}
 	}
 
-	private async ensureGraphemesAdded(textData: CWText[]) {
+	private async ensureGlyphsAdded(textData: CWText[]) {
 		// Split text into graphemes
 		const allGraphemes = textData.flatMap(text => text.graphemes);
 
@@ -77,7 +92,7 @@ export class TextRenderer {
 			const texture = await this.glyphTexture.getTexture();
 			this.renderer.setTextureData(texture);
 
-			// Set the texture size uniform
+			// Set the new texture size
 			this.renderer.setUniformValue(GLYPH_COUNT, this.graphemeToGlyphMap.size);
 		}
 	}

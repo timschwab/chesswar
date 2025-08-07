@@ -6,8 +6,8 @@ uniform float u_glyph_count;
 // Settings per glyph
 uniform vec2 u_left_top;
 uniform float u_scale;
-uniform float u_glyph_index;
 uniform vec3 u_color;
+uniform float u_glyph_index;
 
 // Rectangle data
 // [(0, 0), (0, 1), (1, 0),

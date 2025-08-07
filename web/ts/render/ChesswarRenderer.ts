@@ -1,10 +1,14 @@
+import { CWColor } from "../../../common/Color.ts";
+import { Point } from "../../../common/shapes/Point.ts";
 import { SafeState } from "../game-logic/state.ts";
 import { recordJsRenderTime, recordTimeBetweenAnimations } from "../game-logic/statsManager.ts";
 //import { ChessboardRenderer } from "../webgl/chessboard/ChessboardRenderer.ts";
 import { MapRenderer } from "../webgl/map/MapRenderer.ts";
 import { PlayerRenderer } from "../webgl/player/PlayerRenderer.ts";
 import { RectangleRenderer } from "../webgl/rectangle/RectangleRenderer.ts";
+import { CWText } from "../webgl/text/CWText.ts";
 import { ExpandingGlyphTexture } from "../webgl/text/ExpandingGlyphTexture.ts";
+import { TextRenderer } from "../webgl/text/TextRenderer.ts";
 import { TeamRoleRenderer } from "./UserInterface/TeamRoleRenderer.ts";
 
 export class ChesswarRenderer {
@@ -21,13 +25,9 @@ export class ChesswarRenderer {
 		this.playerRenderer = new PlayerRenderer();
 
 		const rectangleRenderer = new RectangleRenderer();
-		const textRenderer = new ExpandingGlyphTexture();
-
-		textRenderer.addGrapheme("0");
-		textRenderer.addGrapheme("1");
-		textRenderer.addGrapheme("2");
-		textRenderer.addGrapheme("3");
-		textRenderer.addGrapheme("4");
+		const textRenderer = new TextRenderer();
+		const text = new CWText("Hello world!", new Point(100, 100), 1, CWColor.GREY_WHITE);
+		textRenderer.render([text]);
 
 		this.teamRoleRenderer = new TeamRoleRenderer(rectangleRenderer);
 		//this.chessboardRenderer = new ChessboardRenderer();
