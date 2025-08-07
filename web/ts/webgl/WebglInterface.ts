@@ -149,6 +149,17 @@ export class WebglInterface {
 		this.webgl.uniform3f(location, color.r, color.g, color.b);
 	}
 
+	/***** Functions for working with textures *****/
+	setTextureData(texture: TexImageSource) {
+		this.webgl.texImage2D(
+			this.webgl.TEXTURE_2D,
+			0,
+			this.webgl.RGBA,
+			this.webgl.RGBA,
+			this.webgl.UNSIGNED_BYTE,
+			texture);
+	}
+
 	/***** The draw function *****/
 	draw(vertexCount: number): void {
 		this.webgl.drawArrays(this.webgl.TRIANGLES, 0, vertexCount);

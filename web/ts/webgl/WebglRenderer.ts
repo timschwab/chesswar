@@ -176,6 +176,11 @@ export class WebglRenderer {
 		this.webgl.setUniformColor(location, color);
 	}
 
+	// This is an expensive call
+	setTextureData(texture: TexImageSource) {
+		this.webgl.setTextureData(texture);
+	}
+
 	draw(): void {
 		this.webgl.draw(this.vertexCount);
 	}
