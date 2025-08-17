@@ -15,7 +15,6 @@ export class ChesswarRenderer {
 
 	private readonly mapRenderer: MapRenderer;
 	private readonly playerRenderer: PlayerRenderer;
-	private readonly textRenderer: TextRenderer;
 	private readonly teamRoleRenderer: TeamRoleRenderer;
 	//private readonly chessboardRenderer: ChessboardRenderer;
 
@@ -25,9 +24,9 @@ export class ChesswarRenderer {
 		this.playerRenderer = new PlayerRenderer();
 
 		const rectangleRenderer = new RectangleRenderer();
-		this.textRenderer = new TextRenderer();
+		const textRenderer = new TextRenderer();
 
-		this.teamRoleRenderer = new TeamRoleRenderer(rectangleRenderer);
+		this.teamRoleRenderer = new TeamRoleRenderer(rectangleRenderer, textRenderer);
 		//this.chessboardRenderer = new ChessboardRenderer();
 	}
 
@@ -48,10 +47,7 @@ export class ChesswarRenderer {
 	private internalRender(state: SafeState) {
 		//this.mapRenderer.render(state.selfPlayer.position.center);
 		//this.playerRenderer.render(state.selfPlayer.position.center, state.players);
-		//this.teamRoleRenderer.render(state);
-
-		const text = new CWText("1 2 3 4 5", new Point(0, 0), 1, CWColor.GREY_WHITE);
-		this.textRenderer.render([text]);
+		this.teamRoleRenderer.render(state);
 
 		// Start reworking text renderer
 	}
