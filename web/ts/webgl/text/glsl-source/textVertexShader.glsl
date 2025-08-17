@@ -25,10 +25,12 @@ void main() {
 	/***** Get screen coords *****/
 	// Find the scale-adjusted glyph bounding box
 	vec2 scaledGlyphBoundingBox = u_glyph_bounding_box * u_scale;
-	vec2 vertexAdjusted = a_vertex * scaledGlyphBoundingBox;
 
-	// Move according to the grapheme position
-	vec2 positionInText = vec2(vertexAdjusted.x + (scaledGlyphBoundingBox.x * u_grapheme_position), vertexAdjusted.y);
+	// Move according to the grapheme position and vertex
+	vec2 positionInText = vec2(
+		scaledGlyphBoundingBox.x * (a_vertex.x + u_grapheme_position),
+		scaledGlyphBoundingBox.y * (a_vertex.y)
+	);
 
 	// Find the translated position
 	vec2 translatedPosition = positionInText + u_left_top;

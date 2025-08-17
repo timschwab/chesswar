@@ -31,7 +31,7 @@ export class ChesswarRenderer {
 		//this.chessboardRenderer = new ChessboardRenderer();
 	}
 
-	async render(state: SafeState) {
+	render(state: SafeState) {
 		// Detect and record frame rate
 		const currentRenderStart = performance.now();
 		const timeBetweenAnimationFrames = currentRenderStart - this.previousRenderStart;
@@ -40,18 +40,18 @@ export class ChesswarRenderer {
 
 		// Record the time spent in JS
 		const jsRenderStart = performance.now();
-		await this.internalRender(state);
+		this.internalRender(state);
 		const jsRenderFinish = performance.now();
 		recordJsRenderTime(jsRenderFinish - jsRenderStart);
 	}
 
-	private async internalRender(state: SafeState) {
+	private internalRender(state: SafeState) {
 		//this.mapRenderer.render(state.selfPlayer.position.center);
 		//this.playerRenderer.render(state.selfPlayer.position.center, state.players);
 		//this.teamRoleRenderer.render(state);
 
-		const text = new CWText("1a2a3a4", new Point(0, 300), 1, CWColor.GREY_WHITE);
-		await this.textRenderer.render([text]);
+		const text = new CWText("1 2 3 4 5", new Point(0, 0), 1, CWColor.GREY_WHITE);
+		this.textRenderer.render([text]);
 
 		// Start reworking text renderer
 	}

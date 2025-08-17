@@ -58,18 +58,18 @@ export class TextRenderer {
 		this.renderer.createTexture();
 	}
 
-	async render(textData: CWText[]) {
+	render(textList: CWText[]) {
 		// Add any new glyphs to the texture
-		await this.ensureGlyphsAdded(textData);
+		this.ensureGlyphsAdded(textList);
 
-		// Draw all the glyphs
-		for (const text of textData) {
+		// Draw all the texts
+		for (const text of textList) {
 			// Set the text-global uniforms
 			this.renderer.setUniformPoint(LEFT_TOP, text.leftTop);
 			this.renderer.setUniformValue(SCALE, text.scale);
 			this.renderer.setUniformColor(COLOR, text.color);
 
-			// Set the grapheme-specific unifrosm
+			// Set the grapheme-specific uniforms
 			text.graphemes.forEach((grapheme, graphemePosition) => {
 				this.renderer.setUniformValue(GRAPHEME_POSITION, graphemePosition);
 				const glyphIndex = this.graphemeToGlyphMap.get(grapheme);
@@ -81,9 +81,9 @@ export class TextRenderer {
 		}
 	}
 
-	private async ensureGlyphsAdded(textData: CWText[]) {
+	private ensureGlyphsAdded(textList: CWText[]) {
 		// Split text into graphemes
-		const allGraphemes = textData.flatMap(text => text.graphemes);
+		const allGraphemes = textList.flatMap(text => text.graphemes);
 
 		// Find all graphemes we have never rendered before and update the texture if needed
 		const newGraphemes = new Set(allGraphemes.filter(grapheme => !this.graphemeToGlyphMap.has(grapheme)));
@@ -97,7 +97,7 @@ export class TextRenderer {
 			}
 
 			// Upload the new texture
-			const texture = await this.glyphTexture.getTexture();
+			const texture = this.glyphTexture.getTexture();
 			this.renderer.setTextureData(texture);
 
 			// Set the new texture size
