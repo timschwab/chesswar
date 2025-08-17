@@ -6,12 +6,15 @@ import textFragmentShader from "./glsl-generated/textFragmentShader.ts";
 import textVertexShader from "./glsl-generated/textVertexShader.ts";
 
 
+// Overall settings
 const SCREEN = "u_screen";
 const GLYPH_BOUNDING_BOX = "u_glyph_bounding_box";
 const GLYPH_COUNT = "u_glyph_count";
 
+// Settings per glyph
 const LEFT_TOP = "u_left_top";
 const SCALE = "u_scale";
+const GRAPHEME_POSITION = "u_grapheme_position";
 const GLYPH_INDEX = "u_glyph_index";
 const COLOR = "u_color";
 
@@ -41,7 +44,7 @@ export class TextRenderer {
 			},
 			uniformNames: {
 				screen: SCREEN,
-				values: [GLYPH_COUNT, SCALE, GLYPH_INDEX],
+				values: [GLYPH_COUNT, SCALE, GRAPHEME_POSITION, GLYPH_INDEX],
 				points: [GLYPH_BOUNDING_BOX, LEFT_TOP],
 				colors: [COLOR]
 			},
@@ -64,12 +67,14 @@ export class TextRenderer {
 			this.renderer.setUniformPoint(LEFT_TOP, text.leftTop);
 			this.renderer.setUniformValue(SCALE, text.scale);
 			this.renderer.setUniformColor(COLOR, text.color);
-			for (const grapheme of text.graphemes) {
-				const index = this.graphemeToGlyphMap.get(grapheme);
-				if (index !== undefined) {
-					this.renderer.setUniformValue(GLYPH_INDEX, index);
+			text.graphemes.forEach((grapheme, graphemePosition) => {
+				this.renderer.setUniformValue(GRAPHEME_POSITION, graphemePosition);
+				const glyphIndex = this.graphemeToGlyphMap.get(grapheme);
+				if (glyphIndex !== undefined) {
+					this.renderer.setUniformValue(GLYPH_INDEX, glyphIndex);
+					this.renderer.draw();
 				}
-			}
+			});
 		}
 	}
 

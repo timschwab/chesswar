@@ -6,6 +6,7 @@ uniform float u_glyph_count;
 // Settings per glyph
 uniform vec2 u_left_top;
 uniform float u_scale;
+uniform float u_grapheme_position;
 uniform vec3 u_color;
 uniform float u_glyph_index;
 
@@ -22,10 +23,13 @@ void main() {
 	/***** Get screen coords *****/
 	// Find the scale-adjusted glyph bounding box
 	vec2 scaledGlyphBoundingBox = u_glyph_bounding_box * u_scale;
-	vec2 scaleAdjusted = a_vertex * scaledGlyphBoundingBox;
+	vec2 vertexAdjusted = a_vertex * scaledGlyphBoundingBox;
+
+	// Move according to the grapheme position
+	vec2 positionInText = vec2(vertexAdjusted.x + (scaledGlyphBoundingBox.x * u_grapheme_position), vertexAdjusted.y);
 
 	// Find the translated position
-	vec2 translatedPosition = scaleAdjusted + u_left_top;
+	vec2 translatedPosition = positionInText + u_left_top;
 
 	// Convert from 0->n to 0->1
 	vec2 zeroToOne = translatedPosition / u_screen;

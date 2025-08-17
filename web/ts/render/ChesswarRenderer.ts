@@ -7,7 +7,6 @@ import { MapRenderer } from "../webgl/map/MapRenderer.ts";
 import { PlayerRenderer } from "../webgl/player/PlayerRenderer.ts";
 import { RectangleRenderer } from "../webgl/rectangle/RectangleRenderer.ts";
 import { CWText } from "../webgl/text/CWText.ts";
-import { ExpandingGlyphTexture } from "../webgl/text/ExpandingGlyphTexture.ts";
 import { TextRenderer } from "../webgl/text/TextRenderer.ts";
 import { TeamRoleRenderer } from "./UserInterface/TeamRoleRenderer.ts";
 
@@ -16,6 +15,7 @@ export class ChesswarRenderer {
 
 	private readonly mapRenderer: MapRenderer;
 	private readonly playerRenderer: PlayerRenderer;
+	private readonly textRenderer: TextRenderer;
 	private readonly teamRoleRenderer: TeamRoleRenderer;
 	//private readonly chessboardRenderer: ChessboardRenderer;
 
@@ -25,9 +25,7 @@ export class ChesswarRenderer {
 		this.playerRenderer = new PlayerRenderer();
 
 		const rectangleRenderer = new RectangleRenderer();
-		const textRenderer = new TextRenderer();
-		const text = new CWText("Hello world!", new Point(100, 100), 1, CWColor.GREY_WHITE);
-		textRenderer.render([text]);
+		this.textRenderer = new TextRenderer();
 
 		this.teamRoleRenderer = new TeamRoleRenderer(rectangleRenderer);
 		//this.chessboardRenderer = new ChessboardRenderer();
@@ -51,6 +49,9 @@ export class ChesswarRenderer {
 		//this.mapRenderer.render(state.selfPlayer.position.center);
 		//this.playerRenderer.render(state.selfPlayer.position.center, state.players);
 		//this.teamRoleRenderer.render(state);
+
+		const text = new CWText("Hello world!", new Point(0, 0), 1, CWColor.GREY_WHITE);
+		await this.textRenderer.render([text]);
 
 		// Start reworking text renderer
 	}
