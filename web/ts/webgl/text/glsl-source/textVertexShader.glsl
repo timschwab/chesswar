@@ -3,11 +3,13 @@ uniform vec2 u_screen;
 uniform vec2 u_glyph_bounding_box;
 uniform float u_glyph_count;
 
-// Settings per glyph
+// Settings per text
 uniform vec2 u_left_top;
 uniform float u_scale;
-uniform float u_grapheme_position;
 uniform vec3 u_color;
+
+// Settings per glyph
+uniform float u_grapheme_position;
 uniform float u_glyph_index;
 
 // Rectangle data

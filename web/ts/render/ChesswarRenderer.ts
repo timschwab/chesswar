@@ -50,7 +50,7 @@ export class ChesswarRenderer {
 		//this.playerRenderer.render(state.selfPlayer.position.center, state.players);
 		//this.teamRoleRenderer.render(state);
 
-		const text = new CWText("Hello world!", new Point(0, 0), 1, CWColor.GREY_WHITE);
+		const text = new CWText("1a2a3a4", new Point(0, 300), 1, CWColor.GREY_WHITE);
 		await this.textRenderer.render([text]);
 
 		// Start reworking text renderer

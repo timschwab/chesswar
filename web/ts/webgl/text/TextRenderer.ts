@@ -64,9 +64,12 @@ export class TextRenderer {
 
 		// Draw all the glyphs
 		for (const text of textData) {
+			// Set the text-global uniforms
 			this.renderer.setUniformPoint(LEFT_TOP, text.leftTop);
 			this.renderer.setUniformValue(SCALE, text.scale);
 			this.renderer.setUniformColor(COLOR, text.color);
+
+			// Set the grapheme-specific unifrosm
 			text.graphemes.forEach((grapheme, graphemePosition) => {
 				this.renderer.setUniformValue(GRAPHEME_POSITION, graphemePosition);
 				const glyphIndex = this.graphemeToGlyphMap.get(grapheme);

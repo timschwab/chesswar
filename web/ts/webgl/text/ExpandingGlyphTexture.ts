@@ -1,7 +1,7 @@
 import { Point } from "../../../../common/shapes/Point.ts";
 import { Rect } from "../../../../common/shapes/Rect.ts";
 import { ZeroPoint } from "../../../../common/shapes/Zero.ts";
-import { getCanvas } from "../../core/dom.ts";
+import { getAttachedCanvas, getCanvas } from "../../core/dom.ts";
 
 // https://stackoverflow.com/a/27331885/1455074
 // A code point is the atomic unit of data in Unicode. Could be a character/letter or a diacritic.
@@ -23,7 +23,7 @@ export class ExpandingGlyphTexture {
 	private canvasSize = 2;
 
 	constructor() {
-		this.canvas = getCanvas();
+		this.canvas = getAttachedCanvas();
 		this.context = this.getContext();
 		this.glyphBoundingBox = this.getGlyphBoundingBox();
 
