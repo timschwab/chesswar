@@ -107,7 +107,7 @@ export const rensets = {
 		button: CWColor.YELLOW_STANDARD
 	},
 	actionOption: {
-		outlineWidth: 3,
+		outlineWidth: 2,
 		outlineColor: CWColor.GREY_BLACK,
 		backgroundColor: CWColor.GREY_LIGHT,
 		textFont: "24px Times New Roman",

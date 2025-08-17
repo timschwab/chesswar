@@ -1,13 +1,11 @@
-import { CWColor } from "../../../common/Color.ts";
-import { Point } from "../../../common/shapes/Point.ts";
 import { SafeState } from "../game-logic/state.ts";
 import { recordJsRenderTime, recordTimeBetweenAnimations } from "../game-logic/statsManager.ts";
 //import { ChessboardRenderer } from "../webgl/chessboard/ChessboardRenderer.ts";
 import { MapRenderer } from "../webgl/map/MapRenderer.ts";
 import { PlayerRenderer } from "../webgl/player/PlayerRenderer.ts";
 import { RectangleRenderer } from "../webgl/rectangle/RectangleRenderer.ts";
-import { CWText } from "../webgl/text/CWText.ts";
 import { TextRenderer } from "../webgl/text/TextRenderer.ts";
+import { ActionOptionRenderer } from "./UserInterface/ActionOptionRenderer.ts";
 import { TeamRoleRenderer } from "./UserInterface/TeamRoleRenderer.ts";
 
 export class ChesswarRenderer {
@@ -16,6 +14,7 @@ export class ChesswarRenderer {
 	private readonly mapRenderer: MapRenderer;
 	private readonly playerRenderer: PlayerRenderer;
 	private readonly teamRoleRenderer: TeamRoleRenderer;
+	private readonly actionOptionRenderer: ActionOptionRenderer;
 	//private readonly chessboardRenderer: ChessboardRenderer;
 
 	constructor() {
@@ -27,6 +26,7 @@ export class ChesswarRenderer {
 		const textRenderer = new TextRenderer();
 
 		this.teamRoleRenderer = new TeamRoleRenderer(rectangleRenderer, textRenderer);
+		this.actionOptionRenderer = new ActionOptionRenderer(rectangleRenderer, textRenderer);
 		//this.chessboardRenderer = new ChessboardRenderer();
 	}
 
@@ -48,7 +48,6 @@ export class ChesswarRenderer {
 		//this.mapRenderer.render(state.selfPlayer.position.center);
 		//this.playerRenderer.render(state.selfPlayer.position.center, state.players);
 		this.teamRoleRenderer.render(state);
-
-		// Start reworking text renderer
+		this.actionOptionRenderer.render(state);
 	}
 }
