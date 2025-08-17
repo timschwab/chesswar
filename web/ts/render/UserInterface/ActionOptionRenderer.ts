@@ -24,7 +24,7 @@ export class ActionOptionRenderer {
 		const option = state.selfPlayer.actionOption;
 
 		const textMessage = "Available action: " + option;
-		const textRect = new Rect(new Point(230, 10), new Point(800, 50));
+		const textRect = new Rect(new Point(230, 10), new Point(900, 50));
 		const actionText = new CWText(textMessage, textRect.leftTop.add(new Point(5, 5)), FONT_SIZE, CWColor.GREY_BLACK);
 		const innerRect = Shape.from(textRect, rensets.actionOption.backgroundColor);
 		const outerRect = Shape.from(textRect.expand(rensets.actionOption.outlineWidth), rensets.actionOption.outlineColor);

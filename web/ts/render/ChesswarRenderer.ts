@@ -6,6 +6,7 @@ import { PlayerRenderer } from "../webgl/player/PlayerRenderer.ts";
 import { RectangleRenderer } from "../webgl/rectangle/RectangleRenderer.ts";
 import { TextRenderer } from "../webgl/text/TextRenderer.ts";
 import { ActionOptionRenderer } from "./UserInterface/ActionOptionRenderer.ts";
+import { StatsRenderer } from "./UserInterface/StatsRenderer.ts";
 import { TeamRoleRenderer } from "./UserInterface/TeamRoleRenderer.ts";
 
 export class ChesswarRenderer {
@@ -13,8 +14,11 @@ export class ChesswarRenderer {
 
 	private readonly mapRenderer: MapRenderer;
 	private readonly playerRenderer: PlayerRenderer;
+
 	private readonly teamRoleRenderer: TeamRoleRenderer;
 	private readonly actionOptionRenderer: ActionOptionRenderer;
+	private readonly statsRenderer: StatsRenderer;
+
 	//private readonly chessboardRenderer: ChessboardRenderer;
 
 	constructor() {
@@ -27,6 +31,8 @@ export class ChesswarRenderer {
 
 		this.teamRoleRenderer = new TeamRoleRenderer(rectangleRenderer, textRenderer);
 		this.actionOptionRenderer = new ActionOptionRenderer(rectangleRenderer, textRenderer);
+		this.statsRenderer = new StatsRenderer(rectangleRenderer, textRenderer);
+
 		//this.chessboardRenderer = new ChessboardRenderer();
 	}
 
@@ -45,9 +51,11 @@ export class ChesswarRenderer {
 	}
 
 	private internalRender(state: SafeState) {
-		//this.mapRenderer.render(state.selfPlayer.position.center);
-		//this.playerRenderer.render(state.selfPlayer.position.center, state.players);
+		this.mapRenderer.render(state.selfPlayer.position.center);
+		this.playerRenderer.render(state.selfPlayer.position.center, state.players);
+
 		this.teamRoleRenderer.render(state);
 		this.actionOptionRenderer.render(state);
+		this.statsRenderer.render(state);
 	}
 }
