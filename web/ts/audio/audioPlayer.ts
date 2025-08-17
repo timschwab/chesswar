@@ -1,4 +1,4 @@
-import { NoteFreq } from "./noteFrequencies.ts";
+import { NoteFreq } from "./NoteFreq.ts";
 
 enum NoteLen {
 	WHOLE = 1,
