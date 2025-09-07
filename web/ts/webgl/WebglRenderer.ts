@@ -57,7 +57,7 @@ export class WebglRenderer {
 			} else {
 				throw "Not all attribute data maps had the same size";
 			}
-		}, new Optional<number>(null));
+		}, Optional.empty());
 
 		if (consolidatedCount.isPresent()) {
 			return consolidatedCount.get();
@@ -68,9 +68,9 @@ export class WebglRenderer {
 
 	private getAttributeMapCount(attributeData: Map<string, unknown[]>): Optional<number> {
 		if (attributeData.size === 0) {
-			return new Optional<number>(null);
+			return Optional.empty();
 		} else {
-			return new Optional(attributeData
+			return Optional.of(attributeData
 				.entries()
 				.map(entry => entry[1].length)
 				.reduce((prev, cur) => {

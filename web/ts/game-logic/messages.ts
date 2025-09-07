@@ -9,11 +9,13 @@ import {
 	TeamMessagePayload
 } from "../../../common/message-types/server.ts";
 import { assertNever } from "../../../common/Preconditions.ts";
-import audioPlayer from "../audio/audioPlayer.ts";
+import { ChesswarAudioPlayer } from "../audio/ChesswarAudioPlayer.ts";
 import { ClientPlayer, deserializeClientPlayer } from "./ClientPlayer.ts";
 import { reportPong } from "./pingManager.ts";
 import { state } from "./state.ts";
 import { recordPlayersOnline, recordServerStats } from "./statsManager.ts";
+
+const audioPlayer = new ChesswarAudioPlayer();
 
 export function receiveMessage(message: ServerMessage): void {
 	if (message.type == ServerMessageTypes.PLAYER_INIT) {
@@ -102,9 +104,9 @@ function handleCarrying(payload: CarryingMessagePayload) {
 
 function handleDeath(payload: DeathCause) {
 	if (payload == DeathCause.MINEFIELD) {
-		audioPlayer.minefieldDeath();
+		audioPlayer.death3();
 	} else if (payload == DeathCause.TANK) {
-		audioPlayer.tankDeath();
+		audioPlayer.death1();
 	}
 }
 
