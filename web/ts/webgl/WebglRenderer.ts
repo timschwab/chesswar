@@ -2,7 +2,7 @@ import { Color } from "../../../common/Color.ts";
 import { Optional } from "../../../common/data-structures/Optional.ts";
 import { Point } from "../../../common/shapes/Point.ts";
 import { CWDom } from "../core/CWDom.ts";
-import { bindToScreen } from "../core/screen.ts";
+import { CWScreen } from "../core/CWScreen.ts";
 import { WEBGL_CONSTANTS, WebglInterface } from "./WebglInterface.ts";
 import { makeStrict, WebGlRendererSettings } from "./WebglRendererSettings.ts";
 
@@ -15,14 +15,14 @@ export class WebglRenderer {
 	private readonly uniformColorLocations: Map<string, WebGLUniformLocation>;
 	private readonly vertexCount: number;
 
-	constructor(dom: CWDom, rawSettings: WebGlRendererSettings) {
+	constructor(dom: CWDom, screen: CWScreen, rawSettings: WebGlRendererSettings) {
 		const settings = makeStrict(rawSettings);
 
 		// Get and check the attribute vertex count
 		this.vertexCount = this.getVertexCount(settings.attributeData.values, settings.attributeData.points, settings.attributeData.colors);
 
 		// Start up webgl
-		this.webgl = new WebglInterface(dom);
+		this.webgl = new WebglInterface(dom, screen);
 		const program = this.compileProgram(settings.shaderSource.vertex, settings.shaderSource.fragment);
 
 		// Get the uniform locations
@@ -38,7 +38,7 @@ export class WebglRenderer {
 		// If given a screen uniform, automatically set it when the screen size changes
 		if (settings.uniformNames.screen !== null) {
 			const screenUniformLocation = this.webgl.getUniformLocation(program, settings.uniformNames.screen);
-			bindToScreen(screenValue => this.webgl.setUniformPoint(screenUniformLocation, screenValue.rightBottom));
+			screen.subscribe(screenValue => this.webgl.setUniformPoint(screenUniformLocation, screenValue.rightBottom));
 		}
 	}
 

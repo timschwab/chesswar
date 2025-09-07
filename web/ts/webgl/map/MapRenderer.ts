@@ -4,6 +4,7 @@ import { Point } from "../../../../common/shapes/Point.ts";
 import { WebglRenderer } from "../WebglRenderer.ts";
 import { mapStructures } from "../../../../common/map/MapValues.ts";
 import { CWDom } from "../../core/CWDom.ts";
+import { CWScreen } from "../../core/CWScreen.ts";
 
 const SCREEN = "u_screen";
 const CAMERA_CENTER = "u_camera_center";
@@ -16,7 +17,7 @@ const COLOR = "a_color";
 export class MapRenderer {
 	private readonly renderer: WebglRenderer;
 
-	constructor(dom: CWDom) {
+	constructor(dom: CWDom, screen: CWScreen) {
 		// Prepare the map rendering data
 		const scaleValues = mapStructures.flatMap(struct => struct.triangles.flatMap(
 			tri => [tri.scale, tri.scale, tri.scale]));
@@ -41,7 +42,7 @@ export class MapRenderer {
 		]);
 
 		// Create the renderer
-		this.renderer = new WebglRenderer(dom, {
+		this.renderer = new WebglRenderer(dom, screen, {
 			shaderSource: {
 				vertex: mapVertexShader,
 				fragment: mapFragmentShader

@@ -4,6 +4,7 @@ import { Point } from "../../../../common/shapes/Point.ts";
 import { WebglRenderer } from "../WebglRenderer.ts";
 import { rensets } from "../../../../common/settings.ts";
 import { CWDom } from "../../core/CWDom.ts";
+import { CWScreen } from "../../core/CWScreen.ts";
 
 const SCALE = "u_scale";
 const SCREEN = "u_screen";
@@ -15,7 +16,7 @@ const COLOR = "a_color";
 export class ChessboardRenderer {
 	private readonly renderer: WebglRenderer;
 
-	constructor(dom: CWDom) {
+	constructor(dom: CWDom, screen: CWScreen) {
 		// Prepare the chessboard rendering data
 		const unitSquare = [
 			new Point(0, 0), new Point(0, 1), new Point(1, 0),
@@ -41,7 +42,7 @@ export class ChessboardRenderer {
 		]);
 
 		// Create the renderer
-		this.renderer = new WebglRenderer(dom, {
+		this.renderer = new WebglRenderer(dom, screen, {
 			shaderSource: {
 				vertex: chessboardVertexShader,
 				fragment: chessboardFragmentShader

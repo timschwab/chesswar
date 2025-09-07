@@ -48,7 +48,7 @@ export class CWInput {
 		document.addEventListener("click", this.handleClick.bind(this));
 	}
 
-	handleKeyDown(event: KeyboardEvent) {
+	private handleKeyDown(event: KeyboardEvent) {
 		if (event.repeat) {
 			// Do nothing
 			return;
@@ -57,11 +57,11 @@ export class CWInput {
 		this.handleKey(event, true);
 	}
 
-	handleKeyUp(event: KeyboardEvent) {
+	private handleKeyUp(event: KeyboardEvent) {
 		this.handleKey(event, false);
 	}
 
-	handleKey(event: KeyboardEvent, pressed: boolean) {
+	private handleKey(event: KeyboardEvent, pressed: boolean) {
 		const code = event.code;
 
 		if (this.isTranslatable(code)) {
@@ -75,7 +75,7 @@ export class CWInput {
 		}
 	}
 
-	isTranslatable(code: string): code is keyof typeof KeyCodeTranslation {
+	private isTranslatable(code: string): code is keyof typeof KeyCodeTranslation {
 		if (code in KeyCodeTranslation) {
 			return true;
 		} else {
@@ -83,7 +83,7 @@ export class CWInput {
 		}
 	}
 
-	handleClick(event: MouseEvent) {
+	private handleClick(event: MouseEvent) {
 		const location = new Point(event.clientX, event.clientY);
 		this.clickHook.run(location);
 	}

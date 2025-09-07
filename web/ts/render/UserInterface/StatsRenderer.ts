@@ -2,7 +2,7 @@ import { rensets } from "../../../../common/settings.ts";
 import { Point } from "../../../../common/shapes/Point.ts";
 import { Rect } from "../../../../common/shapes/Rect.ts";
 import { ZeroRect } from "../../../../common/shapes/Zero.ts";
-import { bindToScreen } from "../../core/screen.ts";
+import { CWScreen } from "../../core/CWScreen.ts";
 import { SafeState } from "../../game-logic/state.ts";
 import { RectangleRenderer } from "../../webgl/rectangle/RectangleRenderer.ts";
 import { CWText } from "../../webgl/text/CWText.ts";
@@ -15,8 +15,8 @@ export class StatsRenderer {
 	private readonly rectangleRenderer: RectangleRenderer;
 	private readonly textRenderer: TextRenderer;
 
-	constructor(rectangleRenderer: RectangleRenderer, textRenderer: TextRenderer) {
-		bindToScreen(screenValue => { this.screen = screenValue });
+	constructor(rectangleRenderer: RectangleRenderer, textRenderer: TextRenderer, screen: CWScreen) {
+		screen.subscribe(screenValue => { this.screen = screenValue });
 		this.rectangleRenderer = rectangleRenderer;
 		this.textRenderer = textRenderer;
 	}

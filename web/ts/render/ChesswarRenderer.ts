@@ -1,4 +1,5 @@
 import { CWDom } from "../core/CWDom.ts";
+import { CWScreen } from "../core/CWScreen.ts";
 import { SafeState } from "../game-logic/state.ts";
 import { recordJsRenderTime, recordTimeBetweenAnimations } from "../game-logic/statsManager.ts";
 //import { ChessboardRenderer } from "../webgl/chessboard/ChessboardRenderer.ts";
@@ -22,17 +23,17 @@ export class ChesswarRenderer {
 
 	//private readonly chessboardRenderer: ChessboardRenderer;
 
-	constructor(dom: CWDom) {
+	constructor(dom: CWDom, screen: CWScreen) {
 		// Create the renderers from back to front
-		this.mapRenderer = new MapRenderer(dom);
-		this.playerRenderer = new PlayerRenderer(dom);
+		this.mapRenderer = new MapRenderer(dom, screen);
+		this.playerRenderer = new PlayerRenderer(dom, screen);
 
-		const rectangleRenderer = new RectangleRenderer(dom);
-		const textRenderer = new TextRenderer(dom);
+		const rectangleRenderer = new RectangleRenderer(dom, screen);
+		const textRenderer = new TextRenderer(dom, screen);
 
 		this.teamRoleRenderer = new TeamRoleRenderer(rectangleRenderer, textRenderer);
 		this.actionOptionRenderer = new ActionOptionRenderer(rectangleRenderer, textRenderer);
-		this.statsRenderer = new StatsRenderer(rectangleRenderer, textRenderer);
+		this.statsRenderer = new StatsRenderer(rectangleRenderer, textRenderer, screen);
 
 		//this.chessboardRenderer = new ChessboardRenderer();
 	}

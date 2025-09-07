@@ -1,7 +1,7 @@
 import { Color } from "../../../common/Color.ts";
 import { Point } from "../../../common/shapes/Point.ts";
 import { CWDom } from "../core/CWDom.ts";
-import { bindCanvasToScreen, bindToScreen } from "../core/screen.ts";
+import { CWScreen } from "../core/CWScreen.ts";
 
 
 type ShaderType = WebGLRenderingContext["VERTEX_SHADER"] | WebGLRenderingContext["FRAGMENT_SHADER"];
@@ -26,12 +26,12 @@ export const WEBGL_CONSTANTS = {
 export class WebglInterface {
 	private readonly webgl: WebGLRenderingContext;
 
-	constructor(dom: CWDom) {
+	constructor(dom: CWDom, screen: CWScreen) {
 		// Get the canvas we will render to
 		const canvas = dom.getAttachedCanvas();
-		bindCanvasToScreen(canvas);
+		screen.bindCanvas(canvas);
 		this.webgl = this.getWebgl(canvas);
-		bindToScreen(screenValue => this.webgl.viewport(0, 0, screenValue.width, screenValue.height));
+		screen.subscribe(screenValue => this.webgl.viewport(0, 0, screenValue.width, screenValue.height));
 	}
 
 	/***** Helper function for the constructor *****/

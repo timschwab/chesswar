@@ -1,5 +1,6 @@
 import { Point } from "../../../../common/shapes/Point.ts";
 import { CWDom } from "../../core/CWDom.ts";
+import { CWScreen } from "../../core/CWScreen.ts";
 import { WebglRenderer } from "../WebglRenderer.ts";
 import { CWText } from "./CWText.ts";
 import { ExpandingGlyphTexture } from "./ExpandingGlyphTexture.ts";
@@ -26,7 +27,7 @@ export class TextRenderer {
 	private readonly renderer: WebglRenderer;
 	private readonly graphemeToGlyphMap: Map<string, number>;
 
-	constructor(dom: CWDom) {
+	constructor(dom: CWDom, screen: CWScreen) {
 		this.glyphTexture = new ExpandingGlyphTexture(dom);
 		this.graphemeToGlyphMap = new Map();
 
@@ -38,7 +39,7 @@ export class TextRenderer {
 		const attributePointData = new Map([[VERTEX, rectangleData]]);
 
 		// Create the renderer
-		this.renderer = new WebglRenderer(dom, {
+		this.renderer = new WebglRenderer(dom, screen, {
 			shaderSource: {
 				vertex: textVertexShader,
 				fragment: textFragmentShader
