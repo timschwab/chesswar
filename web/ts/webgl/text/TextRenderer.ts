@@ -54,7 +54,7 @@ export class TextRenderer {
 		});
 
 		// Setup the renderer
-		this.renderer.setUniformPoint(GLYPH_BOUNDING_BOX, this.glyphTexture.glyphBoundingBox.rightBottom);
+		this.renderer.setUniformPoint(GLYPH_BOUNDING_BOX, this.glyphTexture.getGlyphBoundingBox().rightBottom);
 		this.renderer.createTexture();
 	}
 

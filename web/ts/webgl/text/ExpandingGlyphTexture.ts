@@ -17,7 +17,7 @@ const FONT = `${FONT_WEIGHT} ${FONT_HEIGHT} ${FONT_FAMILY}`;
 export class ExpandingGlyphTexture {
 	private readonly canvas;
 	private readonly context;
-	readonly glyphBoundingBox;
+	private readonly glyphBoundingBox;
 
 	private glyphCount = 0;
 	private canvasSize = 2;
@@ -25,7 +25,7 @@ export class ExpandingGlyphTexture {
 	constructor() {
 		this.canvas = getCanvas();
 		this.context = this.getContext();
-		this.glyphBoundingBox = this.getGlyphBoundingBox();
+		this.glyphBoundingBox = this.computeGlyphBoundingBox();
 
 		// Set initial values and flags
 		this.canvas.width = this.glyphBoundingBox.width * this.canvasSize;
@@ -45,7 +45,7 @@ export class ExpandingGlyphTexture {
 		}
 	}
 
-	private getGlyphBoundingBox(): Rect {
+	private computeGlyphBoundingBox(): Rect {
 		// Set initial values for the canvas
 		this.setStyleValues();
 	
@@ -62,6 +62,10 @@ export class ExpandingGlyphTexture {
 		this.context.textAlign = "left";
 		this.context.textBaseline = "top";
 		this.context.font = FONT;
+	}
+
+	getGlyphBoundingBox(): Rect {
+		return this.glyphBoundingBox;
 	}
 
 	addGrapheme(grapheme: string): number {

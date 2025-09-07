@@ -1,6 +1,6 @@
 // From https://pages.mtu.edu/~suits/notefreqs.html
 
-export enum NoteFreq {
+export enum NoteFrequency {
 	C0 = 16.35,
 	CSHARP0 = 17.32,
 	D0 = 18.35,

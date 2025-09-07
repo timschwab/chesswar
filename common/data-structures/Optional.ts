@@ -1,23 +1,68 @@
 export class Optional<T> {
-	private readonly value: T | null;
+	private readonly delegate: OptionalDelegate<T>;
 
-	constructor(value: T | null) {
-		this.value = value;
+	private constructor(delegate: OptionalDelegate<T>) {
+		this.delegate = delegate;
 	}
 
-	get(): T {
-		if (this.value === null) {
-			throw "Trying to get an empty optional";
+	static of<T>(value: T): Optional<T> {
+		const delegate = new PresentOptional(value);
+		return new Optional<T>(delegate);
+	}
+
+	static empty<T>(): Optional<T> {
+		return new Optional<T>(EMPTY_OPTIONAL);
+	}
+
+	static ofNullable<T>(value: T | null): Optional<T> {
+		if (value === null) {
+			return Optional.empty();
 		} else {
-			return this.value;
+			return Optional.of(value);
 		}
 	}
 
+	get(): T {
+		return this.delegate.get();
+	}
+
 	isPresent(): boolean {
-		return this.value !== null;
+		return this.delegate.isPresent();
 	}
 
 	isEmpty(): boolean {
-		return this.value === null;
+		return this.delegate.isEmpty();
 	}
 }
+
+interface OptionalDelegate<T> {
+	get: () => T,
+	isPresent: () => boolean,
+	isEmpty: () => boolean
+}
+
+class PresentOptional<T> implements OptionalDelegate<T> {
+	private readonly value: T;
+
+	constructor(value: T) {
+		this.value = value;
+	}
+
+	get() {
+		return this.value;
+	}
+	
+	isPresent() {
+		return true;
+	}
+
+	isEmpty() {
+		return false;
+	}
+}
+
+const EMPTY_OPTIONAL: OptionalDelegate<never> = {
+	get: () => { throw "Trying to get value on empty optional"; },
+	isPresent: () => false,
+	isEmpty: () => true
+};
