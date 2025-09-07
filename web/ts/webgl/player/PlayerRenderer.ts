@@ -7,6 +7,7 @@ import { Point } from "../../../../common/shapes/Point.ts";
 import { ClientPlayer } from "../../game-logic/ClientPlayer.ts";
 import { TeamName } from "../../../../common/data-types/base.ts";
 import { rensets } from "../../../../common/settings.ts";
+import { Dom } from "../../core/Dom.ts";
 
 
 const SCREEN = "u_screen";
@@ -21,7 +22,7 @@ const VERTEX = "a_vertex";
 export class PlayerRenderer {
 	private readonly renderer: WebglRenderer;
 
-	constructor() {
+	constructor(dom: Dom) {
 		// Prepare the player rendering data
 		const circleData = new Circle(ZeroPoint, 1)
 			.toTriangles()
@@ -29,7 +30,7 @@ export class PlayerRenderer {
 		const attributePointData = new Map([[VERTEX, circleData]]);
 
 		// Create the renderer
-		this.renderer = new WebglRenderer({
+		this.renderer = new WebglRenderer(dom, {
 			shaderSource: {
 				vertex: playerVertexShader,
 				fragment: playerFragmentShader

@@ -1,6 +1,7 @@
 import { Color } from "../../../common/Color.ts";
 import { Optional } from "../../../common/data-structures/Optional.ts";
 import { Point } from "../../../common/shapes/Point.ts";
+import { Dom } from "../core/Dom.ts";
 import { bindToScreen } from "../core/screen.ts";
 import { WEBGL_CONSTANTS, WebglInterface } from "./WebglInterface.ts";
 import { makeStrict, WebGlRendererSettings } from "./WebglRendererSettings.ts";
@@ -14,14 +15,14 @@ export class WebglRenderer {
 	private readonly uniformColorLocations: Map<string, WebGLUniformLocation>;
 	private readonly vertexCount: number;
 
-	constructor(rawSettings: WebGlRendererSettings) {
+	constructor(dom: Dom, rawSettings: WebGlRendererSettings) {
 		const settings = makeStrict(rawSettings);
 
 		// Get and check the attribute vertex count
 		this.vertexCount = this.getVertexCount(settings.attributeData.values, settings.attributeData.points, settings.attributeData.colors);
 
 		// Start up webgl
-		this.webgl = new WebglInterface();
+		this.webgl = new WebglInterface(dom);
 		const program = this.compileProgram(settings.shaderSource.vertex, settings.shaderSource.fragment);
 
 		// Get the uniform locations

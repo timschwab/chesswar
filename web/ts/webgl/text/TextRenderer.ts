@@ -1,4 +1,5 @@
 import { Point } from "../../../../common/shapes/Point.ts";
+import { Dom } from "../../core/Dom.ts";
 import { WebglRenderer } from "../WebglRenderer.ts";
 import { CWText } from "./CWText.ts";
 import { ExpandingGlyphTexture } from "./ExpandingGlyphTexture.ts";
@@ -25,8 +26,8 @@ export class TextRenderer {
 	private readonly renderer: WebglRenderer;
 	private readonly graphemeToGlyphMap: Map<string, number>;
 
-	constructor() {
-		this.glyphTexture = new ExpandingGlyphTexture();
+	constructor(dom: Dom) {
+		this.glyphTexture = new ExpandingGlyphTexture(dom);
 		this.graphemeToGlyphMap = new Map();
 
 		// Prepare the rectangle rendering data
@@ -37,7 +38,7 @@ export class TextRenderer {
 		const attributePointData = new Map([[VERTEX, rectangleData]]);
 
 		// Create the renderer
-		this.renderer = new WebglRenderer({
+		this.renderer = new WebglRenderer(dom, {
 			shaderSource: {
 				vertex: textVertexShader,
 				fragment: textFragmentShader

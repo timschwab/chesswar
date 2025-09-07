@@ -5,6 +5,7 @@ import { Point } from "../../../../common/shapes/Point.ts";
 import { WebglRenderer } from "../WebglRenderer.ts";
 import { Rect } from "../../../../common/shapes/Rect.ts";
 import { Shape } from "../../../../common/shapes/Shape.ts";
+import { Dom } from "../../core/Dom.ts";
 
 const SCREEN = "u_screen";
 const LEFT_TOP = "u_left_top";
@@ -17,7 +18,7 @@ const VERTEX = "a_vertex";
 export class RectangleRenderer {
 	private readonly renderer: WebglRenderer;
 
-	constructor() {
+	constructor(dom: Dom) {
 		// Prepare the rectangle rendering data
 		const rectangleData = [
 			new Point(0, 0), new Point(0, 1), new Point(1, 0),
@@ -26,7 +27,7 @@ export class RectangleRenderer {
 		const attributePointData = new Map([[VERTEX, rectangleData]]);
 
 		// Create the renderer
-		this.renderer = new WebglRenderer({
+		this.renderer = new WebglRenderer(dom, {
 			shaderSource: {
 				vertex: rectangleVertexShader,
 				fragment: rectangleFragmentShader

@@ -3,6 +3,7 @@ import mapFragmentShader from "./glsl-generated/mapFragmentShader.ts";
 import { Point } from "../../../../common/shapes/Point.ts";
 import { WebglRenderer } from "../WebglRenderer.ts";
 import { mapStructures } from "../../../../common/map/MapValues.ts";
+import { Dom } from "../../core/Dom.ts";
 
 const SCREEN = "u_screen";
 const CAMERA_CENTER = "u_camera_center";
@@ -15,7 +16,7 @@ const COLOR = "a_color";
 export class MapRenderer {
 	private readonly renderer: WebglRenderer;
 
-	constructor() {
+	constructor(dom: Dom) {
 		// Prepare the map rendering data
 		const scaleValues = mapStructures.flatMap(struct => struct.triangles.flatMap(
 			tri => [tri.scale, tri.scale, tri.scale]));
@@ -40,7 +41,7 @@ export class MapRenderer {
 		]);
 
 		// Create the renderer
-		this.renderer = new WebglRenderer({
+		this.renderer = new WebglRenderer(dom, {
 			shaderSource: {
 				vertex: mapVertexShader,
 				fragment: mapFragmentShader

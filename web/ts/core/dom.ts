@@ -1,14 +1,23 @@
-export const gameRoot = document.getElementById("canvas-root") as HTMLDivElement;
+export class Dom {
+	private readonly gameRoot: HTMLDivElement;
 
-export function getAttachedCanvas(zIndex?: number): HTMLCanvasElement {
-	const htmlCanvas = getCanvas();
-	if (zIndex != null) {
-		htmlCanvas.style.zIndex = String(zIndex);
+	constructor() {
+		const maybeGameRoot = document.getElementById("canvas-root");
+		if (maybeGameRoot === null) {
+			throw "Could not find canvas-root element";
+		} else {
+			// Not sure how to properly check that this is a <div>
+			this.gameRoot = maybeGameRoot as HTMLDivElement;
+		}
 	}
-	gameRoot.appendChild(htmlCanvas);
-	return htmlCanvas;
-}
 
-export function getCanvas(): HTMLCanvasElement {
-	return document.createElement("canvas");
+	getFloatingCanvas(): HTMLCanvasElement {
+		return document.createElement("canvas");
+	}
+
+	getAttachedCanvas(): HTMLCanvasElement {
+		const canvas = this.getFloatingCanvas();
+		this.gameRoot.appendChild(canvas);
+		return canvas;
+	}
 }

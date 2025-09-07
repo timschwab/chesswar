@@ -1,3 +1,4 @@
+import { Dom } from "../core/Dom.ts";
 import { SafeState } from "../game-logic/state.ts";
 import { recordJsRenderTime, recordTimeBetweenAnimations } from "../game-logic/statsManager.ts";
 //import { ChessboardRenderer } from "../webgl/chessboard/ChessboardRenderer.ts";
@@ -21,13 +22,13 @@ export class ChesswarRenderer {
 
 	//private readonly chessboardRenderer: ChessboardRenderer;
 
-	constructor() {
+	constructor(dom: Dom) {
 		// Create the renderers from back to front
-		this.mapRenderer = new MapRenderer();
-		this.playerRenderer = new PlayerRenderer();
+		this.mapRenderer = new MapRenderer(dom);
+		this.playerRenderer = new PlayerRenderer(dom);
 
-		const rectangleRenderer = new RectangleRenderer();
-		const textRenderer = new TextRenderer();
+		const rectangleRenderer = new RectangleRenderer(dom);
+		const textRenderer = new TextRenderer(dom);
 
 		this.teamRoleRenderer = new TeamRoleRenderer(rectangleRenderer, textRenderer);
 		this.actionOptionRenderer = new ActionOptionRenderer(rectangleRenderer, textRenderer);
