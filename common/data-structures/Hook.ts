@@ -1,4 +1,4 @@
-type HookFunc<T> = (value: T) => void;
+export type HookFunc<T> = (value: T) => void;
 
 export class Hook<T> {
 	private readonly hooks: HookFunc<T>[];

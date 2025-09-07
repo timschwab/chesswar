@@ -1,5 +1,5 @@
 import { ClientMessageTypes, MoveMessagePayload } from "../../../common/message-types/client.ts";
-import { CWKey, CWKeyEvent } from "../core/inputs.ts";
+import { CWKey, CWKeyEvent } from "../core/CWInput.ts";
 import { socketSend } from "../core/socket.ts";
 import { state } from "./state.ts";
 
