@@ -1,4 +1,4 @@
-import { Dom } from "../core/Dom.ts";
+import { CWDom } from "../core/CWDom.ts";
 import { SafeState } from "../game-logic/state.ts";
 import { recordJsRenderTime, recordTimeBetweenAnimations } from "../game-logic/statsManager.ts";
 //import { ChessboardRenderer } from "../webgl/chessboard/ChessboardRenderer.ts";
@@ -22,7 +22,7 @@ export class ChesswarRenderer {
 
 	//private readonly chessboardRenderer: ChessboardRenderer;
 
-	constructor(dom: Dom) {
+	constructor(dom: CWDom) {
 		// Create the renderers from back to front
 		this.mapRenderer = new MapRenderer(dom);
 		this.playerRenderer = new PlayerRenderer(dom);

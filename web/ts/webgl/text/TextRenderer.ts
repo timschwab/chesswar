@@ -1,5 +1,5 @@
 import { Point } from "../../../../common/shapes/Point.ts";
-import { Dom } from "../../core/Dom.ts";
+import { CWDom } from "../../core/CWDom.ts";
 import { WebglRenderer } from "../WebglRenderer.ts";
 import { CWText } from "./CWText.ts";
 import { ExpandingGlyphTexture } from "./ExpandingGlyphTexture.ts";
@@ -26,7 +26,7 @@ export class TextRenderer {
 	private readonly renderer: WebglRenderer;
 	private readonly graphemeToGlyphMap: Map<string, number>;
 
-	constructor(dom: Dom) {
+	constructor(dom: CWDom) {
 		this.glyphTexture = new ExpandingGlyphTexture(dom);
 		this.graphemeToGlyphMap = new Map();
 

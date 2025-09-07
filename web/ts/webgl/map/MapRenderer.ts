@@ -3,7 +3,7 @@ import mapFragmentShader from "./glsl-generated/mapFragmentShader.ts";
 import { Point } from "../../../../common/shapes/Point.ts";
 import { WebglRenderer } from "../WebglRenderer.ts";
 import { mapStructures } from "../../../../common/map/MapValues.ts";
-import { Dom } from "../../core/Dom.ts";
+import { CWDom } from "../../core/CWDom.ts";
 
 const SCREEN = "u_screen";
 const CAMERA_CENTER = "u_camera_center";
@@ -16,7 +16,7 @@ const COLOR = "a_color";
 export class MapRenderer {
 	private readonly renderer: WebglRenderer;
 
-	constructor(dom: Dom) {
+	constructor(dom: CWDom) {
 		// Prepare the map rendering data
 		const scaleValues = mapStructures.flatMap(struct => struct.triangles.flatMap(
 			tri => [tri.scale, tri.scale, tri.scale]));

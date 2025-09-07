@@ -4,13 +4,13 @@ import { handleKey } from "./keys.ts";
 import { receiveMessage } from "./messages.ts";
 import { isSafeState, SafeState, state } from "./state.ts";
 import { ChesswarRenderer } from "../render/ChesswarRenderer.ts";
-import { Dom } from "../core/Dom.ts";
+import { CWDom } from "../core/CWDom.ts";
 
 export class ClientGame {
 	private readonly chesswarRenderer: ChesswarRenderer;
 
 	constructor() {
-		const dom = new Dom();
+		const dom = new CWDom();
 		this.chesswarRenderer = new ChesswarRenderer(dom);
 	}
 

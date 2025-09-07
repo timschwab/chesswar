@@ -1,6 +1,6 @@
 import { Color } from "../../../common/Color.ts";
 import { Point } from "../../../common/shapes/Point.ts";
-import { Dom } from "../core/Dom.ts";
+import { CWDom } from "../core/CWDom.ts";
 import { bindCanvasToScreen, bindToScreen } from "../core/screen.ts";
 
 
@@ -26,7 +26,7 @@ export const WEBGL_CONSTANTS = {
 export class WebglInterface {
 	private readonly webgl: WebGLRenderingContext;
 
-	constructor(dom: Dom) {
+	constructor(dom: CWDom) {
 		// Get the canvas we will render to
 		const canvas = dom.getAttachedCanvas();
 		bindCanvasToScreen(canvas);

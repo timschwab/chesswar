@@ -1,4 +1,4 @@
-export class Dom {
+export class CWDom {
 	private readonly gameRoot: HTMLDivElement;
 
 	constructor() {

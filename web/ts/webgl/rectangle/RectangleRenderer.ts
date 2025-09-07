@@ -5,7 +5,7 @@ import { Point } from "../../../../common/shapes/Point.ts";
 import { WebglRenderer } from "../WebglRenderer.ts";
 import { Rect } from "../../../../common/shapes/Rect.ts";
 import { Shape } from "../../../../common/shapes/Shape.ts";
-import { Dom } from "../../core/Dom.ts";
+import { CWDom } from "../../core/CWDom.ts";
 
 const SCREEN = "u_screen";
 const LEFT_TOP = "u_left_top";
@@ -18,7 +18,7 @@ const VERTEX = "a_vertex";
 export class RectangleRenderer {
 	private readonly renderer: WebglRenderer;
 
-	constructor(dom: Dom) {
+	constructor(dom: CWDom) {
 		// Prepare the rectangle rendering data
 		const rectangleData = [
 			new Point(0, 0), new Point(0, 1), new Point(1, 0),
