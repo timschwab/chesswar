@@ -1,5 +1,4 @@
 import { ClientMessageTypes } from "../../../common/message-types/client.ts";
-import { socketSend } from "../core/socket.ts";
 import { recordPingTime } from "./statsManager.ts";
 
 let pingTime = 0;
