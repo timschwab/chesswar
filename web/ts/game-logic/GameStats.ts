@@ -2,7 +2,7 @@ import { LowPassFilter } from "../../../common/data-structures/LowPassFilter.ts"
 import { ServerStats } from "../../../common/data-types/server.ts";
 import { gameEngine, rensets } from "../../../common/settings.ts";
 
-export class ChesswarStats {
+export class GameStats {
 	private playersOnline = 0;
 	private animationTimeFilter = new LowPassFilter(rensets.fps, rensets.mspf);
 	private jsRenderTimeFilter = new LowPassFilter(rensets.fps, rensets.mspf);

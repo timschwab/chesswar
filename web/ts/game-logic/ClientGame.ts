@@ -8,7 +8,7 @@ import { KeyEventHandler } from "./KeyEventHandler.ts";
 import { PingManager } from "./PingManager.ts";
 import { MessageHandler } from "./MessageHandler.ts";
 import { ChesswarAudioPlayer } from "../audio/ChesswarAudioPlayer.ts";
-import { ChesswarStats } from "./ChesswarStats.ts";
+import { GameStats } from "./GameStats.ts";
 import { CWWAnimationLoop } from "../core/CWAnimationLoop.ts";
 import { ChesswarState } from "./ChesswarState.ts";
 
@@ -23,7 +23,7 @@ export class ClientGame {
 	private readonly animationLoop: CWWAnimationLoop;
 	private readonly audioPlayer: ChesswarAudioPlayer;
 
-	private readonly statsManager: ChesswarStats;
+	private readonly statsManager: GameStats;
 	private readonly keyHandler: KeyEventHandler;
 	private readonly messageHandler: MessageHandler;
 	private readonly pingManager: PingManager;
@@ -41,7 +41,7 @@ export class ClientGame {
 		this.animationLoop = new CWWAnimationLoop();
 		this.audioPlayer = new ChesswarAudioPlayer();
 
-		this.statsManager = new ChesswarStats();
+		this.statsManager = new GameStats();
 		this.keyHandler = new KeyEventHandler(this.state, this.input, this.socket);
 		this.pingManager = new PingManager(this.socket, this.statsManager);
 		this.messageHandler = new MessageHandler(this.state, this.audioPlayer, this.statsManager, this.pingManager);

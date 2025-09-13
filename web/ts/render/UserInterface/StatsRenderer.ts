@@ -3,7 +3,7 @@ import { Point } from "../../../../common/shapes/Point.ts";
 import { Rect } from "../../../../common/shapes/Rect.ts";
 import { ZeroRect } from "../../../../common/shapes/Zero.ts";
 import { CWScreen } from "../../core/CWScreen.ts";
-import { ChesswarStats } from "../../game-logic/ChesswarStats.ts";
+import { GameStats } from "../../game-logic/GameStats.ts";
 import { RectangleRenderer } from "../../webgl/rectangle/RectangleRenderer.ts";
 import { CWText } from "../../webgl/text/CWText.ts";
 import { TextRenderer } from "../../webgl/text/TextRenderer.ts";
@@ -14,13 +14,13 @@ export class StatsRenderer {
 	private screen: Rect = ZeroRect;
 	private readonly rectangleRenderer: RectangleRenderer;
 	private readonly textRenderer: TextRenderer;
-	private readonly statsManager: ChesswarStats;
+	private readonly statsManager: GameStats;
 
 	constructor(
 			rectangleRenderer: RectangleRenderer,
 			textRenderer: TextRenderer,
 			screen: CWScreen,
-			statsManager: ChesswarStats
+			statsManager: GameStats
 	) {
 		screen.subscribe(screenValue => { this.screen = screenValue });
 		this.rectangleRenderer = rectangleRenderer;

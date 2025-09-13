@@ -4,19 +4,19 @@ import { assertNever } from "../../../common/Preconditions.ts";
 import { ChesswarAudioPlayer } from "../audio/ChesswarAudioPlayer.ts";
 import { deserializeClientPlayer } from "./ClientPlayer.ts";
 import { PingManager } from "./PingManager.ts";
-import { ChesswarStats } from "./ChesswarStats.ts";
+import { GameStats } from "./GameStats.ts";
 import { ChesswarState } from "./ChesswarState.ts";
 
 export class MessageHandler {
 	private readonly state: ChesswarState;
 	private readonly audioPlayer: ChesswarAudioPlayer;
-	private readonly statsManager: ChesswarStats;
+	private readonly statsManager: GameStats;
 	private readonly pingManager: PingManager;
 
 	constructor(
 			state: ChesswarState,
 			audioPlayer: ChesswarAudioPlayer,
-			statsManager: ChesswarStats,
+			statsManager: GameStats,
 			pingManager: PingManager
 	) {
 		this.state = state;
