@@ -5,6 +5,7 @@ export class Optional<T> {
 		this.delegate = delegate;
 	}
 
+	// Static constructors
 	static of<T>(value: T): Optional<T> {
 		const delegate = new PresentOptional(value);
 		return new Optional<T>(delegate);
@@ -22,6 +23,7 @@ export class Optional<T> {
 		}
 	}
 
+	// Core functions
 	get(): T {
 		return this.delegate.get();
 	}
@@ -32,6 +34,21 @@ export class Optional<T> {
 
 	isEmpty(): boolean {
 		return this.delegate.isEmpty();
+	}
+
+	// Utility functions
+	map<NewType>(mapper: (value: T) => NewType): Optional<NewType> {
+		if (this.delegate.isPresent()) {
+			return Optional.of(mapper(this.delegate.get()));
+		} else {
+			return Optional.empty();
+		}
+	}
+
+	ifPresent(callback: (value: T) => void): void {
+		if (this.delegate.isPresent()) {
+			callback(this.delegate.get());
+		}
 	}
 }
 

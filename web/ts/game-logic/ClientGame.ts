@@ -1,4 +1,3 @@
-import { isSafeState, SafeState, state } from "./state.ts";
 import { ChesswarRenderer } from "../render/ChesswarRenderer.ts";
 import { CWDom } from "../core/CWDom.ts";
 import { CWInput } from "../core/CWInput.ts";
@@ -11,8 +10,11 @@ import { MessageHandler } from "./MessageHandler.ts";
 import { ChesswarAudioPlayer } from "../audio/ChesswarAudioPlayer.ts";
 import { ChesswarStats } from "./ChesswarStats.ts";
 import { CWWAnimationLoop } from "../core/CWAnimationLoop.ts";
+import { ChesswarState } from "./ChesswarState.ts";
 
 export class ClientGame {
+	private readonly state: ChesswarState;
+
 	private readonly env: CWEnvironment;
 	private readonly dom: CWDom;
 	private readonly screen: CWScreen;
@@ -29,6 +31,8 @@ export class ClientGame {
 	private readonly chesswarRenderer: ChesswarRenderer;
 
 	constructor() {
+		this.state = new ChesswarState();
+
 		this.env = new CWEnvironment();
 		this.dom = new CWDom();
 		this.screen = new CWScreen();
@@ -42,7 +46,7 @@ export class ClientGame {
 		this.pingManager = new PingManager(this.socket, this.statsManager);
 		this.messageHandler = new MessageHandler(this.audioPlayer, this.statsManager, this.pingManager);
 
-		this.chesswarRenderer = new ChesswarRenderer(this.dom, this.screen, this.statsManager);
+		this.chesswarRenderer = new ChesswarRenderer(this.state, this.dom, this.screen, this.statsManager);
 	}
 
 	start() {
@@ -54,24 +58,12 @@ export class ClientGame {
 		this.input.start();
 
 		// Connect to the server
-		this.socket.start();
 		this.socket.listen(this.messageHandler.receiveMessage.bind(this.messageHandler));
+		this.socket.start();
 		this.pingManager.start();
 
-		// Start the game loop
-		this.animationLoop.register(this.gameLoopUnsafe.bind(this));
+		// Start the animation loop
+		this.animationLoop.register(this.chesswarRenderer.render.bind(this.chesswarRenderer));
 		this.animationLoop.start();
-	}
-
-	private gameLoopUnsafe() {
-		// Run the game loop when we have all the info needed
-		if (isSafeState(state)) {
-			this.gameLoopSafe(state);
-		}
-	}
-
-	private gameLoopSafe(state: SafeState) {
-		// So far the game loop just renders the UI
-		this.chesswarRenderer.render(state);
 	}
 }

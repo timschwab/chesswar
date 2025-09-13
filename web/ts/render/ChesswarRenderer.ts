@@ -1,6 +1,6 @@
 import { CWDom } from "../core/CWDom.ts";
 import { CWScreen } from "../core/CWScreen.ts";
-import { SafeState } from "../game-logic/state.ts";
+import { ChesswarState } from "../game-logic/ChesswarState.ts";
 import { ChesswarStats } from "../game-logic/ChesswarStats.ts";
 //import { ChessboardRenderer } from "../webgl/chessboard/ChessboardRenderer.ts";
 import { MapRenderer } from "../webgl/map/MapRenderer.ts";
@@ -12,6 +12,8 @@ import { StatsRenderer } from "./UserInterface/StatsRenderer.ts";
 import { TeamRoleRenderer } from "./UserInterface/TeamRoleRenderer.ts";
 
 export class ChesswarRenderer {
+	private readonly state: ChesswarState;
+
 	private previousRenderStart = performance.now();
 	private readonly statsManager: ChesswarStats;
 	
@@ -24,7 +26,8 @@ export class ChesswarRenderer {
 	
 	//private readonly chessboardRenderer: ChessboardRenderer;
 
-	constructor(dom: CWDom, screen: CWScreen, statsManager: ChesswarStats) {
+	constructor(state: ChesswarState, dom: CWDom, screen: CWScreen, statsManager: ChesswarStats) {
+		this.state = state;
 		this.statsManager = statsManager;
 
 		// Create the renderers from back to front
@@ -41,7 +44,7 @@ export class ChesswarRenderer {
 		//this.chessboardRenderer = new ChessboardRenderer();
 	}
 
-	render(state: SafeState) {
+	render() {
 		// Detect and record frame rate
 		const currentRenderStart = performance.now();
 		const timeBetweenAnimationFrames = currentRenderStart - this.previousRenderStart;
@@ -50,17 +53,25 @@ export class ChesswarRenderer {
 
 		// Record the time spent in JS
 		const jsRenderStart = performance.now();
-		this.internalRender(state);
+		this.renderComponents();
 		const jsRenderFinish = performance.now();
 		this.statsManager.recordJsRenderTime(jsRenderFinish - jsRenderStart);
 	}
 
-	private internalRender(state: SafeState) {
-		this.mapRenderer.render(state.selfPlayer.position.center);
-		this.playerRenderer.render(state.selfPlayer.position.center, state.players);
+	private renderComponents() {
+		const maybeSelfPlayer = this.state.getSelfPlayer();
+		if (maybeSelfPlayer.isPresent()) {
+			const selfPlayer = maybeSelfPlayer.get();
 
-		this.teamRoleRenderer.render(state);
-		this.actionOptionRenderer.render(state);
-		this.statsRenderer.render(state);
+			this.mapRenderer.render(selfPlayer.position.center);
+			this.playerRenderer.render(selfPlayer.position.center, this.state.getAllPlayers());
+
+			this.teamRoleRenderer.render(selfPlayer.team, selfPlayer.role);
+			this.actionOptionRenderer.render(selfPlayer.actionOption);
+		}
+
+		if (this.state.getStatsShowing()) {
+			this.statsRenderer.render();
+		}
 	}
 }

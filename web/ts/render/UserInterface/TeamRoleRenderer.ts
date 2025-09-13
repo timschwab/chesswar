@@ -1,9 +1,9 @@
 import { CWColor } from "../../../../common/Color.ts";
+import { TeamName } from "../../../../common/data-types/base.ts";
 import { rensets } from "../../../../common/settings.ts";
 import { Point } from "../../../../common/shapes/Point.ts";
 import { Rect } from "../../../../common/shapes/Rect.ts";
 import { Shape } from "../../../../common/shapes/Shape.ts";
-import { SafeState } from "../../game-logic/state.ts";
 import { RectangleRenderer } from "../../webgl/rectangle/RectangleRenderer.ts";
 import { CWText } from "../../webgl/text/CWText.ts";
 import { TextRenderer } from "../../webgl/text/TextRenderer.ts";
@@ -19,11 +19,7 @@ export class TeamRoleRenderer {
 		this.textRenderer = textRenderer;
 	}
 
-	render(state: SafeState) {
-		// Extract useful values
-		const team = state.selfPlayer.team;
-		const role = state.selfPlayer.role;
-
+	render(team: TeamName, role: string) {
 		// Draw rectangles
 		const teamColor = rensets.players.teamColor[team];
 		const innerRect = new Rect(new Point(10, 10), new Point(210, 50));
