@@ -55,7 +55,7 @@ export class ClientGame {
 
 		// Connect to the server
 		this.socket.start();
-		this.socket.listen(this.messageHandler.receiveMessage.bind(this));
+		this.socket.listen(this.messageHandler.receiveMessage.bind(this.messageHandler));
 		this.pingManager.start();
 	}
 
