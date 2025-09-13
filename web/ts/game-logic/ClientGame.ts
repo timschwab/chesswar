@@ -1,4 +1,3 @@
-import { receiveMessage } from "./messages.ts";
 import { isSafeState, SafeState, state } from "./state.ts";
 import { ChesswarRenderer } from "../render/ChesswarRenderer.ts";
 import { CWDom } from "../core/CWDom.ts";
@@ -8,6 +7,8 @@ import { CWEnvironment } from "../core/CWEnvironment.ts";
 import { CWClientSocket } from "../core/CWClientSocket.ts";
 import { KeyEventHandler } from "./KeyEventHandler.ts";
 import { PingManager } from "./pingManager.ts";
+import { MessageHandler } from "./MessageHandler.ts";
+import { ChesswarAudioPlayer } from "../audio/ChesswarAudioPlayer.ts";
 
 export class ClientGame {
 	private readonly env: CWEnvironment;
@@ -15,8 +16,10 @@ export class ClientGame {
 	private readonly screen: CWScreen;
 	private readonly input: CWInput;
 	private readonly socket: CWClientSocket;
+	private readonly audioPlayer: ChesswarAudioPlayer;
 
 	private readonly keyHandler: KeyEventHandler;
+	private readonly messageHandler: MessageHandler;
 	private readonly pingManager: PingManager;
 
 	private readonly chesswarRenderer: ChesswarRenderer;
@@ -27,9 +30,11 @@ export class ClientGame {
 		this.screen = new CWScreen();
 		this.input = new CWInput();
 		this.socket = new CWClientSocket(this.env);
+		this.audioPlayer = new ChesswarAudioPlayer();
 
 		this.keyHandler = new KeyEventHandler(this.input, this.socket);
 		this.pingManager = new PingManager(this.socket);
+		this.messageHandler = new MessageHandler(this.audioPlayer, this.pingManager);
 
 		this.chesswarRenderer = new ChesswarRenderer(this.dom, this.screen);
 	}
@@ -47,7 +52,7 @@ export class ClientGame {
 
 		// Connect to the server
 		this.socket.start();
-		this.socket.listen(receiveMessage);
+		this.socket.listen(this.messageHandler.receiveMessage.bind(this));
 		this.pingManager.start();
 	}
 
