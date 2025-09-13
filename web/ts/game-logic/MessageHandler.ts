@@ -5,7 +5,7 @@ import { ChesswarAudioPlayer } from "../audio/ChesswarAudioPlayer.ts";
 import { deserializeClientPlayer } from "./ClientPlayer.ts";
 import { PingManager } from "./pingManager.ts";
 import { state } from "./state.ts";
-import { recordPlayersOnline, recordServerStats } from "./statsManager.ts";
+import { recordPlayersOnline, recordServerStats } from "./statsManager-old.ts";
 
 export class MessageHandler {
 	private readonly audioPlayer: ChesswarAudioPlayer;

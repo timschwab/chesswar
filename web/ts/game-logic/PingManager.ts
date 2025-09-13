@@ -1,6 +1,6 @@
 import { ClientMessageTypes } from "../../../common/message-types/client.ts";
 import { CWClientSocket } from "../core/CWClientSocket.ts";
-import { recordPingTime } from "./statsManager.ts";
+import { recordPingTime } from "./statsManager-old.ts";
 
 const NEW_PING_DELAY_MS = 1000;
 

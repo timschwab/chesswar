@@ -1,7 +1,7 @@
 import { CWDom } from "../core/CWDom.ts";
 import { CWScreen } from "../core/CWScreen.ts";
 import { SafeState } from "../game-logic/state.ts";
-import { recordJsRenderTime, recordTimeBetweenAnimations } from "../game-logic/statsManager.ts";
+import { recordJsRenderTime, recordTimeBetweenAnimations } from "../game-logic/statsManager-old.ts";
 //import { ChessboardRenderer } from "../webgl/chessboard/ChessboardRenderer.ts";
 import { MapRenderer } from "../webgl/map/MapRenderer.ts";
 import { PlayerRenderer } from "../webgl/player/PlayerRenderer.ts";

@@ -4,7 +4,6 @@ import { ChessSquare } from "../../../common/data-types/chess.ts";
 import { BriefingName } from "../../../common/data-types/facility.ts";
 import { CarryingMessagePayload, TeamMessagePayload } from "../../../common/message-types/server.ts";
 import { ClientPlayer } from "./ClientPlayer.ts";
-import { GameStats } from "./GameStats.ts";
 
 interface UnsafeState {
 	selfId: ChesswarId | null,
@@ -17,10 +16,7 @@ interface UnsafeState {
 			selectedButton: BriefingName | null,
 			selectedFrom: ChessSquare | null
 		},
-		stats: {
-			showing: boolean,
-			data: GameStats
-		}
+		statsShowing: boolean
 	},
 	victory: Victory,
 	newGameCounter: number
@@ -37,10 +33,7 @@ export interface SafeState {
 			selectedButton: BriefingName | null,
 			selectedFrom: ChessSquare | null
 		},
-		stats: {
-			showing: boolean,
-			data: GameStats
-		}
+		statsShowing: boolean
 	},
 	victory: Victory,
 	newGameCounter: number
@@ -73,10 +66,7 @@ export const state: UnsafeState = {
 			selectedButton: null,
 			selectedFrom: null
 		},
-		stats: {
-			showing: false,
-			data: GameStats.Zero
-		}
+		statsShowing: false
 	},
 	victory: null,
 	newGameCounter: Infinity
