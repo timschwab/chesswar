@@ -1,7 +1,7 @@
 import { CWDom } from "../core/CWDom.ts";
 import { CWScreen } from "../core/CWScreen.ts";
 import { SafeState } from "../game-logic/state.ts";
-import { StatsManager } from "../game-logic/StatsManager.ts";
+import { ChesswarStats } from "../game-logic/ChesswarStats.ts";
 //import { ChessboardRenderer } from "../webgl/chessboard/ChessboardRenderer.ts";
 import { MapRenderer } from "../webgl/map/MapRenderer.ts";
 import { PlayerRenderer } from "../webgl/player/PlayerRenderer.ts";
@@ -13,7 +13,7 @@ import { TeamRoleRenderer } from "./UserInterface/TeamRoleRenderer.ts";
 
 export class ChesswarRenderer {
 	private previousRenderStart = performance.now();
-	private readonly statsManager: StatsManager;
+	private readonly statsManager: ChesswarStats;
 	
 	private readonly mapRenderer: MapRenderer;
 	private readonly playerRenderer: PlayerRenderer;
@@ -24,7 +24,7 @@ export class ChesswarRenderer {
 	
 	//private readonly chessboardRenderer: ChessboardRenderer;
 
-	constructor(dom: CWDom, screen: CWScreen, statsManager: StatsManager) {
+	constructor(dom: CWDom, screen: CWScreen, statsManager: ChesswarStats) {
 		this.statsManager = statsManager;
 
 		// Create the renderers from back to front

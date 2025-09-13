@@ -9,7 +9,7 @@ import { KeyEventHandler } from "./KeyEventHandler.ts";
 import { PingManager } from "./PingManager.ts";
 import { MessageHandler } from "./MessageHandler.ts";
 import { ChesswarAudioPlayer } from "../audio/ChesswarAudioPlayer.ts";
-import { StatsManager } from "./StatsManager.ts";
+import { ChesswarStats } from "./ChesswarStats.ts";
 
 export class ClientGame {
 	private readonly env: CWEnvironment;
@@ -19,7 +19,7 @@ export class ClientGame {
 	private readonly socket: CWClientSocket;
 	private readonly audioPlayer: ChesswarAudioPlayer;
 
-	private readonly statsManager: StatsManager;
+	private readonly statsManager: ChesswarStats;
 	private readonly keyHandler: KeyEventHandler;
 	private readonly messageHandler: MessageHandler;
 	private readonly pingManager: PingManager;
@@ -34,7 +34,7 @@ export class ClientGame {
 		this.socket = new CWClientSocket(this.env);
 		this.audioPlayer = new ChesswarAudioPlayer();
 
-		this.statsManager = new StatsManager();
+		this.statsManager = new ChesswarStats();
 		this.keyHandler = new KeyEventHandler(this.input, this.socket);
 		this.pingManager = new PingManager(this.socket, this.statsManager);
 		this.messageHandler = new MessageHandler(this.audioPlayer, this.statsManager, this.pingManager);

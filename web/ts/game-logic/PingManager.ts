@@ -1,15 +1,15 @@
 import { ClientMessageTypes } from "../../../common/message-types/client.ts";
 import { CWClientSocket } from "../core/CWClientSocket.ts";
-import { StatsManager } from "./StatsManager.ts";
+import { ChesswarStats } from "./ChesswarStats.ts";
 
 const NEW_PING_DELAY_MS = 1000;
 
 export class PingManager {
 	private readonly socket: CWClientSocket;
-	private readonly statsManager: StatsManager;
+	private readonly statsManager: ChesswarStats;
 	private pingTime = 0;
 
-	constructor(socket: CWClientSocket, statsManager: StatsManager) {
+	constructor(socket: CWClientSocket, statsManager: ChesswarStats) {
 		this.socket = socket;
 		this.statsManager = statsManager;
 	}

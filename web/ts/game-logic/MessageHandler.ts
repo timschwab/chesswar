@@ -5,14 +5,14 @@ import { ChesswarAudioPlayer } from "../audio/ChesswarAudioPlayer.ts";
 import { deserializeClientPlayer } from "./ClientPlayer.ts";
 import { PingManager } from "./PingManager.ts";
 import { state } from "./state.ts";
-import { StatsManager } from "./StatsManager.ts";
+import { ChesswarStats } from "./ChesswarStats.ts";
 
 export class MessageHandler {
 	private readonly audioPlayer: ChesswarAudioPlayer;
-	private readonly statsManager: StatsManager;
+	private readonly statsManager: ChesswarStats;
 	private readonly pingManager: PingManager;
 
-	constructor(audioPlayer: ChesswarAudioPlayer, statsManager: StatsManager, pingManager: PingManager) {
+	constructor(audioPlayer: ChesswarAudioPlayer, statsManager: ChesswarStats, pingManager: PingManager) {
 		this.audioPlayer = audioPlayer;
 		this.statsManager = statsManager;
 		this.pingManager = pingManager;
