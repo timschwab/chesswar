@@ -1,4 +1,3 @@
-import { handleKey } from "./keys.ts";
 import { receiveMessage } from "./messages.ts";
 import { isSafeState, SafeState, state } from "./state.ts";
 import { ChesswarRenderer } from "../render/ChesswarRenderer.ts";
@@ -7,6 +6,7 @@ import { CWInput } from "../core/CWInput.ts";
 import { CWScreen } from "../core/CWScreen.ts";
 import { CWEnvironment } from "../core/CWEnvironment.ts";
 import { CWClientSocket } from "../core/CWClientSocket.ts";
+import { KeyEventHandler } from "./KeyEventHandler.ts";
 
 export class ClientGame {
 	private readonly env: CWEnvironment;
@@ -14,6 +14,8 @@ export class ClientGame {
 	private readonly screen: CWScreen;
 	private readonly input: CWInput;
 	private readonly socket: CWClientSocket;
+
+	private readonly keyHandler: KeyEventHandler;
 
 	private readonly chesswarRenderer: ChesswarRenderer;
 
@@ -24,6 +26,8 @@ export class ClientGame {
 		this.input = new CWInput();
 		this.socket = new CWClientSocket(this.env);
 
+		this.keyHandler = new KeyEventHandler(this.input, this.socket);
+
 		this.chesswarRenderer = new ChesswarRenderer(this.dom, this.screen);
 	}
 
@@ -32,8 +36,8 @@ export class ClientGame {
 		this.screen.start();
 
 		// Listen for inputs
+		this.keyHandler.start();
 		this.input.start();
-		this.input.listenKey(handleKey);
 
 		// Start the game loop
 		requestAnimationFrame(this.gameLoopUnsafe.bind(this));
