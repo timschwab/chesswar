@@ -16,16 +16,53 @@ export class ChesswarState {
 	private victory: Victory = null;
 	private newGameCounter: number = Infinity;
 
+	setSelfId(id: string) {
+		this.selfId = Optional.of(id);
+	}
+
 	getSelfPlayer() {
 		return this.selfPlayer;
+	}
+
+	setStateFromServer(allPlayers: ClientPlayer[], victory: Victory, newGameCounter: number) {
+		// Stop if we haven't received our id yet
+		if (this.selfId.isEmpty()) {
+			return;
+		}
+
+		const selfPlayer = allPlayers.find(player => player.id === this.selfId.get());
+		if (!selfPlayer) {
+			console.error("Could not find self player", {
+				players: allPlayers,
+				selfId: this.selfId.get()
+			});
+			return;
+		}
+	
+		this.selfPlayer = Optional.of(selfPlayer);
+		this.allPlayers = allPlayers;
+		this.victory = victory;
+		this.newGameCounter = newGameCounter;
 	}
 
 	getAllPlayers() {
 		return this.allPlayers;
 	}
 
+	setTeamInfo(info: TeamMessagePayload) {
+		this.teamInfo = Optional.of(info);
+	}
+
+	setCarrying(payload: CarryingMessagePayload) {
+		this.ui.setCarrying(payload);
+	}
+
 	getStatsShowing() {
 		return this.ui.getStatsShowing();
+	}
+
+	toggleStatsShowing() {
+		this.ui.toggleStatsShowing();
 	}
 }
 
@@ -35,7 +72,15 @@ class ChesswarUiState {
 	private generalSelectedFrom: Optional<ChessSquare> = Optional.empty();
 	private statsShowing: boolean = false;
 
+	setCarrying(payload: CarryingMessagePayload) {
+		this.carrying = payload;
+	}
+
 	getStatsShowing() {
 		return this.statsShowing;
+	}
+
+	toggleStatsShowing() {
+		this.statsShowing = !this.statsShowing;
 	}
 }

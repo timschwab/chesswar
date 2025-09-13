@@ -4,15 +4,22 @@ import { assertNever } from "../../../common/Preconditions.ts";
 import { ChesswarAudioPlayer } from "../audio/ChesswarAudioPlayer.ts";
 import { deserializeClientPlayer } from "./ClientPlayer.ts";
 import { PingManager } from "./PingManager.ts";
-import { state } from "./state.ts";
 import { ChesswarStats } from "./ChesswarStats.ts";
+import { ChesswarState } from "./ChesswarState.ts";
 
 export class MessageHandler {
+	private readonly state: ChesswarState;
 	private readonly audioPlayer: ChesswarAudioPlayer;
 	private readonly statsManager: ChesswarStats;
 	private readonly pingManager: PingManager;
 
-	constructor(audioPlayer: ChesswarAudioPlayer, statsManager: ChesswarStats, pingManager: PingManager) {
+	constructor(
+			state: ChesswarState,
+			audioPlayer: ChesswarAudioPlayer,
+			statsManager: ChesswarStats,
+			pingManager: PingManager
+	) {
+		this.state = state;
 		this.audioPlayer = audioPlayer;
 		this.statsManager = statsManager;
 		this.pingManager = pingManager;
@@ -41,31 +48,17 @@ export class MessageHandler {
 	}
 
 	private handlePlayerInit(payload: PlayerInitMessagePayload) {
-		state.selfId = payload.id;
+		this.state.setSelfId(payload.id);
 	}
 
 	private handleState(payload: StateMessagePayload) {
 		const deserialized = payload.players.map(deserializeClientPlayer);
-	
-		const selfPlayer = deserialized.find(player => player.id === state.selfId);
-		if (!selfPlayer) {
-			console.error("Could not find self player", {
-				players: deserialized,
-				selfId: state.selfId
-			});
-			return;
-		}
-	
-		state.selfPlayer = selfPlayer;
-		state.players = deserialized;
-		state.victory = payload.victory;
-		state.newGameCounter = payload.newGameCounter;
-	
+		this.state.setStateFromServer(deserialized, payload.victory, payload.newGameCounter);
 		this.statsManager.recordPlayersOnline(payload.players.length);
 	}
 
 	private handleTeam(payload: TeamMessagePayload) {
-		state.team = payload;
+		this.state.setTeamInfo(payload);
 	}
 
 	private handleCompletedAction(payload: PlayerAction) {
@@ -77,7 +70,7 @@ export class MessageHandler {
 	}
 
 	private handleCarrying(payload: CarryingMessagePayload) {
-		state.ui.carrying = payload;
+		this.state.setCarrying(payload);
 	}
 	
 	private handleDeath(payload: DeathCause) {

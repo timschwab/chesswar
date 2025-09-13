@@ -1,14 +1,16 @@
 import { ClientMessageTypes, MoveMessagePayload } from "../../../common/message-types/client.ts";
 import { CWClientSocket } from "../core/CWClientSocket.ts";
 import { CWInput, CWKey, CWKeyEvent } from "../core/CWInput.ts";
-import { state } from "./state.ts";
+import { ChesswarState } from "./ChesswarState.ts";
 
 export class KeyEventHandler {
+	private readonly state: ChesswarState;
 	private readonly input: CWInput;
 	private readonly socket: CWClientSocket;
 	private readonly movement: MoveMessagePayload;
 
-	constructor(input: CWInput, socket: CWClientSocket) {
+	constructor(state: ChesswarState, input: CWInput, socket: CWClientSocket) {
+		this.state = state;
 		this.input = input;
 		this.socket = socket;
 		this.movement = {
@@ -37,7 +39,7 @@ export class KeyEventHandler {
 					break;
 				case CWKey.STATS:
 					if (event.pressed) {
-						state.ui.statsShowing = !state.ui.statsShowing;
+						this.state.toggleStatsShowing();
 					}
 					break;
 				case CWKey.UP:

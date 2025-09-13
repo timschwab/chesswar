@@ -42,9 +42,9 @@ export class ClientGame {
 		this.audioPlayer = new ChesswarAudioPlayer();
 
 		this.statsManager = new ChesswarStats();
-		this.keyHandler = new KeyEventHandler(this.input, this.socket);
+		this.keyHandler = new KeyEventHandler(this.state, this.input, this.socket);
 		this.pingManager = new PingManager(this.socket, this.statsManager);
-		this.messageHandler = new MessageHandler(this.audioPlayer, this.statsManager, this.pingManager);
+		this.messageHandler = new MessageHandler(this.state, this.audioPlayer, this.statsManager, this.pingManager);
 
 		this.chesswarRenderer = new ChesswarRenderer(this.state, this.dom, this.screen, this.statsManager);
 	}
