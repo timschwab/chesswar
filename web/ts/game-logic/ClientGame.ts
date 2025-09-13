@@ -10,6 +10,7 @@ import { PingManager } from "./PingManager.ts";
 import { MessageHandler } from "./MessageHandler.ts";
 import { ChesswarAudioPlayer } from "../audio/ChesswarAudioPlayer.ts";
 import { ChesswarStats } from "./ChesswarStats.ts";
+import { CWWAnimationLoop } from "../core/CWAnimationLoop.ts";
 
 export class ClientGame {
 	private readonly env: CWEnvironment;
@@ -17,6 +18,7 @@ export class ClientGame {
 	private readonly screen: CWScreen;
 	private readonly input: CWInput;
 	private readonly socket: CWClientSocket;
+	private readonly animationLoop: CWWAnimationLoop;
 	private readonly audioPlayer: ChesswarAudioPlayer;
 
 	private readonly statsManager: ChesswarStats;
@@ -32,6 +34,7 @@ export class ClientGame {
 		this.screen = new CWScreen();
 		this.input = new CWInput();
 		this.socket = new CWClientSocket(this.env);
+		this.animationLoop = new CWWAnimationLoop();
 		this.audioPlayer = new ChesswarAudioPlayer();
 
 		this.statsManager = new ChesswarStats();
@@ -50,13 +53,14 @@ export class ClientGame {
 		this.keyHandler.start();
 		this.input.start();
 
-		// Start the game loop
-		requestAnimationFrame(this.gameLoopUnsafe.bind(this));
-
 		// Connect to the server
 		this.socket.start();
 		this.socket.listen(this.messageHandler.receiveMessage.bind(this.messageHandler));
 		this.pingManager.start();
+
+		// Start the game loop
+		this.animationLoop.register(this.gameLoopUnsafe.bind(this));
+		this.animationLoop.start();
 	}
 
 	private gameLoopUnsafe() {
@@ -64,9 +68,6 @@ export class ClientGame {
 		if (isSafeState(state)) {
 			this.gameLoopSafe(state);
 		}
-	
-		// Get the next animation frame
-		requestAnimationFrame(this.gameLoopUnsafe.bind(this));
 	}
 
 	private gameLoopSafe(state: SafeState) {

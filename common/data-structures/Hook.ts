@@ -17,3 +17,15 @@ export class Hook<T> {
 		this.hooks.forEach(callback => callback(value));
 	}
 }
+
+export class EventHook {
+	private readonly delegate = new Hook<null>();
+
+	register(callback: () => void): void {
+		this.delegate.register(_nullValue => callback);
+	}
+
+	run(): void {
+		this.delegate.run(null);
+	}
+}
