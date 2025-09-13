@@ -1,15 +1,17 @@
 import { ClientMessageTypes } from "../../../common/message-types/client.ts";
 import { CWClientSocket } from "../core/CWClientSocket.ts";
-import { recordPingTime } from "./statsManager-old.ts";
+import { StatsManager } from "./StatsManager.ts";
 
 const NEW_PING_DELAY_MS = 1000;
 
 export class PingManager {
 	private readonly socket: CWClientSocket;
+	private readonly statsManager: StatsManager;
 	private pingTime = 0;
 
-	constructor(socket: CWClientSocket) {
+	constructor(socket: CWClientSocket, statsManager: StatsManager) {
 		this.socket = socket;
+		this.statsManager = statsManager;
 	}
 
 	start() {
@@ -28,7 +30,7 @@ export class PingManager {
 		const pongTime = performance.now();
 		const diff = pongTime - this.pingTime;
 
-		recordPingTime(diff);
+		this.statsManager.recordPingTime(diff);
 
 		setTimeout(this.ping.bind(this), NEW_PING_DELAY_MS);
 	}

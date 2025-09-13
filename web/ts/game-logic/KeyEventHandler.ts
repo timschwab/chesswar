@@ -37,7 +37,7 @@ export class KeyEventHandler {
 					break;
 				case CWKey.STATS:
 					if (event.pressed) {
-						state.ui.stats.showing = !state.ui.stats.showing;
+						state.ui.statsShowing = !state.ui.statsShowing;
 					}
 					break;
 				case CWKey.UP:

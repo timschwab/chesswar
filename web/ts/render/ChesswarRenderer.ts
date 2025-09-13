@@ -1,7 +1,7 @@
 import { CWDom } from "../core/CWDom.ts";
 import { CWScreen } from "../core/CWScreen.ts";
 import { SafeState } from "../game-logic/state.ts";
-import { recordJsRenderTime, recordTimeBetweenAnimations } from "../game-logic/statsManager-old.ts";
+import { StatsManager } from "../game-logic/StatsManager.ts";
 //import { ChessboardRenderer } from "../webgl/chessboard/ChessboardRenderer.ts";
 import { MapRenderer } from "../webgl/map/MapRenderer.ts";
 import { PlayerRenderer } from "../webgl/player/PlayerRenderer.ts";
@@ -13,17 +13,20 @@ import { TeamRoleRenderer } from "./UserInterface/TeamRoleRenderer.ts";
 
 export class ChesswarRenderer {
 	private previousRenderStart = performance.now();
-
+	private readonly statsManager: StatsManager;
+	
 	private readonly mapRenderer: MapRenderer;
 	private readonly playerRenderer: PlayerRenderer;
-
+	
 	private readonly teamRoleRenderer: TeamRoleRenderer;
 	private readonly actionOptionRenderer: ActionOptionRenderer;
 	private readonly statsRenderer: StatsRenderer;
-
+	
 	//private readonly chessboardRenderer: ChessboardRenderer;
 
-	constructor(dom: CWDom, screen: CWScreen) {
+	constructor(dom: CWDom, screen: CWScreen, statsManager: StatsManager) {
+		this.statsManager = statsManager;
+
 		// Create the renderers from back to front
 		this.mapRenderer = new MapRenderer(dom, screen);
 		this.playerRenderer = new PlayerRenderer(dom, screen);
@@ -33,7 +36,7 @@ export class ChesswarRenderer {
 
 		this.teamRoleRenderer = new TeamRoleRenderer(rectangleRenderer, textRenderer);
 		this.actionOptionRenderer = new ActionOptionRenderer(rectangleRenderer, textRenderer);
-		this.statsRenderer = new StatsRenderer(rectangleRenderer, textRenderer, screen);
+		this.statsRenderer = new StatsRenderer(rectangleRenderer, textRenderer, screen, this.statsManager);
 
 		//this.chessboardRenderer = new ChessboardRenderer();
 	}
@@ -43,13 +46,13 @@ export class ChesswarRenderer {
 		const currentRenderStart = performance.now();
 		const timeBetweenAnimationFrames = currentRenderStart - this.previousRenderStart;
 		this.previousRenderStart = currentRenderStart;
-		recordTimeBetweenAnimations(timeBetweenAnimationFrames);
+		this.statsManager.recordTimeBetweenAnimations(timeBetweenAnimationFrames);
 
 		// Record the time spent in JS
 		const jsRenderStart = performance.now();
 		this.internalRender(state);
 		const jsRenderFinish = performance.now();
-		recordJsRenderTime(jsRenderFinish - jsRenderStart);
+		this.statsManager.recordJsRenderTime(jsRenderFinish - jsRenderStart);
 	}
 
 	private internalRender(state: SafeState) {

@@ -4,6 +4,7 @@ import { Rect } from "../../../../common/shapes/Rect.ts";
 import { ZeroRect } from "../../../../common/shapes/Zero.ts";
 import { CWScreen } from "../../core/CWScreen.ts";
 import { SafeState } from "../../game-logic/state.ts";
+import { StatsManager } from "../../game-logic/StatsManager.ts";
 import { RectangleRenderer } from "../../webgl/rectangle/RectangleRenderer.ts";
 import { CWText } from "../../webgl/text/CWText.ts";
 import { TextRenderer } from "../../webgl/text/TextRenderer.ts";
@@ -14,24 +15,31 @@ export class StatsRenderer {
 	private screen: Rect = ZeroRect;
 	private readonly rectangleRenderer: RectangleRenderer;
 	private readonly textRenderer: TextRenderer;
+	private readonly statsManager: StatsManager;
 
-	constructor(rectangleRenderer: RectangleRenderer, textRenderer: TextRenderer, screen: CWScreen) {
+	constructor(
+			rectangleRenderer: RectangleRenderer,
+			textRenderer: TextRenderer,
+			screen: CWScreen,
+			statsManager: StatsManager
+	) {
 		screen.subscribe(screenValue => { this.screen = screenValue });
 		this.rectangleRenderer = rectangleRenderer;
 		this.textRenderer = textRenderer;
+		this.statsManager = statsManager;
 	}
 
 	render(state: SafeState) {
-		if (state.ui.stats.showing) {
-			const stats = state.ui.stats.data;
+		if (state.ui.statsShowing) {
+			const stats = this.statsManager;
 
-			const playersOnline = stats.playersOnlineValue;
-			const pingTimeMs = stats.pingTimeValue.toFixed(0);
-			const serverTickMs = stats.serverTickTimeValue.toFixed(3);
-			const serverTicksPerSec = (1000 / stats.serverTickTimeValue).toFixed(0);
-			const timeBetweenAnimationsMs = stats.timeBetweenAnimationsValue.toFixed(1);
-			const animationPerSec = (1000 / stats.timeBetweenAnimationsValue).toFixed(1);
-			const jsRenderTimeMs = stats.jsRenderTimeValue.toFixed(1);
+			const playersOnline = stats.getPlayersOnline();
+			const pingTimeMs = stats.getPingTime().toFixed(0);
+			const serverTickMs = stats.getServerTickTime().toFixed(3);
+			const serverTicksPerSec = (1000 / stats.getServerTickTime()).toFixed(0);
+			const timeBetweenAnimationsMs = stats.getTimeBetweenAnimantions().toFixed(1);
+			const animationPerSec = (1000 / stats.getTimeBetweenAnimantions()).toFixed(1);
+			const jsRenderTimeMs = stats.getJsRenderTime().toFixed(1);
 
 			const statStrings = [
 				`playersOnline: ${playersOnline}`,

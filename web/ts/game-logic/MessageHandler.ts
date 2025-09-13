@@ -3,16 +3,18 @@ import { CarryingMessagePayload, PlayerInitMessagePayload, ServerMessage, Server
 import { assertNever } from "../../../common/Preconditions.ts";
 import { ChesswarAudioPlayer } from "../audio/ChesswarAudioPlayer.ts";
 import { deserializeClientPlayer } from "./ClientPlayer.ts";
-import { PingManager } from "./pingManager.ts";
+import { PingManager } from "./PingManager.ts";
 import { state } from "./state.ts";
-import { recordPlayersOnline, recordServerStats } from "./statsManager-old.ts";
+import { StatsManager } from "./StatsManager.ts";
 
 export class MessageHandler {
 	private readonly audioPlayer: ChesswarAudioPlayer;
+	private readonly statsManager: StatsManager;
 	private readonly pingManager: PingManager;
 
-	constructor(audioPlayer: ChesswarAudioPlayer, pingManager: PingManager) {
+	constructor(audioPlayer: ChesswarAudioPlayer, statsManager: StatsManager, pingManager: PingManager) {
 		this.audioPlayer = audioPlayer;
+		this.statsManager = statsManager;
 		this.pingManager = pingManager;
 	}
 
@@ -59,7 +61,7 @@ export class MessageHandler {
 		state.victory = payload.victory;
 		state.newGameCounter = payload.newGameCounter;
 	
-		recordPlayersOnline(payload.players.length);
+		this.statsManager.recordPlayersOnline(payload.players.length);
 	}
 
 	private handleTeam(payload: TeamMessagePayload) {
@@ -91,6 +93,6 @@ export class MessageHandler {
 	}
 	
 	private handleServerStats(payload: StatsMessagePayload) {
-		recordServerStats(payload);
+		this.statsManager.recordServerStats(payload);
 	}
 }
