@@ -7,6 +7,7 @@ import { CWScreen } from "../core/CWScreen.ts";
 import { CWEnvironment } from "../core/CWEnvironment.ts";
 import { CWClientSocket } from "../core/CWClientSocket.ts";
 import { KeyEventHandler } from "./KeyEventHandler.ts";
+import { PingManager } from "./pingManager.ts";
 
 export class ClientGame {
 	private readonly env: CWEnvironment;
@@ -16,6 +17,7 @@ export class ClientGame {
 	private readonly socket: CWClientSocket;
 
 	private readonly keyHandler: KeyEventHandler;
+	private readonly pingManager: PingManager;
 
 	private readonly chesswarRenderer: ChesswarRenderer;
 
@@ -27,6 +29,7 @@ export class ClientGame {
 		this.socket = new CWClientSocket(this.env);
 
 		this.keyHandler = new KeyEventHandler(this.input, this.socket);
+		this.pingManager = new PingManager(this.socket);
 
 		this.chesswarRenderer = new ChesswarRenderer(this.dom, this.screen);
 	}
@@ -45,6 +48,7 @@ export class ClientGame {
 		// Connect to the server
 		this.socket.start();
 		this.socket.listen(receiveMessage);
+		this.pingManager.start();
 	}
 
 	private gameLoopUnsafe() {

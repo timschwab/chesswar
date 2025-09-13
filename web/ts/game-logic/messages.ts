@@ -11,7 +11,7 @@ import {
 import { assertNever } from "../../../common/Preconditions.ts";
 import { ChesswarAudioPlayer } from "../audio/ChesswarAudioPlayer.ts";
 import { ClientPlayer, deserializeClientPlayer } from "./ClientPlayer.ts";
-import { reportPong } from "./pingManager.ts";
+import { reportPong } from "./pingManager-old.ts";
 import { state } from "./state.ts";
 import { recordPlayersOnline, recordServerStats } from "./statsManager.ts";
 
