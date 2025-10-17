@@ -22,7 +22,9 @@ export class EventHook {
 	private readonly delegate = new Hook<null>();
 
 	register(callback: () => void): void {
-		this.delegate.register(_nullValue => callback);
+		this.delegate.register(_nullValue => {
+			callback();
+		});
 	}
 
 	run(): void {
