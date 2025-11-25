@@ -35,6 +35,7 @@ export class ChesswarRenderer {
 		const canvas = dom.getAttachedCanvas();
 		screen.bindCanvas(canvas);
 		const webgl = new WebglInterface(canvas, screen);
+		webgl.enableAlphaBlend();
 
 		// Create the renderers
 		this.mapRenderer = new MapRenderer(webgl, screen);

@@ -187,7 +187,13 @@ export class WebglInterface {
 		this.webgl.drawArrays(this.webgl.TRIANGLES, 0, vertexCount);
 	}
 
+	/***** Misc. things *****/
 	finish(): void {
 		this.webgl.finish();
+	}
+
+	enableAlphaBlend() {
+		this.webgl.enable(this.webgl.BLEND);
+		this.webgl.blendFunc(this.webgl.SRC_ALPHA, this.webgl.ONE_MINUS_SRC_ALPHA);
 	}
 }
