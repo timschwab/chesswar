@@ -7,6 +7,7 @@ import { MapRenderer } from "../webgl/map/MapRenderer.ts";
 import { PlayerRenderer } from "../webgl/player/PlayerRenderer.ts";
 import { RectangleRenderer } from "../webgl/rectangle/RectangleRenderer.ts";
 import { TextRenderer } from "../webgl/text/TextRenderer.ts";
+import { WebglInterface } from "../webgl/WebglInterface.ts";
 import { ActionOptionRenderer } from "./UserInterface/ActionOptionRenderer.ts";
 import { StatsRenderer } from "./UserInterface/StatsRenderer.ts";
 import { TeamRoleRenderer } from "./UserInterface/TeamRoleRenderer.ts";
@@ -30,12 +31,16 @@ export class ChesswarRenderer {
 		this.state = state;
 		this.statsManager = statsManager;
 
-		// Create the renderers from back to front
-		this.mapRenderer = new MapRenderer(dom, screen);
-		this.playerRenderer = new PlayerRenderer(dom, screen);
+		const canvas = dom.getAttachedCanvas();
+		screen.bindCanvas(canvas);
+		const webgl = new WebglInterface(canvas, screen);
 
-		const rectangleRenderer = new RectangleRenderer(dom, screen);
-		const textRenderer = new TextRenderer(dom, screen);
+		// Create the renderers from back to front
+		this.mapRenderer = new MapRenderer(webgl, screen);
+		this.playerRenderer = new PlayerRenderer(webgl, screen);
+
+		const rectangleRenderer = new RectangleRenderer(webgl, screen);
+		const textRenderer = new TextRenderer(webgl, dom, screen);
 
 		this.teamRoleRenderer = new TeamRoleRenderer(rectangleRenderer, textRenderer);
 		this.actionOptionRenderer = new ActionOptionRenderer(rectangleRenderer, textRenderer);

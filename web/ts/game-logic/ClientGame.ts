@@ -9,7 +9,7 @@ import { PingManager } from "./PingManager.ts";
 import { MessageHandler } from "./MessageHandler.ts";
 import { ChesswarAudioPlayer } from "../audio/ChesswarAudioPlayer.ts";
 import { GameStats } from "./GameStats.ts";
-import { CWWAnimationLoop } from "../core/CWAnimationLoop.ts";
+import { CWAnimationLoop } from "../core/CWAnimationLoop.ts";
 import { ChesswarState } from "./ChesswarState.ts";
 
 export class ClientGame {
@@ -20,7 +20,7 @@ export class ClientGame {
 	private readonly screen: CWScreen;
 	private readonly input: CWInput;
 	private readonly socket: CWClientSocket;
-	private readonly animationLoop: CWWAnimationLoop;
+	private readonly animationLoop: CWAnimationLoop;
 	private readonly audioPlayer: ChesswarAudioPlayer;
 
 	private readonly statsManager: GameStats;
@@ -38,7 +38,7 @@ export class ClientGame {
 		this.screen = new CWScreen();
 		this.input = new CWInput();
 		this.socket = new CWClientSocket(this.env);
-		this.animationLoop = new CWWAnimationLoop();
+		this.animationLoop = new CWAnimationLoop();
 		this.audioPlayer = new ChesswarAudioPlayer();
 
 		this.statsManager = new GameStats();

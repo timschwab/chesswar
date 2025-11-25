@@ -1,6 +1,6 @@
 import { EventHook } from "../../../common/data-structures/Hook.ts";
 
-export class CWWAnimationLoop {
+export class CWAnimationLoop {
 	private readonly hook = new EventHook();
 
 	register(callback: () => void) {

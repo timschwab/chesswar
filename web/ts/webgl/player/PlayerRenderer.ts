@@ -7,8 +7,8 @@ import { Point } from "../../../../common/shapes/Point.ts";
 import { ClientPlayer } from "../../game-logic/ClientPlayer.ts";
 import { TeamName } from "../../../../common/data-types/base.ts";
 import { rensets } from "../../../../common/settings.ts";
-import { CWDom } from "../../core/CWDom.ts";
 import { CWScreen } from "../../core/CWScreen.ts";
+import { WebglInterface } from "../WebglInterface.ts";
 
 
 const SCREEN = "u_screen";
@@ -23,7 +23,7 @@ const VERTEX = "a_vertex";
 export class PlayerRenderer {
 	private readonly renderer: WebglRenderer;
 
-	constructor(dom: CWDom, screen: CWScreen) {
+	constructor(webgl: WebglInterface, screen: CWScreen) {
 		// Prepare the player rendering data
 		const circleData = new Circle(ZeroPoint, 1)
 			.toTriangles()
@@ -31,7 +31,7 @@ export class PlayerRenderer {
 		const attributePointData = new Map([[VERTEX, circleData]]);
 
 		// Create the renderer
-		this.renderer = new WebglRenderer(dom, screen, {
+		this.renderer = new WebglRenderer(webgl, screen, {
 			shaderSource: {
 				vertex: playerVertexShader,
 				fragment: playerFragmentShader

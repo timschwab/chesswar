@@ -1,6 +1,5 @@
 import { Color } from "../../../common/Color.ts";
 import { Point } from "../../../common/shapes/Point.ts";
-import { CWDom } from "../core/CWDom.ts";
 import { CWScreen } from "../core/CWScreen.ts";
 
 
@@ -26,10 +25,7 @@ export const WEBGL_CONSTANTS = {
 export class WebglInterface {
 	private readonly webgl: WebGLRenderingContext;
 
-	constructor(dom: CWDom, screen: CWScreen) {
-		// Get the canvas we will render to
-		const canvas = dom.getAttachedCanvas();
-		screen.bindCanvas(canvas);
+	constructor(canvas: HTMLCanvasElement, screen: CWScreen) {
 		this.webgl = this.getWebgl(canvas);
 		screen.subscribe(screenValue => this.webgl.viewport(0, 0, screenValue.width, screenValue.height));
 	}
@@ -189,5 +185,9 @@ export class WebglInterface {
 	/***** The draw function *****/
 	draw(vertexCount: number): void {
 		this.webgl.drawArrays(this.webgl.TRIANGLES, 0, vertexCount);
+	}
+
+	finish(): void {
+		this.webgl.finish();
 	}
 }
