@@ -62,6 +62,9 @@ export class TextRenderer {
 	}
 
 	render(textList: CWText[]) {
+		// Prepare webgl
+		this.renderer.prep();
+
 		// Add any new glyphs to the texture
 		this.ensureGlyphsAdded(textList);
 

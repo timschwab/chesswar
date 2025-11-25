@@ -45,6 +45,10 @@ export class RectangleRenderer {
 	}
 
 	render(rectangles: Shape<Rect>[]) {
+		// Prepare webgl
+		this.renderer.prep();
+
+		// Draw each rectangle
 		rectangles.forEach(rectangle => {
 			// Set each rectangle left top, right bottom, and color
 			this.renderer.setUniformPoint(LEFT_TOP, rectangle.geo.leftTop);

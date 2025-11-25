@@ -60,6 +60,9 @@ export class MapRenderer {
 	}
 
 	render(camera: Point): void {
+		// Prepare webgl
+		this.renderer.prep();
+
 		// Set the camera once per render
 		this.renderer.setUniformPoint(CAMERA_CENTER, camera);
 

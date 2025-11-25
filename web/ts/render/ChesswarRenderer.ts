@@ -31,11 +31,12 @@ export class ChesswarRenderer {
 		this.state = state;
 		this.statsManager = statsManager;
 
+		// Construct the canvas to be used for drawing everything
 		const canvas = dom.getAttachedCanvas();
 		screen.bindCanvas(canvas);
 		const webgl = new WebglInterface(canvas, screen);
 
-		// Create the renderers from back to front
+		// Create the renderers
 		this.mapRenderer = new MapRenderer(webgl, screen);
 		this.playerRenderer = new PlayerRenderer(webgl, screen);
 
@@ -64,6 +65,7 @@ export class ChesswarRenderer {
 	}
 
 	private renderComponents() {
+		// Render from back to front
 		const maybeSelfPlayer = this.state.getSelfPlayer();
 		if (maybeSelfPlayer.isPresent()) {
 			const selfPlayer = maybeSelfPlayer.get();

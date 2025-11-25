@@ -6,13 +6,22 @@ import { WEBGL_CONSTANTS, WebglInterface } from "./WebglInterface.ts";
 import { makeStrict, WebGlRendererSettings } from "./WebglRendererSettings.ts";
 
 
+interface AttributePair {
+	location: GLint,
+	buffer: WebGLBuffer
+}
+
 // A class for working with a specific program
 export class WebglRenderer {
 	private readonly webgl: WebglInterface;
 	private readonly uniformValueLocations: Map<string, WebGLUniformLocation>;
 	private readonly uniformPointLocations: Map<string, WebGLUniformLocation>;
 	private readonly uniformColorLocations: Map<string, WebGLUniformLocation>;
+	private readonly attributeValuePairs: AttributePair[];
+	private readonly attributePointPairs: AttributePair[];
+	private readonly attributeColorPairs: AttributePair[];
 	private readonly vertexCount: number;
+	private readonly program: WebGLProgram;
 
 	constructor(webgl: WebglInterface, screen: CWScreen, rawSettings: WebGlRendererSettings) {
 		const settings = makeStrict(rawSettings);
@@ -22,21 +31,22 @@ export class WebglRenderer {
 
 		// Start up webgl
 		this.webgl = webgl;
-		const program = this.compileProgram(settings.shaderSource.vertex, settings.shaderSource.fragment);
+		this.program = this.compileProgram(settings.shaderSource.vertex, settings.shaderSource.fragment);
+		this.webgl.useProgram(this.program);
 
 		// Get the uniform locations
-		this.uniformValueLocations = this.mapUniformLocations(program, settings.uniformNames.values);
-		this.uniformPointLocations = this.mapUniformLocations(program, settings.uniformNames.points);
-		this.uniformColorLocations = this.mapUniformLocations(program, settings.uniformNames.colors);
+		this.uniformValueLocations = this.mapUniformLocations(this.program, settings.uniformNames.values);
+		this.uniformPointLocations = this.mapUniformLocations(this.program, settings.uniformNames.points);
+		this.uniformColorLocations = this.mapUniformLocations(this.program, settings.uniformNames.colors);
 
 		// Set the attribute data
-		this.setAttributeValueData(program, settings.attributeData.values);
-		this.setAttributePointData(program, settings.attributeData.points);
-		this.setAttributeColorData(program, settings.attributeData.colors);
+		this.attributeValuePairs = this.mapAttributeValueData(this.program, settings.attributeData.values);
+		this.attributePointPairs = this.mapAttributePointData(this.program, settings.attributeData.points);
+		this.attributeColorPairs = this.mapAttributeColorData(this.program, settings.attributeData.colors);
 
 		// If given a screen uniform, automatically set it when the screen size changes
 		if (settings.uniformNames.screen !== null) {
-			const screenUniformLocation = this.webgl.getUniformLocation(program, settings.uniformNames.screen);
+			const screenUniformLocation = this.webgl.getUniformLocation(this.program, settings.uniformNames.screen);
 			screen.subscribe(screenValue => this.webgl.setUniformPoint(screenUniformLocation, screenValue.rightBottom));
 		}
 	}
@@ -97,7 +107,6 @@ export class WebglRenderer {
 		this.webgl.attachShader(program, vertexShader);
 		this.webgl.attachShader(program, fragmentShader);
 		this.webgl.linkProgram(program);
-		this.webgl.useProgram(program);
 
 		return program;
 	}
@@ -108,50 +117,71 @@ export class WebglRenderer {
 	}
 
 	// Setting attribute data
-	private setAttributeValueData(program: WebGLProgram, attributePointData: Map<string, number[]>): void {
-		for (const [attributeName, attributeData] of attributePointData.entries()) {
+	private mapAttributeValueData(program: WebGLProgram, attributeValueData: Map<string, number[]>): AttributePair[] {
+		return attributeValueData.entries().map(([attributeName, attributeData]) => {
 			// Prepare the buffer
-			this.prepBuffer(program, attributeName, 1);
+			const pair = this.attributePair(program, attributeName);
 
 			// Set the data in the buffer
 			const floatArray = new Float32Array(attributeData);
 			this.webgl.bufferData(floatArray);
-		}
+
+			return pair;
+		}).toArray();
 	}
 
-	private setAttributePointData(program: WebGLProgram, attributePointData: Map<string, Point[]>): void {
-		for (const [attributeName, attributeData] of attributePointData.entries()) {
+	private mapAttributePointData(program: WebGLProgram, attributePointData: Map<string, Point[]>): AttributePair[] {
+		return attributePointData.entries().map(([attributeName, attributeData]) => {
 			// Prepare the buffer
-			this.prepBuffer(program, attributeName, 2);
+			const pair = this.attributePair(program, attributeName);
 
 			// Set the data in the buffer
 			const listOfNums = attributeData.flatMap(point => [point.x, point.y]);
 			const floatArray = new Float32Array(listOfNums);
 			this.webgl.bufferData(floatArray);
-		}
+
+			return pair;
+		}).toArray();
 	}
 
-	private setAttributeColorData(program: WebGLProgram, attributePointData: Map<string, Color[]>): void {
-		for (const [attributeName, attributeData] of attributePointData.entries()) {
+	private mapAttributeColorData(program: WebGLProgram, attributeColorData: Map<string, Color[]>): AttributePair[] {
+		return attributeColorData.entries().map(([attributeName, attributeData]) => {
 			// Prepare the buffer
-			this.prepBuffer(program, attributeName, 3);
+			const pair = this.attributePair(program, attributeName);
 
 			// Set the data in the buffer
 			const listOfNums = attributeData.flatMap(color => [color.r, color.g, color.b]);
 			const floatArray = new Float32Array(listOfNums);
 			this.webgl.bufferData(floatArray);
-		}
+
+			return pair;
+		}).toArray();
 	}
 
-	private prepBuffer(program: WebGLProgram, attributeName: string, dataSize: number): void {
+	private attributePair(program: WebGLProgram, attributeName: string): AttributePair {
 		const location = this.webgl.getAttribLocation(program, attributeName);
-		const bufferId = this.webgl.createBuffer();
-		this.webgl.bindBuffer(bufferId);
-		this.webgl.enableVertexAttribArray(location);
-		this.webgl.vertexAttribPointer(location, dataSize);
+		const buffer = this.webgl.createBuffer();
+		this.webgl.bindBuffer(buffer);
+		return {
+			location,
+			buffer
+		};
 	}
 
 	// User facing methods
+	prep() {
+		this.webgl.useProgram(this.program);
+		this.attributeValuePairs.forEach(pair => this.prepAttribute(pair, 1));
+		this.attributePointPairs.forEach(pair => this.prepAttribute(pair, 2));
+		this.attributeColorPairs.forEach(pair => this.prepAttribute(pair, 3));
+	}
+
+	private prepAttribute(pair: AttributePair, dataSize: number): void {
+		this.webgl.bindBuffer(pair.buffer);
+		this.webgl.enableVertexAttribArray(pair.location);
+		this.webgl.vertexAttribPointer(pair.location, dataSize);
+	}
+
 	setUniformValue(name: string, value: number): void {
 		const location = this.uniformValueLocations.get(name);
 		if (location === undefined) {
