@@ -47,7 +47,10 @@ export class WebglRenderer {
 		// If given a screen uniform, automatically set it when the screen size changes
 		if (settings.uniformNames.screen !== null) {
 			const screenUniformLocation = this.webgl.getUniformLocation(this.program, settings.uniformNames.screen);
-			screen.subscribe(screenValue => this.webgl.setUniformPoint(screenUniformLocation, screenValue.rightBottom));
+			screen.subscribe(screenValue => {
+				this.webgl.useProgram(this.program);
+				this.webgl.setUniformPoint(screenUniformLocation, screenValue.rightBottom)
+			});
 		}
 	}
 
