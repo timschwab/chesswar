@@ -2,13 +2,13 @@ import { CWDom } from "../core/CWDom.ts";
 import { CWScreen } from "../core/CWScreen.ts";
 import { ChesswarState } from "../game-logic/ChesswarState.ts";
 import { GameStats } from "../game-logic/GameStats.ts";
-//import { ChessboardRenderer } from "../webgl/chessboard/ChessboardRenderer.ts";
 import { MapRenderer } from "../webgl/map/MapRenderer.ts";
 import { PlayerRenderer } from "../webgl/player/PlayerRenderer.ts";
 import { RectangleRenderer } from "../webgl/rectangle/RectangleRenderer.ts";
 import { TextRenderer } from "../webgl/text/TextRenderer.ts";
 import { WebglInterface } from "../webgl/WebglInterface.ts";
 import { ActionOptionRenderer } from "./UserInterface/ActionOptionRenderer.ts";
+import { HudChessboardRenderer } from "./UserInterface/HudChessboardRenderer.ts";
 import { StatsRenderer } from "./UserInterface/StatsRenderer.ts";
 import { TeamRoleRenderer } from "./UserInterface/TeamRoleRenderer.ts";
 
@@ -24,8 +24,7 @@ export class ChesswarRenderer {
 	private readonly teamRoleRenderer: TeamRoleRenderer;
 	private readonly actionOptionRenderer: ActionOptionRenderer;
 	private readonly statsRenderer: StatsRenderer;
-	
-	//private readonly chessboardRenderer: ChessboardRenderer;
+	private readonly chessboardRenderer: HudChessboardRenderer;
 
 	constructor(state: ChesswarState, dom: CWDom, screen: CWScreen, statsManager: GameStats) {
 		this.state = state;
@@ -46,9 +45,8 @@ export class ChesswarRenderer {
 
 		this.teamRoleRenderer = new TeamRoleRenderer(rectangleRenderer, textRenderer);
 		this.actionOptionRenderer = new ActionOptionRenderer(rectangleRenderer, textRenderer);
-		this.statsRenderer = new StatsRenderer(rectangleRenderer, textRenderer, screen, this.statsManager);
-
-		//this.chessboardRenderer = new ChessboardRenderer();
+		this.statsRenderer = new StatsRenderer(textRenderer, screen);
+		this.chessboardRenderer = new HudChessboardRenderer(rectangleRenderer);
 	}
 
 	render() {
@@ -76,10 +74,11 @@ export class ChesswarRenderer {
 
 			this.teamRoleRenderer.render(selfPlayer.team, selfPlayer.role);
 			this.actionOptionRenderer.render(selfPlayer.actionOption);
+			this.chessboardRenderer.render();
 		}
 
 		if (this.state.getStatsShowing()) {
-			this.statsRenderer.render();
+			this.statsRenderer.render(this.statsManager);
 		}
 	}
 }

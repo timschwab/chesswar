@@ -27,3 +27,11 @@ export function arrayFill<T, U extends T>(arr: T[], val: U): U[] {
 	const res = arr.fill(val) as U[];
 	return res;
 }
+
+export function range(length: number): number[] {
+	const result = new Array(length);
+	for (let i = 0 ; i < length ; i++) {
+		result[i] = i;
+	}
+	return result;
+}

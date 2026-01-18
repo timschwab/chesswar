@@ -14,7 +14,7 @@ async function build() {
 		"map",
 		"rectangle",
 		"text",
-		"chessboard"
+		"chessPiece"
 	]);
 
 	// Create a JS bundle from the TS code

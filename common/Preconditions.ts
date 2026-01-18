@@ -1,4 +1,4 @@
-export function assertNever(value: never): void {
+export function assertNever(value: never): never {
 	console.error(value);
 	throw "It should be impossible to get here";
 }

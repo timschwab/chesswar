@@ -227,4 +227,8 @@ export class WebglRenderer {
 	draw(): void {
 		this.webgl.draw(this.vertexCount);
 	}
+
+	drawCustom(first: number, count: number): void {
+		this.webgl.drawCustom(first, count);
+	}
 }

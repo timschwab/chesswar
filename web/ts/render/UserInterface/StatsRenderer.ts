@@ -4,7 +4,6 @@ import { Rect } from "../../../../common/shapes/Rect.ts";
 import { ZeroRect } from "../../../../common/shapes/Zero.ts";
 import { CWScreen } from "../../core/CWScreen.ts";
 import { GameStats } from "../../game-logic/GameStats.ts";
-import { RectangleRenderer } from "../../webgl/rectangle/RectangleRenderer.ts";
 import { CWText } from "../../webgl/text/CWText.ts";
 import { TextRenderer } from "../../webgl/text/TextRenderer.ts";
 
@@ -12,25 +11,17 @@ const FONT_SIZE = 0.125;
 
 export class StatsRenderer {
 	private screen: Rect = ZeroRect;
-	private readonly rectangleRenderer: RectangleRenderer;
 	private readonly textRenderer: TextRenderer;
-	private readonly statsManager: GameStats;
 
 	constructor(
-			rectangleRenderer: RectangleRenderer,
 			textRenderer: TextRenderer,
-			screen: CWScreen,
-			statsManager: GameStats
+			screen: CWScreen
 	) {
 		screen.subscribe(screenValue => { this.screen = screenValue });
-		this.rectangleRenderer = rectangleRenderer;
 		this.textRenderer = textRenderer;
-		this.statsManager = statsManager;
 	}
 
-	render() {
-		const stats = this.statsManager;
-
+	render(stats: GameStats) {
 		const playersOnline = stats.getPlayersOnline();
 		const pingTimeMs = stats.getPingTime().toFixed(0);
 		const serverTickMs = stats.getServerTickTime().toFixed(3);

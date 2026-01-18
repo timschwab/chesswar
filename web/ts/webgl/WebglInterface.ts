@@ -187,6 +187,10 @@ export class WebglInterface {
 		this.webgl.drawArrays(this.webgl.TRIANGLES, 0, vertexCount);
 	}
 
+	drawCustom(first: number, count: number): void {
+		this.webgl.drawArrays(this.webgl.TRIANGLES, first, count);
+	}
+
 	/***** Misc. things *****/
 	finish(): void {
 		this.webgl.finish();

@@ -1,5 +1,5 @@
 import { TeamName } from "../common/data-types/base.ts";
-import { ChessBoard, ChessMove, ChessPiece, ChessRow, ChessSquare, ChessSquareState } from "../common/data-types/chess.ts";
+import { ChessBoard, ChessMove, ChessPiece, ChessRow, ChessCoordinate, ChessSquareContents } from "../common/data-types/chess.ts";
 import { kingsKillKings } from "../common/options.ts";
 import { randomPop } from "../common/random.ts";
 
@@ -193,8 +193,8 @@ function validKingMove(board: ChessBoard, move: ChessMove): boolean {
 	}
 }
 
-function pawnToQueen(board: ChessBoard, square: ChessSquare) {
-	const squareState = board[square.row][square.col] as ChessSquareState;
+function pawnToQueen(board: ChessBoard, square: ChessCoordinate) {
+	const squareState = board[square.row][square.col] as ChessSquareContents;
 	if (squareState.piece == ChessPiece.PAWN && (square.row == 0 || square.row == 7)) {
 		squareState.piece = ChessPiece.QUEEN;
 	}
