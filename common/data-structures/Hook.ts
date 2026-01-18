@@ -6,6 +6,7 @@ export class Hook<T> {
 	constructor() {
 		this.hooks = [];
 
+		// Ensure `this` is always what we expect. Annoying JS.
 		this.register = this.register.bind(this);
 	}
 

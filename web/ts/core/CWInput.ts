@@ -26,6 +26,7 @@ const KeyCodeTranslation = {
 	KeyS: CWKey.DOWN,
 	KeyD: CWKey.RIGHT,
 
+	Enter: CWKey.ACTION,
 	Space: CWKey.ACTION,
 	Period: CWKey.STATS
 }

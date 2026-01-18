@@ -3,16 +3,27 @@ import { localApiServerOrigin, remoteApiServerOrigin } from "../../../common/set
 // Define the two possible environments
 enum Environment {
 	REMOTE,
-	LOCAL
+	LOCAL,
+	UNKNOWN
 }
 
 export class CWEnvironment {
 	private readonly env: Environment;
 
 	constructor() {
+		this.env = this.computeEnvironment();
+	}
+
+	private computeEnvironment(): Environment {
 		// Compute what environment we are in from the hostname
 		const hostname = globalThis.location.hostname;
-		this.env = (hostname === "localhost" ? Environment.LOCAL : Environment.REMOTE);
+		if (hostname === "localhost") {
+			return Environment.LOCAL;
+		} else if (hostname === "chesswar.io") {
+			return Environment.REMOTE;
+		} else {
+			return Environment.UNKNOWN;
+		}
 	}
 
 	// Helper function
@@ -21,9 +32,9 @@ export class CWEnvironment {
 			return localOption;
 		} else if (this.env === Environment.REMOTE) {
 			return remoteOption;
+		} else {
+			throw "Environment is unknown";
 		}
-
-		throw "Environment was somehow computed as neither local nor remote";
 	}
 
 	// The environment-specific settings
