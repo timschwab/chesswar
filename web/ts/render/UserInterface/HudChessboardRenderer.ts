@@ -29,9 +29,9 @@ export class HudChessboardRenderer {
 		const border = Shape.from(boardRect.expand(boardOutlineWidth), boardOutlineColor);
 		const squares = boardData.flatMap(row => {
 			return row.map(square => {
-				const leftTop = new Point(square.coordinate.file*squareSize, square.coordinate.file*squareSize);
-				const rightBottom = leftTop.add(new Point(squareSize, squareSize));
-				const rect = new Rect(leftTop, rightBottom);
+				const squareLeftTop = leftTop.add(new Point(square.coordinate.file*squareSize, square.coordinate.rank*squareSize));
+				const squareRightBottom = squareLeftTop.add(new Point(squareSize, squareSize));
+				const rect = new Rect(squareLeftTop, squareRightBottom);
 				switch (square.color) {
 					case SquareColor.LIGHT:
 						return Shape.from(rect, boardLight);
