@@ -14,9 +14,18 @@ export enum ChessPiece {
 	PAWN = "pawn"
 }
 
-export type Chess960Configuration = [
-	ChessPiece, ChessPiece, ChessPiece, ChessPiece, ChessPiece, ChessPiece, ChessPiece, ChessPiece
-];
+export interface Chess960Configuration {
+	bishop1: number,
+	bishop2: number,
+
+	queen: number,
+	knight1: number,
+	knight2: number,
+
+	rook1: number,
+	king: number,
+	rook2: number
+}
 
 export interface ChessOwnedPiece {
 	team: TeamName,

@@ -5,7 +5,7 @@ import { BriefingBundle, BriefingName } from "../common/data-types/facility.ts";
 import { ServerStats } from "../common/data-types/server.ts";
 import { Circle } from "../common/shapes/Circle.ts";
 import { Vector } from "../common/shapes/Vector.ts";
-import { newBoard } from "./chess.ts";
+import { newBoard, newChess960Configuration } from "./chess.ts";
 
 export interface ServerPlayerPhysics {
 	mass: number,
@@ -45,14 +45,15 @@ interface ServerState {
 }
 
 function newState(): ServerState {
+	const positions = newChess960Configuration();
 	return {
 		count: 0,
 		victory: null,
-		realBoard: newBoard(),
+		realBoard: newBoard(positions),
 		allPlayers: new Map<ChesswarId, ServerPlayer>(),
 		[TeamName.BLUE]: {
 			playerMap: new Map<ChesswarId, ServerPlayer>(),
-			teamBoard: newBoard(),
+			teamBoard: newBoard(positions),
 			briefings: {
 				[BriefingName.ONE]: null,
 				[BriefingName.TWO]: null,
@@ -66,7 +67,7 @@ function newState(): ServerState {
 		},
 		[TeamName.RED]: {
 			playerMap: new Map<ChesswarId, ServerPlayer>(),
-			teamBoard: newBoard(),
+			teamBoard: newBoard(positions),
 			briefings: {
 				[BriefingName.ONE]: null,
 				[BriefingName.TWO]: null,

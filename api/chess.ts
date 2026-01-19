@@ -200,11 +200,44 @@ function pawnToQueen(board: ChessBoard, square: ChessCoordinate) {
 	}
 }
 
-export function newBoard(): ChessBoard {
-	// Compute the back rows for Chess960
-	const positions = newChess960Configuration();
+export function newChess960Configuration(): Chess960Configuration {
+	// Place bishops
+	const evenPositions = [0, 2, 4, 6];
+	const oddPositions = [1, 3, 5, 7];
+	const bishop1 = randomPop(evenPositions);
+	const bishop2 = randomPop(oddPositions);
 
-	// Create the rows
+	// Place queen + knights
+	const remainingPositions = evenPositions.concat(oddPositions);
+	const queen = randomPop(remainingPositions);
+	const knight1 = randomPop(remainingPositions);
+	const knight2 = randomPop(remainingPositions);
+
+	// Place rook, king, rook
+	remainingPositions.sort();
+	const rook1 = remainingPositions[0];
+	const king = remainingPositions[1];
+	const rook2 = remainingPositions[2];
+
+	return {bishop1, bishop2, queen, knight1, knight2, rook1, king, rook2};
+}
+
+// Just having fun trying to enforce correctness via the type system. Probably objectively dumb.
+function selectPiece(positions: Chess960Configuration, file: number): ChessPiece {
+	switch (file) {
+		case positions.bishop1: return ChessPiece.BISHOP;
+		case positions.bishop2: return ChessPiece.BISHOP;
+		case positions.queen:   return ChessPiece.QUEEN;
+		case positions.knight1: return ChessPiece.KNIGHT;
+		case positions.knight2: return ChessPiece.KNIGHT;
+		case positions.rook1:   return ChessPiece.ROOK;
+		case positions.king:    return ChessPiece.KING;
+		case positions.rook2:   return ChessPiece.ROOK;
+		default: throw "Should never get here";
+	}
+}
+
+export function newBoard(positions: Chess960Configuration): ChessBoard {
 	const row0 = newBackRow(positions, TeamName.BLUE);
 	const row1 = newPawnRow(TeamName.BLUE);
 	const row2 = newEmptyRow(2);
@@ -217,47 +250,14 @@ export function newBoard(): ChessBoard {
 	return [row0, row1, row2, row3, row4, row5, row6, row7];
 }
 
-function newChess960Configuration(): Chess960Configuration {
-	const result: Record<number, ChessPiece> = {};
-
-	// Place bishops
-	const evenPositions = [0, 2, 4, 6];
-	const oddPositions = [1, 3, 5, 7];
-	result[randomPop(evenPositions)] = ChessPiece.BISHOP;
-	result[randomPop(oddPositions)] = ChessPiece.BISHOP;
-
-	// Place queen + knights
-	const remainingPositions = evenPositions.concat(oddPositions);
-	result[randomPop(remainingPositions)] = ChessPiece.QUEEN;
-	result[randomPop(remainingPositions)] = ChessPiece.KNIGHT;
-	result[randomPop(remainingPositions)] = ChessPiece.KNIGHT;
-
-	// Place rook, king, rook
-	remainingPositions.sort();
-	result[remainingPositions[0]] = ChessPiece.ROOK;
-	result[remainingPositions[1]] = ChessPiece.KING;
-	result[remainingPositions[2]] = ChessPiece.ROOK;
-
-	return [
-		result[0],
-		result[1],
-		result[2],
-		result[3],
-		result[4],
-		result[5],
-		result[6],
-		result[7]
-	];
-}
-
 function newBackRow(positions: Chess960Configuration, team: TeamName): ChessRow {
 	const rank = team === TeamName.BLUE ? 0 : 7;
 	const result = newEmptyRow(rank);
 
 	for (let i = 0 ; i < 8 ; i++) {
-		result[0].contents = {
-			team: team,
-			piece: positions[0]
+		result[i].contents = {
+			team,
+			piece: selectPiece(positions, i)
 		};
 	}
 	
@@ -269,8 +269,8 @@ function newPawnRow(team: TeamName): ChessRow {
 	const result = newEmptyRow(rank);
 
 	for (let i = 0 ; i < 8 ; i++) {
-		result[0].contents = {
-			team: TeamName.BLUE,
+		result[i].contents = {
+			team,
 			piece: ChessPiece.PAWN
 		};
 	}
