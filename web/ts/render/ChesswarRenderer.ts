@@ -24,7 +24,7 @@ export class ChesswarRenderer {
 	private readonly teamRoleRenderer: TeamRoleRenderer;
 	private readonly actionOptionRenderer: ActionOptionRenderer;
 	private readonly statsRenderer: StatsRenderer;
-	private readonly chessboardRenderer: HudChessboardRenderer;
+	private readonly hudChessboardRenderer: HudChessboardRenderer;
 
 	constructor(state: ChesswarState, dom: CWDom, screen: CWScreen, statsManager: GameStats) {
 		this.state = state;
@@ -46,7 +46,7 @@ export class ChesswarRenderer {
 		this.teamRoleRenderer = new TeamRoleRenderer(rectangleRenderer, textRenderer);
 		this.actionOptionRenderer = new ActionOptionRenderer(rectangleRenderer, textRenderer);
 		this.statsRenderer = new StatsRenderer(textRenderer, screen);
-		this.chessboardRenderer = new HudChessboardRenderer(rectangleRenderer);
+		this.hudChessboardRenderer = new HudChessboardRenderer(rectangleRenderer);
 	}
 
 	render() {
@@ -65,17 +65,17 @@ export class ChesswarRenderer {
 
 	private renderComponents() {
 		// Render from back to front
-		const maybeSelfPlayer = this.state.getSelfPlayer();
-		if (maybeSelfPlayer.isPresent()) {
-			const selfPlayer = maybeSelfPlayer.get();
-
+		this.state.getSelfPlayer().ifPresent(selfPlayer => {
 			this.mapRenderer.render(selfPlayer.position.center);
 			this.playerRenderer.render(selfPlayer.position.center, this.state.getAllPlayers());
-
+			
 			this.teamRoleRenderer.render(selfPlayer.team, selfPlayer.role);
 			this.actionOptionRenderer.render(selfPlayer.actionOption);
-			this.chessboardRenderer.render();
-		}
+		});
+
+		this.state.getTeamInfo().ifPresent(info => {
+			this.hudChessboardRenderer.render(info.board);
+		});
 
 		if (this.state.getStatsShowing()) {
 			this.statsRenderer.render(this.statsManager);

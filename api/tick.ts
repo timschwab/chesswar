@@ -307,7 +307,7 @@ function kingExists(team: TeamName): boolean {
 	const state = getState();
 	for (const row of state.realBoard) {
 		for (const col of row) {
-			if (col != null && col.team == team && col.piece == ChessPiece.KING) {
+			if (col.contents != null && col.contents.team == team && col.contents.piece == ChessPiece.KING) {
 				return true;
 			}
 		}

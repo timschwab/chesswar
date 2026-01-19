@@ -53,6 +53,10 @@ export class ChesswarState {
 		this.teamInfo = Optional.of(info);
 	}
 
+	getTeamInfo() {
+		return this.teamInfo;
+	}
+
 	setCarrying(payload: CarryingMessagePayload) {
 		this.ui.setCarrying(payload);
 	}
