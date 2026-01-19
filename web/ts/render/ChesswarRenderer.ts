@@ -16,7 +16,7 @@ import { CarryingChessboardRenderer } from "./component-renderers/CarryingChessb
 import { HudChessboardRenderer } from "./component-renderers/HudChessboardRenderer.ts";
 import { StatsRenderer } from "./component-renderers/StatsRenderer.ts";
 import { TeamRoleRenderer } from "./component-renderers/TeamRoleRenderer.ts";
-
+import { GeneralWindowRenderer } from "./component-renderers/GeneralWindowRenderer.ts";
 
 export class ChesswarRenderer {
 	private readonly state: ChesswarState;
@@ -49,7 +49,8 @@ export class ChesswarRenderer {
 			new ActionOptionRenderer(rectangleRenderer, textRenderer),
 			new StatsRenderer(textRenderer, screen, statsManager),
 			new HudChessboardRenderer(rectangleRenderer, chessPieceRenderer),
-			new CarryingChessboardRenderer(rectangleRenderer, chessPieceRenderer)
+			new CarryingChessboardRenderer(rectangleRenderer, chessPieceRenderer),
+			new GeneralWindowRenderer(rectangleRenderer, screen)
 		];
 	}
 
