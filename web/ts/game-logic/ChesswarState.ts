@@ -12,6 +12,7 @@ export class ChesswarState {
 	private allPlayers: ClientPlayer[] = [];
 
 	private teamInfo: Optional<TeamMessagePayload> = Optional.empty();
+	private carrying: CarryingMessagePayload = EMPTY_CARRY_LOAD;
 	private ui: ChesswarUiState = new ChesswarUiState();
 	private victory: Victory = null;
 	private newGameCounter: number = Infinity;
@@ -58,7 +59,11 @@ export class ChesswarState {
 	}
 
 	setCarrying(payload: CarryingMessagePayload) {
-		this.ui.setCarrying(payload);
+		this.carrying = payload;
+	}
+
+	getCarrying() {
+		return this.carrying;
 	}
 
 	getStatsShowing() {
@@ -71,14 +76,9 @@ export class ChesswarState {
 }
 
 class ChesswarUiState {
-	private carrying: CarryingMessagePayload = EMPTY_CARRY_LOAD;
 	private generalSelectedButton: Optional<BriefingName> = Optional.empty();
 	private generalSelectedFrom: Optional<ChessCoordinate> = Optional.empty();
 	private statsShowing: boolean = false;
-
-	setCarrying(payload: CarryingMessagePayload) {
-		this.carrying = payload;
-	}
 
 	getStatsShowing() {
 		return this.statsShowing;

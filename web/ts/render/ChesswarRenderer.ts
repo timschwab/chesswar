@@ -9,6 +9,7 @@ import { RectangleRenderer } from "../webgl/rectangle/RectangleRenderer.ts";
 import { TextRenderer } from "../webgl/text/TextRenderer.ts";
 import { WebglInterface } from "../webgl/WebglInterface.ts";
 import { ActionOptionRenderer } from "./UserInterface/ActionOptionRenderer.ts";
+import { CarryingChessboardRenderer } from "./UserInterface/CarryingChessboardRenderer.ts";
 import { HudChessboardRenderer } from "./UserInterface/HudChessboardRenderer.ts";
 import { StatsRenderer } from "./UserInterface/StatsRenderer.ts";
 import { TeamRoleRenderer } from "./UserInterface/TeamRoleRenderer.ts";
@@ -26,6 +27,7 @@ export class ChesswarRenderer {
 	private readonly actionOptionRenderer: ActionOptionRenderer;
 	private readonly statsRenderer: StatsRenderer;
 	private readonly hudChessboardRenderer: HudChessboardRenderer;
+	private readonly carryingChessBoardRenderer: CarryingChessboardRenderer;
 
 	constructor(state: ChesswarState, dom: CWDom, screen: CWScreen, statsManager: GameStats) {
 		this.state = state;
@@ -49,6 +51,7 @@ export class ChesswarRenderer {
 		this.actionOptionRenderer = new ActionOptionRenderer(rectangleRenderer, textRenderer);
 		this.statsRenderer = new StatsRenderer(textRenderer, screen);
 		this.hudChessboardRenderer = new HudChessboardRenderer(rectangleRenderer, chessPieceRenderer);
+		this.carryingChessBoardRenderer = new CarryingChessboardRenderer(rectangleRenderer, chessPieceRenderer);
 	}
 
 	render() {
@@ -77,6 +80,7 @@ export class ChesswarRenderer {
 
 		this.state.getTeamInfo().ifPresent(info => {
 			this.hudChessboardRenderer.render(info.board);
+			this.carryingChessBoardRenderer.render(info.board, this.state.getCarrying());
 		});
 
 		if (this.state.getStatsShowing()) {
