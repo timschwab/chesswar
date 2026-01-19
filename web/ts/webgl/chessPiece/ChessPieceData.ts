@@ -1,19 +1,11 @@
-type TrangleArray = [
-    [number, number],
-    [number, number],
-    [number, number]
-][];
+import { ChessPiece } from "../../../../common/data-types/chess.ts";
+import { Point } from "../../../../common/shapes/Point.ts";
 
-export const KING_DATA: TrangleArray = [
-    [[0.25, 0.25], [0.25, 0.75], [0.75, 0.25]]
-];
-
-export const QUEEN_DATA: TrangleArray = [];
-
-export const ROOK_DATA: TrangleArray = [];
-
-export const BISHOP_DATA: TrangleArray = [];
-
-export const KNIGHT_DATA: TrangleArray = [];
-
-export const PAWN_DATA: TrangleArray = [];
+export const chessPieceData = {
+	[ChessPiece.KING]: [new Point(0.25, 0.25), new Point(0.25, 0.75), new Point(0.75, 0.25)],
+	[ChessPiece.QUEEN]: [new Point(0.25, 0.25), new Point(0.25, 0.75), new Point(0.75, 0.25)],
+	[ChessPiece.ROOK]: [new Point(0.25, 0.25), new Point(0.25, 0.75), new Point(0.75, 0.25)],
+	[ChessPiece.BISHOP]: [new Point(0.25, 0.25), new Point(0.25, 0.75), new Point(0.75, 0.25)],
+	[ChessPiece.KNIGHT]: [new Point(0.25, 0.25), new Point(0.25, 0.75), new Point(0.75, 0.25)],
+	[ChessPiece.PAWN]: [new Point(0.25, 0.25), new Point(0.25, 0.75), new Point(0.75, 0.75)]
+};

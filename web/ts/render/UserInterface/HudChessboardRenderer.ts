@@ -4,9 +4,10 @@ import { assertNever } from "../../../../common/Preconditions.ts";
 import { Point } from "../../../../common/shapes/Point.ts";
 import { Rect } from "../../../../common/shapes/Rect.ts";
 import { Shape } from "../../../../common/shapes/Shape.ts";
+import { ChessPieceRenderer } from "../../webgl/chessPiece/ChessPieceRenderer.ts";
 import { RectangleRenderer } from "../../webgl/rectangle/RectangleRenderer.ts";
 
-const squareSize = 20;
+const squareSize = 90;
 const boardOutlineColor = CWColor.GREY_BLACK;
 const boardOutlineWidth = 2;
 const boardLight = CWColor.GREY_LIGHT;
@@ -19,9 +20,11 @@ const boardRect = new Rect(leftTop, rightBottom);
 
 export class HudChessboardRenderer {
 	private readonly rectangleRenderer: RectangleRenderer;
+	private readonly chessPieceRenderer: ChessPieceRenderer;
 	
-	constructor(rectangleRenderer: RectangleRenderer) {
+	constructor(rectangleRenderer: RectangleRenderer, chessPieceRenderer: ChessPieceRenderer) {
 		this.rectangleRenderer = rectangleRenderer;
+		this.chessPieceRenderer = chessPieceRenderer;
 	}
 
 	render(boardData: ChessBoard) {
@@ -44,5 +47,15 @@ export class HudChessboardRenderer {
 		});
 
 		this.rectangleRenderer.render([border, ...squares]);
+
+		// Draw all the pieces
+		boardData.forEach(row => {
+			row.forEach(square => {
+				if (square.contents !== null) {
+					const squareLeftTop = leftTop.add(new Point(square.coordinate.file*squareSize, square.coordinate.rank*squareSize));
+					this.chessPieceRenderer.renderSquare(squareLeftTop, squareSize, square.contents);
+				}
+			})
+		});
 	}
 };

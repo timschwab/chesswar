@@ -2,6 +2,7 @@ import { CWDom } from "../core/CWDom.ts";
 import { CWScreen } from "../core/CWScreen.ts";
 import { ChesswarState } from "../game-logic/ChesswarState.ts";
 import { GameStats } from "../game-logic/GameStats.ts";
+import { ChessPieceRenderer } from "../webgl/chessPiece/ChessPieceRenderer.ts";
 import { MapRenderer } from "../webgl/map/MapRenderer.ts";
 import { PlayerRenderer } from "../webgl/player/PlayerRenderer.ts";
 import { RectangleRenderer } from "../webgl/rectangle/RectangleRenderer.ts";
@@ -42,11 +43,12 @@ export class ChesswarRenderer {
 
 		const rectangleRenderer = new RectangleRenderer(webgl, screen);
 		const textRenderer = new TextRenderer(webgl, dom, screen);
+		const chessPieceRenderer = new ChessPieceRenderer(webgl, screen);
 
 		this.teamRoleRenderer = new TeamRoleRenderer(rectangleRenderer, textRenderer);
 		this.actionOptionRenderer = new ActionOptionRenderer(rectangleRenderer, textRenderer);
 		this.statsRenderer = new StatsRenderer(textRenderer, screen);
-		this.hudChessboardRenderer = new HudChessboardRenderer(rectangleRenderer);
+		this.hudChessboardRenderer = new HudChessboardRenderer(rectangleRenderer, chessPieceRenderer);
 	}
 
 	render() {
