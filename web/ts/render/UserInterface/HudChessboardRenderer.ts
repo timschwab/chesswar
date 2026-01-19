@@ -7,14 +7,14 @@ import { Shape } from "../../../../common/shapes/Shape.ts";
 import { ChessPieceRenderer } from "../../webgl/chessPiece/ChessPieceRenderer.ts";
 import { RectangleRenderer } from "../../webgl/rectangle/RectangleRenderer.ts";
 
-const squareSize = 90;
+const squareSize = 25;
 const boardOutlineColor = CWColor.GREY_BLACK;
 const boardOutlineWidth = 2;
 const boardLight = CWColor.GREY_LIGHT;
-const boardDark = CWColor.GREY_DARK;
+const boardDark = CWColor.GREY_STANDARD;
 
 const boardSize = squareSize*8;
-const leftTop = new Point(10, 100);
+const leftTop = new Point(10, 70);
 const rightBottom = leftTop.add(new Point(boardSize, boardSize));
 const boardRect = new Rect(leftTop, rightBottom);
 
