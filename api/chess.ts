@@ -1,13 +1,13 @@
 import { TeamName } from "../common/data-types/base.ts";
-import { ChessBoard, ChessMove, ChessPiece, ChessRow, ChessCoordinate, ChessSquareContents } from "../common/data-types/chess.ts";
+import { ChessBoard, ChessMove, ChessPiece, ChessRow, ChessCoordinate, SquareColor, ChessSquare, Chess960Configuration } from "../common/data-types/chess.ts";
 import { kingsKillKings } from "../common/options.ts";
 import { randomPop } from "../common/random.ts";
 
 export function makeMove(board: ChessBoard, move: ChessMove): void {
 	if (validMove(board, move)) {
 		// Move the piece
-		board[move.to.row][move.to.col] = board[move.from.row][move.from.col];
-		board[move.from.row][move.from.col] = null;
+		board[move.to.rank][move.to.file].contents = board[move.from.rank][move.from.file].contents;
+		board[move.from.rank][move.from.file].contents = null;
 
 		// Special case of turning a pawn into a queen
 		pawnToQueen(board, move.to);
@@ -15,8 +15,8 @@ export function makeMove(board: ChessBoard, move: ChessMove): void {
 }
 
 function validMove(board: ChessBoard, move: ChessMove): boolean {
-	const fromCell = board[move.from.row][move.from.col];
-	const toCell = board[move.to.row][move.to.col];
+	const fromCell = board[move.from.rank][move.from.file].contents;
+	const toCell = board[move.to.rank][move.to.file].contents;
 
 	// There are no pieces in the from
 	if (fromCell == null) {
@@ -52,8 +52,8 @@ function validMove(board: ChessBoard, move: ChessMove): boolean {
 }
 
 function validPawnMove(board: ChessBoard, move: ChessMove): boolean {
-	const rowChange = move.to.row - move.from.row;
-	const colChange = move.to.col - move.from.col;
+	const rowChange = move.to.rank - move.from.rank;
+	const colChange = move.to.file - move.from.file;
 
 	const teamValues = {
 		[TeamName.BLUE]: {
@@ -74,7 +74,7 @@ function validPawnMove(board: ChessBoard, move: ChessMove): boolean {
 
 	// Check for normal moves
 	if (colChange == 0 && Math.abs(rowChange) == 1) {
-		if (board[move.to.row][move.to.col] == null) {
+		if (board[move.to.rank][move.to.file].contents == null) {
 			return true;
 		} else {
 			return false;
@@ -82,10 +82,10 @@ function validPawnMove(board: ChessBoard, move: ChessMove): boolean {
 	}
 
 	// Check for starting moves
-	if (move.from.row == teamValue.startRow && colChange == 0 && Math.abs(rowChange) == 2) {
-		if (board[move.from.row+teamValue.direction][move.from.col] != null) {
+	if (move.from.rank == teamValue.startRow && colChange == 0 && Math.abs(rowChange) == 2) {
+		if (board[move.from.rank+teamValue.direction][move.from.file].contents != null) {
 			return false;
-		} else if (board[move.to.row][move.to.col] != null) {
+		} else if (board[move.to.rank][move.to.file].contents != null) {
 			return false;
 		} else {
 			return true;
@@ -94,9 +94,9 @@ function validPawnMove(board: ChessBoard, move: ChessMove): boolean {
 
 	// Check for attacking moves
 	if (Math.abs(colChange) == 1 && Math.abs(rowChange) == 1) {
-		if (board[move.to.row][move.to.col] == null) {
+		if (board[move.to.rank][move.to.file].contents == null) {
 			return false;
-		} else if (board[move.to.row][move.to.col]?.team == move.team) {
+		} else if (board[move.to.rank][move.to.file].contents?.team == move.team) {
 			return false;
 		} else {
 			return true;
@@ -109,8 +109,8 @@ function validPawnMove(board: ChessBoard, move: ChessMove): boolean {
 }
 
 function validKnightMove(move: ChessMove): boolean {
-	const rowChange = Math.abs(move.from.row - move.to.row);
-	const colChange = Math.abs(move.from.col - move.to.col);
+	const rowChange = Math.abs(move.from.rank - move.to.rank);
+	const colChange = Math.abs(move.from.file - move.to.file);
 
 	if (rowChange == 1 && colChange == 2) {
 		return true;
@@ -122,8 +122,8 @@ function validKnightMove(move: ChessMove): boolean {
 }
 
 function validBishopMove(board: ChessBoard, move: ChessMove): boolean {
-	const rowChange = Math.abs(move.from.row - move.to.row);
-	const colChange = Math.abs(move.from.col - move.to.col);
+	const rowChange = Math.abs(move.from.rank - move.to.rank);
+	const colChange = Math.abs(move.from.file - move.to.file);
 
 	// Make sure it is diagonal
 	if (rowChange != colChange) {
@@ -135,8 +135,8 @@ function validBishopMove(board: ChessBoard, move: ChessMove): boolean {
 }
 
 function validRookMove(board: ChessBoard, move: ChessMove): boolean {
-	const rowMove = Math.sign(move.from.row - move.to.row);
-	const colMove = Math.sign(move.from.col - move.to.col);
+	const rowMove = Math.sign(move.from.rank - move.to.rank);
+	const colMove = Math.sign(move.from.file - move.to.file);
 
 	// Make sure it is in a line
 	if (rowMove != 0 && colMove != 0) {
@@ -148,14 +148,14 @@ function validRookMove(board: ChessBoard, move: ChessMove): boolean {
 }
 
 function middlePiecesExist(board: ChessBoard, move: ChessMove): boolean {
-	const rowMove = Math.sign(move.to.row - move.from.row);
-	const colMove = Math.sign(move.to.col - move.from.col);
+	const rowMove = Math.sign(move.to.rank - move.from.rank);
+	const colMove = Math.sign(move.to.file - move.from.file);
 
 	let checkSquare = {
-		row: move.from.row + rowMove,
-		col: move.from.col + colMove
+		row: move.from.rank + rowMove,
+		col: move.from.file + colMove
 	};
-	while (checkSquare.row != move.to.row || checkSquare.col != move.to.col) {
+	while (checkSquare.row != move.to.rank || checkSquare.col != move.to.file) {
 		if (board[checkSquare.row][checkSquare.col] != null) {
 			return true;
 		}
@@ -176,13 +176,13 @@ function validQueenMove(board: ChessBoard, move: ChessMove): boolean {
 function validKingMove(board: ChessBoard, move: ChessMove): boolean {
 	// If kings can't kill kings, then don't
 	if (!kingsKillKings) {
-		if (board[move.to.row][move.to.col]?.piece == ChessPiece.KING) {
+		if (board[move.to.rank][move.to.rank].contents?.piece == ChessPiece.KING) {
 			return false;
 		}
 	}
 
-	const rowChange = Math.abs(move.from.row - move.to.row);
-	const colChange = Math.abs(move.from.col - move.to.col);
+	const rowChange = Math.abs(move.from.rank - move.to.rank);
+	const colChange = Math.abs(move.from.file - move.to.file);
 
 	// For ChessWar, we don't check for en passant or castling
 
@@ -194,80 +194,108 @@ function validKingMove(board: ChessBoard, move: ChessMove): boolean {
 }
 
 function pawnToQueen(board: ChessBoard, square: ChessCoordinate) {
-	const squareState = board[square.row][square.col] as ChessSquareContents;
-	if (squareState.piece == ChessPiece.PAWN && (square.row == 0 || square.row == 7)) {
+	const squareState = board[square.rank][square.file].contents;
+	if (squareState?.piece == ChessPiece.PAWN && (square.rank == 0 || square.rank == 7)) {
 		squareState.piece = ChessPiece.QUEEN;
 	}
 }
 
 export function newBoard(): ChessBoard {
 	// Compute the back rows for Chess960
+	const positions = newChess960Configuration();
+
+	// Create the rows
+	const row0 = newBackRow(positions, TeamName.BLUE);
+	const row1 = newPawnRow(TeamName.BLUE);
+	const row2 = newEmptyRow(2);
+	const row3 = newEmptyRow(3);
+	const row4 = newEmptyRow(4);
+	const row5 = newEmptyRow(5);
+	const row6 = newPawnRow(TeamName.RED);
+	const row7 = newBackRow(positions, TeamName.RED);
+
+	return [row0, row1, row2, row3, row4, row5, row6, row7];
+}
+
+function newChess960Configuration(): Chess960Configuration {
+	const result: Record<number, ChessPiece> = {};
+
 	// Place bishops
 	const evenPositions = [0, 2, 4, 6];
 	const oddPositions = [1, 3, 5, 7];
-	const bishop1 = randomPop(evenPositions);
-	const bishop2 = randomPop(oddPositions);
+	result[randomPop(evenPositions)] = ChessPiece.BISHOP;
+	result[randomPop(oddPositions)] = ChessPiece.BISHOP;
 
 	// Place queen + knights
 	const remainingPositions = evenPositions.concat(oddPositions);
-	const queen = randomPop(remainingPositions);
-	const knight1 = randomPop(remainingPositions);
-	const knight2 = randomPop(remainingPositions);
+	result[randomPop(remainingPositions)] = ChessPiece.QUEEN;
+	result[randomPop(remainingPositions)] = ChessPiece.KNIGHT;
+	result[randomPop(remainingPositions)] = ChessPiece.KNIGHT;
 
 	// Place rook, king, rook
 	remainingPositions.sort();
-	const rook1 = remainingPositions[0];
-	const king = remainingPositions[1];
-	const rook2 = remainingPositions[2];
+	result[remainingPositions[0]] = ChessPiece.ROOK;
+	result[remainingPositions[1]] = ChessPiece.KING;
+	result[remainingPositions[2]] = ChessPiece.ROOK;
 
-	// Create the rows
-	const row1: ChessRow = [null, null, null, null, null, null, null, null];
-	row1[bishop1] = {team: TeamName.BLUE, piece: ChessPiece.BISHOP};
-	row1[bishop2] = {team: TeamName.BLUE, piece: ChessPiece.BISHOP};
-	row1[queen]   = {team: TeamName.BLUE, piece: ChessPiece.QUEEN};
-	row1[knight1] = {team: TeamName.BLUE, piece: ChessPiece.KNIGHT};
-	row1[knight2] = {team: TeamName.BLUE, piece: ChessPiece.KNIGHT};
-	row1[rook1]   = {team: TeamName.BLUE, piece: ChessPiece.ROOK};
-	row1[king]    = {team: TeamName.BLUE, piece: ChessPiece.KING};
-	row1[rook2]   = {team: TeamName.BLUE, piece: ChessPiece.ROOK};
-
-	const row2: ChessRow = [
-		{team: TeamName.BLUE, piece: ChessPiece.PAWN},
-		{team: TeamName.BLUE, piece: ChessPiece.PAWN},
-		{team: TeamName.BLUE, piece: ChessPiece.PAWN},
-		{team: TeamName.BLUE, piece: ChessPiece.PAWN},
-		{team: TeamName.BLUE, piece: ChessPiece.PAWN},
-		{team: TeamName.BLUE, piece: ChessPiece.PAWN},
-		{team: TeamName.BLUE, piece: ChessPiece.PAWN},
-		{team: TeamName.BLUE, piece: ChessPiece.PAWN}
+	return [
+		result[0],
+		result[1],
+		result[2],
+		result[3],
+		result[4],
+		result[5],
+		result[6],
+		result[7]
 	];
+}
 
-	const row3: ChessRow = [null, null, null, null, null, null, null, null];
-	const row4: ChessRow = [null, null, null, null, null, null, null, null];
-	const row5: ChessRow = [null, null, null, null, null, null, null, null];
-	const row6: ChessRow = [null, null, null, null, null, null, null, null];
+function newBackRow(positions: Chess960Configuration, team: TeamName): ChessRow {
+	const rank = team === TeamName.BLUE ? 0 : 7;
+	const result = newEmptyRow(rank);
 
-	const row7: ChessRow = [
-		{team: TeamName.RED, piece: ChessPiece.PAWN},
-		{team: TeamName.RED, piece: ChessPiece.PAWN},
-		{team: TeamName.RED, piece: ChessPiece.PAWN},
-		{team: TeamName.RED, piece: ChessPiece.PAWN},
-		{team: TeamName.RED, piece: ChessPiece.PAWN},
-		{team: TeamName.RED, piece: ChessPiece.PAWN},
-		{team: TeamName.RED, piece: ChessPiece.PAWN},
-		{team: TeamName.RED, piece: ChessPiece.PAWN}
+	for (let i = 0 ; i < 8 ; i++) {
+		result[0].contents = {
+			team: team,
+			piece: positions[0]
+		};
+	}
+	
+	return result;
+}
+
+function newPawnRow(team: TeamName): ChessRow {
+	const rank = team === TeamName.BLUE ? 1 : 6;
+	const result = newEmptyRow(rank);
+
+	for (let i = 0 ; i < 8 ; i++) {
+		result[0].contents = {
+			team: TeamName.BLUE,
+			piece: ChessPiece.PAWN
+		};
+	}
+	
+	return result;
+}
+
+function newEmptyRow(rank: number): ChessRow {
+	return [
+		newEmptySquare(rank, 0), newEmptySquare(rank, 1),
+		newEmptySquare(rank, 2), newEmptySquare(rank, 3),
+		newEmptySquare(rank, 4), newEmptySquare(rank, 5),
+		newEmptySquare(rank, 6), newEmptySquare(rank, 7)
 	];
+}
 
-	// Can't find an elegant typescript way of mapping from row1 sadly
-	const row8: ChessRow = [null, null, null, null, null, null, null, null];
-	row8[bishop1] = {team: TeamName.RED, piece: ChessPiece.BISHOP};
-	row8[bishop2] = {team: TeamName.RED, piece: ChessPiece.BISHOP};
-	row8[queen]   = {team: TeamName.RED, piece: ChessPiece.QUEEN};
-	row8[knight1] = {team: TeamName.RED, piece: ChessPiece.KNIGHT};
-	row8[knight2] = {team: TeamName.RED, piece: ChessPiece.KNIGHT};
-	row8[rook1]   = {team: TeamName.RED, piece: ChessPiece.ROOK};
-	row8[king]    = {team: TeamName.RED, piece: ChessPiece.KING};
-	row8[rook2]   = {team: TeamName.RED, piece: ChessPiece.ROOK};
+function newEmptySquare(rank: number, file: number): ChessSquare {
+	const color = (rank+file) % 2 === 0 ? SquareColor.LIGHT : SquareColor.DARK;
 
-	return [row1, row2, row3, row4, row5, row6, row7, row8];
+	return {
+		coordinate: {
+			rank: rank,
+			file: file
+		},
+		color: color,
+		contents: null
+	};
 }
