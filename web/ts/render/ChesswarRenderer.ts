@@ -3,55 +3,54 @@ import { CWScreen } from "../core/CWScreen.ts";
 import { ChesswarState } from "../game-logic/ChesswarState.ts";
 import { GameStats } from "../game-logic/GameStats.ts";
 import { ChessPieceRenderer } from "../webgl/chessPiece/ChessPieceRenderer.ts";
-import { MapRenderer } from "../webgl/map/MapRenderer.ts";
-import { PlayerRenderer } from "../webgl/player/PlayerRenderer.ts";
+import { WebglMapRenderer } from "../webgl/map/WebglMapRenderer.ts";
+import { WebglPlayerRenderer } from "../webgl/player/WebglPlayerRenderer.ts";
 import { RectangleRenderer } from "../webgl/rectangle/RectangleRenderer.ts";
 import { TextRenderer } from "../webgl/text/TextRenderer.ts";
 import { WebglInterface } from "../webgl/WebglInterface.ts";
-import { ActionOptionRenderer } from "./UserInterface/ActionOptionRenderer.ts";
-import { CarryingChessboardRenderer } from "./UserInterface/CarryingChessboardRenderer.ts";
-import { HudChessboardRenderer } from "./UserInterface/HudChessboardRenderer.ts";
-import { StatsRenderer } from "./UserInterface/StatsRenderer.ts";
-import { TeamRoleRenderer } from "./UserInterface/TeamRoleRenderer.ts";
+import { MapRenderer } from "./component-renderers/MapRenderer.ts";
+import { PlayerRenderer } from "./component-renderers/PlayerRenderer.ts";
+import { UiComponentRenderer } from "./UiComponentRenderer.ts";
+import { ActionOptionRenderer } from "./component-renderers/ActionOptionRenderer.ts";
+import { CarryingChessboardRenderer } from "./component-renderers/CarryingChessboardRenderer.ts";
+import { HudChessboardRenderer } from "./component-renderers/HudChessboardRenderer.ts";
+import { StatsRenderer } from "./component-renderers/StatsRenderer.ts";
+import { TeamRoleRenderer } from "./component-renderers/TeamRoleRenderer.ts";
+
 
 export class ChesswarRenderer {
 	private readonly state: ChesswarState;
-
 	private previousRenderStart = performance.now();
 	private readonly statsManager: GameStats;
-	
-	private readonly mapRenderer: MapRenderer;
-	private readonly playerRenderer: PlayerRenderer;
-	
-	private readonly teamRoleRenderer: TeamRoleRenderer;
-	private readonly actionOptionRenderer: ActionOptionRenderer;
-	private readonly statsRenderer: StatsRenderer;
-	private readonly hudChessboardRenderer: HudChessboardRenderer;
-	private readonly carryingChessBoardRenderer: CarryingChessboardRenderer;
+	private readonly componentRenderers: UiComponentRenderer[];
 
 	constructor(state: ChesswarState, dom: CWDom, screen: CWScreen, statsManager: GameStats) {
 		this.state = state;
 		this.statsManager = statsManager;
 
-		// Construct the canvas to be used for drawing everything
+		// Construct the single canvas to be used for drawing everything
 		const canvas = dom.getAttachedCanvas();
 		screen.bindCanvas(canvas);
 		const webgl = new WebglInterface(canvas, screen);
 		webgl.enableAlphaBlend();
 
-		// Create the renderers
-		this.mapRenderer = new MapRenderer(webgl, screen);
-		this.playerRenderer = new PlayerRenderer(webgl, screen);
-
+		// Create the webgl renderers
+		const webglMapRenderer = new WebglMapRenderer(webgl, screen);
+		const webglPlayerRenderer = new WebglPlayerRenderer(webgl, screen);
 		const rectangleRenderer = new RectangleRenderer(webgl, screen);
 		const textRenderer = new TextRenderer(webgl, dom, screen);
 		const chessPieceRenderer = new ChessPieceRenderer(webgl, screen);
 
-		this.teamRoleRenderer = new TeamRoleRenderer(rectangleRenderer, textRenderer);
-		this.actionOptionRenderer = new ActionOptionRenderer(rectangleRenderer, textRenderer);
-		this.statsRenderer = new StatsRenderer(textRenderer, screen);
-		this.hudChessboardRenderer = new HudChessboardRenderer(rectangleRenderer, chessPieceRenderer);
-		this.carryingChessBoardRenderer = new CarryingChessboardRenderer(rectangleRenderer, chessPieceRenderer);
+		// Create the component renderers from back to front
+		this.componentRenderers = [
+			new MapRenderer(webglMapRenderer),
+			new PlayerRenderer(webglPlayerRenderer),
+			new TeamRoleRenderer(rectangleRenderer, textRenderer),
+			new ActionOptionRenderer(rectangleRenderer, textRenderer),
+			new StatsRenderer(textRenderer, screen, statsManager),
+			new HudChessboardRenderer(rectangleRenderer, chessPieceRenderer),
+			new CarryingChessboardRenderer(rectangleRenderer, chessPieceRenderer)
+		];
 	}
 
 	render() {
@@ -70,21 +69,8 @@ export class ChesswarRenderer {
 
 	private renderComponents() {
 		// Render from back to front
-		this.state.getSelfPlayer().ifPresent(selfPlayer => {
-			this.mapRenderer.render(selfPlayer.position.center);
-			this.playerRenderer.render(selfPlayer.position.center, this.state.getAllPlayers());
-			
-			this.teamRoleRenderer.render(selfPlayer.team, selfPlayer.role);
-			this.actionOptionRenderer.render(selfPlayer.actionOption);
+		this.componentRenderers.forEach(renderer => {
+			renderer.render(this.state);
 		});
-
-		this.state.getTeamInfo().ifPresent(info => {
-			this.hudChessboardRenderer.render(info.board);
-			this.carryingChessBoardRenderer.render(info.board, this.state.getCarrying());
-		});
-
-		if (this.state.getStatsShowing()) {
-			this.statsRenderer.render(this.statsManager);
-		}
 	}
 }

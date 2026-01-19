@@ -14,7 +14,7 @@ const VERTEX = "a_vertex";
 const STRUCTURE_CENTER = "a_structure_center";
 const COLOR = "a_color";
 
-export class MapRenderer {
+export class WebglMapRenderer {
 	private readonly renderer: WebglRenderer;
 
 	constructor(webgl: WebglInterface, screen: CWScreen) {

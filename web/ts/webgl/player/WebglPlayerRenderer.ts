@@ -20,7 +20,7 @@ const PLAYER_CENTER = "u_player_center";
 const VERTEX = "a_vertex";
 
 // A class for rendering players
-export class PlayerRenderer {
+export class WebglPlayerRenderer {
 	private readonly renderer: WebglRenderer;
 
 	constructor(webgl: WebglInterface, screen: CWScreen) {
