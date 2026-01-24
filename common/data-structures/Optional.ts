@@ -32,11 +32,11 @@ export class Optional<T> {
 		return this.delegate.isPresent();
 	}
 
+	// Utility functions
 	isEmpty(): boolean {
-		return this.delegate.isEmpty();
+		return !this.delegate.isPresent();
 	}
 
-	// Utility functions
 	map<NewType>(mapper: (value: T) => NewType): Optional<NewType> {
 		if (this.delegate.isPresent()) {
 			return Optional.of(mapper(this.delegate.get()));
@@ -54,8 +54,7 @@ export class Optional<T> {
 
 interface OptionalDelegate<T> {
 	get: () => T,
-	isPresent: () => boolean,
-	isEmpty: () => boolean
+	isPresent: () => boolean
 }
 
 class PresentOptional<T> implements OptionalDelegate<T> {
@@ -72,14 +71,9 @@ class PresentOptional<T> implements OptionalDelegate<T> {
 	isPresent() {
 		return true;
 	}
-
-	isEmpty() {
-		return false;
-	}
 }
 
 const EMPTY_OPTIONAL: OptionalDelegate<never> = {
 	get: () => { throw "Trying to get value on empty optional"; },
-	isPresent: () => false,
-	isEmpty: () => true
+	isPresent: () => false
 };

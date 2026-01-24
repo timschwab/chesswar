@@ -2,7 +2,7 @@ import { ClientMessageTypes } from "../../../common/message-types/client.ts";
 import { CWClientSocket } from "../core/CWClientSocket.ts";
 import { GameStats } from "./GameStats.ts";
 
-const NEW_PING_DELAY_MS = 1000;
+const NEW_PING_DELAY_MS = 10_000;
 
 export class PingManager {
 	private readonly socket: CWClientSocket;

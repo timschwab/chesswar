@@ -81,6 +81,14 @@ export class ChesswarState {
 	setGeneralSelectedButton(button: Optional<BriefingName>) {
 		this.ui.setGeneralSelectedButton(button);
 	}
+
+	getGeneralSelectedFrom() {
+		return this.ui.getGeneralSelectedFrom();
+	}
+
+	setGeneralSelectedFrom(from: Optional<ChessCoordinate>) {
+		this.ui.setGeneralSelectedFrom(from);
+	}
 }
 
 class ChesswarUiState {
@@ -102,5 +110,13 @@ class ChesswarUiState {
 
 	setGeneralSelectedButton(button: Optional<BriefingName>) {
 		this.generalSelectedButton = button;
+	}
+
+	getGeneralSelectedFrom() {
+		return this.generalSelectedFrom;
+	}
+
+	setGeneralSelectedFrom(from: Optional<ChessCoordinate>) {
+		this.generalSelectedFrom = from;
 	}
 }

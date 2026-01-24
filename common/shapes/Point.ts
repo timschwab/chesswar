@@ -5,6 +5,7 @@ import { Rect } from "./Rect.ts";
 import { Geometry, SerializedGeometry } from "./Geometry.ts";
 import { GeometryName } from "./GeometryName.ts";
 import { Triangle } from "./Triangle.ts";
+import { assertNever } from "../Preconditions.ts";
 
 export interface SerializedPoint extends SerializedGeometry {
 	type: GeometryName.POINT,

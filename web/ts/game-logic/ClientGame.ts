@@ -11,6 +11,7 @@ import { ChesswarAudioPlayer } from "../audio/ChesswarAudioPlayer.ts";
 import { GameStats } from "./GameStats.ts";
 import { CWAnimationLoop } from "../core/CWAnimationLoop.ts";
 import { ChesswarState } from "./ChesswarState.ts";
+import { ClickEventHandler } from "./ClickEventHandler.ts";
 
 export class ClientGame {
 	private readonly state: ChesswarState;
@@ -25,14 +26,13 @@ export class ClientGame {
 
 	private readonly statsManager: GameStats;
 	private readonly keyHandler: KeyEventHandler;
+	private readonly clickHandler: ClickEventHandler;
 	private readonly messageHandler: MessageHandler;
 	private readonly pingManager: PingManager;
 
 	private readonly chesswarRenderer: ChesswarRenderer;
 
 	constructor() {
-		this.state = new ChesswarState();
-
 		this.env = new CWEnvironment();
 		this.dom = new CWDom();
 		this.screen = new CWScreen();
@@ -41,8 +41,10 @@ export class ClientGame {
 		this.animationLoop = new CWAnimationLoop();
 		this.audioPlayer = new ChesswarAudioPlayer();
 
+		this.state = new ChesswarState();
 		this.statsManager = new GameStats();
 		this.keyHandler = new KeyEventHandler(this.state, this.input, this.socket);
+		this.clickHandler = new ClickEventHandler(this.state, this.input, this.screen, this.socket);
 		this.pingManager = new PingManager(this.socket, this.statsManager);
 		this.messageHandler = new MessageHandler(this.state, this.audioPlayer, this.statsManager, this.pingManager);
 
@@ -55,6 +57,7 @@ export class ClientGame {
 
 		// Listen for inputs
 		this.keyHandler.start();
+		this.clickHandler.start();
 		this.input.start();
 
 		// Connect to the server
