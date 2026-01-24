@@ -50,7 +50,7 @@ export class ChesswarRenderer {
 			new StatsRenderer(textRenderer, screen, statsManager),
 			new HudChessboardRenderer(rectangleRenderer, chessPieceRenderer),
 			new CarryingChessboardRenderer(rectangleRenderer, chessPieceRenderer),
-			new GeneralWindowRenderer(rectangleRenderer, screen)
+			new GeneralWindowRenderer(rectangleRenderer, chessPieceRenderer, screen)
 		];
 	}
 

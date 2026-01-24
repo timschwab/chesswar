@@ -15,8 +15,8 @@ const boardDark = CWColor.GREY_STANDARD;
 export class ChessboardHelper {
     private readonly rectangleRenderer: RectangleRenderer;
     private readonly chessPieceRenderer: ChessPieceRenderer;
-	private readonly boardRect: Rect;
-	private readonly squareSize: number;
+	private boardRect: Rect;
+	private squareSize: number;
 
     constructor(rectangleRenderer: RectangleRenderer, chessPieceRenderer: ChessPieceRenderer, boardRect: Rect) {
         this.rectangleRenderer = rectangleRenderer;
@@ -24,6 +24,11 @@ export class ChessboardHelper {
 		this.boardRect = boardRect;
 		this.squareSize = boardRect.width/8;
     }
+
+	updateBoardRect(boardRect: Rect) {
+		this.boardRect = boardRect;
+		this.squareSize = boardRect.width/8;
+	}
 
     renderBoard(boardData: ChessBoard) {
         // Prep and draw all rectangles

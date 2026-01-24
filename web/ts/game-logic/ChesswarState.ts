@@ -73,6 +73,14 @@ export class ChesswarState {
 	toggleStatsShowing() {
 		this.ui.toggleStatsShowing();
 	}
+
+	getGeneralSelectedButton() {
+		return this.ui.getGeneralSelectedButton();
+	}
+
+	setGeneralSelectedButton(button: Optional<BriefingName>) {
+		this.ui.setGeneralSelectedButton(button);
+	}
 }
 
 class ChesswarUiState {
@@ -86,5 +94,13 @@ class ChesswarUiState {
 
 	toggleStatsShowing() {
 		this.statsShowing = !this.statsShowing;
+	}
+
+	getGeneralSelectedButton() {
+		return this.generalSelectedButton;
+	}
+
+	setGeneralSelectedButton(button: Optional<BriefingName>) {
+		this.generalSelectedButton = button;
 	}
 }
