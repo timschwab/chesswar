@@ -1,6 +1,7 @@
 import { CWColor } from "../../../../common/Color.ts";
-import { ChessBoard, SquareColor } from "../../../../common/data-types/chess.ts";
+import { ChessBoard, ChessMove, SquareColor } from "../../../../common/data-types/chess.ts";
 import { assertNever } from "../../../../common/Preconditions.ts";
+import { rensets } from "../../../../common/settings.ts";
 import { Point } from "../../../../common/shapes/Point.ts";
 import { Rect } from "../../../../common/shapes/Rect.ts";
 import { Shape } from "../../../../common/shapes/Shape.ts";
@@ -30,7 +31,7 @@ export class ChessboardHelper {
 		this.squareSize = boardRect.width/8;
 	}
 
-    renderBoard(boardData: ChessBoard) {
+    renderBoard(boardData: ChessBoard, moves: ChessMove[]) {
         // Prep and draw all rectangles
 		const border = Shape.from(this.boardRect.expand(boardOutlineWidth), boardOutlineColor);
 		const squares = boardData.flatMap(row => {
@@ -58,6 +59,24 @@ export class ChessboardHelper {
 					this.chessPieceRenderer.renderSquare(squareLeftTop, this.squareSize, square.contents);
 				}
 			})
+		});
+
+		// Draw all the moves
+		moves.forEach(move => {
+			const color = rensets.players.teamColor[move.team];
+			const fromSquare = new Rect(
+				this.boardRect.leftTop.add(new Point(move.from.file*this.squareSize, move.from.rank*this.squareSize)),
+				this.boardRect.leftTop.add(new Point((move.from.file+1)*this.squareSize, (move.from.rank+1)*this.squareSize))
+			);
+			const toSquare = new Rect(
+				this.boardRect.leftTop.add(new Point(move.to.file*this.squareSize, move.to.rank*this.squareSize)),
+				this.boardRect.leftTop.add(new Point((move.to.file+1)*this.squareSize, (move.to.rank+1)*this.squareSize))
+			);
+			
+			this.rectangleRenderer.render([
+				Shape.from(fromSquare.shrink(this.squareSize/2.5), color),
+				Shape.from(toSquare.shrink(this.squareSize/3), color)
+			]);
 		});
     }
 }

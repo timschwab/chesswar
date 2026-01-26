@@ -48,7 +48,7 @@ export class CarryingChessboardRenderer implements UiComponentRenderer {
     }
 
     private renderBoard(boardData: ChessBoard) {
-        this.chessboardHelper.renderBoard(boardData);
+        this.chessboardHelper.renderBoard(boardData, []);
     }
 
     private renderOrders(_orders: ChessMove) {

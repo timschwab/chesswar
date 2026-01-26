@@ -73,9 +73,9 @@ export class ClickEventHandler {
         if (location.inside(importantValues[BriefingName.ONE])) {
             return Optional.of(BriefingName.ONE);
         } else if (location.inside(importantValues[BriefingName.TWO])) {
-            return Optional.of(BriefingName.ONE);
+            return Optional.of(BriefingName.TWO);
         } else if (location.inside(importantValues[BriefingName.THREE])) {
-            return Optional.of(BriefingName.ONE);
+            return Optional.of(BriefingName.THREE);
         }
 
         return Optional.empty();
