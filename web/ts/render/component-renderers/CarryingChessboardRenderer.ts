@@ -1,6 +1,5 @@
 import { CarryLoadType } from "../../../../common/data-types/carryLoad.ts";
-import { ChessBoard, ChessMove } from "../../../../common/data-types/chess.ts";
-import { BriefingBundle } from "../../../../common/data-types/facility.ts";
+import { briefingBundleMoveList } from "../../../../common/data-types/facility.ts";
 import { assertNever } from "../../../../common/Preconditions.ts";
 import { Point } from "../../../../common/shapes/Point.ts";
 import { Rect } from "../../../../common/shapes/Rect.ts";
@@ -31,31 +30,17 @@ export class CarryingChessboardRenderer implements UiComponentRenderer {
                 case CarryLoadType.EMPTY:
                     break;
                 case CarryLoadType.ORDERS:
-                    this.renderBoard(teamBoard);
-                    this.renderOrders(carrying.load);
+                    this.chessboardHelper.renderBoard(teamBoard, [carrying.load]);
                     break;
                 case CarryLoadType.INTEL:
-                    this.renderBoard(carrying.load);
+                    this.chessboardHelper.renderBoard(teamBoard, []);
                     break;
                 case CarryLoadType.ESPIONAGE:
-                    this.renderBoard(teamBoard);
-                    this.renderEspionage(carrying.load);
+                    this.chessboardHelper.renderBoard(teamBoard, briefingBundleMoveList(carrying.load));
                     break;
                 default:
                     assertNever(carrying);
             }
         });
-    }
-
-    private renderBoard(boardData: ChessBoard) {
-        this.chessboardHelper.renderBoard(boardData, []);
-    }
-
-    private renderOrders(_orders: ChessMove) {
-        // Nothing yet...
-    }
-
-    private renderEspionage(_espionage: BriefingBundle) {
-        // Nothing yet...
     }
 };
