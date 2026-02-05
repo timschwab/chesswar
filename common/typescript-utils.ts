@@ -35,3 +35,7 @@ export function range(length: number): number[] {
 	}
 	return result;
 }
+
+export function removeNulls<T>(arr: (T | null)[]): T[] {
+	return arr.filter(element => element !== null);
+}

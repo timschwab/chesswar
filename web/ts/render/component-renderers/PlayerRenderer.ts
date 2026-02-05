@@ -2,6 +2,7 @@ import { CWColor } from "../../../../common/Color.ts";
 import { Point } from "../../../../common/shapes/Point.ts";
 import { Rect } from "../../../../common/shapes/Rect.ts";
 import { ZeroPoint } from "../../../../common/shapes/Zero.ts";
+import { removeNulls } from "../../../../common/typescript-utils.ts";
 import { CWScreen } from "../../core/CWScreen.ts";
 import { ChesswarState } from "../../game-logic/ChesswarState.ts";
 import { WebglPlayerRenderer } from "../../webgl/player/WebglPlayerRenderer.ts";
@@ -33,7 +34,7 @@ export class PlayerRenderer implements UiComponentRenderer {
             // Draw the circles
             this.webglPlayerRenderer.render(selfPlayer.position.center, players);
 
-            // Draw the name
+            // Compute values
             const cameraOffset = selfPlayer.position.center;
             const screenOffset = this.screen.get().center;
             const nameCenteredOffset = this.textBoundingBox(this.textRenderer.getGlyphBoundingBox(), TEXT_SIZE, NAME_LETTERS);
@@ -41,6 +42,7 @@ export class PlayerRenderer implements UiComponentRenderer {
             const deathCenteredOffset = this.textBoundingBox(this.textRenderer.getGlyphBoundingBox(), TEXT_SIZE, DEATH_COUNTER_LETTERS);
             const deathOffset = ZeroPoint.subtract(cameraOffset).add(screenOffset).subtract(deathCenteredOffset.center);
             
+            // Draw the name
             const nameList = players.map(player => new CWText(
                 player.id.substring(0, NAME_LETTERS),
                 player.position.center.add(nameOffset).add(new Point(0, player.position.radius+10)),
@@ -49,11 +51,18 @@ export class PlayerRenderer implements UiComponentRenderer {
             this.textRenderer.render(nameList);
 
             // Draw the death counter
-            const deathCounterList = players.map(player => new CWText(
-                player.deathCounter.toString().padStart(DEATH_COUNTER_LETTERS, "0"),
-                player.position.center.add(deathOffset).subtract(new Point(0, player.position.radius+10)),
-                TEXT_SIZE,
-                DEATH_COUNTER_COLOR));
+            const deathCounterList = removeNulls(players.map(player => {
+                if (player.deathCounter > 0) {
+                    return new CWText(
+                        player.deathCounter.toString().padStart(DEATH_COUNTER_LETTERS, "0"),
+                        player.position.center.add(deathOffset).subtract(new Point(0, player.position.radius+10)),
+                        TEXT_SIZE,
+                        DEATH_COUNTER_COLOR
+                    );
+                } else {
+                    return null;
+                }
+            }));
             this.textRenderer.render(deathCounterList);
         });
     }
