@@ -87,6 +87,10 @@ export class TextRenderer {
 		}
 	}
 
+	getGlyphBoundingBox() {
+		return this.glyphTexture.getGlyphBoundingBox();
+	}
+
 	private ensureGlyphsAdded(textList: CWText[]) {
 		// Split text into graphemes
 		const allGraphemes = textList.flatMap(text => text.graphemes);

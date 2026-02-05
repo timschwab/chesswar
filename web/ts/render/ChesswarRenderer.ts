@@ -44,7 +44,7 @@ export class ChesswarRenderer {
 		// Create the component renderers from back to front
 		this.componentRenderers = [
 			new MapRenderer(webglMapRenderer),
-			new PlayerRenderer(webglPlayerRenderer),
+			new PlayerRenderer(webglPlayerRenderer, textRenderer, screen),
 			new TeamRoleRenderer(rectangleRenderer, textRenderer),
 			new ActionOptionRenderer(rectangleRenderer, textRenderer),
 			new StatsRenderer(textRenderer, screen, statsManager),

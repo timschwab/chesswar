@@ -11,16 +11,6 @@ export class CWScreen {
 		this.screenValue = this.getCurrentScreen();
 	}
 
-	private getCurrentScreen(): Rect {
-		// Get the window dimensions
-		const width = globalThis.innerWidth;
-		const height = globalThis.innerHeight;
-	
-		// Construct the rect
-		const screenRect = new Rect(ZeroPoint, new Point(width, height));
-		return screenRect;
-	}
-
 	// Use the callback immediately with the current screenValue
 	// and then update it with all future values.
 	subscribe(callback: HookFunc<Rect>) {
@@ -39,7 +29,21 @@ export class CWScreen {
 		globalThis.addEventListener("resize", this.handleResize.bind(this));
 	}
 
-	handleResize() {
+	get() {
+		return this.screenValue;
+	}
+
+	private getCurrentScreen(): Rect {
+		// Get the window dimensions
+		const width = globalThis.innerWidth;
+		const height = globalThis.innerHeight;
+	
+		// Construct the rect
+		const screenRect = new Rect(ZeroPoint, new Point(width, height));
+		return screenRect;
+	}
+
+	private handleResize() {
 		this.screenValue = this.getCurrentScreen();
 		this.hook.run(this.screenValue);
 	}
