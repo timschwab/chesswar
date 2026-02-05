@@ -30,9 +30,6 @@ export class PlayerRenderer implements UiComponentRenderer {
     render(state: ChesswarState) {
         state.getSelfPlayer().ifPresent(selfPlayer => {
             const players = state.getAllPlayers();
-            
-            // Draw the circles
-            this.webglPlayerRenderer.render(selfPlayer.position.center, players);
 
             // Compute values
             const cameraOffset = selfPlayer.position.center;
@@ -64,6 +61,9 @@ export class PlayerRenderer implements UiComponentRenderer {
                 }
             }));
             this.textRenderer.render(deathCounterList);
+
+            // Draw the circles last (so that they are on top)
+            this.webglPlayerRenderer.render(selfPlayer.position.center, players);
         });
     }
 
