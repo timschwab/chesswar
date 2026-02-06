@@ -13,6 +13,7 @@ async function build() {
 		"player",
 		"map",
 		"rectangle",
+		"triangle",
 		"text",
 		"chessPiece"
 	]);
