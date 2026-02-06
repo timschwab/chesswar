@@ -1,3 +1,4 @@
+import { assertNever } from "../Preconditions.ts";
 import { TeamName } from "./base.ts";
 
 export enum SquareColor {
@@ -50,13 +51,36 @@ export type ChessBoard = [ChessRow, ChessRow, ChessRow, ChessRow, ChessRow, Ches
 
 export enum ChessPerspective {
 	NORTH = "north",
-	EAST = "east",
-	SOUTH = "south",
-	WEST = "west"
+	SOUTH = "south"
 }
 
 export interface ChessMove {
 	team: TeamName,
 	from: ChessCoordinate,
 	to: ChessCoordinate
+}
+
+export function teamPerspective(team: TeamName): ChessPerspective {
+	switch (team) {
+		case TeamName.BLUE:
+			return ChessPerspective.NORTH;
+		case TeamName.RED:
+			return ChessPerspective.SOUTH;
+		default:
+			assertNever(team);
+	}
+}
+
+export function applyPerspective(coordinate: ChessCoordinate, perspective: ChessPerspective): ChessCoordinate {
+	switch (perspective) {
+		case ChessPerspective.NORTH:
+			return {
+				rank: 7-coordinate.rank,
+				file: 7-coordinate.file
+			}
+		case ChessPerspective.SOUTH:
+			return coordinate;
+		default:
+			assertNever(perspective);
+	}
 }

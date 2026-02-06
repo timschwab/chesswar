@@ -1,6 +1,6 @@
 import { Optional } from "../../../common/data-structures/Optional.ts";
 import { PlayerRole, TeamName } from "../../../common/data-types/base.ts";
-import { ChessCoordinate } from "../../../common/data-types/chess.ts";
+import { applyPerspective, ChessCoordinate, teamPerspective } from "../../../common/data-types/chess.ts";
 import { BriefingName } from "../../../common/data-types/facility.ts";
 import { ClientMessageTypes } from "../../../common/message-types/client.ts";
 import { Point } from "../../../common/shapes/Point.ts";
@@ -38,7 +38,7 @@ export class ClickEventHandler {
 
     private handleGeneralClick(location: Point, importantValues: ImportantValuesBundle, team: TeamName) {
         const button = this.clickedButton(location, importantValues);
-        const square = this.clickedSquare(location, importantValues);
+        const square = this.clickedSquare(location, importantValues, team);
 
         if (button.isPresent()) {
             this.state.setGeneralSelectedButton(button);
@@ -81,7 +81,7 @@ export class ClickEventHandler {
         return Optional.empty();
     }
 
-    private clickedSquare(location: Point, importantValues: ImportantValuesBundle): Optional<ChessCoordinate> {
+    private clickedSquare(location: Point, importantValues: ImportantValuesBundle, team: TeamName): Optional<ChessCoordinate> {
         if (!location.inside(importantValues.boardRect)) {
             return Optional.empty();
         }
@@ -91,9 +91,8 @@ export class ClickEventHandler {
         const rank = Math.floor(cornerPoint.y / squareSize);
         const file = Math.floor(cornerPoint.x / squareSize);
 
-        return Optional.of({
-            rank,
-            file
-        });
+        const coordinate = applyPerspective({rank, file}, teamPerspective(team));
+
+        return Optional.of(coordinate);
     }
 }

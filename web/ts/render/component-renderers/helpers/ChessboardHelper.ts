@@ -1,6 +1,6 @@
 import { CWColor } from "../../../../../common/Color.ts";
 import { TeamName } from "../../../../../common/data-types/base.ts";
-import { ChessBoard, ChessMove, SquareColor } from "../../../../../common/data-types/chess.ts";
+import { applyPerspective, ChessBoard, ChessMove, SquareColor, teamPerspective } from "../../../../../common/data-types/chess.ts";
 import { assertNever } from "../../../../../common/Preconditions.ts";
 import { rensets } from "../../../../../common/settings.ts";
 import { Point } from "../../../../../common/shapes/Point.ts";
@@ -33,11 +33,14 @@ export class ChessboardHelper {
 	}
 
     renderBoard(boardData: ChessBoard, moves: ChessMove[], team: TeamName) {
+		const perspective = teamPerspective(team);
+
         // Prep and draw all rectangles
 		const border = Shape.from(this.boardRect.expand(boardOutlineWidth), boardOutlineColor);
 		const squares = boardData.flatMap(row => {
 			return row.map(square => {
-				const squareLeftTop = this.boardRect.leftTop.add(new Point(square.coordinate.file*this.squareSize, square.coordinate.rank*this.squareSize));
+				const coordinate = applyPerspective(square.coordinate, perspective);
+				const squareLeftTop = this.boardRect.leftTop.add(new Point(coordinate.file*this.squareSize, coordinate.rank*this.squareSize));
 				const squareRightBottom = squareLeftTop.add(new Point(this.squareSize, this.squareSize));
 				const rect = new Rect(squareLeftTop, squareRightBottom);
 				switch (square.color) {
@@ -56,7 +59,8 @@ export class ChessboardHelper {
 		boardData.forEach(row => {
 			row.forEach(square => {
 				if (square.contents !== null) {
-					const squareLeftTop = this.boardRect.leftTop.add(new Point(square.coordinate.file*this.squareSize, square.coordinate.rank*this.squareSize));
+					const coordinate = applyPerspective(square.coordinate, perspective);
+					const squareLeftTop = this.boardRect.leftTop.add(new Point(coordinate.file*this.squareSize, coordinate.rank*this.squareSize));
 					this.chessPieceRenderer.renderSquare(squareLeftTop, this.squareSize, square.contents);
 				}
 			})
@@ -64,14 +68,16 @@ export class ChessboardHelper {
 
 		// Draw all the moves
 		moves.forEach(move => {
+			const from = applyPerspective(move.from, perspective);
+			const to = applyPerspective(move.to, perspective);
 			const color = rensets.players.teamColor[move.team];
 			const fromSquare = new Rect(
-				this.boardRect.leftTop.add(new Point(move.from.file*this.squareSize, move.from.rank*this.squareSize)),
-				this.boardRect.leftTop.add(new Point((move.from.file+1)*this.squareSize, (move.from.rank+1)*this.squareSize))
+				this.boardRect.leftTop.add(new Point(from.file*this.squareSize, from.rank*this.squareSize)),
+				this.boardRect.leftTop.add(new Point((from.file+1)*this.squareSize, (from.rank+1)*this.squareSize))
 			);
 			const toSquare = new Rect(
-				this.boardRect.leftTop.add(new Point(move.to.file*this.squareSize, move.to.rank*this.squareSize)),
-				this.boardRect.leftTop.add(new Point((move.to.file+1)*this.squareSize, (move.to.rank+1)*this.squareSize))
+				this.boardRect.leftTop.add(new Point(to.file*this.squareSize, to.rank*this.squareSize)),
+				this.boardRect.leftTop.add(new Point((to.file+1)*this.squareSize, (to.rank+1)*this.squareSize))
 			);
 			
 			this.rectangleRenderer.render([
