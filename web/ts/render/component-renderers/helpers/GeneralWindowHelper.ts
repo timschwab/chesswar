@@ -1,9 +1,9 @@
-import { Optional } from "../../../../common/data-structures/Optional.ts";
-import { BriefingName } from "../../../../common/data-types/facility.ts";
-import { rensets } from "../../../../common/settings.ts";
-import { Point } from "../../../../common/shapes/Point.ts";
-import { Rect } from "../../../../common/shapes/Rect.ts";
-import { CWScreen } from "../../core/CWScreen.ts";
+import { Optional } from "../../../../../common/data-structures/Optional.ts";
+import { BriefingName } from "../../../../../common/data-types/facility.ts";
+import { rensets } from "../../../../../common/settings.ts";
+import { Point } from "../../../../../common/shapes/Point.ts";
+import { Rect } from "../../../../../common/shapes/Rect.ts";
+import { CWScreen } from "../../../core/CWScreen.ts";
 
 export interface ImportantValuesBundle {
     windowRect: Rect,

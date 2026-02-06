@@ -1,12 +1,12 @@
-import { CWColor } from "../../../../common/Color.ts";
-import { ChessBoard, ChessMove, SquareColor } from "../../../../common/data-types/chess.ts";
-import { assertNever } from "../../../../common/Preconditions.ts";
-import { rensets } from "../../../../common/settings.ts";
-import { Point } from "../../../../common/shapes/Point.ts";
-import { Rect } from "../../../../common/shapes/Rect.ts";
-import { Shape } from "../../../../common/shapes/Shape.ts";
-import { ChessPieceRenderer } from "../../webgl/chessPiece/ChessPieceRenderer.ts";
-import { RectangleRenderer } from "../../webgl/rectangle/RectangleRenderer.ts";
+import { CWColor } from "../../../../../common/Color.ts";
+import { ChessBoard, ChessMove, SquareColor } from "../../../../../common/data-types/chess.ts";
+import { assertNever } from "../../../../../common/Preconditions.ts";
+import { rensets } from "../../../../../common/settings.ts";
+import { Point } from "../../../../../common/shapes/Point.ts";
+import { Rect } from "../../../../../common/shapes/Rect.ts";
+import { Shape } from "../../../../../common/shapes/Shape.ts";
+import { ChessPieceRenderer } from "../../../webgl/chessPiece/ChessPieceRenderer.ts";
+import { RectangleRenderer } from "../../../webgl/rectangle/RectangleRenderer.ts";
 
 const boardOutlineColor = CWColor.GREY_BLACK;
 const boardOutlineWidth = 2;

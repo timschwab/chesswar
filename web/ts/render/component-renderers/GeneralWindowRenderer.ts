@@ -10,8 +10,8 @@ import { ClientPlayer } from "../../game-logic/ClientPlayer.ts";
 import { ChessPieceRenderer } from "../../webgl/chessPiece/ChessPieceRenderer.ts";
 import { RectangleRenderer } from "../../webgl/rectangle/RectangleRenderer.ts";
 import { UiComponentRenderer } from "../UiComponentRenderer.ts";
-import { ChessboardHelper } from "./ChessboardHelper.ts";
-import { GeneralWindowHelper, ImportantValuesBundle } from "./GeneralWindowHelper.ts";
+import { ChessboardHelper } from "./helpers/ChessboardHelper.ts";
+import { GeneralWindowHelper, ImportantValuesBundle } from "./helpers/GeneralWindowHelper.ts";
 
 export class GeneralWindowRenderer implements UiComponentRenderer {
     private rectangleRenderer: RectangleRenderer;

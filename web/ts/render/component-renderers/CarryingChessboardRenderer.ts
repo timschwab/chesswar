@@ -7,7 +7,7 @@ import { ChesswarState } from "../../game-logic/ChesswarState.ts";
 import { ChessPieceRenderer } from "../../webgl/chessPiece/ChessPieceRenderer.ts";
 import { RectangleRenderer } from "../../webgl/rectangle/RectangleRenderer.ts";
 import { UiComponentRenderer } from "../UiComponentRenderer.ts";
-import { ChessboardHelper } from "./ChessboardHelper.ts";
+import { ChessboardHelper } from "./helpers/ChessboardHelper.ts";
 
 const boardSize = 200;
 const leftTop = new Point(10, 290);

@@ -7,7 +7,7 @@ import { Point } from "../../../common/shapes/Point.ts";
 import { CWClientSocket } from "../core/CWClientSocket.ts";
 import { CWInput } from "../core/CWInput.ts";
 import { CWScreen } from "../core/CWScreen.ts";
-import { GeneralWindowHelper, ImportantValuesBundle } from "../render/component-renderers/GeneralWindowHelper.ts";
+import { GeneralWindowHelper, ImportantValuesBundle } from "../render/component-renderers/helpers/GeneralWindowHelper.ts";
 import { ChesswarState } from "./ChesswarState.ts";
 
 export class ClickEventHandler {
