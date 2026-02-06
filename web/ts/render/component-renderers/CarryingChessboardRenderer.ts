@@ -33,7 +33,7 @@ export class CarryingChessboardRenderer implements UiComponentRenderer {
                     this.chessboardHelper.renderBoard(teamBoard, [carrying.load]);
                     break;
                 case CarryLoadType.INTEL:
-                    this.chessboardHelper.renderBoard(teamBoard, []);
+                    this.chessboardHelper.renderBoard(carrying.load, []);
                     break;
                 case CarryLoadType.ESPIONAGE:
                     this.chessboardHelper.renderBoard(teamBoard, briefingBundleMoveList(carrying.load));

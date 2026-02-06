@@ -50,6 +50,14 @@ export class ChesswarState {
 		return this.allPlayers;
 	}
 
+	getVictory() {
+		return this.victory;
+	}
+
+	getNewGameCounter() {
+		return this.newGameCounter;
+	}
+
 	setTeamInfo(info: TeamMessagePayload) {
 		this.teamInfo = Optional.of(info);
 	}
