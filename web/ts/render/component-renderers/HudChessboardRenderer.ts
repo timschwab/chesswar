@@ -19,8 +19,10 @@ export class HudChessboardRenderer implements UiComponentRenderer {
 	}
 
 	render(state: ChesswarState) {
-		state.getTeamInfo().ifPresent(info => {
-			this.chessboardHelper.renderBoard(info.board, []);
+		state.getSelfPlayer().ifPresent(selfPlayer => {
+			state.getTeamInfo().ifPresent(info => {
+				this.chessboardHelper.renderBoard(info.board, [], selfPlayer.team);
+			});
 		});
 	}
 };

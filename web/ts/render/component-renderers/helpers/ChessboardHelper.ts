@@ -1,4 +1,5 @@
 import { CWColor } from "../../../../../common/Color.ts";
+import { TeamName } from "../../../../../common/data-types/base.ts";
 import { ChessBoard, ChessMove, SquareColor } from "../../../../../common/data-types/chess.ts";
 import { assertNever } from "../../../../../common/Preconditions.ts";
 import { rensets } from "../../../../../common/settings.ts";
@@ -31,7 +32,7 @@ export class ChessboardHelper {
 		this.squareSize = boardRect.width/8;
 	}
 
-    renderBoard(boardData: ChessBoard, moves: ChessMove[]) {
+    renderBoard(boardData: ChessBoard, moves: ChessMove[], team: TeamName) {
         // Prep and draw all rectangles
 		const border = Shape.from(this.boardRect.expand(boardOutlineWidth), boardOutlineColor);
 		const squares = boardData.flatMap(row => {

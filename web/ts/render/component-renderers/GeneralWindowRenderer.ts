@@ -65,7 +65,7 @@ export class GeneralWindowRenderer implements UiComponentRenderer {
             if (info.briefings[BriefingName.ONE] !== null) moves.push(info.briefings[BriefingName.ONE]);
             if (info.briefings[BriefingName.TWO] !== null) moves.push(info.briefings[BriefingName.TWO]);
             if (info.briefings[BriefingName.THREE] !== null) moves.push(info.briefings[BriefingName.THREE]);
-            this.chessboardHelper.renderBoard(info.board, moves)
+            this.chessboardHelper.renderBoard(info.board, moves, selfPlayer.team);
         });
     }
 }

@@ -1,4 +1,6 @@
-import { CarryLoadType } from "../../../../common/data-types/carryLoad.ts";
+import { TeamName } from "../../../../common/data-types/base.ts";
+import { CarryLoad, CarryLoadType } from "../../../../common/data-types/carryLoad.ts";
+import { ChessBoard } from "../../../../common/data-types/chess.ts";
 import { briefingBundleMoveList } from "../../../../common/data-types/facility.ts";
 import { assertNever } from "../../../../common/Preconditions.ts";
 import { Point } from "../../../../common/shapes/Point.ts";
@@ -22,25 +24,28 @@ export class CarryingChessboardRenderer implements UiComponentRenderer {
     }
 
     render(state: ChesswarState) {
-        state.getTeamInfo().ifPresent(info => {
-            const carrying = state.getCarrying();
-            const teamBoard = info.board;
-
-            switch (carrying.type) {
-                case CarryLoadType.EMPTY:
-                    break;
-                case CarryLoadType.ORDERS:
-                    this.chessboardHelper.renderBoard(teamBoard, [carrying.load]);
-                    break;
-                case CarryLoadType.INTEL:
-                    this.chessboardHelper.renderBoard(carrying.load, []);
-                    break;
-                case CarryLoadType.ESPIONAGE:
-                    this.chessboardHelper.renderBoard(teamBoard, briefingBundleMoveList(carrying.load));
-                    break;
-                default:
-                    assertNever(carrying);
-            }
+        state.getSelfPlayer().ifPresent(selfPlayer => {
+            state.getTeamInfo().ifPresent(teamInfo => {
+                this.renderInternal(selfPlayer.team, teamInfo.board, state.getCarrying());
+            });
         });
+    }
+
+    private renderInternal(team: TeamName, teamBoard: ChessBoard, carrying: CarryLoad) {
+        switch (carrying.type) {
+            case CarryLoadType.EMPTY:
+                break;
+            case CarryLoadType.ORDERS:
+                this.chessboardHelper.renderBoard(teamBoard, [carrying.load], team);
+                break;
+            case CarryLoadType.INTEL:
+                this.chessboardHelper.renderBoard(carrying.load, [], team);
+                break;
+            case CarryLoadType.ESPIONAGE:
+                this.chessboardHelper.renderBoard(teamBoard, briefingBundleMoveList(carrying.load), team);
+                break;
+            default:
+                assertNever(carrying);
+        }
     }
 };
