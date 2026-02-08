@@ -1,6 +1,5 @@
 import { PlayerRole } from "../../../../common/data-types/base.ts";
-import { ChessMove } from "../../../../common/data-types/chess.ts";
-import { BriefingName } from "../../../../common/data-types/facility.ts";
+import { briefingBundleMoveList, BriefingName } from "../../../../common/data-types/facility.ts";
 import { rensets } from "../../../../common/settings.ts";
 import { Shape } from "../../../../common/shapes/Shape.ts";
 import { ZeroRect } from "../../../../common/shapes/Zero.ts";
@@ -62,11 +61,9 @@ export class GeneralWindowRenderer implements UiComponentRenderer {
 
         // Draw board
         state.getTeamInfo().ifPresent(info => {
-            const moves: ChessMove[] = [];
-            if (info.briefings[BriefingName.ONE] !== null) moves.push(info.briefings[BriefingName.ONE]);
-            if (info.briefings[BriefingName.TWO] !== null) moves.push(info.briefings[BriefingName.TWO]);
-            if (info.briefings[BriefingName.THREE] !== null) moves.push(info.briefings[BriefingName.THREE]);
-            this.chessboardHelper.renderBoard(info.board, moves, selfPlayer.team);
+            const teamMoves = briefingBundleMoveList(info.briefings);
+            const enemyMoves = briefingBundleMoveList(info.enemyBriefings);
+            this.chessboardHelper.renderBoard(info.board, [...enemyMoves, ...teamMoves], selfPlayer.team);
         });
     }
 }

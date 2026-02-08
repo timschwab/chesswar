@@ -4,6 +4,10 @@ export class Vector {
 	readonly dir: number; // In radians
 	readonly mag: number;
 
+	static fromPoints(fromPoint: Point, toPoint: Point): Vector {
+		return Vector.fromPoint(fromPoint.subtract(toPoint));
+	}
+
 	static fromPoint(point: Point): Vector {
 		const dir = Math.atan2(point.y, point.x);
 		const mag = Math.sqrt(point.x*point.x + point.y*point.y);
@@ -19,6 +23,10 @@ export class Vector {
 		const x = Math.cos(this.dir) * this.mag;
 		const y = Math.sin(this.dir) * this.mag;
 		return new Point(x, y);
+	}
+
+	withMagnitude(mag: number): Vector {
+		return new Vector(this.dir, mag);
 	}
 
 	add(other: Vector): Vector {
@@ -37,7 +45,11 @@ export class Vector {
 		return new Vector(this.dir, this.mag/scalar);
 	}
 
-	normalize(): Vector {
-		return new Vector(this.dir, 1);
+	clockwise(diff: number): Vector {
+		return new Vector(this.dir-diff, this.mag);
+	}
+
+	counterClockwise(diff: number): Vector {
+		return new Vector(this.dir+diff, this.mag);
 	}
 }

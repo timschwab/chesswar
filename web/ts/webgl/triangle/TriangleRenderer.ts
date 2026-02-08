@@ -21,7 +21,7 @@ export class TriangleRenderer {
 	constructor(webgl: WebglInterface, screen: CWScreen) {
 		// Prepare the triangle rendering data
 		const triangleData = [
-			new Point(0, 0), new Point(0, 1), new Point(1, 0)
+			new Point(1, 1), new Point(1, 0), new Point(0, 1)
 		];
 		const attributePointData = new Map([[VERTEX, triangleData]]);
 

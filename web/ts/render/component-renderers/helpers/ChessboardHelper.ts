@@ -1,4 +1,5 @@
 import { Color, CWColor } from "../../../../../common/Color.ts";
+import { TAU_QUARTER } from "../../../../../common/Constants.ts";
 import { TeamName } from "../../../../../common/data-types/base.ts";
 import { applyPerspective, ChessBoard, ChessMove, SquareColor, teamPerspective } from "../../../../../common/data-types/chess.ts";
 import { assertNever } from "../../../../../common/Preconditions.ts";
@@ -6,6 +7,7 @@ import { rensets } from "../../../../../common/settings.ts";
 import { Point } from "../../../../../common/shapes/Point.ts";
 import { Rect } from "../../../../../common/shapes/Rect.ts";
 import { Shape } from "../../../../../common/shapes/Shape.ts";
+import { Vector } from "../../../../../common/shapes/Vector.ts";
 import { ChessPieceRenderer } from "../../../webgl/chessPiece/ChessPieceRenderer.ts";
 import { RectangleRenderer } from "../../../webgl/rectangle/RectangleRenderer.ts";
 import { TriangleRenderer } from "../../../webgl/triangle/TriangleRenderer.ts";
@@ -83,9 +85,15 @@ export class ChessboardHelper {
 				this.boardRect.leftTop.add(new Point((to.file+1)*this.squareSize, (to.rank+1)*this.squareSize))
 			);
 
+			const arrowHalfWidth = this.squareSize/8;
+			const fromPoint = fromSquare.center;
+			const toPoint = toSquare.center;
+			const vector = Vector.fromPoints(fromPoint, toPoint);
+			const v1 = vector.clockwise(TAU_QUARTER).withMagnitude(arrowHalfWidth).toPoint().add(fromPoint);
+			const v2 = vector.counterClockwise(TAU_QUARTER).withMagnitude(arrowHalfWidth).toPoint().add(fromPoint);
+
 			const triangles: [Point, Point, Point, Color][] = [
-				[fromSquare.leftTop, fromSquare.leftBottom, fromSquare.rightBottom, color],
-				[toSquare.leftTop, toSquare.leftBottom, toSquare.rightBottom, color]
+				[v1, v2, toPoint, color]
 			];
 			
 			this.triangleRenderer.render(triangles);

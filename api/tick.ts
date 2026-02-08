@@ -48,7 +48,7 @@ function movePlayer(player: ServerPlayer): void {
 	if (xDir == 0 && yDir == 0) {
 		inputForce = ZeroVector;
 	} else {
-		inputForce = Vector.fromPoint(new Point(xDir, yDir)).normalize().multiply(inputForceMag);
+		inputForce = Vector.fromPoint(new Point(xDir, yDir)).withMagnitude(inputForceMag);
 	}
 
 	// Compute net force based on input force, friction, and drag
