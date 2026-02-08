@@ -1,4 +1,4 @@
-import { CWColor } from "../../../../../common/Color.ts";
+import { Color, CWColor } from "../../../../../common/Color.ts";
 import { TeamName } from "../../../../../common/data-types/base.ts";
 import { applyPerspective, ChessBoard, ChessMove, SquareColor, teamPerspective } from "../../../../../common/data-types/chess.ts";
 import { assertNever } from "../../../../../common/Preconditions.ts";
@@ -8,6 +8,7 @@ import { Rect } from "../../../../../common/shapes/Rect.ts";
 import { Shape } from "../../../../../common/shapes/Shape.ts";
 import { ChessPieceRenderer } from "../../../webgl/chessPiece/ChessPieceRenderer.ts";
 import { RectangleRenderer } from "../../../webgl/rectangle/RectangleRenderer.ts";
+import { TriangleRenderer } from "../../../webgl/triangle/TriangleRenderer.ts";
 
 const boardOutlineColor = CWColor.GREY_BLACK;
 const boardOutlineWidth = 2;
@@ -17,12 +18,14 @@ const boardDark = CWColor.GREY_STANDARD;
 export class ChessboardHelper {
     private readonly rectangleRenderer: RectangleRenderer;
     private readonly chessPieceRenderer: ChessPieceRenderer;
+	private readonly triangleRenderer: TriangleRenderer;
 	private boardRect: Rect;
 	private squareSize: number;
 
-    constructor(rectangleRenderer: RectangleRenderer, chessPieceRenderer: ChessPieceRenderer, boardRect: Rect) {
+    constructor(rectangleRenderer: RectangleRenderer, chessPieceRenderer: ChessPieceRenderer, triangleRenderer: TriangleRenderer, boardRect: Rect) {
         this.rectangleRenderer = rectangleRenderer;
         this.chessPieceRenderer = chessPieceRenderer;
+		this.triangleRenderer = triangleRenderer;
 		this.boardRect = boardRect;
 		this.squareSize = boardRect.width/8;
     }
@@ -79,11 +82,13 @@ export class ChessboardHelper {
 				this.boardRect.leftTop.add(new Point(to.file*this.squareSize, to.rank*this.squareSize)),
 				this.boardRect.leftTop.add(new Point((to.file+1)*this.squareSize, (to.rank+1)*this.squareSize))
 			);
+
+			const triangles: [Point, Point, Point, Color][] = [
+				[fromSquare.leftTop, fromSquare.leftBottom, fromSquare.rightBottom, color],
+				[toSquare.leftTop, toSquare.leftBottom, toSquare.rightBottom, color]
+			];
 			
-			this.rectangleRenderer.render([
-				Shape.from(fromSquare.shrink(this.squareSize/2.5), color),
-				Shape.from(toSquare.shrink(this.squareSize/3), color)
-			]);
+			this.triangleRenderer.render(triangles);
 		});
     }
 }

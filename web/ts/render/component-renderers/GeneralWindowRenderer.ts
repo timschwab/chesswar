@@ -9,6 +9,7 @@ import { ChesswarState } from "../../game-logic/ChesswarState.ts";
 import { ClientPlayer } from "../../game-logic/ClientPlayer.ts";
 import { ChessPieceRenderer } from "../../webgl/chessPiece/ChessPieceRenderer.ts";
 import { RectangleRenderer } from "../../webgl/rectangle/RectangleRenderer.ts";
+import { TriangleRenderer } from "../../webgl/triangle/TriangleRenderer.ts";
 import { UiComponentRenderer } from "../UiComponentRenderer.ts";
 import { ChessboardHelper } from "./helpers/ChessboardHelper.ts";
 import { GeneralWindowHelper, ImportantValuesBundle } from "./helpers/GeneralWindowHelper.ts";
@@ -18,9 +19,9 @@ export class GeneralWindowRenderer implements UiComponentRenderer {
     private chessboardHelper: ChessboardHelper;
     private genwinHelper: GeneralWindowHelper;
 
-    constructor(rectangleRenderer: RectangleRenderer, chessPieceRenderer: ChessPieceRenderer, screen: CWScreen) {
+    constructor(rectangleRenderer: RectangleRenderer, chessPieceRenderer: ChessPieceRenderer, triangleRenderer: TriangleRenderer, screen: CWScreen) {
         this.rectangleRenderer = rectangleRenderer;
-        this.chessboardHelper = new ChessboardHelper(rectangleRenderer, chessPieceRenderer, ZeroRect);
+        this.chessboardHelper = new ChessboardHelper(rectangleRenderer, chessPieceRenderer, triangleRenderer, ZeroRect);
         this.genwinHelper = new GeneralWindowHelper(screen);
     }
 

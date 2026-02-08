@@ -40,7 +40,7 @@ const mspt = 1000/tps;
 export const gameEngine = {
 	tps,
 	mspt,
-	deathTicks: tps*5,
+	deathTicks: tps*0.5,
 	newGameTicks: tps*30,
 	startingRole: PlayerRole.SOLDIER,
 	startingClump: 100,

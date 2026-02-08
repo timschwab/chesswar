@@ -12,7 +12,7 @@ void main() {
 	// Compute which vertex we are
 	float v1or2 = a_vertex.x;
 	float v1or3 = a_vertex.y;
-	float v2or3 = (a_vertex.x+a_vertex.y-2)*-1;
+	float v2or3 = 2.0 - (a_vertex.x + a_vertex.y);
 
 	float isV1 = v1or2 * v1or3;
 	float isV2 = v1or2 * v2or3;

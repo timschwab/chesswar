@@ -18,6 +18,7 @@ import { StatsRenderer } from "./component-renderers/StatsRenderer.ts";
 import { TeamRoleRenderer } from "./component-renderers/TeamRoleRenderer.ts";
 import { GeneralWindowRenderer } from "./component-renderers/GeneralWindowRenderer.ts";
 import { VictoryRenderer } from "./component-renderers/VictoryRenderer.ts";
+import { TriangleRenderer } from "../webgl/triangle/TriangleRenderer.ts";
 
 export class ChesswarRenderer {
 	private readonly state: ChesswarState;
@@ -39,6 +40,7 @@ export class ChesswarRenderer {
 		const webglMapRenderer = new WebglMapRenderer(webgl, screen);
 		const webglPlayerRenderer = new WebglPlayerRenderer(webgl, screen);
 		const rectangleRenderer = new RectangleRenderer(webgl, screen);
+		const triangleRenderer = new TriangleRenderer(webgl, screen);
 		const textRenderer = new TextRenderer(webgl, dom, screen);
 		const chessPieceRenderer = new ChessPieceRenderer(webgl, screen);
 
@@ -49,10 +51,10 @@ export class ChesswarRenderer {
 			new TeamRoleRenderer(rectangleRenderer, textRenderer),
 			new ActionOptionRenderer(rectangleRenderer, textRenderer),
 			new StatsRenderer(textRenderer, screen, statsManager),
-			new HudChessboardRenderer(rectangleRenderer, chessPieceRenderer),
-			new CarryingChessboardRenderer(rectangleRenderer, chessPieceRenderer),
+			new HudChessboardRenderer(rectangleRenderer, chessPieceRenderer, triangleRenderer),
+			new CarryingChessboardRenderer(rectangleRenderer, chessPieceRenderer, triangleRenderer),
 			new VictoryRenderer(textRenderer, screen),
-			new GeneralWindowRenderer(rectangleRenderer, chessPieceRenderer, screen)
+			new GeneralWindowRenderer(rectangleRenderer, chessPieceRenderer, triangleRenderer, screen)
 		];
 	}
 

@@ -3,6 +3,7 @@ import { Rect } from "../../../../common/shapes/Rect.ts";
 import { ChesswarState } from "../../game-logic/ChesswarState.ts";
 import { ChessPieceRenderer } from "../../webgl/chessPiece/ChessPieceRenderer.ts";
 import { RectangleRenderer } from "../../webgl/rectangle/RectangleRenderer.ts";
+import { TriangleRenderer } from "../../webgl/triangle/TriangleRenderer.ts";
 import { UiComponentRenderer } from "../UiComponentRenderer.ts";
 import { ChessboardHelper } from "./helpers/ChessboardHelper.ts";
 
@@ -14,8 +15,8 @@ const boardRect = new Rect(leftTop, rightBottom);
 export class HudChessboardRenderer implements UiComponentRenderer {
 	private readonly chessboardHelper: ChessboardHelper;
 	
-	constructor(rectangleRenderer: RectangleRenderer, chessPieceRenderer: ChessPieceRenderer) {
-		this.chessboardHelper = new ChessboardHelper(rectangleRenderer, chessPieceRenderer, boardRect);
+	constructor(rectangleRenderer: RectangleRenderer, chessPieceRenderer: ChessPieceRenderer, triangleRenderer: TriangleRenderer) {
+		this.chessboardHelper = new ChessboardHelper(rectangleRenderer, chessPieceRenderer, triangleRenderer, boardRect);
 	}
 
 	render(state: ChesswarState) {
