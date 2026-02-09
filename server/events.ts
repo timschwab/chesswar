@@ -239,7 +239,7 @@ function generalOrders(player: ServerPlayer, payload: GeneralOrdersMessagePayloa
 	const state = getState();
 	if (player.role != PlayerRole.GENERAL) {
 		return;
-	} else if (player.team != payload.move.team) {
+	} else if (player.team !== payload.move.team) {
 		// Make sure they don't try to be cheatin
 		return;
 	}
