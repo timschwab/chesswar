@@ -4,7 +4,6 @@ import { spawnPlayer } from "./spawn.ts";
 import { ServerPlayer, getState } from "./state.ts";
 import { ChessPiece } from "../common/data-types/chess.ts";
 import { CarryLoadType } from "../common/data-types/carryLoad.ts";
-import socket from "./socket.ts";
 import { ServerMessageTypes } from "../common/message-types/server.ts";
 import { Point } from "../common/shapes/Point.ts";
 import { Vector } from "../common/shapes/Vector.ts";

@@ -8,7 +8,6 @@ import { gameEngine } from "../common/settings.ts";
 import { Circle } from "../common/shapes/Circle.ts";
 import { ZeroCircle, ZeroVector } from "../common/shapes/Zero.ts";
 import { makeMove } from "./chess.ts";
-import socket from "./socket.ts";
 import { setCarrying, spawnPlayer } from "./spawn.ts";
 import { ServerPlayer, getState } from "./state.ts";
 

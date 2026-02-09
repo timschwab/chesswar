@@ -7,7 +7,6 @@ import { gameEngine } from "../common/settings.ts";
 import { Circle } from "../common/shapes/Circle.ts";
 import { Point } from "../common/shapes/Point.ts";
 import { ZeroVector } from "../common/shapes/Zero.ts";
-import socket from "./socket.ts";
 import { ServerPlayer } from "./state.ts";
 
 export function spawnPlayer(player: ServerPlayer): void {

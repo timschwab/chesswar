@@ -1,20 +1,27 @@
 import { gameEngine } from "../common/settings.ts";
 import { addPlayer, receiveMessage, removePlayer } from "./events.ts";
-import { tick } from "./oldServerGame.ts";
-import socket from "./socket.ts";
+import { SocketManager } from "./SocketManager.ts";
+import { TickHandler } from "./TickHandler.ts";
 
 export class ServerGame {
-    start() {
-        // Set up events
-        socket.listen.add(addPlayer);
-        socket.listen.remove(removePlayer);
-        socket.listen.message(receiveMessage);
-    
-        // Set up ticking
-        setInterval(tick, gameEngine.mspt);
+    private readonly socketManager: SocketManager;
+    private readonly tickHandler: TickHandler;
+
+    constructor() {
+        this.socketManager = new SocketManager();
+        this.tickHandler = new TickHandler(this.socketManager);
     }
 
-    newConnection(sock: WebSocket) {
-        socket.newConnection(sock);
+    start() {
+        this.socketManager.listenAdd(addPlayer);
+        this.socketManager.listenRemove(removePlayer);
+        this.socketManager.listenMessage(receiveMessage);
+    
+        // Set up ticking
+        setInterval(this.tickHandler.tick.bind(this.tickHandler), gameEngine.mspt);
+    }
+
+    newConnection(socket: WebSocket) {
+        this.socketManager.newConnection(socket);
     }
 }
