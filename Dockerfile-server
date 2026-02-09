@@ -7,8 +7,8 @@ RUN deno cache deps.ts
 
 # Build
 COPY common common
-COPY api api
+COPY server server
 
 # Run
 EXPOSE 18357
-CMD deno task api
+CMD deno task server
