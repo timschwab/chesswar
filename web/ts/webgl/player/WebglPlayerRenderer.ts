@@ -11,6 +11,7 @@ import { CWScreen } from "../../core/CWScreen.ts";
 import { WebglInterface } from "../WebglInterface.ts";
 
 
+const SNAP_TO_EDGE = "u_snap_to_edge";
 const SCREEN = "u_screen";
 const CAMERA_CENTER = "u_camera_center";
 const COLOR = "u_color";
@@ -38,7 +39,7 @@ export class WebglPlayerRenderer {
 			},
 			uniformNames: {
 				screen: SCREEN,
-				values: [SCALE],
+				values: [SNAP_TO_EDGE, SCALE],
 				points: [CAMERA_CENTER, PLAYER_CENTER],
 				colors: [COLOR]
 			},
@@ -54,6 +55,7 @@ export class WebglPlayerRenderer {
 
 		// Set the camera once per render
 		this.renderer.setUniformPoint(CAMERA_CENTER, camera);
+		this.renderer.setUniformValue(SNAP_TO_EDGE, 1);
 
 		// Group the players into team/size buckets
 		const bucketedPlayers = players.reduce((acc, cur) => {
