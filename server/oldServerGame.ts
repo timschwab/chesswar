@@ -3,21 +3,10 @@ import { ServerMessageTypes, TeamMessage, TeamMessagePayload } from "../common/m
 import { SerializedClientPlayer } from "../common/data-types/client.ts";
 import { ServerPlayer, getState, resetState } from "./state.ts";
 import { tickNewGame, tickPlayers, tickTankKills, tickVictory } from "./tick.ts";
-import { addPlayer, receiveMessage, removePlayer } from "./events.ts";
+import { addPlayer } from "./events.ts";
 import { TeamName } from "../common/data-types/base.ts";
-import { gameEngine } from "../common/settings.ts";
 
-export function initGame() {
-	// Set up events
-	socket.listen.add(addPlayer);
-	socket.listen.remove(removePlayer);
-	socket.listen.message(receiveMessage);
-
-	// Set up ticking
-	setInterval(tick, gameEngine.mspt);
-}
-
-function tick(): void {
+export function tick(): void {
 	try {
 		const startTick = performance.now();
 		tickAll();

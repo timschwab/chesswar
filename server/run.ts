@@ -1,24 +1,24 @@
 import { localApiServer } from "../common/settings.ts";
-import { initGame } from "./oldServerGame.ts";
-import socket from "./socket.ts";
+import { ServerGame } from "./serverGame.ts";
 
-initGame();
+const game = new ServerGame();
+game.start();
 
 const handler = function(req: Request): Response {
 	const {pathname} = new URL(req.url);
 
-	if (pathname != "/") {
+	if (pathname !== "/") {
 		return new Response(null, {
 			status: 404
 		});
 	}
 
-	if (req.headers.get("upgrade") != "websocket") {
+	if (req.headers.get("upgrade") !== "websocket") {
 		return new Response("Gimme a websocket bruv", { status: 400 });
 	}
 
 	const { socket: sock, response } = Deno.upgradeWebSocket(req);
-	socket.newConnection(sock);
+	game.newConnection(sock);
 	return response;
 };
 
