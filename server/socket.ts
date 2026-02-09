@@ -5,8 +5,8 @@ import { ServerMessage } from "../common/message-types/server.ts";
 import { ChesswarId } from "../common/data-types/base.ts";
 
 const connections = new Map<ChesswarId, WebSocket>();
-const addHook = new Hook<string>();
-const removeHook = new Hook<string>();
+const addHook = new Hook<ChesswarId>();
+const removeHook = new Hook<ChesswarId>();
 const messageHook = new Hook<ClientMessageWithId>();
 
 function newConnection(sock: WebSocket) {
@@ -21,7 +21,7 @@ function newConnection(sock: WebSocket) {
 		addHook.run(id);
 	});
 
-	sock.addEventListener("message", function(event: MessageEvent) {
+	sock.addEventListener("message", function(messageEvent: MessageEvent) {
 		const str = event.data;
 		console.log(`--- ${id} message ---`);
 		console.log(str);
@@ -33,7 +33,7 @@ function newConnection(sock: WebSocket) {
 		messageHook.run(messageWithId);
 	});
 
-	sock.addEventListener("error", function(error: Event) {
+	sock.addEventListener("error", function(errorEvent: Event) {
 		console.log(`--- ${id} error ---`);
 		console.log(error);
 		console.log();
