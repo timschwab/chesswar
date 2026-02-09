@@ -3,13 +3,11 @@ import playerFragmentShader from "./glsl-generated/playerFragmentShader.ts";
 import { Circle } from "../../../../common/shapes/Circle.ts";
 import { ZeroPoint } from "../../../../common/shapes/Zero.ts";
 import { WebglRenderer } from "../WebglRenderer.ts";
-import { Point } from "../../../../common/shapes/Point.ts";
 import { ClientPlayer } from "../../game-logic/ClientPlayer.ts";
-import { TeamName } from "../../../../common/data-types/base.ts";
+import { PlayerRole } from "../../../../common/data-types/base.ts";
 import { rensets } from "../../../../common/settings.ts";
 import { CWScreen } from "../../core/CWScreen.ts";
 import { WebglInterface } from "../WebglInterface.ts";
-
 
 const SNAP_TO_EDGE = "u_snap_to_edge";
 const SCREEN = "u_screen";
@@ -49,45 +47,27 @@ export class WebglPlayerRenderer {
 		});
 	}
 
-	render(camera: Point, players: ClientPlayer[]) {
+	render(selfPlayer: ClientPlayer, players: ClientPlayer[]) {
 		// Prepare webgl
 		this.renderer.prep();
 
 		// Set the camera once per render
-		this.renderer.setUniformPoint(CAMERA_CENTER, camera);
-		this.renderer.setUniformValue(SNAP_TO_EDGE, 1);
+		this.renderer.setUniformPoint(CAMERA_CENTER, selfPlayer.position.center);
 
-		// Group the players into team/size buckets
-		const bucketedPlayers = players.reduce((acc, cur) => {
-			let sizeMap = acc.get(cur.team);
-			if (sizeMap === undefined) {
-				sizeMap = new Map();
-				acc.set(cur.team, sizeMap);
+		// Render all the players
+		players.forEach(player => {
+			// Set all the uniforms
+			this.renderer.setUniformColor(COLOR, rensets.players.teamColor[player.team]);
+			this.renderer.setUniformValue(SCALE, player.position.radius);
+			this.renderer.setUniformPoint(PLAYER_CENTER, player.position.center);
+			if (selfPlayer.role === PlayerRole.TANK && [PlayerRole.SOLDIER, PlayerRole.TANK].includes(player.role)) {
+				this.renderer.setUniformValue(SNAP_TO_EDGE, 1);
+			} else {
+				this.renderer.setUniformValue(SNAP_TO_EDGE, 0);
 			}
 
-			let playerList = sizeMap.get(cur.position.radius);
-			if (playerList === undefined) {
-				playerList = [];
-				sizeMap.set(cur.position.radius, playerList);
-			}
-			playerList.push(cur.position.center);
-
-			return acc;
-		}, new Map<TeamName, Map<number, Point[]>>());
-
-		bucketedPlayers.entries().forEach(([teamName, roleMap]) => {
-			// Set the color once per team
-			this.renderer.setUniformColor(COLOR, rensets.players.teamColor[teamName]);
-			roleMap.entries().forEach(([playerSize, playerList]) => {
-				// Set the size once per team/size tuple
-				this.renderer.setUniformValue(SCALE, playerSize);
-				playerList.forEach(center => {
-					// Set the center for every player
-					this.renderer.setUniformPoint(PLAYER_CENTER, center);
-					// Draw
-					this.renderer.draw();
-				});
-			});
+			// Draw
+			this.renderer.draw();
 		});
 	}
 }
