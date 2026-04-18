@@ -4,7 +4,7 @@ import { ClientMessageWithId } from "../common/message-types/client.ts";
 import { ServerMessageTypes } from "../common/message-types/server.ts";
 import { randomChoose } from "../common/random.ts";
 import { ZeroCircle, ZeroVector } from "../common/shapes/Zero.ts";
-import { receiveMessage } from "./events.ts";
+import { MessageHandler } from "./MessageHandler.ts";
 import { SocketManager } from "./SocketManager.ts";
 import { spawnPlayer } from "./spawn.ts";
 import { getState, ServerPlayer } from "./state.ts";
@@ -12,9 +12,11 @@ import { getState, ServerPlayer } from "./state.ts";
 
 export class EventHandler {
 	private readonly socketManager: SocketManager;
+	private readonly messageHandler: MessageHandler;
 
 	constructor(socketManager: SocketManager) {
 		this.socketManager = socketManager;
+		this.messageHandler = new MessageHandler(this.socketManager);
 	}
 
 	addPlayer(id: string): void {
@@ -81,7 +83,8 @@ export class EventHandler {
 	}
 
 	receiveMessage(message: ClientMessageWithId): void {
-		receiveMessage(this.socketManager, message)
+		const player = this.getPlayer(message.id);
+		this.messageHandler.handleMessage(player, message);
 	}
 
 	private getPlayer(id: string): ServerPlayer {
