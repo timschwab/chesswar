@@ -1,5 +1,5 @@
 import { localApiServer } from "../common/settings.ts";
-import { ServerGame } from "./serverGame.ts";
+import { ServerGame } from "./ServerGame.ts";
 
 const game = new ServerGame();
 game.start();

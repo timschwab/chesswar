@@ -1,4 +1,4 @@
-import { SocketManager } from "./SocketManager";
+import { SocketManager } from "./SocketManager.ts";
 
 
 export class EventHandler {

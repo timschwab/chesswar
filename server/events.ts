@@ -4,6 +4,7 @@ import { BriefingName } from "../common/data-types/facility.ts";
 import { mapGeometry } from "../common/map/MapValues.ts";
 import { ClientMessageTypes, ClientMessageWithId, GeneralOrdersMessagePayload, MoveMessagePayload } from "../common/message-types/client.ts";
 import { ServerMessageTypes } from "../common/message-types/server.ts";
+import { randomChoose } from "../common/random.ts";
 import { gameEngine } from "../common/settings.ts";
 import { Circle } from "../common/shapes/Circle.ts";
 import { ZeroCircle, ZeroVector } from "../common/shapes/Zero.ts";
@@ -56,8 +57,11 @@ function newPlayerTeam(): TeamName {
 	const state = getState();
 	if (state[TeamName.BLUE].playerMap.size > state[TeamName.RED].playerMap.size) {
 		return TeamName.RED;
-	} else {
+	} else if (state[TeamName.BLUE].playerMap.size < state[TeamName.RED].playerMap.size) {
 		return TeamName.BLUE;
+	} else {
+		// Equal numbers of blue and red
+		return randomChoose([TeamName.BLUE, TeamName.RED]);
 	}
 }
 
