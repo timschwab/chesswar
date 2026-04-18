@@ -4,77 +4,14 @@ import { BriefingName } from "../common/data-types/facility.ts";
 import { mapGeometry } from "../common/map/MapValues.ts";
 import { ClientMessageTypes, ClientMessageWithId, GeneralOrdersMessagePayload, MoveMessagePayload } from "../common/message-types/client.ts";
 import { ServerMessageTypes } from "../common/message-types/server.ts";
-import { randomChoose } from "../common/random.ts";
 import { gameEngine } from "../common/settings.ts";
 import { Circle } from "../common/shapes/Circle.ts";
-import { ZeroCircle, ZeroVector } from "../common/shapes/Zero.ts";
+import { ZeroVector } from "../common/shapes/Zero.ts";
 import { makeMove } from "./chess.ts";
 import { SocketManager } from "./SocketManager.ts";
-import { setCarrying, spawnPlayer } from "./spawn.ts";
+import { setCarrying } from "./spawn.ts";
 import { ServerPlayer, getState } from "./state.ts";
 
-export function addPlayer(socket: SocketManager, id: string): void {
-	const state = getState();
-	const team = newPlayerTeam();
-	const newPlayer: ServerPlayer = {
-		id,
-		team,
-		role: PlayerRole.SOLDIER,
-		actionOption: PlayerAction.NONE,
-		carrying: {
-			type: CarryLoadType.EMPTY,
-			load: null
-		},
-		movement: {
-			left: false,
-			right: false,
-			up: false,
-			down: false
-		},
-		physics: {
-			speed: ZeroVector,
-			mass: 0,
-			position: ZeroCircle
-		},
-		deathCounter: 0
-	}
-
-	spawnPlayer(socket, newPlayer);
-
-	state.allPlayers.set(id, newPlayer);
-	state[team].playerMap.set(id, newPlayer);
-
-	socket.sendOne(id, {
-		type: ServerMessageTypes.PLAYER_INIT,
-		payload: {
-			id: id
-		}
-	});
-}
-
-// Add them to the team with fewer players
-function newPlayerTeam(): TeamName {
-	const state = getState();
-	if (state[TeamName.BLUE].playerMap.size > state[TeamName.RED].playerMap.size) {
-		return TeamName.RED;
-	} else if (state[TeamName.BLUE].playerMap.size < state[TeamName.RED].playerMap.size) {
-		return TeamName.BLUE;
-	} else {
-		// Equal numbers of blue and red
-		return randomChoose([TeamName.BLUE, TeamName.RED]);
-	}
-}
-
-export function removePlayer(id: string): void {
-	const state = getState();
-	try {
-		const player = getPlayer(id);
-		state.allPlayers.delete(id);
-		state[player.team].playerMap.delete(id);
-	} catch (err) {
-		console.error(err);
-	}
-}
 
 export function receiveMessage(socket: SocketManager, message: ClientMessageWithId): void {
 	const player = getPlayer(message.id);
