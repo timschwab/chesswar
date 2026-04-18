@@ -1,16 +1,18 @@
 import { TeamName } from "../common/data-types/base.ts";
 import { SerializedClientPlayer } from "../common/data-types/client.ts";
 import { ServerMessageTypes, TeamMessage, TeamMessagePayload } from "../common/message-types/server.ts";
-import { addPlayer } from "./events.ts";
+import { EventHandler } from "./EventHandler.ts";
 import { SocketManager } from "./SocketManager.ts";
 import { getState, resetState, ServerPlayer } from "./state.ts";
 import { tickNewGame, tickPlayers, tickTankKills, tickVictory } from "./tick.ts";
 
 export class TickHandler {
 	private readonly socketManager: SocketManager;
+	private readonly eventHandler: EventHandler;
 
-	constructor(socketManager: SocketManager) {
+	constructor(socketManager: SocketManager, eventHandler: EventHandler) {
 		this.socketManager = socketManager;
+		this.eventHandler = eventHandler;
 	}
 
 	tick() {
@@ -96,14 +98,14 @@ export class TickHandler {
 
 	private resetGame() {
 		// Store player IDs
-		const players = getState().allPlayers.keys();
+		const playerIds = getState().allPlayers.keys();
 	
 		// Reset state
 		resetState();
 	
 		// Add all players
-		for (const player of players) {
-			addPlayer(this.socketManager, player);
+		for (const playerId of playerIds) {
+			this.eventHandler.addPlayer(playerId);
 		}
 	}
 }

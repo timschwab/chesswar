@@ -10,8 +10,8 @@ export class ServerGame {
 
 	constructor() {
 		this.socketManager = new SocketManager();
-		this.tickHandler = new TickHandler(this.socketManager);
 		this.eventHandler = new EventHandler(this.socketManager);
+		this.tickHandler = new TickHandler(this.socketManager, this.eventHandler);
 	}
 
 	start() {
