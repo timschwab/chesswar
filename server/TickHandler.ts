@@ -35,8 +35,8 @@ export class TickHandler {
         }
         const state = getState();
     
-        tickPlayers();
-        tickTankKills();
+        tickPlayers(this.socketManager);
+        tickTankKills(this.socketManager);
     
         if (state.victory == null) {
             tickVictory();
@@ -103,7 +103,7 @@ export class TickHandler {
     
         // Add all players
         for (const player of players) {
-            addPlayer(player);
+            addPlayer(this.socketManager, player);
         }
     }
 }

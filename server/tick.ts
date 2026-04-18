@@ -11,8 +11,9 @@ import { TAU_HALF } from "../common/Constants.ts";
 import { Circle } from "../common/shapes/Circle.ts";
 import { ZeroVector } from "../common/shapes/Zero.ts";
 import { mapGeometry } from "../common/map/MapValues.ts";
+import { SocketManager } from "./SocketManager.ts";
 
-export function tickPlayers() {
+export function tickPlayers(socket: SocketManager) {
 	const state = getState();
 	for (const player of state.allPlayers.values()) {
 		if (player.deathCounter > 0) {
@@ -21,8 +22,8 @@ export function tickPlayers() {
 			movePlayer(player);
 		}
 
-		checkMinefields(player);
-		checkTankSafezones(player);
+		checkMinefields(socket, player);
+		checkTankSafezones(socket, player);
 
 		player.actionOption = actionOption(player);
 	}
@@ -99,10 +100,10 @@ function movePlayer(player: ServerPlayer): void {
 	physics.position = new Circle(bouncePosition, radius);
 }
 
-function checkMinefields(player: ServerPlayer): void {
+function checkMinefields(socket: SocketManager, player: ServerPlayer): void {
 	for (const minefield of mapGeometry.minefields) {
 		if (player.physics.position.touches(minefield)) {
-			spawnPlayer(player);
+			spawnPlayer(socket, player);
 			socket.sendOne(player.id, {
 				type: ServerMessageTypes.DEATH,
 				payload: DeathCause.MINEFIELD
@@ -111,11 +112,11 @@ function checkMinefields(player: ServerPlayer): void {
 	}
 }
 
-function checkTankSafezones(player: ServerPlayer): void {
+function checkTankSafezones(socket: SocketManager, player: ServerPlayer): void {
 	if (player.role == PlayerRole.TANK) {
 		const pos = player.physics.position;
 		if (pos.touches(mapGeometry.dmz)) {
-			spawnPlayer(player);
+			spawnPlayer(socket, player);
 			socket.sendOne(player.id, {
 				type: ServerMessageTypes.DEATH,
 				payload: DeathCause.MINEFIELD
@@ -126,7 +127,7 @@ function checkTankSafezones(player: ServerPlayer): void {
 		const enemyBundles = enemyFacilities(player.team);
 		for (const bundle of enemyBundles) {
 			if (pos.touches(bundle.base)) {
-				spawnPlayer(player);
+				spawnPlayer(socket, player);
 				socket.sendOne(player.id, {
 					type: ServerMessageTypes.DEATH,
 					payload: DeathCause.MINEFIELD
@@ -136,7 +137,7 @@ function checkTankSafezones(player: ServerPlayer): void {
 
 			for (const outpost of bundle.outposts) {
 				if (pos.touches(outpost)) {
-					spawnPlayer(player);
+					spawnPlayer(socket, player);
 					socket.sendOne(player.id, {
 						type: ServerMessageTypes.DEATH,
 						payload: DeathCause.MINEFIELD
@@ -204,7 +205,7 @@ function actionOption(player: ServerPlayer): PlayerAction {
 	return PlayerAction.NONE;
 }
 
-export function tickTankKills(): void {
+export function tickTankKills(socket: SocketManager): void {
 	const state = getState();
 	// Should optimize this functions at some point probably. Simple-ish optimization would be
 	// separating the map into several sectors and only consider the players in that sector or the
@@ -236,13 +237,13 @@ export function tickTankKills(): void {
 	for (const blueTank of blueTanks) {
 		for (const redTank of redTanks) {
 			if (blueTank.physics.position.touches(redTank.physics.position)) {
-				spawnPlayer(blueTank);
+				spawnPlayer(socket, blueTank);
 				socket.sendOne(blueTank.id, {
 					type: ServerMessageTypes.DEATH,
 					payload: DeathCause.TANK
 				});
 
-				spawnPlayer(redTank);
+				spawnPlayer(socket, redTank);
 				socket.sendOne(redTank.id, {
 					type: ServerMessageTypes.DEATH,
 					payload: DeathCause.TANK
@@ -257,7 +258,7 @@ export function tickTankKills(): void {
 		if (blueTank.role == PlayerRole.TANK) {
 			for (const redOther of redOthers) {
 				if (blueTank.physics.position.touches(redOther.physics.position)) {
-					spawnPlayer(redOther);
+					spawnPlayer(socket, redOther);
 					socket.sendOne(redOther.id, {
 						type: ServerMessageTypes.DEATH,
 						payload: DeathCause.TANK
@@ -272,7 +273,7 @@ export function tickTankKills(): void {
 		if (redTank.role == PlayerRole.TANK) {
 			for (const blueOther of blueOthers) {
 				if (redTank.physics.position.touches(blueOther.physics.position)) {
-					spawnPlayer(blueOther);
+					spawnPlayer(socket, blueOther);
 					socket.sendOne(blueOther.id, {
 						type: ServerMessageTypes.DEATH,
 						payload: DeathCause.TANK

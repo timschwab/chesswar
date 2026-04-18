@@ -7,9 +7,10 @@ import { gameEngine } from "../common/settings.ts";
 import { Circle } from "../common/shapes/Circle.ts";
 import { Point } from "../common/shapes/Point.ts";
 import { ZeroVector } from "../common/shapes/Zero.ts";
+import { SocketManager } from "./SocketManager.ts";
 import { ServerPlayer } from "./state.ts";
 
-export function spawnPlayer(player: ServerPlayer): void {
+export function spawnPlayer(socket: SocketManager, player: ServerPlayer): void {
 	const role = gameEngine.startingRole;
 	const radius = gameEngine.physics[role].radius;
 	const mass = gameEngine.physics[role].mass;
@@ -22,7 +23,7 @@ export function spawnPlayer(player: ServerPlayer): void {
 		position: new Circle(start, radius)
 	};
 
-	setCarrying(player, null);
+	setCarrying(socket, player, null);
 
 	player.deathCounter = gameEngine.deathTicks;
 }
@@ -36,7 +37,7 @@ function getStartPoint(team: TeamName): Point {
 	return clumpingPoint;
 }
 
-export function setCarrying(player: ServerPlayer, load: CarryLoad | null) {
+export function setCarrying(socket: SocketManager, player: ServerPlayer, load: CarryLoad | null) {
 	if (load == null) {
 		load = {
 			type: CarryLoadType.EMPTY,

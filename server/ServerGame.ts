@@ -13,9 +13,9 @@ export class ServerGame {
     }
 
     start() {
-        this.socketManager.listenAdd(addPlayer);
+        this.socketManager.listenAdd(id => addPlayer(this.socketManager, id));
         this.socketManager.listenRemove(removePlayer);
-        this.socketManager.listenMessage(receiveMessage);
+        this.socketManager.listenMessage(message => receiveMessage(this.socketManager, message));
     
         // Set up ticking
         setInterval(this.tickHandler.tick.bind(this.tickHandler), gameEngine.mspt);

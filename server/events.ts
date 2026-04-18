@@ -8,10 +8,11 @@ import { gameEngine } from "../common/settings.ts";
 import { Circle } from "../common/shapes/Circle.ts";
 import { ZeroCircle, ZeroVector } from "../common/shapes/Zero.ts";
 import { makeMove } from "./chess.ts";
+import { SocketManager } from "./SocketManager.ts";
 import { setCarrying, spawnPlayer } from "./spawn.ts";
 import { ServerPlayer, getState } from "./state.ts";
 
-export function addPlayer(id: string): void {
+export function addPlayer(socket: SocketManager, id: string): void {
 	const state = getState();
 	const team = newPlayerTeam();
 	const newPlayer: ServerPlayer = {
@@ -37,7 +38,7 @@ export function addPlayer(id: string): void {
 		deathCounter: 0
 	}
 
-	spawnPlayer(newPlayer);
+	spawnPlayer(socket, newPlayer);
 
 	state.allPlayers.set(id, newPlayer);
 	state[team].playerMap.set(id, newPlayer);
@@ -71,17 +72,17 @@ export function removePlayer(id: string): void {
 	}
 }
 
-export function receiveMessage(message: ClientMessageWithId): void {
+export function receiveMessage(socket: SocketManager, message: ClientMessageWithId): void {
 	const player = getPlayer(message.id);
 
 	if (message.type == ClientMessageTypes.MOVE) {
 		playerMove(player, message.payload);
 	} else if (message.type == ClientMessageTypes.ACTION) {
-		playerAction(player);
+		playerAction(socket, player);
 	} else if (message.type == ClientMessageTypes.GENERAL_ORDERS) {
 		generalOrders(player, message.payload);
 	} else if (message.type == ClientMessageTypes.PING) {
-		pong(message.id);
+		pong(socket, message.id);
 	}
 }
 
@@ -99,36 +100,36 @@ function playerMove(player: ServerPlayer, keys: MoveMessagePayload): void {
 	player.movement = keys;
 }
 
-function playerAction(player: ServerPlayer): void {
+function playerAction(socket: SocketManager, player: ServerPlayer): void {
 	const state = getState();
 	if (player.actionOption == null) {
 		// Do nothing
 	} else if (player.actionOption == PlayerAction.BECOME_GENERAL) {
-		becomeRole(player, PlayerRole.GENERAL);
+		becomeRole(socket, player, PlayerRole.GENERAL);
 		socket.sendOne(player.id, {
 			type: ServerMessageTypes.ACTION_COMPLETED,
 			payload: PlayerAction.BECOME_GENERAL
 		});
 	} else if (player.actionOption == PlayerAction.BECOME_SOLDIER) {
-		becomeRole(player, PlayerRole.SOLDIER);
+		becomeRole(socket, player, PlayerRole.SOLDIER);
 		socket.sendOne(player.id, {
 			type: ServerMessageTypes.ACTION_COMPLETED,
 			payload: PlayerAction.BECOME_SOLDIER
 		});
 	} else if (player.actionOption == PlayerAction.BECOME_TANK) {
-		becomeRole(player, PlayerRole.TANK);
+		becomeRole(socket, player, PlayerRole.TANK);
 		socket.sendOne(player.id, {
 			type: ServerMessageTypes.ACTION_COMPLETED,
 			payload: PlayerAction.BECOME_TANK
 		});
 	} else if (player.actionOption == PlayerAction.BECOME_OPERATIVE) {
-		becomeRole(player, PlayerRole.OPERATIVE);
+		becomeRole(socket, player, PlayerRole.OPERATIVE);
 		socket.sendOne(player.id, {
 			type: ServerMessageTypes.ACTION_COMPLETED,
 			payload: PlayerAction.BECOME_OPERATIVE
 		});
 	} else if (player.actionOption == PlayerAction.GRAB_ORDERS) {
-		becomeRole(player, PlayerRole.SOLDIER);
+		becomeRole(socket, player, PlayerRole.SOLDIER);
 		const briefing = whichBriefing(player);
 		if (briefing == null) {
 			throw new Error("Couldn't find the briefing");
@@ -147,7 +148,7 @@ function playerAction(player: ServerPlayer): void {
 				};
 			}
 
-			setCarrying(player, carryLoad);
+			setCarrying(socket, player, carryLoad);
 			socket.sendOne(player.id, {
 				type: ServerMessageTypes.ACTION_COMPLETED,
 				payload: PlayerAction.GRAB_ORDERS
@@ -156,7 +157,7 @@ function playerAction(player: ServerPlayer): void {
 	} else if (player.actionOption == PlayerAction.COMPLETE_ORDERS) {
 		if (player.carrying.type == CarryLoadType.ORDERS) {
 			makeMove(state.realBoard, player.carrying.load);
-			setCarrying(player, null);
+			setCarrying(socket, player, null);
 			socket.sendOne(player.id, {
 				type: ServerMessageTypes.ACTION_COMPLETED,
 				payload: PlayerAction.COMPLETE_ORDERS
@@ -167,7 +168,7 @@ function playerAction(player: ServerPlayer): void {
 			type: CarryLoadType.INTEL,
 			load: structuredClone(state.realBoard)
 		};
-		setCarrying(player, load);
+		setCarrying(socket, player, load);
 		socket.sendOne(player.id, {
 			type: ServerMessageTypes.ACTION_COMPLETED,
 			payload: PlayerAction.GATHER_INTEL
@@ -175,7 +176,7 @@ function playerAction(player: ServerPlayer): void {
 	} else if (player.actionOption == PlayerAction.REPORT_INTEL) {
 		if (player.carrying.type == CarryLoadType.INTEL) {
 			state[player.team].teamBoard = player.carrying.load;
-			setCarrying(player, null);
+			setCarrying(socket, player, null);
 		}
 		socket.sendOne(player.id, {
 			type: ServerMessageTypes.ACTION_COMPLETED,
@@ -187,7 +188,7 @@ function playerAction(player: ServerPlayer): void {
 			type: CarryLoadType.ESPIONAGE,
 			load: structuredClone(state[oppositeTeam].briefings)
 		};
-		setCarrying(player, load);
+		setCarrying(socket, player, load);
 		socket.sendOne(player.id, {
 			type: ServerMessageTypes.ACTION_COMPLETED,
 			payload: PlayerAction.CONDUCT_ESPIONAGE
@@ -195,7 +196,7 @@ function playerAction(player: ServerPlayer): void {
 	} else if (player.actionOption == PlayerAction.REPORT_ESPIONAGE) {
 		if (player.carrying.type == CarryLoadType.ESPIONAGE) {
 			state[player.team].enemyBriefings = player.carrying.load;
-			setCarrying(player, null);
+			setCarrying(socket, player, null);
 		}
 		socket.sendOne(player.id, {
 			type: ServerMessageTypes.ACTION_COMPLETED,
@@ -219,7 +220,7 @@ function whichBriefing(player: ServerPlayer): null | BriefingName {
 	return null;
 }
 
-function becomeRole(player: ServerPlayer, role: PlayerRole): void {
+function becomeRole(socket: SocketManager, player: ServerPlayer, role: PlayerRole): void {
 	player.role = role;
 	const radius = gameEngine.physics[role].radius;
 	const mass = gameEngine.physics[role].mass;
@@ -231,7 +232,7 @@ function becomeRole(player: ServerPlayer, role: PlayerRole): void {
 		player.physics.speed = ZeroVector;
 	}
 
-	setCarrying(player, null);
+	setCarrying(socket, player, null);
 }
 
 function generalOrders(player: ServerPlayer, payload: GeneralOrdersMessagePayload) {
@@ -247,7 +248,7 @@ function generalOrders(player: ServerPlayer, payload: GeneralOrdersMessagePayloa
 	state[player.team].briefings[briefing] = move;
 }
 
-function pong(playerId: ChesswarId) {
+function pong(socket: SocketManager, playerId: ChesswarId) {
 	socket.sendOne(playerId, {
 		type: ServerMessageTypes.PONG,
 		payload: null

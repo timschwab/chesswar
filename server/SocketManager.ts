@@ -61,7 +61,9 @@ export class SocketManager {
 
     sendAll(message: ServerMessage) {
         const str = JSON.stringify(message);
-        this.sockets.values().forEach(socket => this.safeSend(socket, str));
+        for (const socket of this.sockets.values()) {
+			this.safeSend(socket, str);
+		}
     }
 
     sendBulk(ids: ChesswarId[], message: ServerMessage) {
