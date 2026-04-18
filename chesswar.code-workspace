@@ -6,6 +6,9 @@
 	],
 	"settings": {
 		"deno.enable": true,
-		"deno.unstable": true
+		"deno.unstable": true,
+        "editor.insertSpaces": false,
+        "editor.detectIndentation": false,
+		"editor.tabSize": 4
 	}
 }
