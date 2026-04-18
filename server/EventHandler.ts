@@ -73,13 +73,13 @@ export class EventHandler {
 
 	removePlayer(id: string): void {
 		const state = getState();
-			try {
-				const player = this.getPlayer(id);
-				state.allPlayers.delete(id);
-				state[player.team].playerMap.delete(id);
-			} catch (err) {
-				console.error(err);
-			}
+		try {
+			const player = this.getPlayer(id);
+			state.allPlayers.delete(id);
+			state[player.team].playerMap.delete(id);
+		} catch (err) {
+			console.error(err);
+		}
 	}
 
 	receiveMessage(message: ClientMessageWithId): void {
