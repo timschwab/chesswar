@@ -1,12 +1,12 @@
 {
 	"tasks": {
-		"api": "deno run --unstable --allow-net --allow-hrtime api/run.ts",
-		"web": "deno run --unstable --allow-net --allow-read web/serve.ts",
-		"build": "deno run --allow-all web/build.ts",
+		"server": "deno run --allow-net server/run.ts",
+		"web": "deno run --allow-net --allow-read web/serve.ts",
+		"build": "deno run --allow-read --allow-write --allow-env --allow-run web/build.ts",
 
-		"check": "deno task check-api && deno task check-web",
-		"check-api": "deno check api/run.ts",
-		"check-web": "deno check web/ts/clientGame.ts"
+		"check": "deno task check-server && deno task check-web",
+		"check-server": "deno check server/run.ts",
+		"check-web": "deno check web/ts/entrypoint.ts"
 	},
 	"compilerOptions": {
 		"lib": ["dom", "deno.ns", "deno.unstable"]

@@ -2,6 +2,7 @@ import { Circle } from "./Circle.ts";
 import { Point, SerializedPoint } from "./Point.ts";
 import { SerializedGeometry, Geometry } from "./Geometry.ts";
 import { GeometryName } from "./GeometryName.ts";
+import { Triangle } from "./Triangle.ts";
 
 interface SerializedRect extends SerializedGeometry {
 	type: GeometryName.RECT,
@@ -96,6 +97,14 @@ export class Rect extends Geometry<Rect> {
 		throw "Can't get here";
 	}
 
+	// If we wanted to go crazy, we could change Rect to store center, width, height,
+	// and maybe even scale. But seems dumb.
+	toTriangles(): Triangle[] {
+		const leftTop = new Triangle(this.leftTop, this.rightTop, this.leftBottom, 1, new Point(0, 0));
+		const rightBottom = new Triangle(this.rightBottom, this.rightTop, this.leftBottom, 1, new Point(0, 0));
+		return [leftTop, rightBottom];
+	}
+
 	add(operand: Point): Rect {
 		return new Rect(this.leftTop.add(operand), this.rightBottom.add(operand));
 	}
@@ -125,14 +134,22 @@ export class Rect extends Geometry<Rect> {
 	// Move all four walls in a certain amount
 	expand(amount: number) {
 		const shrinkPoint = new Point(amount, amount);
-		const shrunkenTopLeft = this.leftTop.subtract(shrinkPoint);
-		const shrunkenBottomRight = this.rightBottom.add(shrinkPoint);
-		return new Rect(shrunkenTopLeft, shrunkenBottomRight);
+		const expandedLeftTop = this.leftTop.subtract(shrinkPoint);
+		const expandedRightBottom = this.rightBottom.add(shrinkPoint);
+		return new Rect(expandedLeftTop, expandedRightBottom);
 	}
 
 	// Opposite of expand
 	shrink(amount: number): Rect {
 		return this.expand(-1*amount);
+	}
+
+	reflectAcrossVertical(x: number): Rect {
+		// Note that we are flipping left and right to keep the assumption that left < right
+		return new Rect(
+			new Point((x-this.right)+x, this.top),
+			new Point((x-this.left)+x, this.bottom)
+		);
 	}
 
 	// A kinda dumb algo but it works

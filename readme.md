@@ -17,10 +17,10 @@ git clone git@github.com:timschwab/chesswar.git
 cd chesswar
 ```
 
-## Running the api server
+## Running the server
 
 ```
-deno task api
+deno task server
 ```
 
 ## Running the web server
@@ -29,3 +29,13 @@ deno task api
 deno task build
 deno task web
 ```
+
+## Opening the game
+
+When the game server and the web server are running, go to http://localhost:8357/
+
+## Major things left to implement
+
+* Visually tie orders to briefing rooms
+* [Optional] Make a short tutorial somewhere
+* [Optional] very simple bots, one for each role

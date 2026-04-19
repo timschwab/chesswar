@@ -19,3 +19,19 @@ export function emptyBriefingBundle(): BriefingBundle {
 		[BriefingName.THREE]: null
 	};
 }
+
+export function briefingBundleMoveList(bundle: BriefingBundle): ChessMove[] {
+	const moves = [];
+
+	if (bundle[BriefingName.ONE]) {
+		moves.push(bundle[BriefingName.ONE]);
+	}
+	if (bundle[BriefingName.TWO]) {
+		moves.push(bundle[BriefingName.TWO]);
+	}
+	if (bundle[BriefingName.THREE]) {
+		moves.push(bundle[BriefingName.THREE]);
+	}
+
+	return moves;
+}

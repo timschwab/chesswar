@@ -2,6 +2,10 @@ import { Point, SerializedPoint } from "./Point.ts";
 import { Rect } from "./Rect.ts";
 import { SerializedGeometry, Geometry } from "./Geometry.ts";
 import { GeometryName } from "./GeometryName.ts";
+import { Triangle } from "./Triangle.ts";
+import { Vector } from "./Vector.ts";
+import { TAU } from "../Constants.ts";
+import { count } from "../math-utils.ts";
 
 export interface SerializedCircle extends SerializedGeometry {
 	type: GeometryName.CIRCLE,
@@ -17,6 +21,8 @@ export class Circle extends Geometry<Circle> {
 	readonly right: number;
 	readonly top: number;
 	readonly bottom: number;
+
+	private static vertexTripletCache = new Map<number, [Point, Point, Point][]>();
 
 	static isSerializedCircle(maybeSerializedCircle: SerializedGeometry): maybeSerializedCircle is SerializedCircle {
 		return maybeSerializedCircle.type == GeometryName.CIRCLE;
@@ -74,12 +80,35 @@ export class Circle extends Geometry<Circle> {
 		throw "Can't get here";
 	}
 
+	toTriangles(maybeSegments?: number): Triangle[] {
+		const segments = maybeSegments || 48;
+
+		let vertexTriplets = Circle.vertexTripletCache.get(segments);
+		if (vertexTriplets === undefined) {
+			// Compute and store
+			const points = count(segments).map(seg => new Vector((seg*TAU)/segments, 1).toPoint());
+			const pairs = points.map((_, i, arr) => [arr[i], arr[(i+1)%arr.length]] as const);
+			vertexTriplets = pairs.map(pair => [new Point(0, 0), pair[0], pair[1]] as const);
+			Circle.vertexTripletCache.set(segments, vertexTriplets);
+		}
+
+		return vertexTriplets.map(vertexTriplet => new Triangle(
+			vertexTriplet[0], vertexTriplet[1], vertexTriplet[2],
+			this.radius,
+			this.center
+		));
+	}
+
 	add(operand: Point): Circle {
 		return new Circle(this.center.add(operand), this.radius);
 	}
 
 	subtract(operand: Point): Circle {
 		return new Circle(this.center.subtract(operand), this.radius);
+	}
+
+	reflectAcrossVertical(x: number): Circle {
+		return new Circle(this.center.reflectAcrossVertical(x), this.radius);
 	}
 
 	floor(): Circle {

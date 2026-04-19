@@ -1,7 +1,8 @@
-import { Color } from "../colors.ts";
+import { Color } from "../Color.ts";
 import { Geometry } from "./Geometry.ts";
 import { Point } from "./Point.ts";
 import { Rect } from "./Rect.ts";
+import { Structure } from "./Structure.ts";
 
 interface RenderSettings {
 	color: Color,
@@ -30,7 +31,15 @@ export class Shape<T extends Geometry<T>> {
 		return new Shape<T>(this.geo.subtract(operand), this.settings);
 	}
 
+	reflectAcrossVertical(x: number): Shape<T> {
+		return new Shape<T>(this.geo.reflectAcrossVertical(x), this.settings);
+	}
+
 	clampInside(rect: Rect): Shape<T> {
 		return new Shape<T>(this.geo.clampInside(rect), this.settings);
+	}
+
+	toStructure(): Structure {
+		return new Structure(this.geo.toTriangles(), this.settings.color);
 	}
 }

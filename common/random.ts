@@ -4,6 +4,11 @@ export function randomChoose<T>(array: T[]): T {
 	return array[Math.floor(Math.random() * array.length)];
 }
 
+export function randomPop<T>(array: T[]): T {
+	const index = Math.floor(Math.random() * array.length);
+	return array.splice(index, 1)[0];
+}
+
 export function randomRange(lower: number, upper: number): number {
 	const range = upper-lower;
 	return (Math.random()*range) + lower;

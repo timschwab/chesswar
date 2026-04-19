@@ -11,11 +11,11 @@ async function handler(req: Request): Promise<Response> {
 	} else if (req.method == "GET" && pathname == "/main.css") {
 		file = await Deno.open("web/static/main.css");
 		contentType = "text/css";
-	} else if (req.method == "GET" && pathname == "/clientGame.js") {
-		file = await Deno.open(buildSettings.bundleDir + "/clientGame.js");
+	} else if (req.method == "GET" && pathname == "/entrypoint.js") {
+		file = await Deno.open(buildSettings.bundleDir + "/entrypoint.js");
 		contentType = "application/javascript";
-	} else if (req.method == "GET" && pathname == "/clientGame.js.map") {
-		file = await Deno.open(buildSettings.bundleDir + "/clientGame.js.map");
+	} else if (req.method == "GET" && pathname == "/entrypoint.js.map") {
+		file = await Deno.open(buildSettings.bundleDir + "/entrypoint.js.map");
 		contentType = "application/json";
 	}
 

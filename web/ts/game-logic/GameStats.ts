@@ -1,58 +1,46 @@
-import { Comparable } from "../../../common/Comparable.ts";
+import { LowPassFilter } from "../../../common/data-structures/LowPassFilter.ts";
+import { ServerStats } from "../../../common/data-types/server.ts";
+import { gameEngine, rensets } from "../../../common/settings.ts";
 
-export class GameStats extends Comparable<GameStats> {
-	readonly playersOnlineValue: number;
-	readonly animationTimeValue: number;
-	readonly jsRenderTimeValue: number;
-	readonly serverTickTimeValue: number;
-	readonly pingTimeValue: number;
+export class GameStats {
+	private playersOnline = 0;
+	private animationTimeFilter = new LowPassFilter(rensets.fps, rensets.mspf);
+	private jsRenderTimeFilter = new LowPassFilter(rensets.fps, rensets.mspf);
+	private serverTickFilter = new LowPassFilter(gameEngine.tps, gameEngine.mspt);
+	private pingTimeFilter = new LowPassFilter(2, 0);
 
-	static readonly Zero = new GameStats(0, 0, 0, 0, 0);
-
-	private constructor(playersOnline: number, animationTime: number, jsRenderTime: number, serverTickTime: number, pingTime: number) {
-		super();
-		this.playersOnlineValue = playersOnline;
-		this.animationTimeValue = animationTime;
-		this.jsRenderTimeValue = jsRenderTime;
-		this.serverTickTimeValue = serverTickTime;
-		this.pingTimeValue = pingTime
+	recordPlayersOnline(playersOnline: number) {
+		this.playersOnline = playersOnline;
+	}
+	getPlayersOnline(): number {
+		return this.playersOnline;
 	}
 
-	playersOnline(newPlayersOnline: number) {
-		return new GameStats(newPlayersOnline, this.animationTimeValue, this.jsRenderTimeValue, this.serverTickTimeValue, this.pingTimeValue);
+	recordTimeBetweenAnimations(timeTaken: number) {
+		this.animationTimeFilter.set(timeTaken);
+	}
+	getTimeBetweenAnimantions(): number {
+		return this.animationTimeFilter.read();
 	}
 
-	animationTime(newAnimationTime: number) {
-		return new GameStats(this.playersOnlineValue, newAnimationTime, this.jsRenderTimeValue, this.serverTickTimeValue, this.pingTimeValue);
+	recordJsRenderTime(timeTaken: number) {
+		this.jsRenderTimeFilter.set(timeTaken);
+	}
+	getJsRenderTime(): number {
+		return this.jsRenderTimeFilter.read();
 	}
 
-	jsRenderTime(newJsRenderTime: number) {
-		return new GameStats(this.playersOnlineValue, this.animationTimeValue, newJsRenderTime, this.serverTickTimeValue, this.pingTimeValue);
+	recordServerStats(serverStats: ServerStats) {
+		this.serverTickFilter.set(serverStats.tickMs);
+	}
+	getServerTickTime(): number {
+		return this.serverTickFilter.read();
 	}
 
-	serverTickTime(newServerTickTime: number) {
-		return new GameStats(this.playersOnlineValue, this.animationTimeValue, this.jsRenderTimeValue, newServerTickTime, this.pingTimeValue);
+	recordPingTime(timeTaken: number) {
+		this.pingTimeFilter.set(timeTaken);
 	}
-
-	pingTime(newPingTime: number) {
-		return new GameStats(this.playersOnlineValue, this.animationTimeValue, this.jsRenderTimeValue, this.serverTickTimeValue, newPingTime);
-	}
-
-	equals(other: GameStats): boolean {
-		if (this === other) {
-			return true;
-		} else if (this.playersOnlineValue != other.playersOnlineValue) {
-			return false;
-		} else if (this.animationTimeValue != other.animationTimeValue) {
-			return false;
-		} else if (this.jsRenderTimeValue != other.jsRenderTimeValue) {
-			return false;
-		} else if (this.serverTickTimeValue != other.serverTickTimeValue) {
-			return false;
-		} else if (this.pingTimeValue != other.pingTimeValue) {
-			return false;
-		} else {
-			return true;
-		}
+	getPingTime(): number {
+		return this.pingTimeFilter.read();
 	}
 }

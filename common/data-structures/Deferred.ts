@@ -47,7 +47,7 @@ export class SimpleDeferred<T extends string | number | boolean | null> extends 
 		super(initial);
 	}
 
-	set(next: T): void {
+	override set(next: T): void {
 		if (this.peek().latest == next) {
 			// Do nothing
 		} else {
@@ -61,11 +61,11 @@ export class ComparableDeferred<T extends Comparable<T>> extends Deferred<T> {
 		super(initial);
 	}
 
-	set(next: T): void {
-	  if (this.peek().latest.equals(next)) {
+	override set(next: T): void {
+	if (this.peek().latest.equals(next)) {
 		// Do nothing
-	  } else {
+	} else {
 		super.set(next);
-	  }
+	}
 	}
 }

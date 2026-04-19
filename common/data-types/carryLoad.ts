@@ -29,3 +29,8 @@ interface EspionageCarryLoad {
 }
 
 export type CarryLoad = EmptyCarryLoad | OrdersCarryLoad | IntelCarryLoad | EspionageCarryLoad;
+
+export const EMPTY_CARRY_LOAD: EmptyCarryLoad = {
+	type: CarryLoadType.EMPTY,
+	load: null
+};
