@@ -1,6 +1,7 @@
 import { TAU_HALF } from "../common/Constants.ts";
 import { DeathCause, PlayerAction, PlayerRole, TeamName } from "../common/data-types/base.ts";
 import { CarryLoadType } from "../common/data-types/carryLoad.ts";
+import { ChessPiece } from "../common/data-types/chess.ts";
 import { SerializedClientPlayer } from "../common/data-types/client.ts";
 import { mapGeometry } from "../common/map/MapValues.ts";
 import { ServerMessageTypes, TeamMessage, TeamMessagePayload } from "../common/message-types/server.ts";
@@ -13,7 +14,6 @@ import { EventHandler } from "./EventHandler.ts";
 import { SocketManager } from "./SocketManager.ts";
 import { spawnPlayer } from "./spawn.ts";
 import { getState, resetState, ServerPlayer } from "./state.ts";
-import { tickNewGame, tickTankKills, tickVictory } from "./tick.ts";
 
 export class TickHandler {
 	private readonly socketManager: SocketManager;
@@ -46,13 +46,13 @@ export class TickHandler {
 		}
 		const state = getState();
 	
-		this.tickPlayers(this.socketManager);
-		tickTankKills(this.socketManager);
+		this.tickPlayers();
+		this.tickTankKills();
 	
 		if (state.victory == null) {
-			tickVictory();
+			this.tickVictory();
 		} else {
-			tickNewGame();
+			this.tickNewGame();
 		}
 	
 		// Broadcast state to everyone
@@ -118,17 +118,16 @@ export class TickHandler {
 		}
 	}
 
-	private tickPlayers(socket: SocketManager) {
-		const state = getState();
-		for (const player of state.allPlayers.values()) {
+	private tickPlayers() {
+		for (const player of getState().allPlayers.values()) {
 			if (player.deathCounter > 0) {
 				this.moveDeathCounter(player);
 			} else {
 				this.movePlayer(player);
 			}
 	
-			this.checkMinefields(socket, player);
-			this.checkTankSafezones(socket, player);
+			this.checkMinefields(player);
+			this.checkTankSafezones(player);
 	
 			player.actionOption = this.actionOption(player);
 		}
@@ -209,11 +208,11 @@ export class TickHandler {
 		physics.position = new Circle(bouncePosition, radius);
 	}
 
-	private checkMinefields(socket: SocketManager, player: ServerPlayer) {
+	private checkMinefields(player: ServerPlayer) {
 		for (const minefield of mapGeometry.minefields) {
 			if (player.physics.position.touches(minefield)) {
-				spawnPlayer(socket, player);
-				socket.sendOne(player.id, {
+				spawnPlayer(this.socketManager, player);
+				this.socketManager.sendOne(player.id, {
 					type: ServerMessageTypes.DEATH,
 					payload: DeathCause.MINEFIELD
 				});
@@ -221,12 +220,12 @@ export class TickHandler {
 		}
 	}
 
-	private checkTankSafezones(socket: SocketManager, player: ServerPlayer) {
+	private checkTankSafezones(player: ServerPlayer) {
 		if (player.role == PlayerRole.TANK) {
 			const pos = player.physics.position;
 			if (pos.touches(mapGeometry.dmz)) {
-				spawnPlayer(socket, player);
-				socket.sendOne(player.id, {
+				spawnPlayer(this.socketManager, player);
+				this.socketManager.sendOne(player.id, {
 					type: ServerMessageTypes.DEATH,
 					payload: DeathCause.MINEFIELD
 				});
@@ -236,8 +235,8 @@ export class TickHandler {
 			const enemyBundles = this.enemyFacilities(player.team);
 			for (const bundle of enemyBundles) {
 				if (pos.touches(bundle.base)) {
-					spawnPlayer(socket, player);
-					socket.sendOne(player.id, {
+					spawnPlayer(this.socketManager, player);
+					this.socketManager.sendOne(player.id, {
 						type: ServerMessageTypes.DEATH,
 						payload: DeathCause.MINEFIELD
 					});
@@ -246,8 +245,8 @@ export class TickHandler {
 	
 				for (const outpost of bundle.outposts) {
 					if (pos.touches(outpost)) {
-						spawnPlayer(socket, player);
-						socket.sendOne(player.id, {
+						spawnPlayer(this.socketManager, player);
+						this.socketManager.sendOne(player.id, {
 							type: ServerMessageTypes.DEATH,
 							payload: DeathCause.MINEFIELD
 						});
@@ -314,5 +313,124 @@ export class TickHandler {
 		return Object.entries(mapGeometry.teamBundles)
 			.filter(entry => entry[0] !== teamName)
 			.map(entry => entry[1]);
+	}
+
+	private tickTankKills() {
+		const state = getState();
+		// Should optimize this functions at some point probably. Simple-ish optimization would be
+		// separating the map into several sectors and only consider the players in that sector or the
+		// neighboring ones. But so far I haven't seen a problem.
+
+		// List of values
+		const blueTanks: ServerPlayer[] = [];
+		const blueOthers: ServerPlayer[] = [];
+		const redTanks: ServerPlayer[] = [];
+		const redOthers: ServerPlayer[] = [];
+
+		for (const player of state.allPlayers.values()) {
+			if (player.team == TeamName.BLUE) {
+				if (player.role == PlayerRole.TANK) {
+					blueTanks.push(player);
+				} else {
+					blueOthers.push(player);
+				}
+			} else if (player.team == TeamName.RED) {
+				if (player.role == PlayerRole.TANK) {
+					redTanks.push(player);
+				} else {
+					redOthers.push(player);
+				}
+			}
+		}
+
+		// Tanks killing tanks first - compare every pair
+		for (const blueTank of blueTanks) {
+			for (const redTank of redTanks) {
+				if (blueTank.physics.position.touches(redTank.physics.position)) {
+					spawnPlayer(this.socketManager, blueTank);
+					this.socketManager.sendOne(blueTank.id, {
+						type: ServerMessageTypes.DEATH,
+						payload: DeathCause.TANK
+					});
+
+					spawnPlayer(this.socketManager, redTank);
+					this.socketManager.sendOne(redTank.id, {
+						type: ServerMessageTypes.DEATH,
+						payload: DeathCause.TANK
+					});
+				}
+			}
+		}
+
+		// Tanks killing soldiers and spies second
+		for (const blueTank of blueTanks) {
+			// Make sure it wasn't killed up above
+			if (blueTank.role == PlayerRole.TANK) {
+				for (const redOther of redOthers) {
+					if (blueTank.physics.position.touches(redOther.physics.position)) {
+						spawnPlayer(this.socketManager, redOther);
+						this.socketManager.sendOne(redOther.id, {
+							type: ServerMessageTypes.DEATH,
+							payload: DeathCause.TANK
+						});
+					}
+				}
+			}
+		}
+
+		for (const redTank of redTanks) {
+			// Make sure it wasn't killed up above
+			if (redTank.role == PlayerRole.TANK) {
+				for (const blueOther of blueOthers) {
+					if (redTank.physics.position.touches(blueOther.physics.position)) {
+						spawnPlayer(this.socketManager, blueOther);
+						this.socketManager.sendOne(blueOther.id, {
+							type: ServerMessageTypes.DEATH,
+							payload: DeathCause.TANK
+						});
+					}
+				}
+			}
+		}
+	}
+
+	private tickVictory() {
+		const state = getState();
+		const kings = {
+			[TeamName.BLUE]: this.kingExists(TeamName.BLUE),
+			[TeamName.RED]: this.kingExists(TeamName.RED)
+		};
+	
+		if (kings[TeamName.BLUE] && kings[TeamName.RED]) {
+			state.victory = null;
+		} else if (kings[TeamName.BLUE] && !kings[TeamName.RED]) {
+			state.victory = TeamName.BLUE;
+		} else if (!kings[TeamName.BLUE] && kings[TeamName.RED]) {
+			state.victory = TeamName.RED;
+		} else {
+			state.victory = "tie";
+		}
+	}
+
+	// We could def improve this, but eh it's just 64 locations
+	private kingExists(team: TeamName): boolean {
+		for (const row of getState().realBoard) {
+			for (const col of row) {
+				if (col.contents != null && col.contents.team === team && col.contents.piece === ChessPiece.KING) {
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
+
+	private tickNewGame(): void {
+		const state = getState();
+		if (state.newGameCounter == Infinity) {
+			state.newGameCounter = gameEngine.newGameTicks;
+		}
+
+		state.newGameCounter--;
 	}
 }
