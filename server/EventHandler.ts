@@ -58,7 +58,7 @@ export class EventHandler {
 		});
 	}
 
-	// Add them to the team with fewer players
+	// Add them to the team with fewer players, or random team if the teams are equal
 	private newPlayerTeam(): TeamName {
 		const state = getState();
 		if (state[TeamName.BLUE].playerMap.size > state[TeamName.RED].playerMap.size) {

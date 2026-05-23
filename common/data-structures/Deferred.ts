@@ -48,7 +48,7 @@ export class SimpleDeferred<T extends string | number | boolean | null> extends 
 	}
 
 	override set(next: T): void {
-		if (this.peek().latest == next) {
+		if (this.peek().latest === next) {
 			// Do nothing
 		} else {
 			super.set(next);
