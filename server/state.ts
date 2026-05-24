@@ -24,10 +24,8 @@ export interface ServerPlayer {
 	deathCounter: number
 }
 
-type PlayerMap = Map<ChesswarId, ServerPlayer>;
-
-interface Team {
-	playerMap: PlayerMap,
+interface TeamInfo {
+	playerMap: Map<ChesswarId, ServerPlayer>,
 	teamBoard: ChessBoard,
 	briefings: BriefingBundle,
 	enemyBriefings: BriefingBundle
@@ -37,9 +35,9 @@ interface ServerState {
 	count: number,
 	victory: Victory,
 	realBoard: ChessBoard,
-	allPlayers: PlayerMap,
-	[TeamName.BLUE]: Team,
-	[TeamName.RED]: Team,
+	allPlayers: Map<ChesswarId, ServerPlayer>,
+	[TeamName.BLUE]: TeamInfo,
+	[TeamName.RED]: TeamInfo,
 	stats: ServerStats,
 	newGameCounter: number
 }

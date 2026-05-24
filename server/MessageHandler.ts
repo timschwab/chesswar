@@ -38,7 +38,7 @@ export class MessageHandler {
 
 	private playerAction(player: ServerPlayer): void {
 		const state = getState();
-		if (player.actionOption === null) {
+		if (player.actionOption === PlayerAction.NONE) {
 			// Do nothing
 		} else if (player.actionOption === PlayerAction.BECOME_GENERAL) {
 			this.becomeRole(player, PlayerRole.GENERAL);
@@ -173,10 +173,11 @@ export class MessageHandler {
 
 	private generalOrders(player: ServerPlayer, payload: GeneralOrdersMessagePayload) {
 		const state = getState();
-		if (player.role != PlayerRole.GENERAL) {
+
+		// Make sure they don't try to be cheatin
+		if (player.role !== PlayerRole.GENERAL) {
 			return;
 		} else if (player.team !== payload.move.team) {
-			// Make sure they don't try to be cheatin
 			return;
 		}
 	
