@@ -9,7 +9,6 @@ import { SocketManager } from "./SocketManager.ts";
 import { spawnPlayer } from "./spawn.ts";
 import { getState, ServerPlayer } from "./state.ts";
 
-
 export class EventHandler {
 	private readonly socketManager: SocketManager;
 	private readonly messageHandler: MessageHandler;
@@ -43,13 +42,13 @@ export class EventHandler {
 				position: ZeroCircle
 			},
 			deathCounter: 0
-		}
-	
+		};
+
 		spawnPlayer(this.socketManager, newPlayer);
-	
+
 		state.allPlayers.set(id, newPlayer);
 		state[team].playerMap.set(id, newPlayer);
-	
+
 		this.socketManager.sendOne(id, {
 			type: ServerMessageTypes.PLAYER_INIT,
 			payload: {

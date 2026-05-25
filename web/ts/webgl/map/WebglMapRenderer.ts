@@ -19,14 +19,26 @@ export class WebglMapRenderer {
 
 	constructor(webgl: WebglInterface, screen: CWScreen) {
 		// Prepare the map rendering data
-		const scaleValues = mapStructures.flatMap(struct => struct.triangles.flatMap(
-			tri => [tri.scale, tri.scale, tri.scale]));
-		const vertexPoints = mapStructures.flatMap(struct => struct.triangles.flatMap(
-			tri => [tri.v1, tri.v2, tri.v3]));
-		const centerPoints = mapStructures.flatMap(struct => struct.triangles.flatMap(
-			tri => [tri.reference, tri.reference, tri.reference]));
-		const colors = mapStructures.flatMap(struct => struct.triangles.flatMap(
-			_tri => [struct.color, struct.color, struct.color]));
+		const scaleValues = mapStructures.flatMap((struct) =>
+			struct.triangles.flatMap(
+				(tri) => [tri.scale, tri.scale, tri.scale]
+			)
+		);
+		const vertexPoints = mapStructures.flatMap((struct) =>
+			struct.triangles.flatMap(
+				(tri) => [tri.v1, tri.v2, tri.v3]
+			)
+		);
+		const centerPoints = mapStructures.flatMap((struct) =>
+			struct.triangles.flatMap(
+				(tri) => [tri.reference, tri.reference, tri.reference]
+			)
+		);
+		const colors = mapStructures.flatMap((struct) =>
+			struct.triangles.flatMap(
+				(_tri) => [struct.color, struct.color, struct.color]
+			)
+		);
 
 		const attributeValueData = new Map([
 			[SCALE, scaleValues]

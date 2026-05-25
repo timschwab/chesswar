@@ -27,30 +27,30 @@ export class KeyEventHandler {
 
 	private handleKeyEvent(event: CWKeyEvent) {
 		const key = event.key;
-		
-			switch (key) {
-				case CWKey.ACTION:
-					if (event.pressed) {
-						this.socket.socketSend({
-							type: ClientMessageTypes.ACTION,
-							payload: null
-						});
-					}
-					break;
-				case CWKey.STATS:
-					if (event.pressed) {
-						this.state.toggleStatsShowing();
-					}
-					break;
-				case CWKey.UP:
-				case CWKey.DOWN:
-				case CWKey.LEFT:
-				case CWKey.RIGHT:
-					this.movement[key] = event.pressed;
+
+		switch (key) {
+			case CWKey.ACTION:
+				if (event.pressed) {
 					this.socket.socketSend({
-						type: ClientMessageTypes.MOVE,
-						payload: this.movement
+						type: ClientMessageTypes.ACTION,
+						payload: null
 					});
-			}
+				}
+				break;
+			case CWKey.STATS:
+				if (event.pressed) {
+					this.state.toggleStatsShowing();
+				}
+				break;
+			case CWKey.UP:
+			case CWKey.DOWN:
+			case CWKey.LEFT:
+			case CWKey.RIGHT:
+				this.movement[key] = event.pressed;
+				this.socket.socketSend({
+					type: ClientMessageTypes.MOVE,
+					payload: this.movement
+				});
+		}
 	}
 }

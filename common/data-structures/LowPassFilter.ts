@@ -11,7 +11,7 @@ export class LowPassFilter {
 
 	set(value: number): void {
 		const diff = value - this.value;
-		const adjusted = diff/this.strength;
+		const adjusted = diff / this.strength;
 		this.value += adjusted;
 	}
 

@@ -21,7 +21,7 @@ export class TeamRoleRenderer implements UiComponentRenderer {
 	}
 
 	render(state: ChesswarState) {
-		state.getSelfPlayer().ifPresent(selfPlayer => {
+		state.getSelfPlayer().ifPresent((selfPlayer) => {
 			// Draw rectangles
 			const teamColor = rensets.players.teamColor[selfPlayer.team];
 			const innerRect = new Rect(new Point(10, 10), new Point(210, 50));
@@ -31,7 +31,7 @@ export class TeamRoleRenderer implements UiComponentRenderer {
 				Shape.from(innerRect, teamColor)
 			];
 			this.rectangleRenderer.render(shapes);
-			
+
 			// Draw text
 			const text = new CWText(selfPlayer.role, new Point(15, 15), FONT_SIZE, CWColor.GREY_BLACK);
 			this.textRenderer.render([text]);

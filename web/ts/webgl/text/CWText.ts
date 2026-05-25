@@ -22,8 +22,9 @@ export class CWText {
 	getRect(glyphBoundingBox: Rect) {
 		const rightBottom = this.leftTop.add(
 			new Point(
-				glyphBoundingBox.right*this.message.length*this.scale,
-				glyphBoundingBox.bottom*this.scale)
+				glyphBoundingBox.right * this.message.length * this.scale,
+				glyphBoundingBox.bottom * this.scale
+			)
 		);
 
 		return new Rect(this.leftTop, rightBottom);

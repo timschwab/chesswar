@@ -8,7 +8,6 @@ import { ExpandingGlyphTexture } from "./ExpandingGlyphTexture.ts";
 import textFragmentShader from "./glsl-generated/textFragmentShader.ts";
 import textVertexShader from "./glsl-generated/textVertexShader.ts";
 
-
 // Overall settings
 const SCREEN = "u_screen";
 const GLYPH_BOUNDING_BOX = "u_glyph_bounding_box";
@@ -34,8 +33,12 @@ export class TextRenderer {
 
 		// Prepare the rectangle rendering data
 		const rectangleData = [
-			new Point(0, 0), new Point(0, 1), new Point(1, 0),
-			                 new Point(0, 1), new Point(1, 0), new Point(1, 1)
+			new Point(0, 0),
+			new Point(0, 1),
+			new Point(1, 0),
+			new Point(0, 1),
+			new Point(1, 0),
+			new Point(1, 1)
 		];
 		const attributePointData = new Map([[VERTEX, rectangleData]]);
 
@@ -93,10 +96,10 @@ export class TextRenderer {
 
 	private ensureGlyphsAdded(textList: CWText[]) {
 		// Split text into graphemes
-		const allGraphemes = textList.flatMap(text => text.graphemes);
+		const allGraphemes = textList.flatMap((text) => text.graphemes);
 
 		// Find all graphemes we have never rendered before and update the texture if needed
-		const newGraphemes = new Set(allGraphemes.filter(grapheme => !this.graphemeToGlyphMap.has(grapheme)));
+		const newGraphemes = new Set(allGraphemes.filter((grapheme) => !this.graphemeToGlyphMap.has(grapheme)));
 		if (newGraphemes.size > 0) {
 			console.log("Updating glyph texture");
 

@@ -1,13 +1,13 @@
 import { Circle } from "./Circle.ts";
 import { Point, SerializedPoint } from "./Point.ts";
-import { SerializedGeometry, Geometry } from "./Geometry.ts";
+import { Geometry, SerializedGeometry } from "./Geometry.ts";
 import { GeometryName } from "./GeometryName.ts";
 import { Triangle } from "./Triangle.ts";
 
 interface SerializedRect extends SerializedGeometry {
-	type: GeometryName.RECT,
-	leftTop: SerializedPoint,
-	rightBottom: SerializedPoint
+	type: GeometryName.RECT;
+	leftTop: SerializedPoint;
+	rightBottom: SerializedPoint;
 }
 
 export class Rect extends Geometry<Rect> {
@@ -59,7 +59,7 @@ export class Rect extends Geometry<Rect> {
 
 		this.width = this.right - this.left;
 		this.height = this.bottom - this.top;
-		this.center = new Point((this.left+this.right)/2, (this.top+this.bottom)/2);
+		this.center = new Point((this.left + this.right) / 2, (this.top + this.bottom) / 2);
 	}
 
 	equals(other: Rect): boolean {
@@ -67,8 +67,8 @@ export class Rect extends Geometry<Rect> {
 	}
 
 	sameSize(other: Rect): boolean {
-		const sameWidth = (this.width == other.width);
-		const sameHeight = (this.height == other.height);
+		const sameWidth = this.width == other.width;
+		const sameHeight = this.height == other.height;
 
 		return sameWidth && sameHeight;
 	}
@@ -127,7 +127,7 @@ export class Rect extends Geometry<Rect> {
 
 	// Keep the height and width the same, but move to the center
 	moveTo(center: Point) {
-		const halfRect = new Point(this.width/2, this.height/2);
+		const halfRect = new Point(this.width / 2, this.height / 2);
 		return new Rect(center.subtract(halfRect), center.add(halfRect));
 	}
 
@@ -141,14 +141,14 @@ export class Rect extends Geometry<Rect> {
 
 	// Opposite of expand
 	shrink(amount: number): Rect {
-		return this.expand(-1*amount);
+		return this.expand(-1 * amount);
 	}
 
 	reflectAcrossVertical(x: number): Rect {
 		// Note that we are flipping left and right to keep the assumption that left < right
 		return new Rect(
-			new Point((x-this.right)+x, this.top),
-			new Point((x-this.left)+x, this.bottom)
+			new Point((x - this.right) + x, this.top),
+			new Point((x - this.left) + x, this.bottom)
 		);
 	}
 
@@ -158,7 +158,7 @@ export class Rect extends Geometry<Rect> {
 		const bothRight = Math.min(this.right, other.right);
 		const bothTop = Math.max(this.top, other.top);
 		const bothBottom = Math.min(this.bottom, other.bottom);
-	
+
 		// No overlap
 		if ((bothLeft > bothRight) || (bothTop > bothBottom)) {
 			return {
@@ -177,22 +177,26 @@ export class Rect extends Geometry<Rect> {
 				both: null
 			};
 		}
-	
+
 		const bothTL = new Point(bothLeft, bothTop);
 		const bothBR = new Point(bothRight, bothBottom);
-	
+
 		const both = new Rect(bothTL, bothBR);
-	
+
 		const firstLeft = this.left < other.left ? new Rect(this.leftTop, new Point(other.left, this.bottom)) : null;
 		const firstRight = this.right > other.right ? new Rect(new Point(other.right, this.top), this.rightBottom) : null;
 		const firstTop = this.top < other.top ? new Rect(this.leftTop, new Point(this.right, other.top)) : null;
-		const firstBottom = this.bottom > other.bottom ? new Rect(new Point(this.left, other.bottom), this.rightBottom) : null;
-	
+		const firstBottom = this.bottom > other.bottom
+			? new Rect(new Point(this.left, other.bottom), this.rightBottom)
+			: null;
+
 		const secondLeft = other.left < this.left ? new Rect(other.leftTop, new Point(this.left, other.bottom)) : null;
 		const secondRight = other.right > this.right ? new Rect(new Point(this.right, other.top), other.rightBottom) : null;
 		const secondTop = other.top < this.top ? new Rect(other.leftTop, new Point(other.right, this.top)) : null;
-		const secondBottom = other.bottom > this.bottom ? new Rect(new Point(other.left, this.bottom), other.rightBottom) : null;
-	
+		const secondBottom = other.bottom > this.bottom
+			? new Rect(new Point(other.left, this.bottom), other.rightBottom)
+			: null;
+
 		return {
 			first: {
 				left: firstLeft,
@@ -259,7 +263,7 @@ export class Rect extends Geometry<Rect> {
 		} else if (this.bottom < other.top) {
 			return false;
 		}
-	
+
 		return true;
 	}
 

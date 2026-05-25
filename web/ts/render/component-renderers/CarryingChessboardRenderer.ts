@@ -18,35 +18,39 @@ const rightBottom = leftTop.add(new Point(boardSize, boardSize));
 const boardRect = new Rect(leftTop, rightBottom);
 
 export class CarryingChessboardRenderer implements UiComponentRenderer {
-    private readonly chessboardHelper: ChessboardHelper;
-    
-    constructor(rectangleRenderer: RectangleRenderer, chessPieceRenderer: ChessPieceRenderer, triangleRenderer: TriangleRenderer) {
-        this.chessboardHelper = new ChessboardHelper(rectangleRenderer, chessPieceRenderer, triangleRenderer, boardRect);
-    }
+	private readonly chessboardHelper: ChessboardHelper;
 
-    render(state: ChesswarState) {
-        state.getSelfPlayer().ifPresent(selfPlayer => {
-            state.getTeamInfo().ifPresent(teamInfo => {
-                this.renderInternal(selfPlayer.team, teamInfo.board, state.getCarrying());
-            });
-        });
-    }
+	constructor(
+		rectangleRenderer: RectangleRenderer,
+		chessPieceRenderer: ChessPieceRenderer,
+		triangleRenderer: TriangleRenderer
+	) {
+		this.chessboardHelper = new ChessboardHelper(rectangleRenderer, chessPieceRenderer, triangleRenderer, boardRect);
+	}
 
-    private renderInternal(team: TeamName, teamBoard: ChessBoard, carrying: CarryLoad) {
-        switch (carrying.type) {
-            case CarryLoadType.EMPTY:
-                break;
-            case CarryLoadType.ORDERS:
-                this.chessboardHelper.renderBoard(teamBoard, [carrying.load], team);
-                break;
-            case CarryLoadType.INTEL:
-                this.chessboardHelper.renderBoard(carrying.load, [], team);
-                break;
-            case CarryLoadType.ESPIONAGE:
-                this.chessboardHelper.renderBoard(teamBoard, briefingBundleMoveList(carrying.load), team);
-                break;
-            default:
-                assertNever(carrying);
-        }
-    }
-};
+	render(state: ChesswarState) {
+		state.getSelfPlayer().ifPresent((selfPlayer) => {
+			state.getTeamInfo().ifPresent((teamInfo) => {
+				this.renderInternal(selfPlayer.team, teamInfo.board, state.getCarrying());
+			});
+		});
+	}
+
+	private renderInternal(team: TeamName, teamBoard: ChessBoard, carrying: CarryLoad) {
+		switch (carrying.type) {
+			case CarryLoadType.EMPTY:
+				break;
+			case CarryLoadType.ORDERS:
+				this.chessboardHelper.renderBoard(teamBoard, [carrying.load], team);
+				break;
+			case CarryLoadType.INTEL:
+				this.chessboardHelper.renderBoard(carrying.load, [], team);
+				break;
+			case CarryLoadType.ESPIONAGE:
+				this.chessboardHelper.renderBoard(teamBoard, briefingBundleMoveList(carrying.load), team);
+				break;
+			default:
+				assertNever(carrying);
+		}
+	}
+}

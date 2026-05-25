@@ -22,8 +22,12 @@ export class RectangleRenderer {
 	constructor(webgl: WebglInterface, screen: CWScreen) {
 		// Prepare the rectangle rendering data
 		const rectangleData = [
-			new Point(0, 0), new Point(0, 1), new Point(1, 0),
-			                 new Point(0, 1), new Point(1, 0), new Point(1, 1)
+			new Point(0, 0),
+			new Point(0, 1),
+			new Point(1, 0),
+			new Point(0, 1),
+			new Point(1, 0),
+			new Point(1, 1)
 		];
 		const attributePointData = new Map([[VERTEX, rectangleData]]);
 
@@ -49,7 +53,7 @@ export class RectangleRenderer {
 		this.renderer.prep();
 
 		// Draw each rectangle
-		rectangles.forEach(rectangle => {
+		rectangles.forEach((rectangle) => {
 			// Set each rectangle left top, right bottom, and color
 			this.renderer.setUniformPoint(LEFT_TOP, rectangle.geo.leftTop);
 			this.renderer.setUniformPoint(RIGHT_BOT, rectangle.geo.rightBottom);

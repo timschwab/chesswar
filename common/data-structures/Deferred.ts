@@ -34,7 +34,7 @@ export class Deferred<T> {
 			dirty: this.dirtyValue,
 			latest: this.latestValue,
 			previous: this.previousValue
-		}
+		};
 	}
 
 	trigger() {
@@ -62,10 +62,10 @@ export class ComparableDeferred<T extends Comparable<T>> extends Deferred<T> {
 	}
 
 	override set(next: T): void {
-	if (this.peek().latest.equals(next)) {
-		// Do nothing
-	} else {
-		super.set(next);
-	}
+		if (this.peek().latest.equals(next)) {
+			// Do nothing
+		} else {
+			super.set(next);
+		}
 	}
 }

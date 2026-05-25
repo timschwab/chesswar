@@ -2,7 +2,12 @@ import { ChesswarId, PlayerAction, PlayerRole, TeamName } from "../common/data-t
 import { CarryLoad, CarryLoadType } from "../common/data-types/carryLoad.ts";
 import { BriefingName } from "../common/data-types/facility.ts";
 import { mapGeometry } from "../common/map/MapValues.ts";
-import { ClientMessage, ClientMessageTypes, GeneralOrdersMessagePayload, MoveMessagePayload } from "../common/message-types/client.ts";
+import {
+	ClientMessage,
+	ClientMessageTypes,
+	GeneralOrdersMessagePayload,
+	MoveMessagePayload
+} from "../common/message-types/client.ts";
 import { ServerMessageTypes } from "../common/message-types/server.ts";
 import { gameEngine } from "../common/settings.ts";
 import { Circle } from "../common/shapes/Circle.ts";
@@ -11,7 +16,6 @@ import { makeMove } from "./chess.ts";
 import { SocketManager } from "./SocketManager.ts";
 import { setCarrying } from "./spawn.ts";
 import { getState, ServerPlayer } from "./state.ts";
-
 
 export class MessageHandler {
 	private readonly socket: SocketManager;
@@ -83,7 +87,7 @@ export class MessageHandler {
 						load: briefingMove
 					};
 				}
-	
+
 				setCarrying(this.socket, player, carryLoad);
 				this.socket.sendOne(player.id, {
 					type: ServerMessageTypes.ACTION_COMPLETED,
@@ -140,11 +144,11 @@ export class MessageHandler {
 			});
 		}
 	}
-	
+
 	private whichBriefing(player: ServerPlayer): null | BriefingName {
 		const pos = player.physics.position;
 		const teamBundle = mapGeometry.teamBundles[player.team];
-	
+
 		if (pos.inside(teamBundle.briefings[0])) {
 			return BriefingName.ONE;
 		} else if (pos.inside(teamBundle.briefings[1])) {
@@ -152,22 +156,22 @@ export class MessageHandler {
 		} else if (pos.inside(teamBundle.briefings[2])) {
 			return BriefingName.THREE;
 		}
-	
+
 		return null;
 	}
-	
+
 	private becomeRole(player: ServerPlayer, role: PlayerRole): void {
 		player.role = role;
 		const radius = gameEngine.physics[role].radius;
 		const mass = gameEngine.physics[role].mass;
-	
+
 		player.physics.mass = mass;
 		player.physics.position = new Circle(player.physics.position.center, radius);
-	
+
 		if (role == PlayerRole.GENERAL) {
 			player.physics.speed = ZeroVector;
 		}
-	
+
 		setCarrying(this.socket, player, null);
 	}
 
@@ -180,8 +184,8 @@ export class MessageHandler {
 		} else if (player.team !== payload.move.team) {
 			return;
 		}
-	
-		const {briefing, move} = payload;
+
+		const { briefing, move } = payload;
 		state[player.team].briefings[briefing] = move;
 	}
 

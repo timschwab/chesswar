@@ -1,5 +1,13 @@
 import { DeathCause, PlayerAction } from "../../../common/data-types/base.ts";
-import { CarryingMessagePayload, PlayerInitMessagePayload, ServerMessage, ServerMessageTypes, StateMessagePayload, StatsMessagePayload, TeamMessagePayload } from "../../../common/message-types/server.ts";
+import {
+	CarryingMessagePayload,
+	PlayerInitMessagePayload,
+	ServerMessage,
+	ServerMessageTypes,
+	StateMessagePayload,
+	StatsMessagePayload,
+	TeamMessagePayload
+} from "../../../common/message-types/server.ts";
 import { assertNever } from "../../../common/Preconditions.ts";
 import { ChesswarAudioPlayer } from "../audio/ChesswarAudioPlayer.ts";
 import { deserializeClientPlayer } from "./ClientPlayer.ts";
@@ -14,10 +22,10 @@ export class MessageHandler {
 	private readonly pingManager: PingManager;
 
 	constructor(
-			state: ChesswarState,
-			audioPlayer: ChesswarAudioPlayer,
-			statsManager: GameStats,
-			pingManager: PingManager
+		state: ChesswarState,
+		audioPlayer: ChesswarAudioPlayer,
+		statsManager: GameStats,
+		pingManager: PingManager
 	) {
 		this.state = state;
 		this.audioPlayer = audioPlayer;
@@ -72,7 +80,7 @@ export class MessageHandler {
 	private handleCarrying(payload: CarryingMessagePayload) {
 		this.state.setCarrying(payload);
 	}
-	
+
 	private handleDeath(payload: DeathCause) {
 		if (payload == DeathCause.MINEFIELD) {
 			this.audioPlayer.death3();
@@ -80,11 +88,11 @@ export class MessageHandler {
 			this.audioPlayer.death1();
 		}
 	}
-	
+
 	private handlePong(_payload: null) {
 		this.pingManager.pong();
 	}
-	
+
 	private handleServerStats(payload: StatsMessagePayload) {
 		this.statsManager.recordServerStats(payload);
 	}

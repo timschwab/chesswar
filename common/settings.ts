@@ -6,22 +6,22 @@ export const remoteApiServer = {
 	scheme: "wss://",
 	hostname: "api.chesswar.io",
 	port: 443
-}
+};
 export const localApiServer = {
 	scheme: "ws://",
 	hostname: "localhost",
 	port: 18357
-}
+};
 export const remoteWebServer = {
 	scheme: "https://",
 	hostname: "chesswar.io",
 	port: 443
-}
+};
 export const localWebServer = {
 	scheme: "http://",
 	hostname: "localhost",
 	port: 8357
-}
+};
 
 export const remoteApiServerOrigin = remoteApiServer.scheme + remoteApiServer.hostname + ":" + remoteApiServer.port;
 export const localApiServerOrigin = localApiServer.scheme + localApiServer.hostname + ":" + localApiServer.port;
@@ -31,17 +31,17 @@ export const localWebServerOrigin = localWebServer.scheme + localWebServer.hostn
 /* ----- start build settings ----- */
 export const buildSettings = {
 	bundleDir: "web/bundle"
-}
+};
 
 /* ----- start game engine ----- */
 const tps = 20;
-const mspt = 1000/tps;
+const mspt = 1000 / tps;
 
 export const gameEngine = {
 	tps,
 	mspt,
-	deathTicks: tps*5,
-	newGameTicks: tps*30,
+	deathTicks: tps * 5,
+	newGameTicks: tps * 30,
 	startingRole: PlayerRole.SOLDIER,
 	startingClump: 100,
 	frictionCoef: 0.5,
@@ -74,7 +74,7 @@ export const gameEngine = {
 const fps = 30;
 export const rensets = {
 	fps,
-	mspf: 1000/fps,
+	mspf: 1000 / fps,
 	fpsMsMargin: 0.1,
 	players: {
 		teamColor: {
@@ -126,7 +126,7 @@ export const rensets = {
 		font: "bold 128px Times New Roman",
 		color: CWColor.GREY_BLACK,
 		newGameFont: "32px Times New Roman",
-		newGameColor: CWColor.GREY_BLACK,
+		newGameColor: CWColor.GREY_BLACK
 	},
 	stats: {
 		font: "12px Times New Roman",

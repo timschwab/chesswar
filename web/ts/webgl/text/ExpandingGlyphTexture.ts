@@ -48,12 +48,12 @@ export class ExpandingGlyphTexture {
 	private computeGlyphBoundingBox(): Rect {
 		// Set initial values for the canvas
 		this.setStyleValues();
-	
+
 		// Get metrics on this browser's implementation of the font
 		const metrics = this.context.measureText(".");
-		const oneGlyphWidth = Math.ceil(metrics.actualBoundingBoxRight-metrics.actualBoundingBoxLeft);
-		const oneGlyphHeight = Math.ceil(metrics.fontBoundingBoxDescent-metrics.fontBoundingBoxAscent);
-	
+		const oneGlyphWidth = Math.ceil(metrics.actualBoundingBoxRight - metrics.actualBoundingBoxLeft);
+		const oneGlyphHeight = Math.ceil(metrics.fontBoundingBoxDescent - metrics.fontBoundingBoxAscent);
+
 		return new Rect(ZeroPoint, new Point(oneGlyphWidth, oneGlyphHeight));
 	}
 
@@ -100,7 +100,10 @@ export class ExpandingGlyphTexture {
 
 	getTexture(): ImageData {
 		return this.context.getImageData(
-			0, 0,
-			this.glyphBoundingBox.width * this.glyphCount, this.glyphBoundingBox.height);
+			0,
+			0,
+			this.glyphBoundingBox.width * this.glyphCount,
+			this.glyphBoundingBox.height
+		);
 	}
 }

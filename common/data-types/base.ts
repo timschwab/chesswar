@@ -33,11 +33,11 @@ export enum PlayerAction {
 export type Victory = null | TeamName | "tie";
 
 export type MovementState = {
-	left: boolean,
-	right: boolean,
-	up: boolean,
-	down: boolean
-}
+	left: boolean;
+	right: boolean;
+	up: boolean;
+	down: boolean;
+};
 
 export enum DeathCause {
 	MINEFIELD = "minefield",

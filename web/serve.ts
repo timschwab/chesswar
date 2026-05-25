@@ -1,7 +1,7 @@
 import { buildSettings, localWebServer } from "../common/settings.ts";
 
 async function handler(req: Request): Promise<Response> {
-	const {pathname} = new URL(req.url);
+	const { pathname } = new URL(req.url);
 	console.log(pathname);
 
 	let file, contentType = "";
@@ -30,7 +30,7 @@ async function handler(req: Request): Promise<Response> {
 			status: 404
 		});
 	}
-};
+}
 
 console.log(Deno.version);
 

@@ -18,26 +18,29 @@ export enum ServerMessageTypes {
 }
 
 export interface PlayerInitMessagePayload {
-	id: ChesswarId
+	id: ChesswarId;
 }
 export type PlayerInitMessage = AbstractMessage<ServerMessageTypes.PLAYER_INIT, PlayerInitMessagePayload>;
 
 export interface StateMessagePayload {
-	players: SerializedClientPlayer[],
-	victory: Victory,
-	newGameCounter: number
+	players: SerializedClientPlayer[];
+	victory: Victory;
+	newGameCounter: number;
 }
 export type StateMessage = AbstractMessage<ServerMessageTypes.STATE, StateMessagePayload>;
 
 export interface TeamMessagePayload {
-	board: ChessBoard,
-	briefings: BriefingBundle,
-	enemyBriefings: BriefingBundle
+	board: ChessBoard;
+	briefings: BriefingBundle;
+	enemyBriefings: BriefingBundle;
 }
 export type TeamMessage = AbstractMessage<ServerMessageTypes.TEAM, TeamMessagePayload>;
 
 export type ActionCompletedMessagePayload = PlayerAction;
-export type ActionCompletedMessage = AbstractMessage<ServerMessageTypes.ACTION_COMPLETED, ActionCompletedMessagePayload>;
+export type ActionCompletedMessage = AbstractMessage<
+	ServerMessageTypes.ACTION_COMPLETED,
+	ActionCompletedMessagePayload
+>;
 
 export type CarryingMessagePayload = CarryLoad;
 export type CarryingMessage = AbstractMessage<ServerMessageTypes.CARRYING, CarryingMessagePayload>;
@@ -52,11 +55,11 @@ export type StatsMessagePayload = ServerStats;
 export type StatsMessage = AbstractMessage<ServerMessageTypes.STATS, StatsMessagePayload>;
 
 export type ServerMessage =
-	PlayerInitMessage |
-	StateMessage |
-	TeamMessage |
-	ActionCompletedMessage |
-	CarryingMessage |
-	DeathMessage |
-	PongMessage |
-	StatsMessage;
+	| PlayerInitMessage
+	| StateMessage
+	| TeamMessage
+	| ActionCompletedMessage
+	| CarryingMessage
+	| DeathMessage
+	| PongMessage
+	| StatsMessage;

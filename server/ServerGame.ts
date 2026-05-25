@@ -15,10 +15,10 @@ export class ServerGame {
 	}
 
 	start() {
-		this.socketManager.listenAdd(id => this.eventHandler.addPlayer(id));
-		this.socketManager.listenRemove(id => this.eventHandler.removePlayer(id));
-		this.socketManager.listenMessage(message => this.eventHandler.receiveMessage(message));
-	
+		this.socketManager.listenAdd((id) => this.eventHandler.addPlayer(id));
+		this.socketManager.listenRemove((id) => this.eventHandler.removePlayer(id));
+		this.socketManager.listenMessage((message) => this.eventHandler.receiveMessage(message));
+
 		// Set up ticking
 		setInterval(() => this.tickHandler.tick(), gameEngine.mspt);
 	}

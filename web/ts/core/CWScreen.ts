@@ -5,7 +5,7 @@ import { ZeroPoint } from "../../../common/shapes/Zero.ts";
 
 export class CWScreen {
 	private screenValue: Rect;
-	private hook = new Hook<Rect>;
+	private hook = new Hook<Rect>();
 
 	constructor() {
 		this.screenValue = this.getCurrentScreen();
@@ -19,7 +19,7 @@ export class CWScreen {
 	}
 
 	bindCanvas(canvas: HTMLCanvasElement) {
-		this.subscribe(screenValue => {
+		this.subscribe((screenValue) => {
 			canvas.width = screenValue.width;
 			canvas.height = screenValue.height;
 		});
@@ -37,7 +37,7 @@ export class CWScreen {
 		// Get the window dimensions
 		const width = globalThis.innerWidth;
 		const height = globalThis.innerHeight;
-	
+
 		// Construct the rect
 		const screenRect = new Rect(ZeroPoint, new Point(width, height));
 		return screenRect;

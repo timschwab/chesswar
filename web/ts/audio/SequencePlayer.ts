@@ -11,7 +11,7 @@ export class SequencePlayer {
 					frequency: noteFrequency,
 					length: sequence.length
 				};
-				const delay = SECONDS_PER_MEASURE*sequence.length*index;
+				const delay = SECONDS_PER_MEASURE * sequence.length * index;
 
 				this.notePlayer.play(note, delay);
 			}

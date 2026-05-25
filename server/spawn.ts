@@ -42,7 +42,7 @@ export function setCarrying(socket: SocketManager, player: ServerPlayer, load: C
 		load = {
 			type: CarryLoadType.EMPTY,
 			load: null
-		}
+		};
 	}
 
 	player.carrying = load;

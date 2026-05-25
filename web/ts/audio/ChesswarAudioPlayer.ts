@@ -7,7 +7,7 @@ const GRAB_ORDERS = {
 	chords: [
 		[NoteFrequency.A3, NoteFrequency.E3],
 		[NoteFrequency.A3, NoteFrequency.E3, NoteFrequency.A4],
-		[NoteFrequency.A3,                   NoteFrequency.A4]
+		[NoteFrequency.A3, NoteFrequency.A4]
 	],
 	length: NoteLength.SIXTEENTH
 };
@@ -39,7 +39,7 @@ const DEATH_2 = {
 
 const DEATH_3 = {
 	chords: [
-		[NoteFrequency.B1, NoteFrequency.B2, NoteFrequency.F3],
+		[NoteFrequency.B1, NoteFrequency.B2, NoteFrequency.F3]
 	],
 	length: NoteLength.QUARTER
 };

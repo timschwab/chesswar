@@ -20,9 +20,9 @@ export class SocketManager {
 	newConnection(socket: WebSocket) {
 		const id: ChesswarId = slim.make();
 		socket.addEventListener(SocketEvent.OPEN, () => this.handleSocketOpen(id, socket));
-		socket.addEventListener(SocketEvent.MESSAGE, event => this.handleSocketMessage(id, event));
-		socket.addEventListener(SocketEvent.ERROR, event => this.handleSocketError(id, event));
-		socket.addEventListener(SocketEvent.CLOSE, event => this.handleSocketClose(id, event));
+		socket.addEventListener(SocketEvent.MESSAGE, (event) => this.handleSocketMessage(id, event));
+		socket.addEventListener(SocketEvent.ERROR, (event) => this.handleSocketError(id, event));
+		socket.addEventListener(SocketEvent.CLOSE, (event) => this.handleSocketClose(id, event));
 	}
 
 	private handleSocketOpen(id: ChesswarId, socket: WebSocket) {
@@ -38,7 +38,7 @@ export class SocketManager {
 		console.log(str);
 
 		const message = JSON.parse(str) as ClientMessage;
-		const messageWithId = {...message, id};
+		const messageWithId = { ...message, id };
 		this.messageHook.run(messageWithId);
 	}
 
@@ -68,7 +68,7 @@ export class SocketManager {
 
 	sendBulk(ids: ChesswarId[], message: ServerMessage) {
 		const str = JSON.stringify(message);
-		ids.map(id => this.getSocket(id)).forEach(socket => this.safeSend(socket, str));
+		ids.map((id) => this.getSocket(id)).forEach((socket) => this.safeSend(socket, str));
 	}
 
 	sendOne(id: ChesswarId, message: ServerMessage) {
@@ -90,7 +90,7 @@ export class SocketManager {
 		try {
 			socket.send(message);
 		} catch (err) {
-			console.error({message, err});
+			console.error({ message, err });
 		}
 	}
 

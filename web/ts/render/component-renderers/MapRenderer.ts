@@ -10,7 +10,7 @@ export class MapRenderer implements UiComponentRenderer {
 	}
 
 	render(state: ChesswarState) {
-		state.getSelfPlayer().ifPresent(selfPlayer => {
+		state.getSelfPlayer().ifPresent((selfPlayer) => {
 			this.webglMapRenderer.render(selfPlayer.position.center);
 		});
 	}

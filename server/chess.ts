@@ -1,5 +1,14 @@
 import { TeamName } from "../common/data-types/base.ts";
-import { ChessBoard, ChessMove, ChessPiece, ChessRow, ChessCoordinate, SquareColor, ChessSquare, Chess960Configuration } from "../common/data-types/chess.ts";
+import {
+	Chess960Configuration,
+	ChessBoard,
+	ChessCoordinate,
+	ChessMove,
+	ChessPiece,
+	ChessRow,
+	ChessSquare,
+	SquareColor
+} from "../common/data-types/chess.ts";
 import { kingsKillKings } from "../common/options.ts";
 import { randomPop } from "../common/random.ts";
 
@@ -83,7 +92,7 @@ function validPawnMove(board: ChessBoard, move: ChessMove): boolean {
 
 	// Check for starting moves
 	if (move.from.rank == teamValue.startRow && colChange == 0 && Math.abs(rowChange) == 2) {
-		if (board[move.from.rank+teamValue.direction][move.from.file].contents != null) {
+		if (board[move.from.rank + teamValue.direction][move.from.file].contents != null) {
 			return false;
 		} else if (board[move.to.rank][move.to.file].contents != null) {
 			return false;
@@ -219,21 +228,30 @@ export function newChess960Configuration(): Chess960Configuration {
 	const king = remainingPositions[1];
 	const rook2 = remainingPositions[2];
 
-	return {bishop1, bishop2, queen, knight1, knight2, rook1, king, rook2};
+	return { bishop1, bishop2, queen, knight1, knight2, rook1, king, rook2 };
 }
 
 // Just having fun trying to enforce correctness via the type system. Probably objectively dumb.
 function selectPiece(positions: Chess960Configuration, file: number): ChessPiece {
 	switch (file) {
-		case positions.bishop1: return ChessPiece.BISHOP;
-		case positions.bishop2: return ChessPiece.BISHOP;
-		case positions.queen:   return ChessPiece.QUEEN;
-		case positions.knight1: return ChessPiece.KNIGHT;
-		case positions.knight2: return ChessPiece.KNIGHT;
-		case positions.rook1:   return ChessPiece.ROOK;
-		case positions.king:    return ChessPiece.KING;
-		case positions.rook2:   return ChessPiece.ROOK;
-		default: throw "Should never get here";
+		case positions.bishop1:
+			return ChessPiece.BISHOP;
+		case positions.bishop2:
+			return ChessPiece.BISHOP;
+		case positions.queen:
+			return ChessPiece.QUEEN;
+		case positions.knight1:
+			return ChessPiece.KNIGHT;
+		case positions.knight2:
+			return ChessPiece.KNIGHT;
+		case positions.rook1:
+			return ChessPiece.ROOK;
+		case positions.king:
+			return ChessPiece.KING;
+		case positions.rook2:
+			return ChessPiece.ROOK;
+		default:
+			throw "Should never get here";
 	}
 }
 
@@ -254,13 +272,13 @@ function newBackRow(positions: Chess960Configuration, team: TeamName): ChessRow 
 	const rank = team === TeamName.BLUE ? 0 : 7;
 	const result = newEmptyRow(rank);
 
-	for (let i = 0 ; i < 8 ; i++) {
+	for (let i = 0; i < 8; i++) {
 		result[i].contents = {
 			team,
 			piece: selectPiece(positions, i)
 		};
 	}
-	
+
 	return result;
 }
 
@@ -268,27 +286,31 @@ function newPawnRow(team: TeamName): ChessRow {
 	const rank = team === TeamName.BLUE ? 1 : 6;
 	const result = newEmptyRow(rank);
 
-	for (let i = 0 ; i < 8 ; i++) {
+	for (let i = 0; i < 8; i++) {
 		result[i].contents = {
 			team,
 			piece: ChessPiece.PAWN
 		};
 	}
-	
+
 	return result;
 }
 
 function newEmptyRow(rank: number): ChessRow {
 	return [
-		newEmptySquare(rank, 0), newEmptySquare(rank, 1),
-		newEmptySquare(rank, 2), newEmptySquare(rank, 3),
-		newEmptySquare(rank, 4), newEmptySquare(rank, 5),
-		newEmptySquare(rank, 6), newEmptySquare(rank, 7)
+		newEmptySquare(rank, 0),
+		newEmptySquare(rank, 1),
+		newEmptySquare(rank, 2),
+		newEmptySquare(rank, 3),
+		newEmptySquare(rank, 4),
+		newEmptySquare(rank, 5),
+		newEmptySquare(rank, 6),
+		newEmptySquare(rank, 7)
 	];
 }
 
 function newEmptySquare(rank: number, file: number): ChessSquare {
-	const color = (rank+file) % 2 === 0 ? SquareColor.LIGHT : SquareColor.DARK;
+	const color = (rank + file) % 2 === 0 ? SquareColor.LIGHT : SquareColor.DARK;
 
 	return {
 		coordinate: {

@@ -24,19 +24,19 @@ export class NotePlayer {
 		const start = now + delay;
 		const peak = start + ATTACK_TIME;
 		const sustainStart = peak + DECAY_TIME;
-		const sustainEnd = Math.max(start + note.length*SECONDS_PER_MEASURE, sustainStart);
+		const sustainEnd = Math.max(start + note.length * SECONDS_PER_MEASURE, sustainStart);
 		const finish = sustainEnd + RELEASE_TIME;
-	
+
 		// Create the oscillator and gain node and connect them together
 		const oscNode = ac.createOscillator();
 		const gainNode = ac.createGain();
-	
+
 		oscNode.connect(gainNode);
 		gainNode.connect(ac.destination);
-	
+
 		oscNode.type = "triangle";
 		oscNode.frequency.value = note.frequency;
-	
+
 		// Adjust gain according to the timings
 		oscNode.start(start);
 		gainNode.gain.setValueAtTime(0, start);

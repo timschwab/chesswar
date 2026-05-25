@@ -2,9 +2,9 @@
 
 ## Links
 
-* https://chesswar.io/
-* https://discord.gg/Vu2pjXkXk
-* https://www.buymeacoffee.com/pyzaist
+- https://chesswar.io/
+- https://discord.gg/Vu2pjXkXk
+- https://www.buymeacoffee.com/pyzaist
 
 ## Prereqs
 
@@ -36,6 +36,6 @@ When the game server and the web server are running, go to http://localhost:8357
 
 ## Major things left to implement
 
-* Visually tie orders to briefing rooms
-* [Optional] Make a short tutorial somewhere
-* [Optional] very simple bots, one for each role
+- Visually tie orders to briefing rooms
+- [Optional] Make a short tutorial somewhere
+- [Optional] very simple bots, one for each role

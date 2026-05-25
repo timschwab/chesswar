@@ -21,9 +21,9 @@ export class PingManager {
 	private ping() {
 		this.pingTime = performance.now();
 		this.socket.socketSend({
-				type: ClientMessageTypes.PING,
-				payload: null
-			});
+			type: ClientMessageTypes.PING,
+			payload: null
+		});
 	}
 
 	pong() {

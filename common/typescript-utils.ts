@@ -15,7 +15,10 @@ export function objectFromEntries<K extends PropertyKey, V>(entries: [K, V][]): 
 	return result;
 }
 
-export function objectMap<K extends PropertyKey, V1, V2>(obj: Record<K, V1>, mapper: (key: K, value: V1, index: number) => V2): Record<K, V2> {
+export function objectMap<K extends PropertyKey, V1, V2>(
+	obj: Record<K, V1>,
+	mapper: (key: K, value: V1, index: number) => V2
+): Record<K, V2> {
 	const entries = objectEntries(obj);
 	const mapped = entries.map(([key, value], index) => [key, mapper(key, value, index)] as [K, V2]);
 	const result = objectFromEntries(mapped);
@@ -30,12 +33,12 @@ export function arrayFill<T, U extends T>(arr: T[], val: U): U[] {
 
 export function range(length: number): number[] {
 	const result = new Array(length);
-	for (let i = 0 ; i < length ; i++) {
+	for (let i = 0; i < length; i++) {
 		result[i] = i;
 	}
 	return result;
 }
 
 export function removeNulls<T>(arr: (T | null)[]): T[] {
-	return arr.filter(element => element !== null);
+	return arr.filter((element) => element !== null);
 }
