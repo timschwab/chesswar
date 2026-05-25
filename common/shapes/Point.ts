@@ -7,9 +7,9 @@ import { GeometryName } from "./GeometryName.ts";
 import { Triangle } from "./Triangle.ts";
 
 export interface SerializedPoint extends SerializedGeometry {
-	type: GeometryName.POINT,
-	x: number,
-	y: number
+	type: GeometryName.POINT;
+	x: number;
+	y: number;
 }
 
 export class Point extends Geometry<Point> {
@@ -83,7 +83,7 @@ export class Point extends Geometry<Point> {
 	}
 
 	reflectAcrossVertical(x: number): Point {
-		return new Point((x-this.x)+x, this.y);
+		return new Point((x - this.x) + x, this.y);
 	}
 
 	floor(): Point {
@@ -99,7 +99,7 @@ export class Point extends Geometry<Point> {
 	distanceSquared(other: Point): number {
 		const xDiff = this.x - other.x;
 		const yDiff = this.y - other.y;
-		return xDiff*xDiff + yDiff*yDiff;
+		return xDiff * xDiff + yDiff * yDiff;
 	}
 
 	insidePoint(other: Point): boolean {
@@ -122,7 +122,7 @@ export class Point extends Geometry<Point> {
 
 	insideCircle(other: Circle): boolean {
 		// Distance formula while avoiding sqrt()
-		const radiusSquared = other.radius*other.radius;
+		const radiusSquared = other.radius * other.radius;
 		if (radiusSquared > this.distanceSquared(other.center)) {
 			return true;
 		} else {

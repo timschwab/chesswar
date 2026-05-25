@@ -53,8 +53,8 @@ export class Optional<T> {
 }
 
 interface OptionalDelegate<T> {
-	get: () => T,
-	isPresent: () => boolean
+	get: () => T;
+	isPresent: () => boolean;
 }
 
 class PresentOptional<T> implements OptionalDelegate<T> {
@@ -67,13 +67,15 @@ class PresentOptional<T> implements OptionalDelegate<T> {
 	get() {
 		return this.value;
 	}
-	
+
 	isPresent() {
 		return true;
 	}
 }
 
 const EMPTY_OPTIONAL: OptionalDelegate<never> = {
-	get: () => { throw "Trying to get value on empty optional"; },
+	get: () => {
+		throw "Trying to get value on empty optional";
+	},
 	isPresent: () => false
 };

@@ -71,26 +71,26 @@ const battlefieldColor = CWColor.GREY_WHITE;
 const mapRect = new Rect(ZeroPoint, new Point(width, height));
 const mapShape = Shape.from(mapRect, backgroundColor);
 
-const middleX = width/2;
-const middleY = height/2;
+const middleX = width / 2;
+const middleY = height / 2;
 const middle = new Point(middleX, middleY);
 
 // Map texture
 const topBoundary = new Rect(
-	new Point(0-boundaryHalfWidth,     0-boundaryHalfWidth),
-	new Point(width+boundaryHalfWidth, 0+boundaryHalfWidth)
+	new Point(0 - boundaryHalfWidth, 0 - boundaryHalfWidth),
+	new Point(width + boundaryHalfWidth, 0 + boundaryHalfWidth)
 );
 const bottomBoundary = new Rect(
-	new Point(0-boundaryHalfWidth,     height-boundaryHalfWidth),
-	new Point(width+boundaryHalfWidth, height+boundaryHalfWidth)
+	new Point(0 - boundaryHalfWidth, height - boundaryHalfWidth),
+	new Point(width + boundaryHalfWidth, height + boundaryHalfWidth)
 );
 const leftBoundary = new Rect(
-	new Point(0-boundaryHalfWidth, 0-boundaryHalfWidth),
-	new Point(0+boundaryHalfWidth, height+boundaryHalfWidth)
+	new Point(0 - boundaryHalfWidth, 0 - boundaryHalfWidth),
+	new Point(0 + boundaryHalfWidth, height + boundaryHalfWidth)
 );
 const rightBoundary = new Rect(
-	new Point(width-boundaryHalfWidth, 0-boundaryHalfWidth),
-	new Point(width+boundaryHalfWidth, height+boundaryHalfWidth)
+	new Point(width - boundaryHalfWidth, 0 - boundaryHalfWidth),
+	new Point(width + boundaryHalfWidth, height + boundaryHalfWidth)
 );
 
 const topBoundaryShape = Shape.from(topBoundary, boundaryColor);
@@ -100,48 +100,50 @@ const rightBoundaryShape = Shape.from(rightBoundary, boundaryColor);
 
 const gridLines: Rect[] = [];
 
-for (let x = 0 ; x <= width ; x += gridSpacing) {
+for (let x = 0; x <= width; x += gridSpacing) {
 	const gridRect = new Rect(
-		new Point(x-gridHalfWidth, 0),
-		new Point(x+gridHalfWidth, height)
+		new Point(x - gridHalfWidth, 0),
+		new Point(x + gridHalfWidth, height)
 	);
 	gridLines.push(gridRect);
 }
 
-for (let y = 0 ; y <= height ; y += gridSpacing) {
+for (let y = 0; y <= height; y += gridSpacing) {
 	const gridRect = new Rect(
-		new Point(0,     y-gridHalfWidth),
-		new Point(width, y+gridHalfWidth)
+		new Point(0, y - gridHalfWidth),
+		new Point(width, y + gridHalfWidth)
 	);
 	gridLines.push(gridRect);
 }
 
-const gridShapes = gridLines.map(line => Shape.from(line, gridColor));
+const gridShapes = gridLines.map((line) => Shape.from(line, gridColor));
 
 // Blue facilities
 const blueBase = new Rect(
-	new Point(0,         middleY-baseHalfHeight),
-	new Point(baseWidth, middleY+baseHalfHeight));
+	new Point(0, middleY - baseHalfHeight),
+	new Point(baseWidth, middleY + baseHalfHeight)
+);
 const blueBaseShape = Shape.from(blueBase, baseColor);
 
 const blueCommand = new Rect(
-	new Point(0,            middleY-commandHalfHeight),
-	new Point(commandWidth, middleY+commandHalfHeight));
+	new Point(0, middleY - commandHalfHeight),
+	new Point(commandWidth, middleY + commandHalfHeight)
+);
 const blueCommandShape = Shape.from(blueCommand, commandColor);
 
 const blueBriefing1 = new Rect(
-	new Point(blueBase.center.x-(briefingSize/2), blueBase.top+sideBriefingOffset),
-	new Point(blueBase.center.x+(briefingSize/2), blueBase.top+sideBriefingOffset+briefingSize)
+	new Point(blueBase.center.x - (briefingSize / 2), blueBase.top + sideBriefingOffset),
+	new Point(blueBase.center.x + (briefingSize / 2), blueBase.top + sideBriefingOffset + briefingSize)
 );
 
 const blueBriefing2 = new Rect(
-	new Point(blueBase.right-middleBriefingOffset-briefingSize, blueBase.center.y-(briefingSize/2)),
-	new Point(blueBase.right-middleBriefingOffset,              blueBase.center.y+(briefingSize/2))
+	new Point(blueBase.right - middleBriefingOffset - briefingSize, blueBase.center.y - (briefingSize / 2)),
+	new Point(blueBase.right - middleBriefingOffset, blueBase.center.y + (briefingSize / 2))
 );
 
 const blueBriefing3 = new Rect(
-	new Point(blueBase.center.x-(briefingSize/2), blueBase.bottom-sideBriefingOffset-briefingSize),
-	new Point(blueBase.center.x+(briefingSize/2), blueBase.bottom-sideBriefingOffset)
+	new Point(blueBase.center.x - (briefingSize / 2), blueBase.bottom - sideBriefingOffset - briefingSize),
+	new Point(blueBase.center.x + (briefingSize / 2), blueBase.bottom - sideBriefingOffset)
 );
 
 const blueBriefing1Shape = Shape.from(blueBriefing1, briefingColor);
@@ -149,18 +151,18 @@ const blueBriefing2Shape = Shape.from(blueBriefing2, briefingColor);
 const blueBriefing3Shape = Shape.from(blueBriefing3, briefingColor);
 
 const blueOutpost1 = new Rect(new Point(0, 0), new Point(outpostSize, outpostSize));
-const blueOutpost2 = new Rect(new Point(0, height-outpostSize), new Point(outpostSize, height));
+const blueOutpost2 = new Rect(new Point(0, height - outpostSize), new Point(outpostSize, height));
 
 const blueOutpost1Shape = Shape.from(blueOutpost1, outpostColor);
 const blueOutpost2Shape = Shape.from(blueOutpost2, outpostColor);
 
 const blueArmory = new Rect(
 	new Point(armorySkifOffset, armorySkifOffset),
-	new Point(armorySkifOffset+armorySkifSize, armorySkifOffset+armorySkifSize)
+	new Point(armorySkifOffset + armorySkifSize, armorySkifOffset + armorySkifSize)
 );
 const blueScif = new Rect(
-	new Point(armorySkifOffset, height-(armorySkifOffset+armorySkifSize)),
-	new Point(armorySkifOffset+armorySkifSize, height-armorySkifOffset)
+	new Point(armorySkifOffset, height - (armorySkifOffset + armorySkifSize)),
+	new Point(armorySkifOffset + armorySkifSize, height - armorySkifOffset)
 );
 
 const blueArmoryShape = Shape.from(blueArmory, armoryColor);
@@ -168,7 +170,7 @@ const blueScifShape = Shape.from(blueScif, scifColor);
 
 const blueStart1 = new Point(startOffset, startOffset);
 const blueStart2 = new Point(startOffset, middleY);
-const blueStart3 = new Point(startOffset, height-startOffset);
+const blueStart3 = new Point(startOffset, height - startOffset);
 
 // Red facilities
 const redBaseShape = blueBaseShape.reflectAcrossVertical(middleX);
@@ -192,24 +194,40 @@ const redStart3 = blueStart3.reflectAcrossVertical(middleX);
 const minefields = [
 	new Rect(
 		new Point(middleX - middleRectMinefieldHalfWidth, middleRectMinefieldOffset),
-		new Point(middleX + middleRectMinefieldHalfWidth, middleRectMinefieldOffset+middleRectMinefieldHeight)),
+		new Point(middleX + middleRectMinefieldHalfWidth, middleRectMinefieldOffset + middleRectMinefieldHeight)
+	),
 	new Rect(
-		new Point(middleX - middleRectMinefieldHalfWidth, height-(middleRectMinefieldOffset+middleRectMinefieldHeight)),
-		new Point(middleX + middleRectMinefieldHalfWidth, height-middleRectMinefieldOffset)),
+		new Point(middleX - middleRectMinefieldHalfWidth, height - (middleRectMinefieldOffset + middleRectMinefieldHeight)),
+		new Point(middleX + middleRectMinefieldHalfWidth, height - middleRectMinefieldOffset)
+	),
 
 	new Rect(
-		new Point((middleX-sideRectMinefieldOffset) - sideRectMinefieldHalfWidth, middleY-sideRectMinefieldHalfHeight),
-		new Point((middleX-sideRectMinefieldOffset) + sideRectMinefieldHalfWidth, middleY+sideRectMinefieldHalfHeight)),
+		new Point((middleX - sideRectMinefieldOffset) - sideRectMinefieldHalfWidth, middleY - sideRectMinefieldHalfHeight),
+		new Point((middleX - sideRectMinefieldOffset) + sideRectMinefieldHalfWidth, middleY + sideRectMinefieldHalfHeight)
+	),
 	new Rect(
-		new Point((middleX+sideRectMinefieldOffset) - sideRectMinefieldHalfWidth, middleY-sideRectMinefieldHalfHeight),
-		new Point((middleX+sideRectMinefieldOffset) + sideRectMinefieldHalfWidth, middleY+sideRectMinefieldHalfHeight)),
+		new Point((middleX + sideRectMinefieldOffset) - sideRectMinefieldHalfWidth, middleY - sideRectMinefieldHalfHeight),
+		new Point((middleX + sideRectMinefieldOffset) + sideRectMinefieldHalfWidth, middleY + sideRectMinefieldHalfHeight)
+	),
 
-	new Circle(new Point(middleX-circleMinefieldTopLeftFromCenter.x, middleY-circleMinefieldTopLeftFromCenter.y), circleMinefieldRadius),
-	new Circle(new Point(middleX+circleMinefieldTopLeftFromCenter.x, middleY-circleMinefieldTopLeftFromCenter.y), circleMinefieldRadius),
-	new Circle(new Point(middleX-circleMinefieldTopLeftFromCenter.x, middleY+circleMinefieldTopLeftFromCenter.y), circleMinefieldRadius),
-	new Circle(new Point(middleX+circleMinefieldTopLeftFromCenter.x, middleY+circleMinefieldTopLeftFromCenter.y), circleMinefieldRadius),
+	new Circle(
+		new Point(middleX - circleMinefieldTopLeftFromCenter.x, middleY - circleMinefieldTopLeftFromCenter.y),
+		circleMinefieldRadius
+	),
+	new Circle(
+		new Point(middleX + circleMinefieldTopLeftFromCenter.x, middleY - circleMinefieldTopLeftFromCenter.y),
+		circleMinefieldRadius
+	),
+	new Circle(
+		new Point(middleX - circleMinefieldTopLeftFromCenter.x, middleY + circleMinefieldTopLeftFromCenter.y),
+		circleMinefieldRadius
+	),
+	new Circle(
+		new Point(middleX + circleMinefieldTopLeftFromCenter.x, middleY + circleMinefieldTopLeftFromCenter.y),
+		circleMinefieldRadius
+	)
 ];
-const minefieldShapes = minefields.map(minefield => Shape.from(minefield, minefieldColor));
+const minefieldShapes = minefields.map((minefield) => Shape.from(minefield, minefieldColor));
 
 const dmz = new Circle(middle, dmzRadius);
 const dmzShape = Shape.from(dmz, dmzColor);

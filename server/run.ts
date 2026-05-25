@@ -4,8 +4,8 @@ import { ServerGame } from "./ServerGame.ts";
 const game = new ServerGame();
 game.start();
 
-const handler = function(req: Request): Response {
-	const {pathname} = new URL(req.url);
+const handler = function (req: Request): Response {
+	const { pathname } = new URL(req.url);
 
 	if (pathname !== "/") {
 		return new Response(null, {

@@ -17,8 +17,8 @@ export type ActionMessagePayload = null;
 type ActionMessage = AbstractMessage<ClientMessageTypes.ACTION, ActionMessagePayload>;
 
 export interface GeneralOrdersMessagePayload {
-	briefing: BriefingName
-	move: ChessMove
+	briefing: BriefingName;
+	move: ChessMove;
 }
 type GeneralOrdersMessage = AbstractMessage<ClientMessageTypes.GENERAL_ORDERS, GeneralOrdersMessagePayload>;
 
@@ -26,4 +26,4 @@ export type PingMessagePayload = null;
 type PingMessage = AbstractMessage<ClientMessageTypes.PING, PingMessagePayload>;
 
 export type ClientMessage = MoveMessage | ActionMessage | GeneralOrdersMessage | PingMessage;
-export type ClientMessageWithId = ClientMessage & { id: ChesswarId }
+export type ClientMessageWithId = ClientMessage & { id: ChesswarId };

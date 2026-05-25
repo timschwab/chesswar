@@ -6,26 +6,26 @@ import { Shape } from "../shapes/Shape.ts";
 import { mapSettings } from "./MapSettings.ts";
 
 export interface ChessWarMapTeamBundle {
-	starts: Point[],
-	command: Shape<Rect>,
-	base: Shape<Rect>,
-	briefings: Shape<Rect>[],
-	outposts: Shape<Rect>[],
-	armory: Shape<Rect>,
-	scif: Shape<Rect>
+	starts: Point[];
+	command: Shape<Rect>;
+	base: Shape<Rect>;
+	briefings: Shape<Rect>[];
+	outposts: Shape<Rect>[];
+	armory: Shape<Rect>;
+	scif: Shape<Rect>;
 }
 
 export interface ChessWarMap {
-	rect: Shape<Rect>,
-	boundaries: Shape<Rect>[]
-	grid: Shape<Rect>[],
+	rect: Shape<Rect>;
+	boundaries: Shape<Rect>[];
+	grid: Shape<Rect>[];
 	teamBundles: {
-		[TeamName.BLUE]: ChessWarMapTeamBundle,
-		[TeamName.RED]: ChessWarMapTeamBundle
-	},
-	minefields: Shape<Rect | Circle>[],
-	dmz: Shape<Circle>,
-	battlefield: Shape<Circle>
+		[TeamName.BLUE]: ChessWarMapTeamBundle;
+		[TeamName.RED]: ChessWarMapTeamBundle;
+	};
+	minefields: Shape<Rect | Circle>[];
+	dmz: Shape<Circle>;
+	battlefield: Shape<Circle>;
 }
 
 export const rawMap: ChessWarMap = {

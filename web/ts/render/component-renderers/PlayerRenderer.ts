@@ -17,63 +17,70 @@ const DEATH_COUNTER_LETTERS = 3;
 const DEATH_COUNTER_COLOR = CWColor.GREY_BLACK;
 
 export class PlayerRenderer implements UiComponentRenderer {
-    private readonly webglPlayerRenderer: WebglPlayerRenderer;
-    private readonly textRenderer: TextRenderer;
-    private readonly screen: CWScreen;
+	private readonly webglPlayerRenderer: WebglPlayerRenderer;
+	private readonly textRenderer: TextRenderer;
+	private readonly screen: CWScreen;
 
-    constructor(webglPlayerRenderer: WebglPlayerRenderer, textRenderer: TextRenderer, screen: CWScreen) {
-        this.webglPlayerRenderer = webglPlayerRenderer;
-        this.textRenderer = textRenderer;
-        this.screen = screen;
-    }
+	constructor(webglPlayerRenderer: WebglPlayerRenderer, textRenderer: TextRenderer, screen: CWScreen) {
+		this.webglPlayerRenderer = webglPlayerRenderer;
+		this.textRenderer = textRenderer;
+		this.screen = screen;
+	}
 
-    render(state: ChesswarState) {
-        state.getSelfPlayer().ifPresent(selfPlayer => {
-            const players = state.getAllPlayers();
+	render(state: ChesswarState) {
+		state.getSelfPlayer().ifPresent((selfPlayer) => {
+			const players = state.getAllPlayers();
 
-            // Compute values
-            const cameraOffset = selfPlayer.position.center;
-            const screenOffset = this.screen.get().center;
-            const nameCenteredOffset = this.textBoundingBox(this.textRenderer.getGlyphBoundingBox(), TEXT_SIZE, NAME_LETTERS);
-            const nameOffset = ZeroPoint.subtract(cameraOffset).add(screenOffset).subtract(nameCenteredOffset.center);
-            const deathCenteredOffset = this.textBoundingBox(this.textRenderer.getGlyphBoundingBox(), TEXT_SIZE, DEATH_COUNTER_LETTERS);
-            const deathOffset = ZeroPoint.subtract(cameraOffset).add(screenOffset).subtract(deathCenteredOffset.center);
-            
-            // Draw the name
-            const nameList = players.map(player => new CWText(
-                player.id.substring(0, NAME_LETTERS),
-                player.position.center.add(nameOffset).add(new Point(0, player.position.radius+10)),
-                TEXT_SIZE,
-                NAME_COLOR));
-            this.textRenderer.render(nameList);
+			// Compute values
+			const cameraOffset = selfPlayer.position.center;
+			const screenOffset = this.screen.get().center;
+			const nameCenteredOffset = this.textBoundingBox(this.textRenderer.getGlyphBoundingBox(), TEXT_SIZE, NAME_LETTERS);
+			const nameOffset = ZeroPoint.subtract(cameraOffset).add(screenOffset).subtract(nameCenteredOffset.center);
+			const deathCenteredOffset = this.textBoundingBox(
+				this.textRenderer.getGlyphBoundingBox(),
+				TEXT_SIZE,
+				DEATH_COUNTER_LETTERS
+			);
+			const deathOffset = ZeroPoint.subtract(cameraOffset).add(screenOffset).subtract(deathCenteredOffset.center);
 
-            // Draw the death counter
-            const deathCounterList = removeNulls(players.map(player => {
-                if (player.deathCounter > 0) {
-                    return new CWText(
-                        player.deathCounter.toString().padStart(DEATH_COUNTER_LETTERS, "0"),
-                        player.position.center.add(deathOffset).subtract(new Point(0, player.position.radius+10)),
-                        TEXT_SIZE,
-                        DEATH_COUNTER_COLOR
-                    );
-                } else {
-                    return null;
-                }
-            }));
-            this.textRenderer.render(deathCounterList);
+			// Draw the name
+			const nameList = players.map((player) =>
+				new CWText(
+					player.id.substring(0, NAME_LETTERS),
+					player.position.center.add(nameOffset).add(new Point(0, player.position.radius + 10)),
+					TEXT_SIZE,
+					NAME_COLOR
+				)
+			);
+			this.textRenderer.render(nameList);
 
-            // Draw the circles last (so that they are on top)
-            this.webglPlayerRenderer.render(selfPlayer, players);
-        });
-    }
+			// Draw the death counter
+			const deathCounterList = removeNulls(players.map((player) => {
+				if (player.deathCounter > 0) {
+					return new CWText(
+						player.deathCounter.toString().padStart(DEATH_COUNTER_LETTERS, "0"),
+						player.position.center.add(deathOffset).subtract(new Point(0, player.position.radius + 10)),
+						TEXT_SIZE,
+						DEATH_COUNTER_COLOR
+					);
+				} else {
+					return null;
+				}
+			}));
+			this.textRenderer.render(deathCounterList);
 
-    private textBoundingBox(glyphBoundingBox: Rect, size: number, letterCount: number) {
-        return new Rect(
-            ZeroPoint,
-            new Point(
-                glyphBoundingBox.width*size*letterCount,
-                glyphBoundingBox.height*size
-            )
-        );
-    }
+			// Draw the circles last (so that they are on top)
+			this.webglPlayerRenderer.render(selfPlayer, players);
+		});
+	}
+
+	private textBoundingBox(glyphBoundingBox: Rect, size: number, letterCount: number) {
+		return new Rect(
+			ZeroPoint,
+			new Point(
+				glyphBoundingBox.width * size * letterCount,
+				glyphBoundingBox.height * size
+			)
+		);
+	}
 }

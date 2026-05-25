@@ -29,7 +29,7 @@ export class CWClientSocket {
 		const data = event.data;
 		const str = data.toString();
 		const message = JSON.parse(str) as ServerMessage;
-	
+
 		this.messageHook.run(message);
 	}
 
@@ -59,7 +59,7 @@ export class CWClientSocket {
 			this.socket.send(messageString);
 			return true;
 		} catch (err) {
-			console.error({message, err});
+			console.error({ message, err });
 			return false;
 		}
 	}

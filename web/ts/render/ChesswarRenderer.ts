@@ -74,7 +74,7 @@ export class ChesswarRenderer {
 
 	private renderComponents() {
 		// Render from back to front
-		this.componentRenderers.forEach(renderer => {
+		this.componentRenderers.forEach((renderer) => {
 			renderer.render(this.state);
 		});
 	}

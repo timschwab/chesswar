@@ -3,38 +3,38 @@ import { Point } from "../../../common/shapes/Point.ts";
 
 export interface WebGlRendererSettings {
 	shaderSource: {
-		vertex: string,
-		fragment: string
-	},
+		vertex: string;
+		fragment: string;
+	};
 	uniformNames: {
-		screen?: string,
-		values?: string[],
-		points?: string[],
-		colors?: string[]
-	},
+		screen?: string;
+		values?: string[];
+		points?: string[];
+		colors?: string[];
+	};
 	attributeData: {
-		values?: Map<string, number[]>,
-		points?: Map<string, Point[]>,
-		colors?: Map<string, Color[]>
-	}
+		values?: Map<string, number[]>;
+		points?: Map<string, Point[]>;
+		colors?: Map<string, Color[]>;
+	};
 }
 
 export interface StrictWebGlRendererSettings {
 	shaderSource: {
-		vertex: string,
-		fragment: string
-	},
+		vertex: string;
+		fragment: string;
+	};
 	uniformNames: {
-		screen: string | null,
-		values: string[],
-		points: string[],
-		colors: string[]
-	},
+		screen: string | null;
+		values: string[];
+		points: string[];
+		colors: string[];
+	};
 	attributeData: {
-		values: Map<string, number[]>,
-		points: Map<string, Point[]>,
-		colors: Map<string, Color[]>
-	}
+		values: Map<string, number[]>;
+		points: Map<string, Point[]>;
+		colors: Map<string, Color[]>;
+	};
 }
 
 export function makeStrict(settings: WebGlRendererSettings): StrictWebGlRendererSettings {

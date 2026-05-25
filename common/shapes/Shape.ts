@@ -5,13 +5,13 @@ import { Rect } from "./Rect.ts";
 import { Structure } from "./Structure.ts";
 
 interface RenderSettings {
-	color: Color,
-	clampToScreen: boolean
+	color: Color;
+	clampToScreen: boolean;
 }
 
 export class Shape<T extends Geometry<T>> {
-	readonly geo: T
-	readonly settings: RenderSettings
+	readonly geo: T;
+	readonly settings: RenderSettings;
 
 	static from<T extends Geometry<T>>(geo: T, color: Color, clampToScreen?: boolean): Shape<T> {
 		const settings = {

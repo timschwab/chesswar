@@ -2,7 +2,6 @@ import { Color } from "../../../common/Color.ts";
 import { Point } from "../../../common/shapes/Point.ts";
 import { CWScreen } from "../core/CWScreen.ts";
 
-
 type ShaderType = WebGLRenderingContext["VERTEX_SHADER"] | WebGLRenderingContext["FRAGMENT_SHADER"];
 
 const GL = WebGLRenderingContext;
@@ -27,7 +26,7 @@ export class WebglInterface {
 
 	constructor(canvas: HTMLCanvasElement, screen: CWScreen) {
 		this.webgl = this.getWebgl(canvas);
-		screen.subscribe(screenValue => this.webgl.viewport(0, 0, screenValue.width, screenValue.height));
+		screen.subscribe((screenValue) => this.webgl.viewport(0, 0, screenValue.width, screenValue.height));
 	}
 
 	/***** Helper function for the constructor *****/
@@ -131,9 +130,9 @@ export class WebglInterface {
 		// location                    // the attribute location
 		// size                        // the number of floats per vertex (value=1, point=2, color=3, etc)
 		const type = this.webgl.FLOAT; // the data is 32bit floats
-		const normalize = false;       // don't normalize the data
-		const stride = 0;              // 0 = move forward size * sizeof(type) each iteration to get the next position
-		const attribOffset = 0;        // start at the beginning of the buffer
+		const normalize = false; // don't normalize the data
+		const stride = 0; // 0 = move forward size * sizeof(type) each iteration to get the next position
+		const attribOffset = 0; // start at the beginning of the buffer
 		this.webgl.vertexAttribPointer(location, size, type, normalize, stride, attribOffset);
 	}
 
@@ -179,7 +178,8 @@ export class WebglInterface {
 			this.webgl.RGBA,
 			this.webgl.RGBA,
 			this.webgl.UNSIGNED_BYTE,
-			texture);
+			texture
+		);
 	}
 
 	/***** The draw function *****/

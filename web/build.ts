@@ -1,9 +1,7 @@
 import { buildSettings } from "../common/settings.ts";
-import { esbuild } from '../deps.ts'
+import { esbuild } from "../deps.ts";
 
 await build();
-
-
 
 async function build() {
 	console.log("Starting build");
@@ -35,12 +33,14 @@ function generateOneGlslFileSet(name: string) {
 	wrapGlslFileContents(
 		`${name}VertexShader`,
 		`web/ts/webgl/${name}/glsl-source`,
-		`web/ts/webgl/${name}/glsl-generated`);
+		`web/ts/webgl/${name}/glsl-generated`
+	);
 
 	wrapGlslFileContents(
 		`${name}FragmentShader`,
 		`web/ts/webgl/${name}/glsl-source`,
-		`web/ts/webgl/${name}/glsl-generated`);
+		`web/ts/webgl/${name}/glsl-generated`
+	);
 }
 
 function wrapGlslFileContents(filename: string, sourceDir: string, destDir: string) {

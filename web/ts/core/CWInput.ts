@@ -11,8 +11,8 @@ export enum CWKey {
 }
 
 export interface CWKeyEvent {
-	key: CWKey,
-	pressed: boolean
+	key: CWKey;
+	pressed: boolean;
 }
 
 const KeyCodeTranslation = {
@@ -29,7 +29,7 @@ const KeyCodeTranslation = {
 	Enter: CWKey.ACTION,
 	Space: CWKey.ACTION,
 	Period: CWKey.STATS
-}
+};
 
 export class CWInput {
 	private readonly keyHook = new Hook<CWKeyEvent>();

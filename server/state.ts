@@ -8,38 +8,38 @@ import { Vector } from "../common/shapes/Vector.ts";
 import { newBoard, newChess960Configuration } from "./chess.ts";
 
 export interface ServerPlayerPhysics {
-	mass: number,
-	speed: Vector,
-	position: Circle
+	mass: number;
+	speed: Vector;
+	position: Circle;
 }
 
 export interface ServerPlayer {
-	id: ChesswarId,
-	team: TeamName,
-	role: PlayerRole,
-	actionOption: PlayerAction,
-	carrying: CarryLoad,
-	movement: MovementState,
-	physics: ServerPlayerPhysics,
-	deathCounter: number
+	id: ChesswarId;
+	team: TeamName;
+	role: PlayerRole;
+	actionOption: PlayerAction;
+	carrying: CarryLoad;
+	movement: MovementState;
+	physics: ServerPlayerPhysics;
+	deathCounter: number;
 }
 
 interface TeamInfo {
-	playerMap: Map<ChesswarId, ServerPlayer>,
-	teamBoard: ChessBoard,
-	briefings: BriefingBundle,
-	enemyBriefings: BriefingBundle
+	playerMap: Map<ChesswarId, ServerPlayer>;
+	teamBoard: ChessBoard;
+	briefings: BriefingBundle;
+	enemyBriefings: BriefingBundle;
 }
 
 interface ServerState {
-	count: number,
-	victory: Victory,
-	realBoard: ChessBoard,
-	allPlayers: Map<ChesswarId, ServerPlayer>,
-	[TeamName.BLUE]: TeamInfo,
-	[TeamName.RED]: TeamInfo,
-	stats: ServerStats,
-	newGameCounter: number
+	count: number;
+	victory: Victory;
+	realBoard: ChessBoard;
+	allPlayers: Map<ChesswarId, ServerPlayer>;
+	[TeamName.BLUE]: TeamInfo;
+	[TeamName.RED]: TeamInfo;
+	stats: ServerStats;
+	newGameCounter: number;
 }
 
 function newState(): ServerState {

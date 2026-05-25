@@ -2,9 +2,12 @@ import { ChessPiece } from "../../../../common/data-types/chess.ts";
 import { Point } from "../../../../common/shapes/Point.ts";
 
 type TriArr = [
-	number, number,
-	number, number,
-	number, number
+	number,
+	number,
+	number,
+	number,
+	number,
+	number
 ][];
 
 const kingData: TriArr = [
@@ -28,7 +31,7 @@ const rookData: TriArr = [
 const bishopData: TriArr = [
 	[0.40, 0.80, 0.60, 0.80, 0.50, 0.30],
 	[0.40, 0.30, 0.60, 0.30, 0.50, 0.80],
-	[0.40, 0.30, 0.60, 0.30, 0.50, 0.20],
+	[0.40, 0.30, 0.60, 0.30, 0.50, 0.20]
 ];
 
 const knightData: TriArr = [
@@ -40,12 +43,11 @@ const knightData: TriArr = [
 const pawnData: TriArr = [
 	[0.25, 0.75, 0.75, 0.75, 0.25, 0.60],
 	[0.75, 0.75, 0.25, 0.75, 0.75, 0.60],
-	[0.40, 0.75, 0.60, 0.75, 0.50, 0.40],
+	[0.40, 0.75, 0.60, 0.75, 0.50, 0.40]
 ];
 
-
 function convertTriArr(arr: TriArr): Point[] {
-	return arr.flatMap(row => [
+	return arr.flatMap((row) => [
 		new Point(row[0], row[1]),
 		new Point(row[2], row[3]),
 		new Point(row[4], row[5])

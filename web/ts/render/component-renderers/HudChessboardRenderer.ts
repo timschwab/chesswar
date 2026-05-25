@@ -14,16 +14,20 @@ const boardRect = new Rect(leftTop, rightBottom);
 
 export class HudChessboardRenderer implements UiComponentRenderer {
 	private readonly chessboardHelper: ChessboardHelper;
-	
-	constructor(rectangleRenderer: RectangleRenderer, chessPieceRenderer: ChessPieceRenderer, triangleRenderer: TriangleRenderer) {
+
+	constructor(
+		rectangleRenderer: RectangleRenderer,
+		chessPieceRenderer: ChessPieceRenderer,
+		triangleRenderer: TriangleRenderer
+	) {
 		this.chessboardHelper = new ChessboardHelper(rectangleRenderer, chessPieceRenderer, triangleRenderer, boardRect);
 	}
 
 	render(state: ChesswarState) {
-		state.getSelfPlayer().ifPresent(selfPlayer => {
-			state.getTeamInfo().ifPresent(info => {
+		state.getSelfPlayer().ifPresent((selfPlayer) => {
+			state.getTeamInfo().ifPresent((info) => {
 				this.chessboardHelper.renderBoard(info.board, [], selfPlayer.team);
 			});
 		});
 	}
-};
+}

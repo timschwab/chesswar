@@ -5,10 +5,9 @@ import { CWScreen } from "../core/CWScreen.ts";
 import { WEBGL_CONSTANTS, WebglInterface } from "./WebglInterface.ts";
 import { makeStrict, WebGlRendererSettings } from "./WebglRendererSettings.ts";
 
-
 interface AttributePair {
-	location: GLint,
-	buffer: WebGLBuffer
+	location: GLint;
+	buffer: WebGLBuffer;
 }
 
 // A class for working with a specific program
@@ -27,7 +26,11 @@ export class WebglRenderer {
 		const settings = makeStrict(rawSettings);
 
 		// Get and check the attribute vertex count
-		this.vertexCount = this.getVertexCount(settings.attributeData.values, settings.attributeData.points, settings.attributeData.colors);
+		this.vertexCount = this.getVertexCount(
+			settings.attributeData.values,
+			settings.attributeData.points,
+			settings.attributeData.colors
+		);
 
 		// Start up webgl
 		this.webgl = webgl;
@@ -47,15 +50,19 @@ export class WebglRenderer {
 		// If given a screen uniform, automatically set it when the screen size changes
 		if (settings.uniformNames.screen !== null) {
 			const screenUniformLocation = this.webgl.getUniformLocation(this.program, settings.uniformNames.screen);
-			screen.subscribe(screenValue => {
+			screen.subscribe((screenValue) => {
 				this.webgl.useProgram(this.program);
-				this.webgl.setUniformPoint(screenUniformLocation, screenValue.rightBottom)
+				this.webgl.setUniformPoint(screenUniformLocation, screenValue.rightBottom);
 			});
 		}
 	}
 
 	// Get and check the attribute vertex count
-	private getVertexCount(attributeValueData: Map<string, number[]>, attributePointData: Map<string, Point[]>, attributeColorData: Map<string, Color[]>): number {
+	private getVertexCount(
+		attributeValueData: Map<string, number[]>,
+		attributePointData: Map<string, Point[]>,
+		attributeColorData: Map<string, Color[]>
+	): number {
 		const valueCount = this.getAttributeMapCount(attributeValueData);
 		const pointCount = this.getAttributeMapCount(attributePointData);
 		const colorCount = this.getAttributeMapCount(attributeColorData);
@@ -83,16 +90,18 @@ export class WebglRenderer {
 		if (attributeData.size === 0) {
 			return Optional.empty();
 		} else {
-			return Optional.of(attributeData
-				.entries()
-				.map(entry => entry[1].length)
-				.reduce((prev, cur) => {
-					if (prev === cur) {
-						return cur;
-					} else {
-						throw "Not all attribute data is the same length";
-					}
-			}));
+			return Optional.of(
+				attributeData
+					.entries()
+					.map((entry) => entry[1].length)
+					.reduce((prev, cur) => {
+						if (prev === cur) {
+							return cur;
+						} else {
+							throw "Not all attribute data is the same length";
+						}
+					})
+			);
 		}
 	}
 
@@ -116,7 +125,7 @@ export class WebglRenderer {
 
 	// Map the uniform names to locations
 	private mapUniformLocations(program: WebGLProgram, names: string[]): Map<string, WebGLUniformLocation> {
-		return new Map(names.map(name => [name, this.webgl.getUniformLocation(program, name)]));
+		return new Map(names.map((name) => [name, this.webgl.getUniformLocation(program, name)]));
 	}
 
 	// Setting attribute data
@@ -139,7 +148,7 @@ export class WebglRenderer {
 			const pair = this.attributePair(program, attributeName);
 
 			// Set the data in the buffer
-			const listOfNums = attributeData.flatMap(point => [point.x, point.y]);
+			const listOfNums = attributeData.flatMap((point) => [point.x, point.y]);
 			const floatArray = new Float32Array(listOfNums);
 			this.webgl.bufferData(floatArray);
 
@@ -153,7 +162,7 @@ export class WebglRenderer {
 			const pair = this.attributePair(program, attributeName);
 
 			// Set the data in the buffer
-			const listOfNums = attributeData.flatMap(color => [color.r, color.g, color.b]);
+			const listOfNums = attributeData.flatMap((color) => [color.r, color.g, color.b]);
 			const floatArray = new Float32Array(listOfNums);
 			this.webgl.bufferData(floatArray);
 
@@ -174,9 +183,9 @@ export class WebglRenderer {
 	// User facing methods
 	prep() {
 		this.webgl.useProgram(this.program);
-		this.attributeValuePairs.forEach(pair => this.prepAttribute(pair, 1));
-		this.attributePointPairs.forEach(pair => this.prepAttribute(pair, 2));
-		this.attributeColorPairs.forEach(pair => this.prepAttribute(pair, 3));
+		this.attributeValuePairs.forEach((pair) => this.prepAttribute(pair, 1));
+		this.attributePointPairs.forEach((pair) => this.prepAttribute(pair, 2));
+		this.attributeColorPairs.forEach((pair) => this.prepAttribute(pair, 3));
 	}
 
 	private prepAttribute(pair: AttributePair, dataSize: number): void {
@@ -188,7 +197,7 @@ export class WebglRenderer {
 	setUniformValue(name: string, value: number): void {
 		const location = this.uniformValueLocations.get(name);
 		if (location === undefined) {
-			throw "Location could not be found: " + name
+			throw "Location could not be found: " + name;
 		}
 		this.webgl.setUniformValue(location, value);
 	}
@@ -196,7 +205,7 @@ export class WebglRenderer {
 	setUniformPoint(name: string, point: Point): void {
 		const location = this.uniformPointLocations.get(name);
 		if (location === undefined) {
-			throw "Location could not be found: " + name
+			throw "Location could not be found: " + name;
 		}
 		this.webgl.setUniformPoint(location, point);
 	}
@@ -204,7 +213,7 @@ export class WebglRenderer {
 	setUniformColor(name: string, color: Color): void {
 		const location = this.uniformColorLocations.get(name);
 		if (location === undefined) {
-			throw "Location could not be found: " + name
+			throw "Location could not be found: " + name;
 		}
 		this.webgl.setUniformColor(location, color);
 	}
@@ -214,8 +223,16 @@ export class WebglRenderer {
 		this.webgl.bindTexture(texture);
 
 		// Currently just used by the text renderer
-		this.webgl.textureParameter(WEBGL_CONSTANTS.TEXTURE_2D, WEBGL_CONSTANTS.TEXTURE_WRAP_S, WEBGL_CONSTANTS.CLAMP_TO_EDGE);
-		this.webgl.textureParameter(WEBGL_CONSTANTS.TEXTURE_2D, WEBGL_CONSTANTS.TEXTURE_WRAP_T, WEBGL_CONSTANTS.CLAMP_TO_EDGE);
+		this.webgl.textureParameter(
+			WEBGL_CONSTANTS.TEXTURE_2D,
+			WEBGL_CONSTANTS.TEXTURE_WRAP_S,
+			WEBGL_CONSTANTS.CLAMP_TO_EDGE
+		);
+		this.webgl.textureParameter(
+			WEBGL_CONSTANTS.TEXTURE_2D,
+			WEBGL_CONSTANTS.TEXTURE_WRAP_T,
+			WEBGL_CONSTANTS.CLAMP_TO_EDGE
+		);
 		this.webgl.textureParameter(WEBGL_CONSTANTS.TEXTURE_2D, WEBGL_CONSTANTS.TEXTURE_MIN_FILTER, WEBGL_CONSTANTS.LINEAR);
 	}
 

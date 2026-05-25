@@ -7,14 +7,14 @@ export enum BriefingName {
 }
 
 export interface BriefingBundle {
-	[BriefingName.ONE]: ChessMove | null,
-	[BriefingName.TWO]: ChessMove | null,
-	[BriefingName.THREE]: ChessMove | null
+	[BriefingName.ONE]: ChessMove | null;
+	[BriefingName.TWO]: ChessMove | null;
+	[BriefingName.THREE]: ChessMove | null;
 }
 
 export function emptyBriefingBundle(): BriefingBundle {
 	return {
-		[BriefingName.ONE]:  null,
+		[BriefingName.ONE]: null,
 		[BriefingName.TWO]: null,
 		[BriefingName.THREE]: null
 	};

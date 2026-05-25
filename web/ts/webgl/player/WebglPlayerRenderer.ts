@@ -26,7 +26,7 @@ export class WebglPlayerRenderer {
 		// Prepare the player rendering data
 		const circleData = new Circle(ZeroPoint, 1)
 			.toTriangles()
-			.flatMap(triangle => [triangle.v1, triangle.v2, triangle.v3]);
+			.flatMap((triangle) => [triangle.v1, triangle.v2, triangle.v3]);
 		const attributePointData = new Map([[VERTEX, circleData]]);
 
 		// Create the renderer
@@ -55,7 +55,7 @@ export class WebglPlayerRenderer {
 		this.renderer.setUniformPoint(CAMERA_CENTER, selfPlayer.position.center);
 
 		// Render all the players
-		players.forEach(player => {
+		players.forEach((player) => {
 			// Set all the uniforms
 			this.renderer.setUniformColor(COLOR, rensets.players.teamColor[player.team]);
 			this.renderer.setUniformValue(SCALE, player.position.radius);

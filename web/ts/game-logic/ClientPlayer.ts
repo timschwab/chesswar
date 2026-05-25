@@ -3,12 +3,12 @@ import { SerializedClientPlayer } from "../../../common/data-types/client.ts";
 import { Circle } from "../../../common/shapes/Circle.ts";
 
 export interface ClientPlayer {
-	id: ChesswarId,
-	team: TeamName,
-	role: PlayerRole,
-	actionOption: PlayerAction,
-	position: Circle,
-	deathCounter: number
+	id: ChesswarId;
+	team: TeamName;
+	role: PlayerRole;
+	actionOption: PlayerAction;
+	position: Circle;
+	deathCounter: number;
 }
 
 export function deserializeClientPlayer(player: SerializedClientPlayer): ClientPlayer {

@@ -29,7 +29,7 @@ export class TickHandler {
 			const startTick = performance.now();
 			this.tickAll();
 			const endTick = performance.now();
-			const tickMs = endTick-startTick;
+			const tickMs = endTick - startTick;
 			getState().stats.tickMs = tickMs;
 			if (tickMs > 25) {
 				console.warn("Long tick warning: " + tickMs);
@@ -45,16 +45,16 @@ export class TickHandler {
 			this.resetGame();
 		}
 		const state = getState();
-	
+
 		this.tickPlayers();
 		this.tickTankKills();
-	
+
 		if (state.victory == null) {
 			this.tickVictory();
 		} else {
 			this.tickNewGame();
 		}
-	
+
 		// Broadcast state to everyone
 		const playerList = Array.from(state.allPlayers.values());
 		const payload = {
@@ -62,16 +62,16 @@ export class TickHandler {
 			victory: state.victory,
 			newGameCounter: state.newGameCounter
 		};
-	
+
 		this.socketManager.sendAll({
 			type: ServerMessageTypes.STATE,
 			payload: payload
 		});
-	
+
 		// Broadcast team state to each team. Not really necessary to send every tick.
 		for (const name of Object.values(TeamName)) {
 			const team = state[name];
-			const teamPlayerIds = Array.from(team.playerMap.values()).map(player => player.id);
+			const teamPlayerIds = Array.from(team.playerMap.values()).map((player) => player.id);
 			const teamPayload: TeamMessagePayload = {
 				board: team.teamBoard,
 				briefings: team.briefings,
@@ -81,16 +81,16 @@ export class TickHandler {
 				type: ServerMessageTypes.TEAM,
 				payload: teamPayload
 			};
-	
+
 			this.socketManager.sendBulk(teamPlayerIds, teamMessage);
 		}
-	
+
 		// Broadcast stats
 		this.socketManager.sendAll({
 			type: ServerMessageTypes.STATS,
 			payload: state.stats
 		});
-	
+
 		state.count++;
 	}
 
@@ -108,10 +108,10 @@ export class TickHandler {
 	private resetGame() {
 		// Store player IDs
 		const playerIds = getState().allPlayers.keys();
-	
+
 		// Reset state
 		resetState();
-	
+
 		// Add all players
 		for (const playerId of playerIds) {
 			this.eventHandler.addPlayer(playerId);
@@ -125,10 +125,10 @@ export class TickHandler {
 			} else {
 				this.movePlayer(player);
 			}
-	
+
 			this.checkMinefields(player);
 			this.checkTankSafezones(player);
-	
+
 			player.actionOption = this.actionOption(player);
 		}
 	}
@@ -140,69 +140,68 @@ export class TickHandler {
 	private movePlayer(player: ServerPlayer) {
 		const physics = player.physics;
 		const radius = gameEngine.physics[player.role].radius;
-		
+
 		// Compute input force
 		const inputForceMag = gameEngine.physics[player.role].inputForceMag;
-	
+
 		const left = player.movement.left ? -1 : 0;
 		const right = player.movement.right ? 1 : 0;
 		const up = player.movement.up ? -1 : 0;
 		const down = player.movement.down ? 1 : 0;
-	
+
 		const xDir = left + right;
 		const yDir = up + down;
-	
+
 		let inputForce: Vector;
 		if (xDir == 0 && yDir == 0) {
 			inputForce = ZeroVector;
 		} else {
 			inputForce = Vector.fromPoint(new Point(xDir, yDir)).withMagnitude(inputForceMag);
 		}
-	
+
 		// Compute net force based on input force, friction, and drag
 		const oppositeDir = physics.speed.dir + TAU_HALF;
 		const playerSpeed = physics.speed.mag;
 		const frictionMag = Math.min(gameEngine.frictionCoef * physics.mass, playerSpeed);
-		const dragMag = gameEngine.dragCoef*playerSpeed;
-	
+		const dragMag = gameEngine.dragCoef * playerSpeed;
+
 		const frictionForce = new Vector(oppositeDir, frictionMag);
 		const dragForce = new Vector(oppositeDir, dragMag);
-	
+
 		const netForce = inputForce.add(frictionForce).add(dragForce);
-	
+
 		// Compute speed based on force and mass
 		const netAcceleration = netForce.divide(physics.mass);
 		const newSpeed = physics.speed.add(netAcceleration);
-	
+
 		// Compute position based on speed
 		const xyVector = newSpeed.toPoint();
 		const newPosition = physics.position.center.add(xyVector);
-	
+
 		// Bounce off the sides
 		let bouncePosition = newPosition;
 		let bounceSpeed = xyVector;
-	
+
 		if (bouncePosition.x < 0) {
 			const bounceX = 0 - (bouncePosition.x - 0);
 			bouncePosition = new Point(bounceX, bouncePosition.y);
-			bounceSpeed = new Point(-1*bounceSpeed.x, bounceSpeed.y);
+			bounceSpeed = new Point(-1 * bounceSpeed.x, bounceSpeed.y);
 		} else if (bouncePosition.x > mapGeometry.rect.width) {
 			const bounceX = mapGeometry.rect.width - (bouncePosition.x - mapGeometry.rect.width);
 			bouncePosition = new Point(bounceX, bouncePosition.y);
-			bounceSpeed = new Point(-1*bounceSpeed.x, bounceSpeed.y);
+			bounceSpeed = new Point(-1 * bounceSpeed.x, bounceSpeed.y);
 		}
-	
+
 		if (bouncePosition.y < 0) {
 			const bounceY = 0 - (bouncePosition.y - 0);
 			bouncePosition = new Point(bouncePosition.x, bounceY);
-			bounceSpeed = new Point(bounceSpeed.x, -1*bounceSpeed.y);
-	
+			bounceSpeed = new Point(bounceSpeed.x, -1 * bounceSpeed.y);
 		} else if (bouncePosition.y > mapGeometry.rect.height) {
 			const bounceY = mapGeometry.rect.height - (bouncePosition.y - mapGeometry.rect.height);
 			bouncePosition = new Point(bouncePosition.x, bounceY);
-			bounceSpeed = new Point(bounceSpeed.x, -1*bounceSpeed.y);
+			bounceSpeed = new Point(bounceSpeed.x, -1 * bounceSpeed.y);
 		}
-	
+
 		// Set new values
 		physics.speed = Vector.fromPoint(bounceSpeed);
 		physics.position = new Circle(bouncePosition, radius);
@@ -231,7 +230,7 @@ export class TickHandler {
 				});
 				return;
 			}
-	
+
 			const enemyBundles = this.enemyFacilities(player.team);
 			for (const bundle of enemyBundles) {
 				if (pos.touches(bundle.base)) {
@@ -242,7 +241,7 @@ export class TickHandler {
 					});
 					return;
 				}
-	
+
 				for (const outpost of bundle.outposts) {
 					if (pos.touches(outpost)) {
 						spawnPlayer(this.socketManager, player);
@@ -261,9 +260,9 @@ export class TickHandler {
 		if (player.role === PlayerRole.GENERAL) {
 			return PlayerAction.BECOME_SOLDIER;
 		}
-	
+
 		const pos = player.physics.position;
-	
+
 		// Check our facilities
 		const bundle = mapGeometry.teamBundles[player.team];
 		if (pos.inside(bundle.command)) {
@@ -297,22 +296,22 @@ export class TickHandler {
 				}
 			}
 		}
-	
+
 		// Check enemy facilities
 		for (const bundle of this.enemyFacilities(player.team)) {
 			if (player.role == PlayerRole.OPERATIVE && pos.inside(bundle.command)) {
 				return PlayerAction.CONDUCT_ESPIONAGE;
 			}
 		}
-	
+
 		// Nothing to do
 		return PlayerAction.NONE;
 	}
 
 	private enemyFacilities(teamName: TeamName) {
 		return Object.entries(mapGeometry.teamBundles)
-			.filter(entry => entry[0] !== teamName)
-			.map(entry => entry[1]);
+			.filter((entry) => entry[0] !== teamName)
+			.map((entry) => entry[1]);
 	}
 
 	private tickTankKills() {
@@ -400,7 +399,7 @@ export class TickHandler {
 			[TeamName.BLUE]: this.kingExists(TeamName.BLUE),
 			[TeamName.RED]: this.kingExists(TeamName.RED)
 		};
-	
+
 		if (kings[TeamName.BLUE] && kings[TeamName.RED]) {
 			state.victory = null;
 		} else if (kings[TeamName.BLUE] && !kings[TeamName.RED]) {
@@ -421,7 +420,7 @@ export class TickHandler {
 				}
 			}
 		}
-		
+
 		return false;
 	}
 

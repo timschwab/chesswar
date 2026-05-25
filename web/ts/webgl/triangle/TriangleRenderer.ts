@@ -10,7 +10,7 @@ const SCREEN = "u_screen";
 const V1 = "u_v1";
 const V2 = "u_v2";
 const V3 = "u_v3";
-const COLOR = "u_color"
+const COLOR = "u_color";
 
 const VERTEX = "a_vertex";
 
@@ -21,7 +21,9 @@ export class TriangleRenderer {
 	constructor(webgl: WebglInterface, screen: CWScreen) {
 		// Prepare the triangle rendering data
 		const triangleData = [
-			new Point(1, 1), new Point(1, 0), new Point(0, 1)
+			new Point(1, 1),
+			new Point(1, 0),
+			new Point(0, 1)
 		];
 		const attributePointData = new Map([[VERTEX, triangleData]]);
 
@@ -47,7 +49,7 @@ export class TriangleRenderer {
 		this.renderer.prep();
 
 		// Draw each rectangle
-		triangles.forEach(tri => {
+		triangles.forEach((tri) => {
 			// Set each rectangle left top, right bottom, and color
 			this.renderer.setUniformPoint(V1, tri[0]);
 			this.renderer.setUniformPoint(V2, tri[1]);

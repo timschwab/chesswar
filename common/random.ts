@@ -10,13 +10,13 @@ export function randomPop<T>(array: T[]): T {
 }
 
 export function randomRange(lower: number, upper: number): number {
-	const range = upper-lower;
-	return (Math.random()*range) + lower;
+	const range = upper - lower;
+	return (Math.random() * range) + lower;
 }
 
 export function randomClump(center: number, maxDiff: number): number {
-	const lower = center-maxDiff;
-	const upper = center+maxDiff;
+	const lower = center - maxDiff;
+	const upper = center + maxDiff;
 	return randomRange(lower, upper);
 }
 

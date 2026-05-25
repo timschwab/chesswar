@@ -25,8 +25,8 @@ export class ChessPieceRenderer {
 		const initial = {
 			index: 0 as number,
 			mappings: {} as Record<ChessPiece, {
-				start: number,
-				length: number
+				start: number;
+				length: number;
 			}>,
 			data: [] as Point[]
 		};
@@ -69,7 +69,7 @@ export class ChessPieceRenderer {
 		this.renderer.setUniformValue(SCALE, scale);
 		this.renderer.setUniformPoint(LEFT_TOP, leftTop);
 		this.renderer.setUniformColor(COLOR, rensets.players.teamColor[piece.team]);
-		
+
 		// Draw just the triangles we want to draw
 		const info = this.pieceMappings.mappings[piece.piece];
 		this.renderer.drawCustom(info.start, info.length);

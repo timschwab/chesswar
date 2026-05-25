@@ -15,9 +15,9 @@ export class Color {
 	}
 
 	asHtml(): string {
-		const rInt = clampNumber(Math.floor(this.r*256), 0, 255);
-		const gInt = clampNumber(Math.floor(this.g*256), 0, 255);
-		const bInt = clampNumber(Math.floor(this.b*256), 0, 255);
+		const rInt = clampNumber(Math.floor(this.r * 256), 0, 255);
+		const gInt = clampNumber(Math.floor(this.g * 256), 0, 255);
+		const bInt = clampNumber(Math.floor(this.b * 256), 0, 255);
 
 		const rStr = rInt.toString(16).padStart(2, "0");
 		const gStr = gInt.toString(16).padStart(2, "0");

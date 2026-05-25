@@ -31,7 +31,7 @@ export class ChesswarState {
 			return;
 		}
 
-		const selfPlayer = allPlayers.find(player => player.id === this.selfId.get());
+		const selfPlayer = allPlayers.find((player) => player.id === this.selfId.get());
 		if (!selfPlayer) {
 			console.error("Could not find self player", {
 				players: allPlayers,
@@ -39,7 +39,7 @@ export class ChesswarState {
 			});
 			return;
 		}
-	
+
 		this.selfPlayer = Optional.of(selfPlayer);
 		this.allPlayers = allPlayers;
 		this.victory = victory;

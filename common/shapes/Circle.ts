@@ -1,6 +1,6 @@
 import { Point, SerializedPoint } from "./Point.ts";
 import { Rect } from "./Rect.ts";
-import { SerializedGeometry, Geometry } from "./Geometry.ts";
+import { Geometry, SerializedGeometry } from "./Geometry.ts";
 import { GeometryName } from "./GeometryName.ts";
 import { Triangle } from "./Triangle.ts";
 import { Vector } from "./Vector.ts";
@@ -8,9 +8,9 @@ import { TAU } from "../Constants.ts";
 import { count } from "../math-utils.ts";
 
 export interface SerializedCircle extends SerializedGeometry {
-	type: GeometryName.CIRCLE,
-	center: SerializedPoint,
-	radius: number
+	type: GeometryName.CIRCLE;
+	center: SerializedPoint;
+	radius: number;
 }
 
 export class Circle extends Geometry<Circle> {
@@ -86,17 +86,21 @@ export class Circle extends Geometry<Circle> {
 		let vertexTriplets = Circle.vertexTripletCache.get(segments);
 		if (vertexTriplets === undefined) {
 			// Compute and store
-			const points = count(segments).map(seg => new Vector((seg*TAU)/segments, 1).toPoint());
-			const pairs = points.map((_, i, arr) => [arr[i], arr[(i+1)%arr.length]] as const);
-			vertexTriplets = pairs.map(pair => [new Point(0, 0), pair[0], pair[1]] as const);
+			const points = count(segments).map((seg) => new Vector((seg * TAU) / segments, 1).toPoint());
+			const pairs = points.map((_, i, arr) => [arr[i], arr[(i + 1) % arr.length]] as const);
+			vertexTriplets = pairs.map((pair) => [new Point(0, 0), pair[0], pair[1]] as const);
 			Circle.vertexTripletCache.set(segments, vertexTriplets);
 		}
 
-		return vertexTriplets.map(vertexTriplet => new Triangle(
-			vertexTriplet[0], vertexTriplet[1], vertexTriplet[2],
-			this.radius,
-			this.center
-		));
+		return vertexTriplets.map((vertexTriplet) =>
+			new Triangle(
+				vertexTriplet[0],
+				vertexTriplet[1],
+				vertexTriplet[2],
+				this.radius,
+				this.center
+			)
+		);
 	}
 
 	add(operand: Point): Circle {

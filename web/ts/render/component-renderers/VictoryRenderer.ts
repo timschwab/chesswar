@@ -12,62 +12,64 @@ const VICTORY_FONT_SIZE = 0.875;
 const NEW_GAME_FONT_SIZE = 0.375;
 
 export class VictoryRenderer implements UiComponentRenderer {
-    private readonly textRenderer: TextRenderer;
-    private readonly screen: CWScreen;
+	private readonly textRenderer: TextRenderer;
+	private readonly screen: CWScreen;
 
-    constructor(textRenderer: TextRenderer, screen: CWScreen) {
-        this.textRenderer = textRenderer;
-        this.screen = screen;
-    }
+	constructor(textRenderer: TextRenderer, screen: CWScreen) {
+		this.textRenderer = textRenderer;
+		this.screen = screen;
+	}
 
-    render(state: ChesswarState) {
-        // Useful values
-        const victoryState = state.getVictory();
-        const glyphBoundingBox = this.textRenderer.getGlyphBoundingBox();
-        const screen = this.screen.get();
+	render(state: ChesswarState) {
+		// Useful values
+		const victoryState = state.getVictory();
+		const glyphBoundingBox = this.textRenderer.getGlyphBoundingBox();
+		const screen = this.screen.get();
 
-        // Early return
-        if (victoryState === null) {
-            return;
-        }
+		// Early return
+		if (victoryState === null) {
+			return;
+		}
 
-        // Victory text
-        const victoryMessage = this.victoryMessage(victoryState);
-        const firstVictoryText = new CWText(victoryMessage, ZeroPoint, VICTORY_FONT_SIZE, rensets.victory.color);
-        const victoryBoundingBox = firstVictoryText.getRect(glyphBoundingBox);
+		// Victory text
+		const victoryMessage = this.victoryMessage(victoryState);
+		const firstVictoryText = new CWText(victoryMessage, ZeroPoint, VICTORY_FONT_SIZE, rensets.victory.color);
+		const victoryBoundingBox = firstVictoryText.getRect(glyphBoundingBox);
 
-        const victoryTextLeft = screen.center.x-(victoryBoundingBox.width/2);
-		const victoryTextTop = screen.center.y-(victoryBoundingBox.height/2);
-        const victoryText = new CWText(
-            victoryMessage,
-            new Point(victoryTextLeft, victoryTextTop),
-            VICTORY_FONT_SIZE,
-            rensets.victory.color);
+		const victoryTextLeft = screen.center.x - (victoryBoundingBox.width / 2);
+		const victoryTextTop = screen.center.y - (victoryBoundingBox.height / 2);
+		const victoryText = new CWText(
+			victoryMessage,
+			new Point(victoryTextLeft, victoryTextTop),
+			VICTORY_FONT_SIZE,
+			rensets.victory.color
+		);
 
-        // New game ticks
-        const newGameMessage = "New game in: " + state.getNewGameCounter();
-        const firstNewGameText = new CWText(newGameMessage, ZeroPoint, NEW_GAME_FONT_SIZE, rensets.victory.color);
-        const newGameBoundingBox = firstNewGameText.getRect(glyphBoundingBox);
+		// New game ticks
+		const newGameMessage = "New game in: " + state.getNewGameCounter();
+		const firstNewGameText = new CWText(newGameMessage, ZeroPoint, NEW_GAME_FONT_SIZE, rensets.victory.color);
+		const newGameBoundingBox = firstNewGameText.getRect(glyphBoundingBox);
 
-        const newGameTextLeft = screen.center.x-(newGameBoundingBox.width/2);
-        const newGameTextTop = screen.bottom-(newGameBoundingBox.height);
-        const newGameText = new CWText(
-            newGameMessage,
-            new Point(newGameTextLeft, newGameTextTop),
-            NEW_GAME_FONT_SIZE,
-            rensets.victory.color);
-        
-        this.textRenderer.render([victoryText, newGameText]);
-    }
+		const newGameTextLeft = screen.center.x - (newGameBoundingBox.width / 2);
+		const newGameTextTop = screen.bottom - (newGameBoundingBox.height);
+		const newGameText = new CWText(
+			newGameMessage,
+			new Point(newGameTextLeft, newGameTextTop),
+			NEW_GAME_FONT_SIZE,
+			rensets.victory.color
+		);
 
-    private victoryMessage(victory: Victory): string {
-        switch (victory) {
-            case null:
-                return "";
-            case "tie":
-                return "It's a tie!";
-            default:
-                return "Team " + victory + " wins!";
-        }
-    }
+		this.textRenderer.render([victoryText, newGameText]);
+	}
+
+	private victoryMessage(victory: Victory): string {
+		switch (victory) {
+			case null:
+				return "";
+			case "tie":
+				return "It's a tie!";
+			default:
+				return "Team " + victory + " wins!";
+		}
+	}
 }
