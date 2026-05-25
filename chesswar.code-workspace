@@ -6,9 +6,10 @@
 	],
 	"settings": {
 		"deno.enable": true,
-		"deno.unstable": true,
         "editor.insertSpaces": false,
         "editor.detectIndentation": false,
-		"editor.tabSize": 4
+		"editor.tabSize": 4,
+		"editor.defaultFormatter": "denoland.vscode-deno",
+		"editor.formatOnSave": true
 	}
 }

@@ -10,5 +10,10 @@
 	},
 	"compilerOptions": {
 		"lib": ["dom", "deno.ns", "deno.unstable"]
+	},
+	"fmt": {
+		"useTabs": true,
+		"trailingCommas": "never",
+		"lineWidth": 120
 	}
 }
