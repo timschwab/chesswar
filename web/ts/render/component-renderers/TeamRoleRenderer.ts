@@ -3,7 +3,7 @@ import { rensets } from "../../../../common/settings.ts";
 import { Point } from "../../../../common/shapes/Point.ts";
 import { Rect } from "../../../../common/shapes/Rect.ts";
 import { Shape } from "../../../../common/shapes/Shape.ts";
-import { ChesswarState } from "../../game-logic/ChesswarState.ts";
+import { ChesswarState } from "../../game-logic/CWClientState.ts";
 import { RectangleRenderer } from "../../webgl/rectangle/RectangleRenderer.ts";
 import { CWText } from "../../webgl/text/CWText.ts";
 import { TextRenderer } from "../../webgl/text/TextRenderer.ts";

@@ -1,4 +1,4 @@
-import { ChesswarState } from "../../game-logic/ChesswarState.ts";
+import { ChesswarState } from "../../game-logic/CWClientState.ts";
 import { WebglMapRenderer } from "../../webgl/map/WebglMapRenderer.ts";
 import { UiComponentRenderer } from "../UiComponentRenderer.ts";
 

@@ -10,7 +10,7 @@ import { MessageHandler } from "./MessageHandler.ts";
 import { ChesswarAudioPlayer } from "../audio/ChesswarAudioPlayer.ts";
 import { GameStats } from "./GameStats.ts";
 import { CWAnimationLoop } from "../core/CWAnimationLoop.ts";
-import { ChesswarState } from "./ChesswarState.ts";
+import { ChesswarState } from "./CWClientState.ts";
 import { ClickEventHandler } from "./ClickEventHandler.ts";
 
 export class ClientGame {

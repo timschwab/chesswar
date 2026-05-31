@@ -1,7 +1,7 @@
 import { ClientMessageTypes, MoveMessagePayload } from "../../../common/message-types/client.ts";
 import { CWClientSocket } from "../core/CWClientSocket.ts";
 import { CWInput, CWKey, CWKeyEvent } from "../core/CWInput.ts";
-import { ChesswarState } from "./ChesswarState.ts";
+import { ChesswarState } from "./CWClientState.ts";
 
 export class KeyEventHandler {
 	private readonly state: ChesswarState;

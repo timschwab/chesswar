@@ -4,7 +4,7 @@ import { rensets } from "../../../../common/settings.ts";
 import { Shape } from "../../../../common/shapes/Shape.ts";
 import { ZeroRect } from "../../../../common/shapes/Zero.ts";
 import { CWScreen } from "../../core/CWScreen.ts";
-import { ChesswarState } from "../../game-logic/ChesswarState.ts";
+import { ChesswarState } from "../../game-logic/CWClientState.ts";
 import { ClientPlayer } from "../../game-logic/ClientPlayer.ts";
 import { ChessPieceRenderer } from "../../webgl/chessPiece/ChessPieceRenderer.ts";
 import { RectangleRenderer } from "../../webgl/rectangle/RectangleRenderer.ts";

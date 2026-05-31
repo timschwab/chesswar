@@ -1,6 +1,6 @@
 import { CWDom } from "../core/CWDom.ts";
 import { CWScreen } from "../core/CWScreen.ts";
-import { ChesswarState } from "../game-logic/ChesswarState.ts";
+import { ChesswarState } from "../game-logic/CWClientState.ts";
 import { GameStats } from "../game-logic/GameStats.ts";
 import { ChessPieceRenderer } from "../webgl/chessPiece/ChessPieceRenderer.ts";
 import { WebglMapRenderer } from "../webgl/map/WebglMapRenderer.ts";

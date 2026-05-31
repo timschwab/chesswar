@@ -11,7 +11,7 @@ import {
 	GeneralWindowHelper,
 	ImportantValuesBundle
 } from "../render/component-renderers/helpers/GeneralWindowHelper.ts";
-import { ChesswarState } from "./ChesswarState.ts";
+import { ChesswarState } from./CWClientState.tsts";
 
 export class ClickEventHandler {
 	private readonly input: CWInput;

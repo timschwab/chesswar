@@ -1,6 +1,6 @@
 import { Point } from "../../../../common/shapes/Point.ts";
 import { Rect } from "../../../../common/shapes/Rect.ts";
-import { ChesswarState } from "../../game-logic/ChesswarState.ts";
+import { ChesswarState } from "../../game-logic/CWClientState.ts";
 import { ChessPieceRenderer } from "../../webgl/chessPiece/ChessPieceRenderer.ts";
 import { RectangleRenderer } from "../../webgl/rectangle/RectangleRenderer.ts";
 import { TriangleRenderer } from "../../webgl/triangle/TriangleRenderer.ts";

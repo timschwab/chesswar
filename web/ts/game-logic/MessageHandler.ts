@@ -13,7 +13,7 @@ import { ChesswarAudioPlayer } from "../audio/ChesswarAudioPlayer.ts";
 import { deserializeClientPlayer } from "./ClientPlayer.ts";
 import { PingManager } from "./PingManager.ts";
 import { GameStats } from "./GameStats.ts";
-import { ChesswarState } from "./ChesswarState.ts";
+import { ChesswarState }./CWClientState.tstate.ts";
 
 export class MessageHandler {
 	private readonly state: ChesswarState;
