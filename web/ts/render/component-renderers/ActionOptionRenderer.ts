@@ -3,7 +3,7 @@ import { rensets } from "../../../../common/settings.ts";
 import { Point } from "../../../../common/shapes/Point.ts";
 import { Rect } from "../../../../common/shapes/Rect.ts";
 import { Shape } from "../../../../common/shapes/Shape.ts";
-import { ChesswarState } from "../../game-logic/CWClientState.ts";
+import { CWClientState } from "../../game-logic/CWClientState.ts";
 import { RectangleRenderer } from "../../webgl/rectangle/RectangleRenderer.ts";
 import { CWText } from "../../webgl/text/CWText.ts";
 import { TextRenderer } from "../../webgl/text/TextRenderer.ts";
@@ -20,7 +20,7 @@ export class ActionOptionRenderer implements UiComponentRenderer {
 		this.textRenderer = textRenderer;
 	}
 
-	render(state: ChesswarState) {
+	render(state: CWClientState) {
 		state.getSelfPlayer().ifPresent((selfPlayer) => {
 			const textMessage = "Available action: " + selfPlayer.actionOption;
 			const textRect = new Rect(new Point(230, 10), new Point(900, 50));

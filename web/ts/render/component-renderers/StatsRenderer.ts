@@ -3,7 +3,7 @@ import { Point } from "../../../../common/shapes/Point.ts";
 import { Rect } from "../../../../common/shapes/Rect.ts";
 import { ZeroRect } from "../../../../common/shapes/Zero.ts";
 import { CWScreen } from "../../core/CWScreen.ts";
-import { ChesswarState } from "../../game-logic/CWClientState.ts";
+import { CWClientState } from "../../game-logic/CWClientState.ts";
 import { GameStats } from "../../game-logic/GameStats.ts";
 import { CWText } from "../../webgl/text/CWText.ts";
 import { TextRenderer } from "../../webgl/text/TextRenderer.ts";
@@ -24,7 +24,7 @@ export class StatsRenderer implements UiComponentRenderer {
 		this.statsManager = statsManager;
 	}
 
-	render(state: ChesswarState) {
+	render(state: CWClientState) {
 		if (!state.getStatsShowing()) {
 			return;
 		}

@@ -10,11 +10,11 @@ import { MessageHandler } from "./MessageHandler.ts";
 import { ChesswarAudioPlayer } from "../audio/ChesswarAudioPlayer.ts";
 import { GameStats } from "./GameStats.ts";
 import { CWAnimationLoop } from "../core/CWAnimationLoop.ts";
-import { ChesswarState } from "./CWClientState.ts";
+import { CWClientState } from "./CWClientState.ts";
 import { ClickEventHandler } from "./ClickEventHandler.ts";
 
 export class ClientGame {
-	private readonly state: ChesswarState;
+	private readonly state: CWClientState;
 
 	private readonly env: CWEnvironment;
 	private readonly dom: CWDom;
@@ -41,7 +41,7 @@ export class ClientGame {
 		this.animationLoop = new CWAnimationLoop();
 		this.audioPlayer = new ChesswarAudioPlayer();
 
-		this.state = new ChesswarState();
+		this.state = new CWClientState();
 		this.statsManager = new GameStats();
 		this.keyHandler = new KeyEventHandler(this.state, this.input, this.socket);
 		this.clickHandler = new ClickEventHandler(this.state, this.input, this.screen, this.socket);

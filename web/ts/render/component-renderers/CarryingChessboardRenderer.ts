@@ -5,7 +5,7 @@ import { briefingBundleMoveList } from "../../../../common/data-types/facility.t
 import { assertNever } from "../../../../common/Preconditions.ts";
 import { Point } from "../../../../common/shapes/Point.ts";
 import { Rect } from "../../../../common/shapes/Rect.ts";
-import { ChesswarState } from "../../game-logic/CWClientState.ts";
+import { CWClientState } from "../../game-logic/CWClientState.ts";
 import { ChessPieceRenderer } from "../../webgl/chessPiece/ChessPieceRenderer.ts";
 import { RectangleRenderer } from "../../webgl/rectangle/RectangleRenderer.ts";
 import { TriangleRenderer } from "../../webgl/triangle/TriangleRenderer.ts";
@@ -28,7 +28,7 @@ export class CarryingChessboardRenderer implements UiComponentRenderer {
 		this.chessboardHelper = new ChessboardHelper(rectangleRenderer, chessPieceRenderer, triangleRenderer, boardRect);
 	}
 
-	render(state: ChesswarState) {
+	render(state: CWClientState) {
 		state.getSelfPlayer().ifPresent((selfPlayer) => {
 			state.getTeamInfo().ifPresent((teamInfo) => {
 				this.renderInternal(selfPlayer.team, teamInfo.board, state.getCarrying());

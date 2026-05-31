@@ -4,7 +4,7 @@ import { Rect } from "../../../../common/shapes/Rect.ts";
 import { ZeroPoint } from "../../../../common/shapes/Zero.ts";
 import { removeNulls } from "../../../../common/typescript-utils.ts";
 import { CWScreen } from "../../core/CWScreen.ts";
-import { ChesswarState } from "../../game-logic/CWClientState.ts";
+import { CWClientState } from "../../game-logic/CWClientState.ts";
 import { WebglPlayerRenderer } from "../../webgl/player/WebglPlayerRenderer.ts";
 import { CWText } from "../../webgl/text/CWText.ts";
 import { TextRenderer } from "../../webgl/text/TextRenderer.ts";
@@ -27,7 +27,7 @@ export class PlayerRenderer implements UiComponentRenderer {
 		this.screen = screen;
 	}
 
-	render(state: ChesswarState) {
+	render(state: CWClientState) {
 		state.getSelfPlayer().ifPresent((selfPlayer) => {
 			const players = state.getAllPlayers();
 

@@ -1,4 +1,4 @@
-import { ChesswarState } from "../../game-logic/CWClientState.ts";
+import { CWClientState } from "../../game-logic/CWClientState.ts";
 import { WebglMapRenderer } from "../../webgl/map/WebglMapRenderer.ts";
 import { UiComponentRenderer } from "../UiComponentRenderer.ts";
 
@@ -9,7 +9,7 @@ export class MapRenderer implements UiComponentRenderer {
 		this.webglMapRenderer = webglMapRenderer;
 	}
 
-	render(state: ChesswarState) {
+	render(state: CWClientState) {
 		state.getSelfPlayer().ifPresent((selfPlayer) => {
 			this.webglMapRenderer.render(selfPlayer.position.center);
 		});

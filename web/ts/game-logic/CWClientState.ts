@@ -6,7 +6,7 @@ import { BriefingName } from "../../../common/data-types/facility.ts";
 import { CarryingMessagePayload, TeamMessagePayload } from "../../../common/message-types/server.ts";
 import { ClientPlayer } from "./ClientPlayer.ts";
 
-export class ChesswarState {
+export class CWClientState {
 	private selfId: Optional<string> = Optional.empty();
 	private selfPlayer: Optional<ClientPlayer> = Optional.empty();
 	private allPlayers: ClientPlayer[] = [];

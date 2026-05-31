@@ -1,6 +1,6 @@
 import { CWDom } from "../core/CWDom.ts";
 import { CWScreen } from "../core/CWScreen.ts";
-import { ChesswarState } from "../game-logic/CWClientState.ts";
+import { CWClientState } from "../game-logic/CWClientState.ts";
 import { GameStats } from "../game-logic/GameStats.ts";
 import { ChessPieceRenderer } from "../webgl/chessPiece/ChessPieceRenderer.ts";
 import { WebglMapRenderer } from "../webgl/map/WebglMapRenderer.ts";
@@ -21,12 +21,12 @@ import { VictoryRenderer } from "./component-renderers/VictoryRenderer.ts";
 import { TriangleRenderer } from "../webgl/triangle/TriangleRenderer.ts";
 
 export class ChesswarRenderer {
-	private readonly state: ChesswarState;
+	private readonly state: CWClientState;
 	private previousRenderStart = performance.now();
 	private readonly statsManager: GameStats;
 	private readonly componentRenderers: UiComponentRenderer[];
 
-	constructor(state: ChesswarState, dom: CWDom, screen: CWScreen, statsManager: GameStats) {
+	constructor(state: CWClientState, dom: CWDom, screen: CWScreen, statsManager: GameStats) {
 		this.state = state;
 		this.statsManager = statsManager;
 

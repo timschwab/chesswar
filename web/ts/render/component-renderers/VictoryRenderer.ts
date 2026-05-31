@@ -3,7 +3,7 @@ import { rensets } from "../../../../common/settings.ts";
 import { Point } from "../../../../common/shapes/Point.ts";
 import { ZeroPoint } from "../../../../common/shapes/Zero.ts";
 import { CWScreen } from "../../core/CWScreen.ts";
-import { ChesswarState } from "../../game-logic/CWClientState.ts";
+import { CWClientState } from "../../game-logic/CWClientState.ts";
 import { CWText } from "../../webgl/text/CWText.ts";
 import { TextRenderer } from "../../webgl/text/TextRenderer.ts";
 import { UiComponentRenderer } from "../UiComponentRenderer.ts";
@@ -20,7 +20,7 @@ export class VictoryRenderer implements UiComponentRenderer {
 		this.screen = screen;
 	}
 
-	render(state: ChesswarState) {
+	render(state: CWClientState) {
 		// Useful values
 		const victoryState = state.getVictory();
 		const glyphBoundingBox = this.textRenderer.getGlyphBoundingBox();

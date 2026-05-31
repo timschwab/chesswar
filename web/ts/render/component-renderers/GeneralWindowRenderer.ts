@@ -4,7 +4,7 @@ import { rensets } from "../../../../common/settings.ts";
 import { Shape } from "../../../../common/shapes/Shape.ts";
 import { ZeroRect } from "../../../../common/shapes/Zero.ts";
 import { CWScreen } from "../../core/CWScreen.ts";
-import { ChesswarState } from "../../game-logic/CWClientState.ts";
+import { CWClientState } from "../../game-logic/CWClientState.ts";
 import { ClientPlayer } from "../../game-logic/ClientPlayer.ts";
 import { ChessPieceRenderer } from "../../webgl/chessPiece/ChessPieceRenderer.ts";
 import { RectangleRenderer } from "../../webgl/rectangle/RectangleRenderer.ts";
@@ -29,7 +29,7 @@ export class GeneralWindowRenderer implements UiComponentRenderer {
 		this.genwinHelper = new GeneralWindowHelper(screen);
 	}
 
-	render(state: ChesswarState) {
+	render(state: CWClientState) {
 		state.getSelfPlayer().ifPresent((selfPlayer) => {
 			if (selfPlayer.role === PlayerRole.GENERAL) {
 				this.genwinHelper.getImportantValues().ifPresent(
@@ -39,7 +39,7 @@ export class GeneralWindowRenderer implements UiComponentRenderer {
 		});
 	}
 
-	private renderGeneralWindow(state: ChesswarState, selfPlayer: ClientPlayer, importantValues: ImportantValuesBundle) {
+	private renderGeneralWindow(state: CWClientState, selfPlayer: ClientPlayer, importantValues: ImportantValuesBundle) {
 		const genwin = rensets.generalWindow;
 		const team = selfPlayer.team;
 		this.chessboardHelper.updateBoardRect(importantValues.boardRect);

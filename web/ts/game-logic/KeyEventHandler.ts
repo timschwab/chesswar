@@ -1,15 +1,15 @@
 import { ClientMessageTypes, MoveMessagePayload } from "../../../common/message-types/client.ts";
 import { CWClientSocket } from "../core/CWClientSocket.ts";
 import { CWInput, CWKey, CWKeyEvent } from "../core/CWInput.ts";
-import { ChesswarState } from "./CWClientState.ts";
+import { CWClientState } from "./CWClientState.ts";
 
 export class KeyEventHandler {
-	private readonly state: ChesswarState;
+	private readonly state: CWClientState;
 	private readonly input: CWInput;
 	private readonly socket: CWClientSocket;
 	private readonly movement: MoveMessagePayload;
 
-	constructor(state: ChesswarState, input: CWInput, socket: CWClientSocket) {
+	constructor(state: CWClientState, input: CWInput, socket: CWClientSocket) {
 		this.state = state;
 		this.input = input;
 		this.socket = socket;
